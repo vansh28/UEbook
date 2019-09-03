@@ -37,6 +37,7 @@ import java.util.Locale;
 
 public class Upload_Book_Screen extends AppCompatActivity implements View.OnClickListener {
     private static final int MY_PERMISSIONS_REQUEST_CAMERA = 99;
+    private static final int PICK_FILE_REQUEST =12 ;
     private ImageButton back_btn_uploadbook ;
     private LinearLayout upload_cover_bookBtn;
     private String filePath;
@@ -83,7 +84,7 @@ public class Upload_Book_Screen extends AppCompatActivity implements View.OnClic
 
         }
         else if (view==audio_btn){
-
+           getAudioFile();
         }
         else if (view==camera_btn){
             selectImage();
@@ -185,6 +186,14 @@ public class Upload_Book_Screen extends AppCompatActivity implements View.OnClic
                 e.printStackTrace();
             }
         }
+       else if(requestCode == 12) {
+
+            if (resultCode == RESULT_OK) {
+
+                //the selected audio.
+                Uri uri = data.getData();
+            }
+        }
     }
 
     public String getRealPathFromURI(Uri contentUri) {
@@ -193,5 +202,28 @@ public class Upload_Book_Screen extends AppCompatActivity implements View.OnClic
         int column_index = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA);
         cursor.moveToFirst();
         return cursor.getString(column_index);
+    }
+
+    private void showFileChooser() {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("application/*");
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+
+        try {
+            startActivityForResult(
+                    Intent.createChooser(intent, "Select a File to Upload"),
+                    1);
+        } catch (android.content.ActivityNotFoundException ex) {
+            Toast.makeText(this, "Please install a File Manager.",
+                    Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void  getAudioFile(){
+
+        Intent intent_upload = new Intent();
+        intent_upload.setType("audio/*");
+        intent_upload.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intent_upload,12);
     }
 }

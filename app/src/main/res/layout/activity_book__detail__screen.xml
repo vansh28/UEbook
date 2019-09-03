@@ -139,12 +139,14 @@
                     android:layout_marginLeft="@dimen/size_10"
                     android:orientation="horizontal">
                     <ImageButton
+                        android:id="@+id/fbshare_btn"
                         android:layout_width="wrap_content"
                         android:src="@drawable/fblogo"
                         android:background="@android:color/transparent"
                         android:layout_height="wrap_content">
                     </ImageButton>
                     <ImageButton
+                        android:id="@+id/googleshare_btn"
                         android:layout_width="wrap_content"
                         android:src="@drawable/gplogo"
                         android:layout_marginLeft="@dimen/size_10"
@@ -153,6 +155,7 @@
                     </ImageButton>
 
                     <ImageButton
+                        android:id="@+id/twittershare_btn"
                         android:layout_width="wrap_content"
                         android:src="@drawable/twlogo"
                         android:background="@android:color/transparent"
@@ -160,8 +163,9 @@
                         android:layout_height="wrap_content">
                     </ImageButton>
                     <ImageButton
+                        android:id="@+id/whatsappshare_btn"
                         android:layout_width="wrap_content"
-                        android:src="@drawable/lnlogo"
+                        android:src="@drawable/whatsapp"
                         android:background="@android:color/transparent"
                         android:layout_marginLeft="@dimen/size_10"
                         android:layout_height="wrap_content">
@@ -258,6 +262,7 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/password_edit_text"
                         android:layout_width="match_parent"
+                        android:minHeight="@dimen/size_60"
                         android:layout_height="wrap_content"
                         />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -285,13 +290,13 @@
                     android:textStyle="bold"
                     android:textColor="@color/black"/>
             </LinearLayout>
-          <androidx.recyclerview.widget.RecyclerView
+          <com.ue.uebook.NonScrollRecyclerView
               android:id="@+id/review_List"
               android:layout_width="match_parent"
               android:layout_margin="@dimen/size_10"
               android:layout_height="match_parent">
 
-          </androidx.recyclerview.widget.RecyclerView>
+          </com.ue.uebook.NonScrollRecyclerView>
 
 
 

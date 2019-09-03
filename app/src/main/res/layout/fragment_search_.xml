@@ -25,5 +25,4 @@
         android:textSize="@dimen/size_15"
         android:textColorHint="#818080" />
 
-
 </LinearLayout>
