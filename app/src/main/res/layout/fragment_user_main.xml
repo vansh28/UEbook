@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".HomeActivity.HomeFragment.UserMainFragment">
+
+    <RelativeLayout
+        android:id="@+id/userInfo_container"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/size_60"
+        android:paddingLeft="@dimen/size_10">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="User Info"
+            android:drawableLeft="@drawable/userinfo"
+            android:textColor="@color/black"
+            android:drawablePadding="@dimen/size_20"
+            android:textSize="@dimen/size_18"></TextView>
+        <ImageView
+            android:layout_width="@dimen/size_30"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:paddingRight="@dimen/size_10"
+            android:src="@drawable/rightarrow"></ImageView>
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/black"></View>
+
+    <RelativeLayout
+        android:id="@+id/companyInfo_Container"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/size_60"
+        android:paddingLeft="@dimen/size_10">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="Company Info"
+            android:textColor="@color/black"
+            android:drawableLeft="@drawable/companyinfo"
+            android:drawablePadding="@dimen/size_20"
+            android:textSize="@dimen/size_18"></TextView>
+
+        <ImageView
+            android:layout_width="@dimen/size_30"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:paddingRight="@dimen/size_10"
+            android:src="@drawable/rightarrow"></ImageView>
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/black"></View>
+
+
+    <RelativeLayout
+        android:id="@+id/uploadBook_Container"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/size_60"
+        android:paddingLeft="@dimen/size_10">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="Upload Book"
+            android:textColor="@color/black"
+            android:drawableLeft="@drawable/addbook"
+            android:drawablePadding="@dimen/size_20"
+            android:textSize="@dimen/size_18"></TextView>
+
+        <ImageView
+            android:layout_width="@dimen/size_30"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:paddingRight="@dimen/size_10"
+            android:src="@drawable/rightarrow"></ImageView>
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/black"></View>
+    <RelativeLayout
+        android:id="@+id/logOut"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/size_60"
+        android:paddingLeft="@dimen/size_10">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="Logout"
+            android:textColor="@color/black"
+            android:drawableLeft="@drawable/logout"
+            android:drawablePadding="@dimen/size_20"
+            android:textSize="@dimen/size_18"></TextView>
+    </RelativeLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/black"></View>
+</LinearLayout>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/size_12"
+            android:src="@drawable/loginlogo"></ImageView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/size_10"
+        android:weightSum="2"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/signUp_btn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Sign Up"
+            android:background="@drawable/active_signin_border"
+            android:textColor="@color/colorPrimary"
+            android:layout_weight="1">
+        </Button>
+
+        <Button
+            android:id="@+id/signIn_btn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Sign In"
+            android:textColor="#000000"
+            android:background="@drawable/non_active_btn_signin"
+            android:layout_weight="1">
+        </Button>
+
+    </LinearLayout>
+    <FrameLayout
+        android:id="@+id/container_Fragment"
+        android:layout_width="match_parent"
+        android:padding="@dimen/size_15"
+        android:layout_height="match_parent">
+    </FrameLayout>
+
+</LinearLayout>
