@@ -22,6 +22,7 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -281,7 +282,14 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
                 dialog.dismiss();
             }
         });
-        dialog.show();
+
+        try {
+            dialog.show();
+        }
+        catch (WindowManager.BadTokenException e) {
+            //use a log message
+        }
+
     }
     public void showDialogGP(String first_name, String last_name, String email, final Uri image) {
         hideLoadingIndicator();
@@ -322,7 +330,12 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
                 dialog.dismiss();
             }
         });
-        dialog.show();
+        try {
+            dialog.show();
+        }
+        catch (WindowManager.BadTokenException e) {
+            //use a log message
+        }
     }
     public void gotoHome() {
         Intent intent = new Intent(this, HomeScreen.class);
