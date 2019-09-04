@@ -67,7 +67,9 @@ public class SignUp_Fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_sign_up_, container, false);
+        View view= inflater.inflate(R.layout.fragment_sign_up_, container, false);
+
+        return  view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

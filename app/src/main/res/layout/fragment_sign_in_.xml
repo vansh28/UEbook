@@ -109,69 +109,6 @@
                 </TextView>
             </LinearLayout>
 
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:orientation="horizontal"
-                    android:gravity="center_horizontal"
-                    android:layout_marginLeft="@dimen/size_50"
-                    android:layout_marginRight="@dimen/size_50"
-                    android:background="@drawable/facebookbtnbg"
-                    android:layout_weight="1">
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:src="@drawable/fb"
-                        android:layout_marginLeft="@dimen/size_8"
-                        android:layout_gravity="center_vertical"
-                        android:layout_height="match_parent">
-                    </ImageView>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:gravity="center_vertical"
-                        android:textColor="@color/white"
-                        android:paddingLeft="@dimen/size_12"
-                        android:textSize="12dp"
-                        android:text="signup with Facebook"></TextView>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:orientation="horizontal"
-                    android:gravity="center_horizontal"
-                    android:layout_marginTop="@dimen/size_20"
-                    android:layout_marginRight="@dimen/size_50"
-                    android:layout_marginLeft="@dimen/size_50"
-                    android:layout_marginBottom="@dimen/size_50"
-
-                    android:background="@drawable/google_btn_bg">
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:src="@drawable/google"
-                        android:layout_marginLeft="@dimen/size_8"
-                        android:layout_gravity="center_vertical"
-                        android:layout_height="match_parent">
-                    </ImageView>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:gravity="center_vertical"
-                        android:textColor="@color/white"
-                        android:textSize="12dp"
-                        android:paddingLeft="@dimen/size_12"
-                        android:text="signup with Google"></TextView>
-                </LinearLayout>
-
-
-
-
-
-
-
-
-
         </LinearLayout>
     </ScrollView>
 

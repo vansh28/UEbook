@@ -22,8 +22,8 @@
         </ImageButton>
         <ImageButton
             android:id="@+id/bookmark_btn"
-            android:layout_width="@dimen/size_35"
-            android:layout_height="@dimen/size_35"
+            android:layout_width="@dimen/size_30"
+            android:layout_height="@dimen/size_30"
             android:layout_alignParentRight="true"
             android:layout_marginRight="@dimen/size_12"
             android:layout_centerVertical="true"
@@ -92,7 +92,7 @@
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingBottom="@dimen/size_50"
+    android:paddingBottom="@dimen/size_10"
     android:layout_marginTop="@dimen/size_5"
     android:orientation="vertical">
 
@@ -115,8 +115,23 @@
         android:paddingLeft="@dimen/size_10"
         android:layout_margin="@dimen/size_10"
         android:textColor="#3C3C3C"/>
+    <Button
+        android:id="@+id/readFull_Book_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/active_signin_border"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/size_18"
+        android:gravity="bottom"
+        android:layout_marginLeft="@dimen/size_18"
+        android:textAllCaps="false"
+        android:text="Read Full Book">
+
+    </Button>
+
 
 </LinearLayout>
+
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -276,7 +291,7 @@
                     android:background="@drawable/submitbg"
                     android:textSize="@dimen/size_15"
                     android:textColor="@color/white"
-                    android:layout_height="@dimen/size_50">
+                    android:layout_height="@dimen/size_40">
 
                 </Button>
 

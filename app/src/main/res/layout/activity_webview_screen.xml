@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/widget63"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent" >
+
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/size_60"
+  >
+    <ImageButton
+        android:id="@+id/backbtn_webview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/back_black"
+        android:background="@android:color/transparent"
+        android:layout_centerVertical="true"
+        android:paddingLeft="@dimen/size_10"></ImageButton>
+    <ImageView
+        android:layout_width="@dimen/size_200"
+        android:layout_height="@dimen/size_40"
+        android:layout_centerInParent="true"
+        android:src="@drawable/loginlogo"></ImageView>
+</RelativeLayout>
+    <WebView
+        android:id="@+id/mWebView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</LinearLayout>

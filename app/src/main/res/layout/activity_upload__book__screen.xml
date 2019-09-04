@@ -192,7 +192,17 @@
 
 
         </LinearLayout>
+<TextView
+    android:id="@+id/filname_view"
+    android:layout_width="wrap_content"
+    android:layout_marginTop="@dimen/size_10"
+    android:layout_marginLeft="@dimen/size_20"
+    android:textSize="@dimen/size_17"
+    android:visibility="gone"
+    android:textColor="@color/colorPrimary"
+    android:layout_height="wrap_content">
 
+</TextView>
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

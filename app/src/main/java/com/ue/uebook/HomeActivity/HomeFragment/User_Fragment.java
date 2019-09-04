@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -30,13 +32,15 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.ue.uebook.HomeActivity.HomeScreen;
-import com.ue.uebook.ImageUtils;
+
+import com.bumptech.glide.Glide;
 import com.ue.uebook.R;
+import com.ue.uebook.SessionManager;
+
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
+
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -44,6 +48,8 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -243,8 +249,7 @@ public class User_Fragment extends Fragment implements View.OnClickListener,User
                 Log.e("Activity", "Pick from Gallery::>>> ");
 
                 imgPath = getRealPathFromURI(selectedImage);
-                destination = new File(imgPath.toString());
-                profile_image_user.setImageBitmap(bitmap);
+                destination = new File(imgPath.toString());profile_image_user.setImageBitmap(bitmap);
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -280,4 +285,20 @@ public class User_Fragment extends Fragment implements View.OnClickListener,User
         transaction.replace(R.id.user_Container, fragment);
         transaction.commit();
     }
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        Log.d("image",new SessionManager(getApplicationContext()).getUserimage());
+        if (new SessionManager(getApplicationContext()).getUserimage().length()>0)
+        {
+            Glide.with(getActivity())
+                    .load(new SessionManager(getContext().getApplicationContext()).getUserimage())
+                    .into(profile_image_user);
+        }
+
+        else {
+
+            profile_image_user.setBackgroundResource(R.drawable.user);
+        }    }
 }
+

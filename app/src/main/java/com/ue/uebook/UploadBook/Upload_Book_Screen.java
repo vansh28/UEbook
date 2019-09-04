@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -21,6 +22,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ue.uebook.R;
@@ -34,11 +36,12 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.StringTokenizer;
 
 public class Upload_Book_Screen extends AppCompatActivity implements View.OnClickListener {
     private static final int MY_PERMISSIONS_REQUEST_CAMERA = 99;
-    private static final int PICK_FILE_REQUEST =12 ;
-    private ImageButton back_btn_uploadbook ;
+    private static final int PICK_FILE_REQUEST = 12;
+    private ImageButton back_btn_uploadbook;
     private LinearLayout upload_cover_bookBtn;
     private String filePath;
     private String fileName;
@@ -50,18 +53,21 @@ public class Upload_Book_Screen extends AppCompatActivity implements View.OnClic
     private InputStream inputStreamImg;
     private String imgPath = null;
     private final int PICK_IMAGE_CAMERA = 1, PICK_IMAGE_GALLERY = 2;
-    private ImageView  camera_btn,video_btn,audio_btn,documents_btn;
-
+    private ImageView camera_btn, video_btn, audio_btn, documents_btn;
+    private   String uploadedFileName ,first;
+    private StringTokenizer tokens;
+    private TextView filname_view;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upload__book__screen);
-        back_btn_uploadbook=findViewById(R.id.back_btn_uploadbook);
-        upload_cover_bookBtn=findViewById(R.id.upload_cover_bookBtn);
-        camera_btn=findViewById(R.id.camera_btn);
-        video_btn=findViewById(R.id.video_Btn);
-        audio_btn=findViewById(R.id.audio_Btn);
-        documents_btn=findViewById(R.id.documents_Btn);
+        back_btn_uploadbook = findViewById(R.id.back_btn_uploadbook);
+        upload_cover_bookBtn = findViewById(R.id.upload_cover_bookBtn);
+        filname_view = findViewById(R.id.filname_view);
+        camera_btn = findViewById(R.id.camera_btn);
+        video_btn = findViewById(R.id.video_Btn);
+        audio_btn = findViewById(R.id.audio_Btn);
+        documents_btn = findViewById(R.id.documents_Btn);
         camera_btn.setOnClickListener(this);
         video_btn.setOnClickListener(this);
         audio_btn.setOnClickListener(this);
@@ -72,26 +78,21 @@ public class Upload_Book_Screen extends AppCompatActivity implements View.OnClic
 
     @Override
     public void onClick(View view) {
-        if (view==back_btn_uploadbook){
+        if (view == back_btn_uploadbook) {
             finish();
-        }
-        else if (view==upload_cover_bookBtn){
+        } else if (view == upload_cover_bookBtn) {
 
             selectImage();
-        }
-        else if (view==video_btn){
+        } else if (view == video_btn) {
 
 
-        }
-        else if (view==audio_btn){
-           getAudioFile();
-        }
-        else if (view==camera_btn){
+        } else if (view == audio_btn) {
+            getAudioFile();
+        } else if (view == camera_btn) {
             selectImage();
-        }
-        else if (view == documents_btn){
+        } else if (view == documents_btn) {
 
-
+            showFileChooser();
         }
     }
 
@@ -102,7 +103,7 @@ public class Upload_Book_Screen extends AppCompatActivity implements View.OnClic
             PackageManager pm = getPackageManager();
             int hasPerm = pm.checkPermission(Manifest.permission.CAMERA, getPackageName());
             if (hasPerm == PackageManager.PERMISSION_GRANTED) {
-                final CharSequence[] options = {"Take Photo", "Choose From Gallery","Cancel"};
+                final CharSequence[] options = {"Take Photo", "Choose From Gallery", "Cancel"};
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setTitle("Select Option");
                 builder.setItems(options, new DialogInterface.OnClickListener() {
@@ -122,8 +123,7 @@ public class Upload_Book_Screen extends AppCompatActivity implements View.OnClic
                     }
                 });
                 builder.show();
-            } else
-            {
+            } else {
                 ActivityCompat.requestPermissions(this,
                         new String[]{Manifest.permission.CAMERA},
                         MY_PERMISSIONS_REQUEST_CAMERA);
@@ -185,8 +185,7 @@ public class Upload_Book_Screen extends AppCompatActivity implements View.OnClic
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }
-       else if(requestCode == 12) {
+        } else if (requestCode == 12) {
 
             if (resultCode == RESULT_OK) {
 
@@ -194,6 +193,22 @@ public class Upload_Book_Screen extends AppCompatActivity implements View.OnClic
                 Uri uri = data.getData();
             }
         }
+        if (requestCode == 11) {
+            if (resultCode == Activity.RESULT_OK) {
+                Uri selectedFileURI = data.getData();
+                File file = new File(selectedFileURI.getPath().toString());
+                Log.d("filename", "File : " + file.getName());
+                filname_view.setText(file.getName());
+                uploadedFileName = file.getName().toString();
+                 tokens = new StringTokenizer(uploadedFileName, ":");
+                 first = tokens.nextToken();
+
+              File  file1 = new File(Environment.getExternalStorageDirectory(),
+                        first);
+                Log.d("ff", "File : " + file1);
+            }
+    }
+
     }
 
     public String getRealPathFromURI(Uri contentUri) {
@@ -212,18 +227,23 @@ public class Upload_Book_Screen extends AppCompatActivity implements View.OnClic
         try {
             startActivityForResult(
                     Intent.createChooser(intent, "Select a File to Upload"),
-                    1);
+                    11);
         } catch (android.content.ActivityNotFoundException ex) {
             Toast.makeText(this, "Please install a File Manager.",
                     Toast.LENGTH_SHORT).show();
         }
     }
 
-    private void  getAudioFile(){
-
+    private void getAudioFile() {
         Intent intent_upload = new Intent();
         intent_upload.setType("audio/*");
         intent_upload.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(intent_upload,12);
+        startActivityForResult(intent_upload, 12);
     }
+
 }
+
+
+
+
+
