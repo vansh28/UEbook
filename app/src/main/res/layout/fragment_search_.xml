@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="@dimen/size_10"
+    android:orientation="vertical"
     tools:context=".HomeActivity.HomeFragment.Search_Fragment">
 
     <EditText
@@ -21,8 +22,17 @@
         android:gravity="center_vertical"
         android:paddingLeft="@dimen/size_10"
         android:textColor="@color/black"
-        android:focusedByDefault="false"
+        android:focusable="true"
         android:textSize="@dimen/size_15"
+        android:defaultFocusHighlightEnabled="true"
         android:textColorHint="#818080" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/search_history_list"
+        android:layout_width="match_parent"
+        android:layout_margin="@dimen/size_5"
+        android:visibility="gone"
+        android:layout_height="match_parent">
+    </androidx.recyclerview.widget.RecyclerView>
 
 </LinearLayout>

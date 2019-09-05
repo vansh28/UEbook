@@ -7,14 +7,21 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
+import com.ue.uebook.HomeActivity.HomeFragment.Adapter.Language_adapter;
+import com.ue.uebook.HomeActivity.HomeFragment.Adapter.Search_History_Adapter;
 import com.ue.uebook.R;
+
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -24,7 +31,7 @@ import com.ue.uebook.R;
  * Use the {@link Search_Fragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Search_Fragment extends Fragment implements View.OnClickListener {
+public class Search_Fragment extends Fragment implements View.OnClickListener, Search_History_Adapter.SearchHistoryItemClick {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -33,6 +40,9 @@ public class Search_Fragment extends Fragment implements View.OnClickListener {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private RecyclerView search_history_list;
+    private Search_History_Adapter search_history_adapter;
+    private EditText edittext_search;
 
 
     private OnFragmentInteractionListener mListener;
@@ -73,7 +83,15 @@ public class Search_Fragment extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_search_, container, false);
-
+        search_history_list=view.findViewById(R.id.search_history_list);
+        edittext_search=view.findViewById(R.id.edittext_search);
+        edittext_search.setOnClickListener(this);
+        LinearLayoutManager linearLayoutManagerPopularList = new LinearLayoutManager(getActivity());
+        linearLayoutManagerPopularList.setOrientation(LinearLayoutManager.VERTICAL);
+        search_history_list.setLayoutManager(linearLayoutManagerPopularList);
+        search_history_adapter = new Search_History_Adapter();
+        search_history_list.setAdapter(search_history_adapter);
+        search_history_adapter.setItemClickListener(this);
         return  view;
     }
 
@@ -104,6 +122,11 @@ public class Search_Fragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View view) {
        }
+
+    @Override
+    public void onItemClick(int position) {
+
+    }
 
     /**
      * This interface must be implemented by activities that contain this

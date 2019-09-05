@@ -10,6 +10,7 @@ public class SessionManager {
 
     private static final String SHARED_PREFERENCE_NAME = "com.ue.uebook.sharedPreference";
     private static final String userimage = "userImage";
+    private static final String Location = "location";
     private SharedPreferences sharedPreference;
     private SharedPreferences.Editor editor;
 
@@ -28,6 +29,14 @@ public class SessionManager {
 
     public String getUserimage() {
         return sharedPreference.getString(userimage, "");
+    }
+    public void storeUserLocation(final String location) {
+        editor.putString(Location, location);
+        editor.commit();
+    }
+
+    public String getUserLocation() {
+        return sharedPreference.getString(Location, "");
     }
 
 }

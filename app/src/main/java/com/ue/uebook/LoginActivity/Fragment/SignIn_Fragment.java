@@ -5,15 +5,27 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
+import com.ue.uebook.Data.NetworkAPI;
+import com.ue.uebook.Data.NetworkService;
 import com.ue.uebook.HomeActivity.HomeScreen;
+import com.ue.uebook.LoginActivity.Pojo.RegistrationBody;
+import com.ue.uebook.LoginActivity.Pojo.RegistrationResponse;
 import com.ue.uebook.R;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -33,7 +45,8 @@ public class SignIn_Fragment extends Fragment implements View.OnClickListener {
     private String mParam1;
     private String mParam2;
     private Button login_btn;
-
+    private TextView create_AccountBtn;
+    private NetworkAPI networkAPI;
     private OnFragmentInteractionListener mListener;
 
     public SignIn_Fragment() {
@@ -61,6 +74,7 @@ public class SignIn_Fragment extends Fragment implements View.OnClickListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        networkAPI = NetworkService.getAPI().create(NetworkAPI.class);
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -73,6 +87,8 @@ public class SignIn_Fragment extends Fragment implements View.OnClickListener {
         // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.fragment_sign_in_, container, false);
         login_btn= view.findViewById(R.id.login_btn);
+        create_AccountBtn=view.findViewById(R.id.create_AccountBtn);
+        create_AccountBtn.setOnClickListener(this);
         login_btn.setOnClickListener(this);
         return  view;
     }
@@ -106,6 +122,11 @@ public class SignIn_Fragment extends Fragment implements View.OnClickListener {
         if (view == login_btn){
             gotoHome();
         }
+        else if (view == create_AccountBtn)
+        {
+
+            loadFragment(new SignUp_Fragment());
+        }
     }
 
     public  void  gotoHome(){
@@ -128,4 +149,32 @@ public class SignIn_Fragment extends Fragment implements View.OnClickListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+    private void loadFragment(Fragment fragment) {
+        // load fragment
+        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.container_Fragment, fragment);
+        transaction.commit();
+    }
+
+    public void fetchUserCredentials(final String username,final  String password ,final String email ,final  String publisher_type ,String gender) {
+        Call<RegistrationResponse> registrationResponseCall = networkAPI.userRegistration(new RegistrationBody(username, password, email, publisher_type, gender));
+        registrationResponseCall.enqueue(new Callback<RegistrationResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<RegistrationResponse> call, @NonNull Response<RegistrationResponse> response) {
+                RegistrationResponse registrationResponse = response.body();
+                if (registrationResponse != null) {
+
+                }
+                else{
+
+                }
+            }
+            @Override
+            public void onFailure(@NonNull Call<RegistrationResponse> call, @NonNull Throwable t) {
+               Log.d("error","error");
+            }
+        });
+    }
+
+
 }

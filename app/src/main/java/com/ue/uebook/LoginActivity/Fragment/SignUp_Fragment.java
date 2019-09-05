@@ -5,10 +5,12 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.ue.uebook.R;
 
@@ -20,7 +22,7 @@ import com.ue.uebook.R;
  * Use the {@link SignUp_Fragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SignUp_Fragment extends Fragment {
+public class SignUp_Fragment extends Fragment implements View.OnClickListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -68,7 +70,6 @@ public class SignUp_Fragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.fragment_sign_up_, container, false);
-
         return  view;
     }
 
@@ -96,6 +97,11 @@ public class SignUp_Fragment extends Fragment {
         mListener = null;
     }
 
+    @Override
+    public void onClick(View view) {
+
+    }
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -109,5 +115,11 @@ public class SignUp_Fragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+    private void loadFragment(Fragment fragment) {
+        // load fragment
+        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.container_Fragment, fragment);
+        transaction.commit();
     }
 }

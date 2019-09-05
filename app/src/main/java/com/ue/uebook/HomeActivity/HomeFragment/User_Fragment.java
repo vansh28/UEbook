@@ -30,10 +30,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
 import com.bumptech.glide.Glide;
+import com.ue.uebook.BaseActivity;
 import com.ue.uebook.R;
 import com.ue.uebook.SessionManager;
 
@@ -59,12 +61,12 @@ import static com.facebook.FacebookSdk.getApplicationContext;
  * Use the {@link User_Fragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class User_Fragment extends Fragment implements View.OnClickListener,UserMainFragment.OnFragmentInteractionListener ,UserProfile_Fragment.OnFragmentInteractionListener {
+public class User_Fragment extends Fragment implements View.OnClickListener, UserMainFragment.OnFragmentInteractionListener, UserProfile_Fragment.OnFragmentInteractionListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    private static final int MY_PERMISSIONS_REQUEST_CAMERA =99 ;
+    private static final int MY_PERMISSIONS_REQUEST_CAMERA = 99;
     Context context;
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -83,6 +85,8 @@ public class User_Fragment extends Fragment implements View.OnClickListener,User
     private InputStream inputStreamImg;
     private String imgPath = null;
     private final int PICK_IMAGE_CAMERA = 1, PICK_IMAGE_GALLERY = 2;
+    private TextView address_user;
+
     public User_Fragment() {
         // Required empty public constructor
     }
@@ -119,14 +123,15 @@ public class User_Fragment extends Fragment implements View.OnClickListener,User
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view= inflater.inflate(R.layout.fragment_user_, container, false);
+        View view = inflater.inflate(R.layout.fragment_user_, container, false);
 
-
-        profile_image_user=view.findViewById(R.id.profile_image_user);
+        address_user = view.findViewById(R.id.address_user);
+        profile_image_user = view.findViewById(R.id.profile_image_user);
         profile_image_user.setOnClickListener(this);
 
-       loadFragment(new UserMainFragment());
-        return  view;
+        loadFragment(new UserMainFragment());
+
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -155,9 +160,9 @@ public class User_Fragment extends Fragment implements View.OnClickListener,User
 
     @Override
     public void onClick(View view) {
-        if (view == profile_image_user){
-    selectImage();
-    }
+        if (view == profile_image_user) {
+            selectImage();
+        }
 
     }
 
@@ -172,7 +177,7 @@ public class User_Fragment extends Fragment implements View.OnClickListener,User
             PackageManager pm = getContext().getPackageManager();
             int hasPerm = pm.checkPermission(Manifest.permission.CAMERA, getContext().getPackageName());
             if (hasPerm == PackageManager.PERMISSION_GRANTED) {
-                final CharSequence[] options = {"Take Photo", "Choose From Gallery","Cancel"};
+                final CharSequence[] options = {"Take Photo", "Choose From Gallery", "Cancel"};
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                 builder.setTitle("Select Option");
                 builder.setItems(options, new DialogInterface.OnClickListener() {
@@ -192,8 +197,7 @@ public class User_Fragment extends Fragment implements View.OnClickListener,User
                     }
                 });
                 builder.show();
-            } else
-            {
+            } else {
                 ActivityCompat.requestPermissions(getActivity(),
                         new String[]{Manifest.permission.CAMERA},
                         MY_PERMISSIONS_REQUEST_CAMERA);
@@ -249,7 +253,8 @@ public class User_Fragment extends Fragment implements View.OnClickListener,User
                 Log.e("Activity", "Pick from Gallery::>>> ");
 
                 imgPath = getRealPathFromURI(selectedImage);
-                destination = new File(imgPath.toString());profile_image_user.setImageBitmap(bitmap);
+                destination = new File(imgPath.toString());
+                profile_image_user.setImageBitmap(bitmap);
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -264,6 +269,7 @@ public class User_Fragment extends Fragment implements View.OnClickListener,User
         cursor.moveToFirst();
         return cursor.getString(column_index);
     }
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -285,20 +291,25 @@ public class User_Fragment extends Fragment implements View.OnClickListener,User
         transaction.replace(R.id.user_Container, fragment);
         transaction.commit();
     }
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Log.d("image",new SessionManager(getApplicationContext()).getUserimage());
-        if (new SessionManager(getApplicationContext()).getUserimage().length()>0)
-        {
+        Log.d("image", new SessionManager(getApplicationContext()).getUserimage());
+        String address = new SessionManager(getApplicationContext()).getUserLocation();
+        if (address.length()>0){
+            address_user.setText(address);
+        }
+        if (new SessionManager(getApplicationContext()).getUserimage().length() > 0) {
             Glide.with(getActivity())
                     .load(new SessionManager(getContext().getApplicationContext()).getUserimage())
                     .into(profile_image_user);
+        } else {
+
+            profile_image_user.setImageResource(R.drawable.user_default);
         }
+    }
 
-        else {
 
-            profile_image_user.setBackgroundResource(R.drawable.user);
-        }    }
 }
 

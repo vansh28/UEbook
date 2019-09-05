@@ -145,6 +145,11 @@ public class ShareUtils {
 
         Toast.makeText(activity, message, Toast.LENGTH_LONG).show();
     }
-
+    public static void shareToAllApp(Activity activity ,String body) {
+        Intent txtIntent = new Intent(android.content.Intent.ACTION_SEND);
+        txtIntent .setType("text/plain");
+        txtIntent .putExtra(android.content.Intent.EXTRA_TEXT, body);
+        activity.startActivity(Intent.createChooser(txtIntent ,"Share"));
+    }
 
 }

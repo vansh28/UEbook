@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_marginTop="@dimen/size_5"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/removeBtn"
+            android:layout_width="@dimen/size_20"
+            android:src="@drawable/cross"
+            android:scaleType="fitCenter"
+            android:layout_marginLeft="@dimen/size_5"
+            android:layout_centerVertical="true"
+            android:layout_height="@dimen/size_20">
+        </ImageView>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+           android:text="The Good Son"
+            android:layout_toRightOf="@+id/removeBtn"
+            android:layout_marginLeft="@dimen/size_20"
+            android:layout_centerVertical="true"
+            android:textSize="@dimen/size_18"
+            android:textColor="@color/colorPrimary"
+            ></TextView>
+        <ImageView
+            android:layout_width="@dimen/size_25"
+            android:layout_height="@dimen/size_25"
+            android:src="@drawable/search"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/size_10"
+            android:layout_centerVertical="true"></ImageView>
+    </RelativeLayout>
+<View
+    android:layout_width="match_parent"
+    android:layout_height="1dp"
+    android:layout_marginTop="@dimen/size_10"
+    android:background="#8A8A8A"
+    ></View>
+</LinearLayout>

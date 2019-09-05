@@ -1,10 +1,12 @@
 package com.ue.uebook.HomeActivity.HomeFragment;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -13,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
+import com.ue.uebook.LoginActivity.LoginScreen;
 import com.ue.uebook.R;
 import com.ue.uebook.UploadBook.Upload_Book_Screen;
 
@@ -24,7 +27,7 @@ import com.ue.uebook.UploadBook.Upload_Book_Screen;
  * Use the {@link UserMainFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class UserMainFragment extends Fragment implements View.OnClickListener ,UserProfile_Fragment.OnFragmentInteractionListener ,CompanyInfo_Fragment.OnFragmentInteractionListener{
+public class UserMainFragment extends Fragment implements View.OnClickListener, UserProfile_Fragment.OnFragmentInteractionListener, CompanyInfo_Fragment.OnFragmentInteractionListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -33,7 +36,7 @@ public class UserMainFragment extends Fragment implements View.OnClickListener ,
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    private RelativeLayout userInfo_container ,companyInfo_Container,uploadBook_Container;
+    private RelativeLayout userInfo_container, companyInfo_Container, uploadBook_Container, logOut;
 
     private OnFragmentInteractionListener mListener;
 
@@ -72,14 +75,16 @@ public class UserMainFragment extends Fragment implements View.OnClickListener ,
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view= inflater.inflate(R.layout.fragment_user_main, container, false);
-        userInfo_container=view.findViewById(R.id.userInfo_container);
-        uploadBook_Container=view.findViewById(R.id.uploadBook_Container);
+        View view = inflater.inflate(R.layout.fragment_user_main, container, false);
+        userInfo_container = view.findViewById(R.id.userInfo_container);
+        uploadBook_Container = view.findViewById(R.id.uploadBook_Container);
+        logOut = view.findViewById(R.id.logOut);
+        logOut.setOnClickListener(this);
         uploadBook_Container.setOnClickListener(this);
         userInfo_container.setOnClickListener(this);
-        companyInfo_Container=view.findViewById(R.id.companyInfo_Container);
+        companyInfo_Container = view.findViewById(R.id.companyInfo_Container);
         companyInfo_Container.setOnClickListener(this);
-        return  view;
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -108,19 +113,20 @@ public class UserMainFragment extends Fragment implements View.OnClickListener ,
 
     @Override
     public void onClick(View view) {
-        if (view==userInfo_container){
+        if (view == userInfo_container) {
 
             loadFragment(new UserProfile_Fragment());
-        }
-        else    if (view==companyInfo_Container){
+        } else if (view == companyInfo_Container) {
 
             loadFragment(new CompanyInfo_Fragment());
-        }
-        else if (view == uploadBook_Container){
+        } else if (view == uploadBook_Container) {
             Intent intent = new Intent(getContext(), Upload_Book_Screen.class);
             getContext().startActivity(intent);
+        } else if (view == logOut) {
+            confirmLogoutDialog();
         }
     }
+
     private void loadFragment(Fragment fragment) {
         // load fragment
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
@@ -147,4 +153,26 @@ public class UserMainFragment extends Fragment implements View.OnClickListener ,
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
+    private void confirmLogoutDialog(){
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setMessage("You sure, that you want to logout?")
+                .setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Intent intent = new Intent(getContext(), LoginScreen.class);
+                        getContext().startActivity(intent);
+                        getActivity().finish();
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+
 }

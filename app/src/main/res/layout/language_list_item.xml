@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/size_5"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/language_change"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/size_5">
+
+        <TextView
+            android:id="@+id/language"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="English"
+            android:textColor="@color/black"
+            android:textSize="@dimen/size_18"></TextView>
+
+        <TextView
+            android:id="@+id/language_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/language"
+            android:layout_marginTop="@dimen/size_5"
+            android:text="English"
+            android:textColor="#ACACAC"
+            android:textSize="@dimen/size_16"></TextView>
+
+        <CheckBox
+            android:id="@+id/selected_language"
+            android:layout_width="@dimen/size_40"
+            android:layout_height="@dimen/size_40"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:visibility="visible"
+            android:layout_marginRight="@dimen/size_10"></CheckBox>
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/size_1"
+        android:layout_marginTop="@dimen/size_5"
+        android:background="#d3d3d3"></View>
+
+</LinearLayout>

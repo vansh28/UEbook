@@ -4,9 +4,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
@@ -69,13 +71,14 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
 import static com.ue.uebook.NetworkUtils.getInstance;
-
 public class LoginScreen extends BaseActivity implements View.OnClickListener, SignUp_Fragment.OnFragmentInteractionListener, SignIn_Fragment.OnFragmentInteractionListener, GoogleApiClient.OnConnectionFailedListener {
     private static final int RC_SIGN_IN = 21;
     private Button signUp_btn, signIn_btn, continueToLogin;
     private LinearLayout google_login_btn, facebook_login_btn, login_screen;
     private CallbackManager callbackManager;
     private GoogleApiClient mGoogleApiClient;
+    private TextView have_Account_btn,need_HelpBtn;
+    private Boolean issignup=true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,14 +89,20 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
         google_login_btn = findViewById(R.id.google_login_btn);
         facebook_login_btn = findViewById(R.id.facebook_login_btn);
         login_screen = findViewById(R.id.login_screen);
+        have_Account_btn=findViewById(R.id.have_Account_btn);
+        need_HelpBtn=findViewById(R.id.need_HelpBtn);
+        need_HelpBtn.setOnClickListener(this);
         facebook_login_btn.setOnClickListener(this);
         google_login_btn.setOnClickListener(this);
         signUp_btn.setOnClickListener(this);
         signIn_btn.setOnClickListener(this);
         replaceFragment(new SignUp_Fragment());
-
         callbackManager = CallbackManager.Factory.create();
         initializeGPlusSettings();
+        have_Account_btn.setOnClickListener(this);
+
+
+
 
     }
 
@@ -135,20 +144,21 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
     @Override
     public void onClick(View view) {
         if (view == signUp_btn) {
-
+            have_Account_btn.setText("I have an Account, Login Now");
             replaceFragment(new SignUp_Fragment());
             signUp_btn.setBackgroundResource(R.drawable.active_signin_border);
             signIn_btn.setBackgroundResource(R.drawable.non_active_btn_signin);
             signUp_btn.setTextColor(Color.parseColor("#D31145"));
             signIn_btn.setTextColor(Color.parseColor("#000000"));
+            issignup=true;
         } else if (view == signIn_btn) {
-
+            have_Account_btn.setText("Create an Account");
             replaceFragment(new SignIn_Fragment());
             signIn_btn.setBackgroundResource(R.drawable.active_signin_border);
             signUp_btn.setBackgroundResource(R.drawable.non_active_btn_signin);
             signIn_btn.setTextColor(Color.parseColor("#D31145"));
             signUp_btn.setTextColor(Color.parseColor("#000000"));
-
+            issignup=false;
         } else if (view == facebook_login_btn) {
             if (getInstance(this).isConnectingToInternet()) {
                 Fblogin();
@@ -164,6 +174,35 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
 
         } else if (view == google_login_btn) {
             signIn();
+
+        }
+
+        else if (view==have_Account_btn){
+
+            if (issignup){
+                have_Account_btn.setText("Create an Account");
+                replaceFragment(new SignIn_Fragment());
+                signIn_btn.setBackgroundResource(R.drawable.active_signin_border);
+                signUp_btn.setBackgroundResource(R.drawable.non_active_btn_signin);
+                signIn_btn.setTextColor(Color.parseColor("#D31145"));
+                signUp_btn.setTextColor(Color.parseColor("#000000"));
+                issignup=false;
+            }
+            else {
+
+                have_Account_btn.setText("I have an Account, Login Now");
+                replaceFragment(new SignUp_Fragment());
+                signUp_btn.setBackgroundResource(R.drawable.active_signin_border);
+                signIn_btn.setBackgroundResource(R.drawable.non_active_btn_signin);
+                signUp_btn.setTextColor(Color.parseColor("#D31145"));
+                signIn_btn.setTextColor(Color.parseColor("#000000"));
+                issignup=true;
+            }
+        }
+        else if (view==need_HelpBtn)
+        {
+
+
 
         }
 
@@ -192,11 +231,15 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
                     @Override
                     public void onCancel() {
                         Log.d("error", "On cancel");
+                        hideLoadingIndicator();
+
                     }
 
                     @Override
                     public void onError(FacebookException error) {
                         Log.d("error", error.toString());
+                        hideLoadingIndicator();
+
                     }
                 });
     }
@@ -228,7 +271,7 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
         });
 
         Bundle parameters = new Bundle();
-        parameters.putString("fields", "first_name,last_name,email,id");
+        parameters.putString("fields", "first_name,last_name,email,gender,id,taggable_friends");
         request.setParameters(parameters);
         request.executeAsync();
 
@@ -264,9 +307,7 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
         continueToLogin = dialog.findViewById(R.id.continueToLogin);
         txtEmail.setText(email);
         txtName.setText(first_name + " " + last_name);
-
         Glide.with(getApplicationContext()).load(image).into(circleImageView);
-
         continueToLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -309,11 +350,15 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
 
 
 //        GlideUtils.loadImage(this,image,circleImageView,R.drawable.user,R.drawable.user);
-           Glide.with(getApplicationContext()).load(image).into(circleImageView);
 
+//      if (image.)
+        if (image!=null){
+            Glide.with(getApplicationContext()).load(image).into(circleImageView);
+        }
+        else {
 
-
-
+            circleImageView.setImageResource(R.drawable.user_default);
+        }
 
         continueToLogin.setOnClickListener(new View.OnClickListener() {
             @Override

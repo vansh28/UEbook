@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/login_screen"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/login_screen"
     android:orientation="vertical">
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="100dp">
+
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -18,34 +19,35 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:orientation="horizontal"
+        android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/size_10"
-        android:weightSum="2"
-        android:layout_height="wrap_content">
+        android:orientation="horizontal"
+        android:weightSum="2">
+
         <Button
             android:id="@+id/signUp_btn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Sign Up"
+            android:layout_weight="1"
             android:background="@drawable/active_signin_border"
-            android:textColor="@color/colorPrimary"
-            android:layout_weight="1">
-        </Button>
+            android:text="Sign Up"
+            android:textColor="@color/colorPrimary"></Button>
 
         <Button
             android:id="@+id/signIn_btn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Sign In"
-            android:textColor="#000000"
+            android:layout_weight="1"
             android:background="@drawable/non_active_btn_signin"
-            android:layout_weight="1">
-        </Button>
+            android:text="Sign In"
+            android:textColor="#000000"></Button>
 
     </LinearLayout>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -55,33 +57,80 @@
             <FrameLayout
                 android:id="@+id/container_Fragment"
                 android:layout_width="match_parent"
-                android:padding="@dimen/size_15"
-                android:layout_height="wrap_content">
-            </FrameLayout>
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/size_15"
+
+                android:paddingTop="@dimen/size_15"
+
+                android:paddingRight="@dimen/size_15"
+
+                android:paddingBottom="@dimen/size_8"></FrameLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/size_35"
+                android:layout_marginRight="@dimen/size_35">
+
+                <TextView
+                    android:id="@+id/have_Account_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="I have an Account, Login Now"
+                    android:textColor="@color/black"
+                    android:textSize="15dp"></TextView>
+
+                <TextView
+                    android:id="@+id/need_HelpBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:text="Need Help"
+                    android:textColor="@color/black"
+                    android:textSize="15dp"></TextView>
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/size_20"
+                android:layout_marginBottom="@dimen/size_20">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="OR"
+                    android:textSize="@dimen/size_18">
+
+                </TextView>
+            </LinearLayout>
+
             <LinearLayout
                 android:id="@+id/facebook_login_btn"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:orientation="horizontal"
-                android:gravity="center_horizontal"
                 android:layout_marginLeft="@dimen/size_50"
                 android:layout_marginRight="@dimen/size_50"
-                android:background="@drawable/facebookbtnbg">
+                android:background="@drawable/facebookbtnbg"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+
                 <ImageView
                     android:layout_width="wrap_content"
-                    android:src="@drawable/fb"
-                    android:layout_marginLeft="@dimen/size_8"
+                    android:layout_height="match_parent"
                     android:layout_gravity="center_vertical"
-                    android:layout_height="match_parent">
-                </ImageView>
+                    android:layout_marginLeft="@dimen/size_8"
+                    android:src="@drawable/fb"></ImageView>
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
-                    android:textColor="@color/white"
                     android:paddingLeft="@dimen/size_12"
-                    android:textSize="12dp"
-                    android:text="signup with Facebook">
+                    android:text="signup with Facebook"
+                    android:textColor="@color/white"
+                    android:textSize="12dp">
 
                 </TextView>
             </LinearLayout>
@@ -90,28 +139,29 @@
                 android:id="@+id/google_login_btn"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:orientation="horizontal"
-                android:gravity="center_horizontal"
-                android:layout_marginBottom="@dimen/size_50"
+                android:layout_marginLeft="@dimen/size_50"
                 android:layout_marginTop="@dimen/size_20"
                 android:layout_marginRight="@dimen/size_50"
-                android:layout_marginLeft="@dimen/size_50"
-                android:background="@drawable/google_btn_bg">
+                android:layout_marginBottom="@dimen/size_50"
+                android:background="@drawable/google_btn_bg"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+
                 <ImageView
                     android:layout_width="wrap_content"
-                    android:src="@drawable/google"
-                    android:layout_marginLeft="@dimen/size_8"
+                    android:layout_height="match_parent"
                     android:layout_gravity="center_vertical"
-                    android:layout_height="match_parent">
-                </ImageView>
+                    android:layout_marginLeft="@dimen/size_8"
+                    android:src="@drawable/google"></ImageView>
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
-                    android:textColor="@color/white"
-                    android:textSize="12dp"
                     android:paddingLeft="@dimen/size_12"
-                    android:text="signup with Google"></TextView>
+                    android:text="signup with Google"
+                    android:textColor="@color/white"
+                    android:textSize="12dp"></TextView>
             </LinearLayout>
 
         </LinearLayout>

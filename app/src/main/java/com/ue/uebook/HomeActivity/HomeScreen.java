@@ -2,11 +2,15 @@ package com.ue.uebook.HomeActivity;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.Toolbar;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.ue.uebook.BaseActivity;
 import com.ue.uebook.HomeActivity.HomeFragment.Bookmark_Fragment;
 import com.ue.uebook.HomeActivity.HomeFragment.CompanyInfo_Fragment;
 import com.ue.uebook.HomeActivity.HomeFragment.Home_Fragment;
@@ -18,6 +22,7 @@ import com.ue.uebook.ImageUtils;
 import com.ue.uebook.LoginActivity.Fragment.SignIn_Fragment;
 import com.ue.uebook.LoginActivity.Fragment.SignUp_Fragment;
 import com.ue.uebook.R;
+import com.ue.uebook.SessionManager;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -29,8 +34,9 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-public class HomeScreen extends AppCompatActivity implements Home_Fragment.OnFragmentInteractionListener, Bookmark_Fragment.OnFragmentInteractionListener, User_Fragment.OnFragmentInteractionListener, Search_Fragment.OnFragmentInteractionListener, UserProfile_Fragment.OnFragmentInteractionListener , UserMainFragment.OnFragmentInteractionListener , CompanyInfo_Fragment.OnFragmentInteractionListener {
+public class HomeScreen extends BaseActivity implements Home_Fragment.OnFragmentInteractionListener, Bookmark_Fragment.OnFragmentInteractionListener, User_Fragment.OnFragmentInteractionListener, Search_Fragment.OnFragmentInteractionListener, UserProfile_Fragment.OnFragmentInteractionListener, UserMainFragment.OnFragmentInteractionListener, CompanyInfo_Fragment.OnFragmentInteractionListener {
     private ActionBar toolbar;
+
 
 
     @Override
@@ -38,10 +44,13 @@ public class HomeScreen extends AppCompatActivity implements Home_Fragment.OnFra
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
 
+        displayCurrentAddress();
         toolbar = getSupportActionBar();
+
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         loadFragment(new Home_Fragment());
+
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -82,5 +91,39 @@ public class HomeScreen extends AppCompatActivity implements Home_Fragment.OnFra
     public void onFragmentInteraction(Uri uri) {
 
     }
+
+    private void displayCurrentAddress() {
+        Thread t = new Thread() {
+            @Override
+            public void run() {
+                try {
+                    while (!isInterrupted()) {
+                        if (updateLocationUI() != null && !(updateLocationUI().isEmpty())) {
+                            Thread.sleep(1000);
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    new SessionManager(getApplicationContext()).storeUserLocation(updateLocationUI());
+                                }
+                            });
+                            break;
+                        } else
+                        Thread.sleep(1000);
+                    }
+                } catch (InterruptedException ignored) {
+                }
+            }
+        };
+        t.start();
+    }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (!checkPermissions())
+            PermissionRequest(34);
+        else
+            getCurrentLocation();
+    }
+
 }
 

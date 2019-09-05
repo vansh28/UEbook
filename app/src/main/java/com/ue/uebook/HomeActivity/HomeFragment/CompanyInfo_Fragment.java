@@ -1,6 +1,7 @@
 package com.ue.uebook.HomeActivity.HomeFragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -9,8 +10,11 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 
+import com.ue.uebook.HomeActivity.InerfaceLanguageScreen;
 import com.ue.uebook.R;
+import com.ue.uebook.ShareUtils;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -20,7 +24,7 @@ import com.ue.uebook.R;
  * Use the {@link CompanyInfo_Fragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CompanyInfo_Fragment extends Fragment {
+public class CompanyInfo_Fragment extends Fragment implements View.OnClickListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -29,6 +33,7 @@ public class CompanyInfo_Fragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private RelativeLayout share_container ,language_container;
 
     private OnFragmentInteractionListener mListener;
 
@@ -67,7 +72,13 @@ public class CompanyInfo_Fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_company_info_, container, false);
+        View view = inflater.inflate(R.layout.fragment_company_info_, container, false);
+        share_container=view.findViewById(R.id.share_container);
+        language_container=view.findViewById(R.id.language_container);
+        language_container.setOnClickListener(this);
+
+        share_container.setOnClickListener(this);
+        return  view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -94,6 +105,17 @@ public class CompanyInfo_Fragment extends Fragment {
         mListener = null;
     }
 
+    @Override
+    public void onClick(View view) {
+        if (view==share_container){
+
+            ShareUtils.shareToAllApp(getActivity(),"this is Uebook App");
+        }
+        else if (view == language_container){
+        Intent intent= new Intent(getContext(), InerfaceLanguageScreen.class);
+        getContext().startActivity(intent );
+        }
+    }
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
