@@ -33,7 +33,7 @@
                 app:errorEnabled="true">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/email_edit_text"
+                    android:id="@+id/user_login"
                     android:layout_width="match_parent"
                     android:maxLines="1"
                     android:layout_height="wrap_content" />
@@ -48,13 +48,14 @@
                 app:errorEnabled="true">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/password_edit_text"
+                    android:id="@+id/password_login"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:maxLines="1"
                     android:inputType="textPassword" />
             </com.google.android.material.textfield.TextInputLayout>
         <CheckBox
+            android:id="@+id/keepMESIgned_Btn"
             android:layout_width="match_parent"
             android:layout_marginLeft="@dimen/size_8"
             android:text="Keep me Signed"

@@ -17,6 +17,7 @@ import android.widget.RelativeLayout;
 
 import com.ue.uebook.LoginActivity.LoginScreen;
 import com.ue.uebook.R;
+import com.ue.uebook.SessionManager;
 import com.ue.uebook.UploadBook.Upload_Book_Screen;
 
 /**
@@ -39,6 +40,7 @@ public class UserMainFragment extends Fragment implements View.OnClickListener, 
     private RelativeLayout userInfo_container, companyInfo_Container, uploadBook_Container, logOut;
 
     private OnFragmentInteractionListener mListener;
+    private View view_uploadBook;
 
     public UserMainFragment() {
         // Required empty public constructor
@@ -65,6 +67,7 @@ public class UserMainFragment extends Fragment implements View.OnClickListener, 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -78,12 +81,23 @@ public class UserMainFragment extends Fragment implements View.OnClickListener, 
         View view = inflater.inflate(R.layout.fragment_user_main, container, false);
         userInfo_container = view.findViewById(R.id.userInfo_container);
         uploadBook_Container = view.findViewById(R.id.uploadBook_Container);
+        view_uploadBook=view.findViewById(R.id.uploadBook_view);
+        if (new SessionManager(getActivity().getApplicationContext()).getUserPublishType().equalsIgnoreCase("Reader")){
+            uploadBook_Container.setVisibility(View.GONE);
+            view_uploadBook.setVisibility(View.GONE);
+        }
+        else {
+            uploadBook_Container.setVisibility(View.VISIBLE);
+            view_uploadBook.setVisibility(View.VISIBLE);
+        }
         logOut = view.findViewById(R.id.logOut);
         logOut.setOnClickListener(this);
         uploadBook_Container.setOnClickListener(this);
         userInfo_container.setOnClickListener(this);
         companyInfo_Container = view.findViewById(R.id.companyInfo_Container);
         companyInfo_Container.setOnClickListener(this);
+
+
         return view;
     }
 
@@ -161,6 +175,7 @@ public class UserMainFragment extends Fragment implements View.OnClickListener, 
                 .setCancelable(false)
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
+                        new SessionManager(getActivity().getApplicationContext()).clearUserCredentials();
                         Intent intent = new Intent(getContext(), LoginScreen.class);
                         getContext().startActivity(intent);
                         getActivity().finish();

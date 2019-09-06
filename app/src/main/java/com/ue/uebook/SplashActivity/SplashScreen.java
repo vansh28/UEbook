@@ -7,8 +7,10 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.widget.ImageView;
 
+import com.ue.uebook.HomeActivity.HomeScreen;
 import com.ue.uebook.LoginActivity.LoginScreen;
 import com.ue.uebook.R;
+import com.ue.uebook.SessionManager;
 
 public class SplashScreen extends AppCompatActivity {
     private Handler myHandler;
@@ -41,35 +43,20 @@ public class SplashScreen extends AppCompatActivity {
     }
 
     private void showSplash() {
-//
-//        final int status = Prefrence.getInstance(getApplicationContext()).getLoginStatus();
-//
-//        Intent mainIntent = mainIntent = new Intent(Splash.this, LoginActivity.class);
-//
-//        switch (status) {
-//            case 0:
-//                mainIntent = new Intent(Splash.this, LoginActivity.class);
-//                break;
-//            case 1:
-//                mainIntent = new Intent(Splash.this, LoginActivity.class);
-//                break;
-//// case 3:
-//// mainIntent = new Intent(SplashScreen.this, UserHealthRecord.class);
-//// break;
-//// case 4:
-//// if (RenewPreferece.getInstance(getAppl icationContext()).getDeviceConnected())
-//// mainIntent = new Intent(SplashScreen.this, Home.class);
-//// else
-//// mainIntent = new Intent(SplashScreen.this, Home.class);
-//// break;
-//        }
-//        Splash.this.startActivity(mainIntent);
-//        Splash.this.finish();
+        final int status = new SessionManager(getApplicationContext()).getLoginStatus();
 
-        Intent intent = new Intent(SplashScreen.this , LoginScreen.class);
-        startActivity(intent);
-        finish();
+        Intent mainIntent = mainIntent = new Intent(SplashScreen.this, LoginScreen.class);
 
+        switch (status) {
+            case 0:
+                mainIntent = new Intent(SplashScreen.this, LoginScreen.class);
+                break;
+            case 1:
+                mainIntent = new Intent(SplashScreen.this, HomeScreen.class);
+                break;
+        }
+        SplashScreen.this.startActivity(mainIntent);
+        SplashScreen.this.finish();
 
     }
 

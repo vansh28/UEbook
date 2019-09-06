@@ -21,19 +21,43 @@
         android:allowBackup="true"
         android:icon="@drawable/applogo"
         android:label="@string/app_name"
+        android:networkSecurityConfig="@xml/network_configure"
         android:roundIcon="@drawable/applogo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".HomeActivity.InerfaceLanguageScreen"></activity>
-        <activity android:name=".WebviewScreen" />
-        <activity android:name=".UploadBook.Upload_Book_Screen" />
-        <activity android:name=".DeatailActivity.Book_Detail_Screen" />
-        <activity android:name=".PopularActivity.Popular_List_Screen" />
+        <activity android:name=".HomeActivity.InerfaceLanguageScreen"
+            android:screenOrientation="portrait"
+
+            ></activity>
+        <activity android:name=".WebviewScreen"
+            android:screenOrientation="portrait"
+
+            />
+        <activity
+            android:name=".UploadBook.Upload_Book_Screen"
+            android:screenOrientation="portrait"
+
+
+            />
+        <activity
+            android:name=".DeatailActivity.Book_Detail_Screen"
+            android:screenOrientation="portrait"
+
+            />
+        <activity
+            android:name=".PopularActivity.Popular_List_Screen"
+            android:screenOrientation="portrait"
+
+            />
         <activity
             android:name=".HomeActivity.HomeScreen"
-            android:label="@string/title_activity_home_screen" />
+            android:label="@string/title_activity_home_screen"
+
+
+            android:screenOrientation="portrait" />
         <activity
             android:name=".LoginActivity.LoginScreen"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity android:name=".MainActivity" />
         <activity

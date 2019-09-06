@@ -11,6 +11,7 @@ import androidx.fragment.app.FragmentTransaction;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -52,11 +53,20 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
+import com.google.firebase.auth.UserInfo;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.ue.uebook.BaseActivity;
+import com.ue.uebook.Data.ApiRequest;
+import com.ue.uebook.Data.NetworkAPI;
+import com.ue.uebook.Data.NetworkService;
 import com.ue.uebook.GlideUtils;
 import com.ue.uebook.HomeActivity.HomeScreen;
 import com.ue.uebook.LoginActivity.Fragment.SignIn_Fragment;
 import com.ue.uebook.LoginActivity.Fragment.SignUp_Fragment;
+import com.ue.uebook.LoginActivity.Pojo.RegistrationBody;
+import com.ue.uebook.LoginActivity.Pojo.RegistrationResponse;
+import com.ue.uebook.LoginActivity.Pojo.UserInfoPojo;
 import com.ue.uebook.MainActivity;
 import com.ue.uebook.NetworkUtils;
 import com.ue.uebook.R;
@@ -65,32 +75,42 @@ import com.ue.uebook.SessionManager;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.net.URI;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 import static com.ue.uebook.NetworkUtils.getInstance;
+
 public class LoginScreen extends BaseActivity implements View.OnClickListener, SignUp_Fragment.OnFragmentInteractionListener, SignIn_Fragment.OnFragmentInteractionListener, GoogleApiClient.OnConnectionFailedListener {
     private static final int RC_SIGN_IN = 21;
     private Button signUp_btn, signIn_btn, continueToLogin;
     private LinearLayout google_login_btn, facebook_login_btn, login_screen;
     private CallbackManager callbackManager;
     private GoogleApiClient mGoogleApiClient;
-    private TextView have_Account_btn,need_HelpBtn;
-    private Boolean issignup=true;
+    private TextView have_Account_btn, need_HelpBtn;
+    private Boolean issignup = true;
+    private NetworkAPI networkAPI;
+    private ProgressDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_screen);
+        networkAPI = NetworkService.getAPI().create(NetworkAPI.class);
+        dialog= new ProgressDialog(this);
         signIn_btn = findViewById(R.id.signIn_btn);
         signUp_btn = findViewById(R.id.signUp_btn);
         google_login_btn = findViewById(R.id.google_login_btn);
         facebook_login_btn = findViewById(R.id.facebook_login_btn);
         login_screen = findViewById(R.id.login_screen);
-        have_Account_btn=findViewById(R.id.have_Account_btn);
-        need_HelpBtn=findViewById(R.id.need_HelpBtn);
+        have_Account_btn = findViewById(R.id.have_Account_btn);
+        need_HelpBtn = findViewById(R.id.need_HelpBtn);
         need_HelpBtn.setOnClickListener(this);
         facebook_login_btn.setOnClickListener(this);
         google_login_btn.setOnClickListener(this);
@@ -100,7 +120,6 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
         callbackManager = CallbackManager.Factory.create();
         initializeGPlusSettings();
         have_Account_btn.setOnClickListener(this);
-
 
 
 
@@ -121,7 +140,6 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
-
 
 
     AccessTokenTracker tokenTracker = new AccessTokenTracker() {
@@ -150,7 +168,7 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
             signIn_btn.setBackgroundResource(R.drawable.non_active_btn_signin);
             signUp_btn.setTextColor(Color.parseColor("#D31145"));
             signIn_btn.setTextColor(Color.parseColor("#000000"));
-            issignup=true;
+            issignup = true;
         } else if (view == signIn_btn) {
             have_Account_btn.setText("Create an Account");
             replaceFragment(new SignIn_Fragment());
@@ -158,7 +176,7 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
             signUp_btn.setBackgroundResource(R.drawable.non_active_btn_signin);
             signIn_btn.setTextColor(Color.parseColor("#D31145"));
             signUp_btn.setTextColor(Color.parseColor("#000000"));
-            issignup=false;
+            issignup = false;
         } else if (view == facebook_login_btn) {
             if (getInstance(this).isConnectingToInternet()) {
                 Fblogin();
@@ -175,20 +193,17 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
         } else if (view == google_login_btn) {
             signIn();
 
-        }
+        } else if (view == have_Account_btn) {
 
-        else if (view==have_Account_btn){
-
-            if (issignup){
+            if (issignup) {
                 have_Account_btn.setText("Create an Account");
                 replaceFragment(new SignIn_Fragment());
                 signIn_btn.setBackgroundResource(R.drawable.active_signin_border);
                 signUp_btn.setBackgroundResource(R.drawable.non_active_btn_signin);
                 signIn_btn.setTextColor(Color.parseColor("#D31145"));
                 signUp_btn.setTextColor(Color.parseColor("#000000"));
-                issignup=false;
-            }
-            else {
+                issignup = false;
+            } else {
 
                 have_Account_btn.setText("I have an Account, Login Now");
                 replaceFragment(new SignUp_Fragment());
@@ -196,12 +211,9 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
                 signIn_btn.setBackgroundResource(R.drawable.non_active_btn_signin);
                 signUp_btn.setTextColor(Color.parseColor("#D31145"));
                 signIn_btn.setTextColor(Color.parseColor("#000000"));
-                issignup=true;
+                issignup = true;
             }
-        }
-        else if (view==need_HelpBtn)
-        {
-
+        } else if (view == need_HelpBtn) {
 
 
         }
@@ -292,7 +304,7 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
     }
 
 
-    public void showDialog(String first_name, String last_name, String email, final String image) {
+    public void showDialog(final String first_name, String last_name, final String email, final String image) {
         hideLoadingIndicator();
         final Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -312,7 +324,7 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
             @Override
             public void onClick(View view) {
                 new SessionManager(getApplicationContext()).storeUserImage(image);
-                gotoHome();
+                registrationUser(first_name, " ", email, "Reader", "");
                 dialog.dismiss();
             }
         });
@@ -326,13 +338,13 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
 
         try {
             dialog.show();
-        }
-        catch (WindowManager.BadTokenException e) {
+        } catch (WindowManager.BadTokenException e) {
             //use a log message
         }
 
     }
-    public void showDialogGP(String first_name, String last_name, String email, final Uri image) {
+
+    public void showDialogGP(final String first_name, String last_name, final String email, final Uri image) {
         hideLoadingIndicator();
         final Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -352,10 +364,9 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
 //        GlideUtils.loadImage(this,image,circleImageView,R.drawable.user,R.drawable.user);
 
 //      if (image.)
-        if (image!=null){
+        if (image != null) {
             Glide.with(getApplicationContext()).load(image).into(circleImageView);
-        }
-        else {
+        } else {
 
             circleImageView.setImageResource(R.drawable.user_default);
         }
@@ -364,7 +375,7 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
             @Override
             public void onClick(View view) {
 //                new SessionManager(getApplicationContext()).storeUserImage(image);
-                gotoHome();
+                registrationUser(first_name, " ", email, "Reader", "");
                 dialog.dismiss();
             }
         });
@@ -377,11 +388,11 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
         });
         try {
             dialog.show();
-        }
-        catch (WindowManager.BadTokenException e) {
+        } catch (WindowManager.BadTokenException e) {
             //use a log message
         }
     }
+
     public void gotoHome() {
         Intent intent = new Intent(this, HomeScreen.class);
         startActivity(intent);
@@ -408,5 +419,71 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
 
         }
     }
+
+    public void fetchUserCredentials(final String user_name, final String password, final String email, final String publisher_type, String gender) {
+        Call<RegistrationResponse> registrationResponseCall = networkAPI.userRegistration(new RegistrationBody(user_name, password, email, publisher_type, gender));
+        registrationResponseCall.enqueue(new Callback<RegistrationResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<RegistrationResponse> call, @NonNull Response<RegistrationResponse> response) {
+                RegistrationResponse registrationResponse = response.body();
+                if (registrationResponse != null) {
+
+                    Log.d("pub", registrationResponse.getUser_data().get(0).getPublisher_type());
+                    new SessionManager(getApplicationContext()).storeUserPublishtype(registrationResponse.getUser_data().get(0).getPublisher_type());
+
+
+                } else {
+
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<RegistrationResponse> call, @NonNull Throwable t) {
+                Log.d("error", "error");
+            }
+        });
+    }
+
+
+
+
+    private void registrationUser(String full_name, String password, String email, String publisher_type, String gender) {
+        ApiRequest request = new ApiRequest();
+        dialog.setMessage("please wait");
+        dialog.show();
+        request.requestforRegistration(full_name, password, email, publisher_type, gender, new okhttp3.Callback() {
+            @Override
+            public void onFailure(okhttp3.Call call, IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
+                dialog.dismiss();
+                String myResponse = response.body().string();
+
+                Gson gson = new GsonBuilder().create();
+                RegistrationResponse form = gson.fromJson(myResponse, RegistrationResponse.class);
+                new SessionManager(getApplicationContext()).storeUseruserID(form.getUser_data().get(0).getId());
+                if (form.getError().equalsIgnoreCase("false")&&form.getUser_data()!=null) {
+                    new SessionManager(getApplicationContext()).storeUserName(form.getUser_data().get(0).getUser_name());
+
+                    new SessionManager(getApplicationContext()).storeUserPublishtype(form.getUser_data().get(0).getPublisher_type());
+                    new SessionManager(getApplicationContext()).storeUserLoginStatus(1);
+                runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(LoginScreen.this, "Succesfully Login", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    gotoHome();
+                }
+            }
+        });
+    }
+
+
+
+
 
 }

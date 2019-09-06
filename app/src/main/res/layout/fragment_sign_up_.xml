@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:id="@+id/signupView"
     tools:context=".LoginActivity.Fragment.SignUp_Fragment">
 
     <ScrollView
@@ -93,7 +94,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="left"
                     android:layout_weight="1"
-                    android:checked="true"
+                    android:checked="false"
                     android:text="Male"
                     android:textColor="@color/black"
                     android:textSize="14dp" />
@@ -127,9 +128,11 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:weightSum="3"
+        android:visibility="gone"
         android:layout_marginLeft="@dimen/size_8"
         android:layout_marginTop="@dimen/size_8">
         <CheckBox
+            android:id="@+id/reader_checkbox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -137,6 +140,8 @@
             android:textColor="@color/black"
             android:textSize="13dp"></CheckBox>
         <CheckBox
+            android:id="@+id/writer_checkbox"
+
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight=".8"
@@ -144,6 +149,8 @@
             android:textColor="#000000"
             android:textSize="13dp"></CheckBox>
         <CheckBox
+            android:id="@+id/publish_checkbox"
+
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="Publisher House"
@@ -151,7 +158,26 @@
             android:textColor="#000000"
             android:textSize="13dp"></CheckBox>
     </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/spinnerbg"
+                android:layout_marginLeft="@dimen/size_5"
+                android:layout_marginRight="@dimen/size_5"
+                android:layout_marginTop="@dimen/size_10"
+                android:orientation="horizontal">
 
+                <Spinner
+                    android:id="@+id/actor_Spinner_signup"
+                    android:layout_width="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:spinnerMode="dropdown"
+                    android:paddingLeft="@dimen/size_5"
+                    android:layout_height="wrap_content">
+
+                </Spinner>
+
+            </LinearLayout>
 
        <LinearLayout
            android:layout_width="match_parent"
@@ -168,6 +194,7 @@
            </TextView>
        </LinearLayout>
             <Button
+                android:id="@+id/create_USerAccount"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="CREATE ACCOUNT"
