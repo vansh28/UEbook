@@ -271,9 +271,9 @@ public class SignIn_Fragment extends Fragment implements View.OnClickListener {
                 Gson gson = new GsonBuilder().create();
                 final LoginResponse form = gson.fromJson(myResponse, LoginResponse.class);
                 if (form.getError()==false){
-                    new SessionManager(getContext().getApplicationContext()).storeUserPublishtype(form.getResponse().get(0).getPublisher_type());
-                    new SessionManager(getContext().getApplicationContext()).storeUseruserID(form.getResponse().get(0).getId());
-                    new SessionManager(getContext().getApplicationContext()).storeUserName(form.getResponse().get(0).getUser_name());
+                    new SessionManager(getContext().getApplicationContext()).storeUserPublishtype(form.getResponse().getPublisher_type());
+                    new SessionManager(getContext().getApplicationContext()).storeUseruserID(form.getResponse().getId());
+                    new SessionManager(getContext().getApplicationContext()).storeUserName(form.getResponse().getUser_name());
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {

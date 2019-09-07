@@ -31,8 +31,8 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/username_edit_text"
             android:layout_width="match_parent"
-            android:maxLines="1"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:maxLines="1" />
     </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -66,6 +66,19 @@
             android:maxLines="1"
             android:inputType="textPassword" />
     </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/TextInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Country"
+                app:errorEnabled="true">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/country_edit_text"
+                    android:layout_width="match_parent"
+                    android:maxLines="1"
+                    android:layout_height="wrap_content" />
+            </com.google.android.material.textfield.TextInputLayout>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

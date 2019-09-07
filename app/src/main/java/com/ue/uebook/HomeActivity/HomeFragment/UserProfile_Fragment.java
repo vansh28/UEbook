@@ -1,5 +1,6 @@
 package com.ue.uebook.HomeActivity.HomeFragment;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -9,10 +10,26 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.ue.uebook.Data.ApiRequest;
+import com.ue.uebook.LoginActivity.LoginScreen;
+import com.ue.uebook.LoginActivity.Pojo.LoginResponse;
+import com.ue.uebook.LoginActivity.Pojo.RegistrationResponse;
 import com.ue.uebook.R;
+import com.ue.uebook.SessionManager;
+
+import java.io.File;
+import java.io.IOException;
+
+import static com.ue.uebook.R.id.country__userProfile;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -22,7 +39,7 @@ import com.ue.uebook.R;
  * Use the {@link UserProfile_Fragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class UserProfile_Fragment extends Fragment {
+public class UserProfile_Fragment extends Fragment implements View.OnClickListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -32,6 +49,11 @@ public class UserProfile_Fragment extends Fragment {
     private String mParam1;
     private String mParam2;
     private Spinner actor_Spinner;
+    private ProgressDialog dialog;
+    private EditText username,useremail,userpassword,country__user;
+    private Button update__userProfile;
+    private String actortype;
+
 
     private OnFragmentInteractionListener mListener;
 
@@ -71,13 +93,39 @@ public class UserProfile_Fragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.fragment_user_profile_, container, false);
+        dialog= new ProgressDialog(getContext());
         actor_Spinner=view.findViewById(R.id.actor_Spinner);
+        username=view.findViewById(R.id.username_edit_text);
+        useremail=view.findViewById(R.id.email_userProfile);
+        userpassword=view.findViewById(R.id.password__userProfile);
+        update__userProfile=view.findViewById(R.id.update__userProfile);
+        country__user=view.findViewById(country__userProfile);
+        update__userProfile.setOnClickListener(this);
+        UserInfo(  new SessionManager(getContext()).getUserID());
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
                 R.array.planets_array, android.R.layout.simple_spinner_item);
 // Specify the layout to use when the list of choices appears
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 // Apply the adapter to the spinner
         actor_Spinner.setAdapter(adapter);
+        actor_Spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View arg1,
+                                       int arg2, long arg3) {
+                String label = parent.getItemAtPosition(arg2).toString();
+                // Showing selected spinner item
+                actortype = label;
+
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
         return view;
     }
 
@@ -105,6 +153,18 @@ public class UserProfile_Fragment extends Fragment {
         mListener = null;
     }
 
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+
+            case R.id.update__userProfile:
+                UpdateUser(userpassword.getText().toString(),useremail.getText().toString(),actortype,country__user.getText().toString());
+                break;
+
+        }
+
+    }
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -119,4 +179,85 @@ public class UserProfile_Fragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
+    private void UserInfo(String userID) {
+        ApiRequest request = new ApiRequest();
+        dialog.setMessage("please wait");
+        dialog.show();
+        request.requestforgetUserInfo(userID, new okhttp3.Callback() {
+            @Override
+            public void onFailure(okhttp3.Call call, IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
+                dialog.dismiss();
+                String myResponse = response.body().string();
+
+                Gson gson = new GsonBuilder().create();
+                final LoginResponse form = gson.fromJson(myResponse, LoginResponse.class);
+                if (form.getError()==false) {
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                username.setText(form.getResponse().getUser_name());
+                                useremail.setText(form.getResponse().getEmail());
+                                userpassword.setText(form.getResponse().getPassword());
+                                country__user.setText(form.getResponse().getCountry());
+                                if (form.getResponse().getPublisher_type().equalsIgnoreCase("Reader")){
+                                    actor_Spinner.setSelection(0);
+                                }
+                                else  if (form.getResponse().getPublisher_type().equalsIgnoreCase("Writer")){
+                                    actor_Spinner.setSelection(1);
+                                }
+                                else  if (form.getResponse().getPublisher_type().equalsIgnoreCase("Publish House")){
+                                    actor_Spinner.setSelection(2);
+                                }
+                                else  if (form.getResponse().getPublisher_type().equalsIgnoreCase("Reader and Writer")){
+                                    actor_Spinner.setSelection(3);
+                                }
+                            }
+                        });
+                }
+            }
+        });
+    }
+
+    private void UpdateUser( String password, String email, String publisher_type ,String country ) {
+        ApiRequest request = new ApiRequest();
+        dialog.setMessage("please wait");
+        dialog.show();
+        request.requestforUpdateProfile( new SessionManager(getContext()).getUserID(),password, email, publisher_type,country ,new okhttp3.Callback() {
+            @Override
+            public void onFailure(okhttp3.Call call, IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
+                dialog.dismiss();
+                String myResponse = response.body().string();
+                Gson gson = new GsonBuilder().create();
+                LoginResponse form = gson.fromJson(myResponse, LoginResponse.class);
+                if (form.getError()==false&&form.getResponse()!=null) {
+                    new SessionManager(getContext()).storeUserPublishtype(form.getResponse().getPublisher_type());
+
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            UserInfo(  new SessionManager(getContext()).getUserID());
+
+                        }
+                    });
+
+                }
+            }
+        });
+    }
+
+
+
+
 }

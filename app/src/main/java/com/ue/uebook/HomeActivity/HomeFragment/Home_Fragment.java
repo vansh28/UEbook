@@ -29,7 +29,7 @@ import com.ue.uebook.R;
  * Use the {@link Home_Fragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Home_Fragment extends Fragment implements View.OnClickListener , Home_recommended_Adapter.RecommendedItemClick , New_Book_Home_Adapter.NewBookItemClick , PopularList_Home_Adapter.PopularBookItemClick {
+public class Home_Fragment extends Fragment implements View.OnClickListener , Home_recommended_Adapter.RecommendedItemClick , New_Book_Home_Adapter.NewBookItemClick , PopularList_Home_Adapter.PopularBookItemClick ,UserMainFragment.OnFragmentInteractionListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -161,6 +161,11 @@ public class Home_Fragment extends Fragment implements View.OnClickListener , Ho
     public void onItemClick_PopularBook(int position) {
         Intent intent = new Intent(getActivity(), Book_Detail_Screen.class);
         getActivity().startActivity(intent);
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
     }
 
     /**

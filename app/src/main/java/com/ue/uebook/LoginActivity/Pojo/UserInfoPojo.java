@@ -8,11 +8,9 @@ public class UserInfoPojo {
     private String email;
     private String gender;
     private String phone_no;
-    private String about_me;
+    private String url;
     private String country;
     private String password;
-    private String confirmation_key;
-    private Integer date_added;
     private String date_edited;
     private String status;
     private String message_status;
@@ -20,10 +18,8 @@ public class UserInfoPojo {
     private String device_token;
     private String device_type;
     private String address;
-    private String thumb_image;
-    private String global_posting;
-
-    public UserInfoPojo(String id, String register_id, String full_name, String user_name, String email, String gender, String phone_no, String about_me, String country, String password, String confirmation_key, Integer date_added, String date_edited, String status, String message_status, String publisher_type, String device_token, String device_type, String address, String thumb_image, String global_posting) {
+    private String  global_posting;
+    public UserInfoPojo(String id, String register_id, String full_name, String user_name, String email, String gender, String phone_no, String url, String country, String password, String date_edited, String status, String message_status, String publisher_type, String device_token, String device_type, String address, String global_posting) {
         this.id = id;
         this.register_id = register_id;
         this.full_name = full_name;
@@ -31,11 +27,9 @@ public class UserInfoPojo {
         this.email = email;
         this.gender = gender;
         this.phone_no = phone_no;
-        this.about_me = about_me;
+        this.url = url;
         this.country = country;
         this.password = password;
-        this.confirmation_key = confirmation_key;
-        this.date_added = date_added;
         this.date_edited = date_edited;
         this.status = status;
         this.message_status = message_status;
@@ -43,7 +37,6 @@ public class UserInfoPojo {
         this.device_token = device_token;
         this.device_type = device_type;
         this.address = address;
-        this.thumb_image = thumb_image;
         this.global_posting = global_posting;
     }
 
@@ -103,12 +96,12 @@ public class UserInfoPojo {
         this.phone_no = phone_no;
     }
 
-    public String getAbout_me() {
-        return about_me;
+    public String getUrl() {
+        return url;
     }
 
-    public void setAbout_me(String about_me) {
-        this.about_me = about_me;
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     public String getCountry() {
@@ -125,22 +118,6 @@ public class UserInfoPojo {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getConfirmation_key() {
-        return confirmation_key;
-    }
-
-    public void setConfirmation_key(String confirmation_key) {
-        this.confirmation_key = confirmation_key;
-    }
-
-    public Integer getDate_added() {
-        return date_added;
-    }
-
-    public void setDate_added(Integer date_added) {
-        this.date_added = date_added;
     }
 
     public String getDate_edited() {
@@ -197,14 +174,6 @@ public class UserInfoPojo {
 
     public void setAddress(String address) {
         this.address = address;
-    }
-
-    public String getThumb_image() {
-        return thumb_image;
-    }
-
-    public void setThumb_image(String thumb_image) {
-        this.thumb_image = thumb_image;
     }
 
     public String getGlobal_posting() {

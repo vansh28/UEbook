@@ -25,6 +25,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ue.uebook.ImageUtils;
 import com.ue.uebook.R;
 
 import java.io.ByteArrayOutputStream;
@@ -48,6 +49,7 @@ public class Upload_Book_Screen extends AppCompatActivity implements View.OnClic
     private String encodedString;
     private String uriData;
     private Bitmap bitmap;
+    ImageUtils imageUtils;
 
     private File destination = null;
     private InputStream inputStreamImg;
@@ -62,6 +64,7 @@ public class Upload_Book_Screen extends AppCompatActivity implements View.OnClic
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upload__book__screen);
         back_btn_uploadbook = findViewById(R.id.back_btn_uploadbook);
+
         upload_cover_bookBtn = findViewById(R.id.upload_cover_bookBtn);
         filname_view = findViewById(R.id.filname_view);
         camera_btn = findViewById(R.id.camera_btn);
@@ -89,7 +92,7 @@ public class Upload_Book_Screen extends AppCompatActivity implements View.OnClic
         } else if (view == audio_btn) {
             getAudioFile();
         } else if (view == camera_btn) {
-            selectImage();
+
         } else if (view == documents_btn) {
 
             showFileChooser();

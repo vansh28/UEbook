@@ -17,4 +17,7 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
     <string name="facebook_app_id">559094584629511</string>
     <string name="fb_login_protocol_scheme">fb559094584629511</string>
     <string name="no_internet">No internet connection!</string>
+    <string name="ok_txt">ok</string>
+    <string name="msg_loading">Loading</string>
+    <string name="uploadImages">Image</string>
 </resources>

@@ -4,13 +4,14 @@ import java.util.List;
 
 public class LoginResponse  {
     private   Boolean error;
-    private String message;
-    private List<UserInfoPojo> response;
 
-    public LoginResponse(Boolean error, String message, List<UserInfoPojo> response) {
+    private UserInfoPojo response;
+    private String message;
+
+    public LoginResponse(Boolean error, UserInfoPojo response, String message) {
         this.error = error;
-        this.message = message;
         this.response = response;
+        this.message = message;
     }
 
     public Boolean getError() {
@@ -21,19 +22,19 @@ public class LoginResponse  {
         this.error = error;
     }
 
+    public UserInfoPojo getResponse() {
+        return response;
+    }
+
+    public void setResponse(UserInfoPojo response) {
+        this.response = response;
+    }
+
     public String getMessage() {
         return message;
     }
 
     public void setMessage(String message) {
         this.message = message;
-    }
-
-    public List<UserInfoPojo> getResponse() {
-        return response;
-    }
-
-    public void setResponse(List<UserInfoPojo> response) {
-        this.response = response;
     }
 }

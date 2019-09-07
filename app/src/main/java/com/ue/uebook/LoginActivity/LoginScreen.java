@@ -324,7 +324,7 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
             @Override
             public void onClick(View view) {
                 new SessionManager(getApplicationContext()).storeUserImage(image);
-                registrationUser(first_name, " ", email, "Reader", "");
+                registrationUser(first_name, " ", email, "Reader", "","");
                 dialog.dismiss();
             }
         });
@@ -375,7 +375,7 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
             @Override
             public void onClick(View view) {
 //                new SessionManager(getApplicationContext()).storeUserImage(image);
-                registrationUser(first_name, " ", email, "Reader", "");
+                registrationUser(first_name, " ", email, "Reader", "","");
                 dialog.dismiss();
             }
         });
@@ -428,8 +428,8 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
                 RegistrationResponse registrationResponse = response.body();
                 if (registrationResponse != null) {
 
-                    Log.d("pub", registrationResponse.getUser_data().get(0).getPublisher_type());
-                    new SessionManager(getApplicationContext()).storeUserPublishtype(registrationResponse.getUser_data().get(0).getPublisher_type());
+                    Log.d("pub", registrationResponse.getUser_data().getPublisher_type());
+                    new SessionManager(getApplicationContext()).storeUserPublishtype(registrationResponse.getUser_data().getPublisher_type());
 
 
                 } else {
@@ -447,11 +447,11 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
 
 
 
-    private void registrationUser(String full_name, String password, String email, String publisher_type, String gender) {
+    private void registrationUser(String full_name, String password, String email, String publisher_type, String gender,String country) {
         ApiRequest request = new ApiRequest();
         dialog.setMessage("please wait");
         dialog.show();
-        request.requestforRegistration(full_name, password, email, publisher_type, gender, new okhttp3.Callback() {
+        request.requestforRegistration(full_name, password, email, publisher_type, gender,country ,new okhttp3.Callback() {
             @Override
             public void onFailure(okhttp3.Call call, IOException e) {
 
@@ -464,11 +464,11 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
 
                 Gson gson = new GsonBuilder().create();
                 RegistrationResponse form = gson.fromJson(myResponse, RegistrationResponse.class);
-                new SessionManager(getApplicationContext()).storeUseruserID(form.getUser_data().get(0).getId());
+                new SessionManager(getApplicationContext()).storeUseruserID(form.getUser_data().getId());
                 if (form.getError().equalsIgnoreCase("false")&&form.getUser_data()!=null) {
-                    new SessionManager(getApplicationContext()).storeUserName(form.getUser_data().get(0).getUser_name());
+                    new SessionManager(getApplicationContext()).storeUserName(form.getUser_data().getUser_name());
 
-                    new SessionManager(getApplicationContext()).storeUserPublishtype(form.getUser_data().get(0).getPublisher_type());
+                    new SessionManager(getApplicationContext()).storeUserPublishtype(form.getUser_data().getPublisher_type());
                     new SessionManager(getApplicationContext()).storeUserLoginStatus(1);
                 runOnUiThread(new Runnable() {
                         @Override

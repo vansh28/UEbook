@@ -64,7 +64,7 @@ public class SignUp_Fragment extends Fragment implements View.OnClickListener {
     private String mParam1;
     private String mParam2;
     private NetworkAPI networkAPI;
-    private EditText username, userEmail, userPassword;
+    private EditText username, userEmail, userPassword ,country_edit_text;
     private RadioButton male, female;
     private CheckBox reader, writer, publisher;
     private RadioGroup radioGroup;
@@ -125,6 +125,8 @@ public class SignUp_Fragment extends Fragment implements View.OnClickListener {
         reader = view.findViewById(R.id.reader_checkbox);
         writer = view.findViewById(R.id.writer_checkbox);
         publisher = view.findViewById(R.id.publish_checkbox);
+        country_edit_text=view.findViewById(R.id.country_edit_text);
+
         reader.setOnClickListener(this);
         writer.setOnClickListener(this);
         publisher.setOnClickListener(this);
@@ -201,7 +203,7 @@ public class SignUp_Fragment extends Fragment implements View.OnClickListener {
 
             case R.id.create_USerAccount:
                 if (isvalidate()) {
-                    registrationUser(username.getText().toString(), userPassword.getText().toString(), userEmail.getText().toString(), checkboxlist, gender);
+                    registrationUser(username.getText().toString(), userPassword.getText().toString(), userEmail.getText().toString(), checkboxlist, gender ,country_edit_text.getText().toString());
                 }
                 break;
 
@@ -241,8 +243,8 @@ public class SignUp_Fragment extends Fragment implements View.OnClickListener {
                 Log.d("response", registrationResponse.toString());
                 if (registrationResponse != null) {
                     if (registrationResponse.getError().equalsIgnoreCase("true")) {
-                        Log.d("pub", registrationResponse.getUser_data().get(0).getPublisher_type());
-                        new SessionManager(getActivity().getApplicationContext()).storeUserPublishtype(registrationResponse.getUser_data().get(0).getPublisher_type());
+                        Log.d("pub", registrationResponse.getUser_data().getPublisher_type());
+                        new SessionManager(getActivity().getApplicationContext()).storeUserPublishtype(registrationResponse.getUser_data().getPublisher_type());
                         new SessionManager(getActivity().getApplicationContext()).storeUserLoginStatus(1);
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
@@ -273,16 +275,25 @@ public class SignUp_Fragment extends Fragment implements View.OnClickListener {
         String userNAme = username.getText().toString();
         String user_Email = userEmail.getText().toString();
         String userpass = userPassword.getText().toString();
+        String country=country_edit_text.getText().toString();
         if (!userNAme.isEmpty()) {
             if (!user_Email.isEmpty()) {
                 if (!userpass.isEmpty()) {
-                    if (gender != null) {
-                        return true;
-                    } else {
+                    if (!country.isEmpty()){
+                        if (gender != null) {
+                            return true;
+                        } else {
 
-                        Toast.makeText(getContext(), "Please Select your gender", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getContext(), "Please Select your gender", Toast.LENGTH_LONG).show();
+                            return false;
+                        }
+
+                    }
+                    else {
+                        Toast.makeText(getContext(), "Please Enter your Country", Toast.LENGTH_LONG).show();
                         return false;
                     }
+
 
 
                 } else {
@@ -310,11 +321,11 @@ public class SignUp_Fragment extends Fragment implements View.OnClickListener {
     }
 
 
-    private void registrationUser(String full_name, String password, String email, String publisher_type, String gender) {
+    private void registrationUser(String full_name, String password, String email, String publisher_type, String gender,String country) {
         ApiRequest request = new ApiRequest();
         dialog.setMessage("please wait");
         dialog.show();
-        request.requestforRegistration(full_name, password, email, publisher_type, gender, new okhttp3.Callback() {
+        request.requestforRegistration(full_name, password, email, publisher_type, gender,country ,new okhttp3.Callback() {
             @Override
             public void onFailure(okhttp3.Call call, IOException e) {
 
@@ -327,12 +338,12 @@ public class SignUp_Fragment extends Fragment implements View.OnClickListener {
 
                 Gson gson = new GsonBuilder().create();
                 RegistrationResponse form = gson.fromJson(myResponse, RegistrationResponse.class);
-                new SessionManager(getContext().getApplicationContext()).storeUseruserID(form.getUser_data().get(0).getId());
-                new SessionManager(getContext().getApplicationContext()).storeUserName(form.getUser_data().get(0).getUser_name());
+                new SessionManager(getContext().getApplicationContext()).storeUseruserID(form.getUser_data().getId());
+                new SessionManager(getContext().getApplicationContext()).storeUserName(form.getUser_data().getUser_name());
 
                 if (form.getError().equalsIgnoreCase("false")) {
 
-                    new SessionManager(getContext().getApplicationContext()).storeUserPublishtype(form.getUser_data().get(0).getPublisher_type());
+                    new SessionManager(getContext().getApplicationContext()).storeUserPublishtype(form.getUser_data().getPublisher_type());
                     new SessionManager(getContext().getApplicationContext()).storeUserLoginStatus(1);
                     getActivity().runOnUiThread(new Runnable() {
                         @Override

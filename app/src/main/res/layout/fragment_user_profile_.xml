@@ -34,8 +34,8 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/username_edit_text"
                     android:layout_width="match_parent"
+                    android:editable="false"
                     android:layout_height="wrap_content"
-                    android:text="UserBook"
                     android:maxLines="1" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -43,11 +43,11 @@
                 style="@style/TextInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Change Email"
+                android:hint="Update Email"
                 app:errorEnabled="true">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/email_edit_text"
+                    android:id="@+id/email_userProfile"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:maxLines="1" />
@@ -57,7 +57,8 @@
                 style="@style/TextInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Change Address"
+                android:visibility="gone"
+                android:hint="Update Address"
                 app:errorEnabled="true">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -66,10 +67,42 @@
                     android:layout_height="wrap_content"
                     android:maxLines="1" />
             </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/country_text_input"
+                style="@style/TextInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/size_5"
+                android:hint=" Update Country"
+                app:errorEnabled="true">
 
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/country__userProfile"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/password_text_input"
+                style="@style/TextInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/size_10"
+                android:hint=" Update Password"
+                app:errorEnabled="true">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/password__userProfile"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPassword"
+                    android:maxLines="1" />
+            </com.google.android.material.textfield.TextInputLayout>
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="60dp"
                 android:background="@drawable/spinnerbg"
                 android:layout_marginLeft="@dimen/size_5"
                 android:layout_marginRight="@dimen/size_5"
@@ -87,24 +120,10 @@
 
             </LinearLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/password_text_input"
-                style="@style/TextInputLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/size_10"
-                android:hint=" Change Password"
-                app:errorEnabled="true">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/password_edit_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="textPassword"
-                    android:maxLines="1" />
-            </com.google.android.material.textfield.TextInputLayout>
 
             <Button
+                android:id="@+id/update__userProfile"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/size_50"

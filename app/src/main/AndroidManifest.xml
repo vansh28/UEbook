@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.ue.uebook">
 
     <uses-permission android:name="android.permission.CAMERA" />
@@ -8,7 +9,12 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
+
+    <uses-permission android:name="android.permission.MEDIA_CONTENT_CONTROL"
+        tools:ignore="ProtectedPermissions" />
+
 
     <uses-feature
         android:name="android.hardware.camera"
@@ -25,35 +31,24 @@
         android:roundIcon="@drawable/applogo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".HomeActivity.InerfaceLanguageScreen"
-            android:screenOrientation="portrait"
-
-            ></activity>
-        <activity android:name=".WebviewScreen"
-            android:screenOrientation="portrait"
-
-            />
+        <activity
+            android:name=".HomeActivity.InerfaceLanguageScreen"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".WebviewScreen"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".UploadBook.Upload_Book_Screen"
-            android:screenOrientation="portrait"
-
-
-            />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".DeatailActivity.Book_Detail_Screen"
-            android:screenOrientation="portrait"
-
-            />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".PopularActivity.Popular_List_Screen"
-            android:screenOrientation="portrait"
-
-            />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".HomeActivity.HomeScreen"
             android:label="@string/title_activity_home_screen"
-
-
             android:screenOrientation="portrait" />
         <activity
             android:name=".LoginActivity.LoginScreen"
