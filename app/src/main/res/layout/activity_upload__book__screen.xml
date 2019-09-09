@@ -41,6 +41,15 @@
             app:civ_border_width="2dp" />
     </RelativeLayout>
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -76,6 +85,26 @@
                 android:gravity="start"
                 android:minHeight="@dimen/size_100" />
         </com.google.android.material.textfield.TextInputLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/spinnerbg"
+            android:layout_marginLeft="@dimen/size_5"
+            android:layout_marginRight="@dimen/size_5"
+            android:layout_marginTop="@dimen/size_10"
+            android:orientation="horizontal">
+
+            <Spinner
+                android:id="@+id/actor_Spinner_signup"
+                android:layout_width="match_parent"
+                android:layout_gravity="center_vertical"
+                android:spinnerMode="dropdown"
+                android:paddingLeft="@dimen/size_5"
+                android:layout_height="wrap_content">
+
+            </Spinner>
+
+        </LinearLayout>
 
 
         <LinearLayout
@@ -83,7 +112,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/size_60"
             android:layout_marginLeft="@dimen/size_5"
-            android:layout_marginTop="@dimen/size_5"
+            android:layout_marginTop="@dimen/size_15"
             android:layout_marginRight="@dimen/size_5"
             android:background="@drawable/buttonbg">
 
@@ -107,6 +136,24 @@
 
         </LinearLayout>
 
+        <RelativeLayout
+            android:id="@+id/cover_image_layout"
+            android:layout_width="match_parent"
+            android:layout_marginTop="@dimen/size_10"
+            android:paddingRight="@dimen/size_10"
+            android:visibility="gone"
+            android:layout_height="@dimen/size_80">
+            <ImageView
+                android:id="@+id/cover_image_preview"
+                android:layout_width="80dp"
+                android:layout_margin="@dimen/size_10"
+                android:background="@drawable/download_book"
+                android:layout_height="match_parent">
+
+            </ImageView>
+
+        </RelativeLayout>
+
 
         <TextView
             android:layout_width="wrap_content"
@@ -128,7 +175,7 @@
             android:layout_marginRight="@dimen/size_5"
             android:background="@drawable/buttonbg"
             android:orientation="horizontal"
-            android:weightSum="4">
+            android:weightSum="3">
 
             <ImageView
                 android:id="@+id/camera_btn"
@@ -136,24 +183,14 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
+                android:visibility="gone"
                 android:src="@drawable/bcamera"></ImageView>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight=".2">
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:background="@color/black"></View>
-            </LinearLayout>
-
             <ImageView
                 android:id="@+id/video_Btn"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_weight=".8"
+                android:layout_weight="1"
                 android:src="@drawable/video"></ImageView>
             <LinearLayout
                 android:layout_width="0dp"
@@ -204,6 +241,7 @@
 
 </TextView>
         <Button
+            android:id="@+id/publish_book"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/size_8"
@@ -215,4 +253,7 @@
             android:textColor="@color/white"></Button>
 
     </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>

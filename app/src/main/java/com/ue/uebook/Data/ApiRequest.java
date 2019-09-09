@@ -96,6 +96,27 @@ public class ApiRequest {
 
     }
 
+    public void requestforUploadBook(final String user_id ,File video, String category_id,String book_title,Callback callback) {
+        String url = null;
+        url = BaseUrl + "addNewBook";
+        OkHttpClient client = new OkHttpClient();
+        final MediaType MEDIA_TYPE_PNG = MediaType.parse("*/*");
+        RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
+                .addFormDataPart("user_id", user_id)
+                .addFormDataPart("category_id", category_id)
+                .addFormDataPart("book_title", book_title)
+                .addFormDataPart("video_url", video.getName(), RequestBody.create(MEDIA_TYPE_PNG, video))
+                .build();
+
+        Request request = new Request.Builder()
+                .url("http://dnddemo.com/ebooks/api/v1/addNewBook")
+                .post(requestBody)
+                .build();
+        client.newCall(request).enqueue(callback);
+
+    }
+
+
 
 
 
