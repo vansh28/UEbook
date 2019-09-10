@@ -109,14 +109,42 @@ public class ApiRequest {
                 .build();
 
         Request request = new Request.Builder()
-                .url("http://dnddemo.com/ebooks/api/v1/addNewBook")
+                .url(url)
                 .post(requestBody)
                 .build();
         client.newCall(request).enqueue(callback);
 
     }
 
+    public void requestforGetbookCategory(Callback callback) {
+        String url = null;
+        url = BaseUrl + "getAllCategory";
+        OkHttpClient client = new OkHttpClient();
+        RequestBody body = RequestBody.create(null, new byte[]{});
 
+        Request request = new Request.Builder()
+                .url(url)
+                .post(body)
+                .build();
+        client.newCall(request).enqueue(callback);
+
+    }
+    public void requestforgetBookList(final String category_id ,Callback callback) {
+        String url = null;
+        url = BaseUrl + "getBooksByTypes";
+        OkHttpClient client = new OkHttpClient();
+        final MediaType MEDIA_TYPE_PNG = MediaType.parse("*/*");
+        RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
+                .addFormDataPart("category_id", category_id)
+                .build();
+
+        Request request = new Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .build();
+        client.newCall(request).enqueue(callback);
+
+    }
 
 
 

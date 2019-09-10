@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -33,6 +34,8 @@ import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.ue.uebook.Data.ApiRequest;
+import com.ue.uebook.GlideUtils;
+import com.ue.uebook.HomeActivity.HomeScreen;
 import com.ue.uebook.ImageUtils;
 import com.ue.uebook.LoginActivity.Pojo.RegistrationResponse;
 import com.ue.uebook.R;
@@ -44,6 +47,7 @@ import java.io.File;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.StringReader;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -75,7 +79,7 @@ public class User_Fragment extends Fragment implements View.OnClickListener, Use
     private String filePath;
     private String fileName;
     private String encodedString;
-    private String uriData;
+    private String uriData,image;
     private Bitmap bitmap;
 
     private File destination = null;
@@ -131,6 +135,8 @@ public class User_Fragment extends Fragment implements View.OnClickListener, Use
         profile_image_user.setOnClickListener(this);
         username.setText(new SessionManager(getContext().getApplicationContext()).getUserName());
         loadFragment(new UserMainFragment());
+       image = new SessionManager(getApplicationContext()).getUserimage();
+
 
         return view;
     }
@@ -304,10 +310,11 @@ public class User_Fragment extends Fragment implements View.OnClickListener, Use
         if (address.length() > 0) {
             address_user.setText(address);
         }
-        if (new SessionManager(getApplicationContext()).getUserimage().length() > 0) {
-            Glide.with(getActivity())
-                    .load(new SessionManager(getContext().getApplicationContext()).getUserimage())
-                    .into(profile_image_user);
+        if (!image.isEmpty()) {
+//            Glide.with(getActivity())
+//                    .load("http://dnddemo.com/ebooks/api/v1/upload/"+image)
+//                    .into(profile_image_user);
+            GlideUtils.loadImage((AppCompatActivity) getActivity(),"http://dnddemo.com/ebooks/api/v1/upload/"+image,profile_image_user,R.drawable.user_default,R.drawable.user_default);
         } else {
 
             profile_image_user.setImageResource(R.drawable.user_default);
@@ -330,15 +337,14 @@ public class User_Fragment extends Fragment implements View.OnClickListener, Use
                 dialog.dismiss();
                 String myResponse = response.body().string();
                 Gson gson = new GsonBuilder().create();
-                RegistrationResponse form = gson.fromJson(myResponse, RegistrationResponse.class);
+                final RegistrationResponse form = gson.fromJson(myResponse, RegistrationResponse.class);
                 if (form.getError().equalsIgnoreCase("false") && form.getUser_data() != null) {
                     new SessionManager(getContext()).storeUserPublishtype(form.getUser_data().getPublisher_type());
 
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-
-
+                            new SessionManager(getApplicationContext()).storeUserImage(form.getUser_data().getUrl());
                         }
                     });
 

@@ -1,18 +1,33 @@
 package com.ue.uebook.HomeActivity.HomeFragment.Adapter;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.ue.uebook.GlideUtils;
+import com.ue.uebook.HomeActivity.HomeFragment.Pojo.HomeListing;
 import com.ue.uebook.R;
+
+import java.util.List;
 
 public class New_Book_Home_Adapter   extends RecyclerView.Adapter<New_Book_Home_Adapter.MyViewHolder> {
 
     private NewBookItemClick newBookItemClick;
+    private AppCompatActivity cmtx;
+    private List<HomeListing>newBookList;
+
+    public New_Book_Home_Adapter(AppCompatActivity activity, List<HomeListing> newBookList) {
+        this.cmtx=activity;
+        this.newBookList = newBookList;
+    }
 
     public interface NewBookItemClick {
         void onItemClick_NewBook(int position);
@@ -42,18 +57,27 @@ public class New_Book_Home_Adapter   extends RecyclerView.Adapter<New_Book_Home_
                 }
             }
         });
+        holder.book_name.setText(newBookList.get(position).getBook_title());
+        holder.author_name.setText(newBookList.get(position).getAuthor_name());
+        GlideUtils.loadImage(cmtx,"http://"+newBookList.get(position).getThubm_image(),holder.book_cover,R.drawable.noimage,R.drawable.noimage);
     }
 
     @Override
     public int getItemCount() {
-        return 5;
+        return newBookList.size();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         private LinearLayout main_container;
+        private ImageView book_cover;
+        private TextView book_name,author_name;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             main_container=itemView.findViewById(R.id.container_book);
+            book_name=itemView.findViewById(R.id.book_name);
+            author_name =itemView.findViewById(R.id.author_name);
+            book_cover =itemView.findViewById(R.id.item_image);
+
         }
     }
 }

@@ -46,6 +46,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.facebook.FacebookSdk.getApplicationContext;
+
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
@@ -340,6 +342,7 @@ public class SignUp_Fragment extends Fragment implements View.OnClickListener {
                 RegistrationResponse form = gson.fromJson(myResponse, RegistrationResponse.class);
                 new SessionManager(getContext().getApplicationContext()).storeUseruserID(form.getUser_data().getId());
                 new SessionManager(getContext().getApplicationContext()).storeUserName(form.getUser_data().getUser_name());
+                new SessionManager(getApplicationContext()).storeUserImage(form.getUser_data().getUrl());
 
                 if (form.getError().equalsIgnoreCase("false")) {
 

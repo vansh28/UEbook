@@ -1,19 +1,35 @@
 package com.ue.uebook.HomeActivity.HomeFragment.Adapter;
 
+import android.app.Activity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
+import com.ue.uebook.GlideUtils;
+import com.ue.uebook.HomeActivity.HomeFragment.Pojo.HomeListing;
 import com.ue.uebook.R;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.List;
 
 public class Home_recommended_Adapter extends RecyclerView.Adapter<Home_recommended_Adapter.MyViewHolder> {
 
     private RecommendedItemClick recommendedItemClick;
+    List<HomeListing> recommendedList_book;
+    private AppCompatActivity mctx;
 
+    public Home_recommended_Adapter(AppCompatActivity mctx, List<HomeListing> recommendedList_book) {
+        this.recommendedList_book=recommendedList_book;
+        this.mctx=mctx;
+    }
     public interface RecommendedItemClick {
         void onItemClick(int position);
     }
@@ -42,18 +58,28 @@ public class Home_recommended_Adapter extends RecyclerView.Adapter<Home_recommen
                 }
             }
         });
+        holder.book_name.setText(recommendedList_book.get(position).getBook_title());
+        holder.author_name.setText(recommendedList_book.get(position).getAuthor_name());
+        Log.e("image",recommendedList_book.get(position).getThubm_image());
+       GlideUtils.loadImage(mctx,"http://"+recommendedList_book.get(position).getThubm_image(),holder.book_cover,R.drawable.noimage,R.drawable.noimage);
     }
 
     @Override
     public int getItemCount() {
-        return 5;
+        return recommendedList_book.size();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         private LinearLayout main_container;
+        private ImageView book_cover;
+        private TextView book_name,author_name;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             main_container=itemView.findViewById(R.id.container_book);
+            book_name=itemView.findViewById(R.id.book_name);
+            author_name =itemView.findViewById(R.id.author_name);
+            book_cover =itemView.findViewById(R.id.item_image);
+
         }
     }
 }

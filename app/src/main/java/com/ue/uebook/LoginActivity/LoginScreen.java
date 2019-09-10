@@ -85,6 +85,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.facebook.FacebookSdk.getApplicationContext;
 import static com.ue.uebook.NetworkUtils.getInstance;
 
 public class LoginScreen extends BaseActivity implements View.OnClickListener, SignUp_Fragment.OnFragmentInteractionListener, SignIn_Fragment.OnFragmentInteractionListener, GoogleApiClient.OnConnectionFailedListener {
@@ -323,7 +324,7 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
         continueToLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new SessionManager(getApplicationContext()).storeUserImage(image);
+
                 registrationUser(first_name, " ", email, "Reader", "","");
                 dialog.dismiss();
             }
@@ -467,6 +468,7 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
                 new SessionManager(getApplicationContext()).storeUseruserID(form.getUser_data().getId());
                 if (form.getError().equalsIgnoreCase("false")&&form.getUser_data()!=null) {
                     new SessionManager(getApplicationContext()).storeUserName(form.getUser_data().getUser_name());
+                    new SessionManager(getApplicationContext()).storeUserImage(form.getUser_data().getUrl());
 
                     new SessionManager(getApplicationContext()).storeUserPublishtype(form.getUser_data().getPublisher_type());
                     new SessionManager(getApplicationContext()).storeUserLoginStatus(1);

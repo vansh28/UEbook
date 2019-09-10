@@ -49,6 +49,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.facebook.FacebookSdk.getApplicationContext;
+
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
@@ -271,6 +273,7 @@ public class SignIn_Fragment extends Fragment implements View.OnClickListener {
                 Gson gson = new GsonBuilder().create();
                 final LoginResponse form = gson.fromJson(myResponse, LoginResponse.class);
                 if (form.getError()==false){
+
                     new SessionManager(getContext().getApplicationContext()).storeUserPublishtype(form.getResponse().getPublisher_type());
                     new SessionManager(getContext().getApplicationContext()).storeUseruserID(form.getResponse().getId());
                     new SessionManager(getContext().getApplicationContext()).storeUserName(form.getResponse().getUser_name());

@@ -1,5 +1,6 @@
 package com.ue.uebook;
 
+import android.app.Activity;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.widget.ImageView;
@@ -16,7 +17,7 @@ import com.bumptech.glide.request.target.Target;
 import java.net.URI;
 
 public class GlideUtils {
-    public static void loadImage(final AppCompatActivity activity, Uri imageUrl, final ImageView imageView, final int placeholder, final int errorPlaceHolder) {
+    public static void loadImage(final AppCompatActivity activity, String imageUrl, final ImageView imageView, final int placeholder, final int errorPlaceHolder) {
 
         Glide.with(activity).load(imageUrl).apply(RequestOptions.fitCenterTransform().dontAnimate().placeholder(placeholder).error(errorPlaceHolder)).thumbnail(0.5f)
                 .listener(new RequestListener<Drawable>() {
@@ -24,6 +25,7 @@ public class GlideUtils {
                     public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
                         return false;
                     }
+
                     @Override
                     public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, com.bumptech.glide.load.DataSource dataSource, boolean isFirstResource) {
                         return false;

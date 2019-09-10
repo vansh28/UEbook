@@ -30,7 +30,7 @@
             android:textSize="@dimen/size_18"></TextView>
 
         <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/profile_image_user"
+            android:id="@+id/profile_image_user_upload"
             android:layout_width="@dimen/size_60"
             android:layout_height="@dimen/size_60"
             android:layout_alignParentRight="true"
@@ -71,20 +71,55 @@
                 android:layout_height="wrap_content" />
         </com.google.android.material.textfield.TextInputLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="5"
+            android:orientation="horizontal">
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="5">
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/TextInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Book Description"
+                app:errorEnabled="true">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/bookDesc_edit_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:minHeight="@dimen/size_100" />
+            </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+   <ImageButton
+       android:id="@+id/recordbtn"
+       android:layout_width="0dp"
+       android:layout_weight="1"
+       android:src="@drawable/audio"
+       android:visibility="gone"
+       android:layout_height="wrap_content">
+
+   </ImageButton>
+
+        </LinearLayout>
         <com.google.android.material.textfield.TextInputLayout
             style="@style/TextInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Book Description"
+            android:hint="Book Author"
             app:errorEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/bookDesc_edit_text"
+                android:id="@+id/authorName_edit_text"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="start"
-                android:minHeight="@dimen/size_100" />
+                android:layout_height="wrap_content" />
         </com.google.android.material.textfield.TextInputLayout>
+
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
@@ -95,7 +130,7 @@
             android:orientation="horizontal">
 
             <Spinner
-                android:id="@+id/actor_Spinner_signup"
+                android:id="@+id/book_category"
                 android:layout_width="match_parent"
                 android:layout_gravity="center_vertical"
                 android:spinnerMode="dropdown"

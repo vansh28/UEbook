@@ -239,9 +239,9 @@ public class UserProfile_Fragment extends Fragment implements View.OnClickListen
                 dialog.dismiss();
                 String myResponse = response.body().string();
                 Gson gson = new GsonBuilder().create();
-                LoginResponse form = gson.fromJson(myResponse, LoginResponse.class);
-                if (form.getError()==false&&form.getResponse()!=null) {
-                    new SessionManager(getContext()).storeUserPublishtype(form.getResponse().getPublisher_type());
+                RegistrationResponse form = gson.fromJson(myResponse, RegistrationResponse.class);
+                if (form.getError().equals("false")&&form.getUser_data()!=null) {
+                    new SessionManager(getContext()).storeUserPublishtype(form.getUser_data().getPublisher_type());
 
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
