@@ -30,7 +30,7 @@ public class New_Book_Home_Adapter   extends RecyclerView.Adapter<New_Book_Home_
     }
 
     public interface NewBookItemClick {
-        void onItemClick_NewBook(int position);
+        void onItemClick_NewBook(int position ,String book_id);
     }
 
     public void setItemClickListener(NewBookItemClick clickListener) {
@@ -53,7 +53,7 @@ public class New_Book_Home_Adapter   extends RecyclerView.Adapter<New_Book_Home_
             @Override
             public void onClick(View view) {
                 if (newBookItemClick != null) {
-                    newBookItemClick.onItemClick_NewBook(position);
+                    newBookItemClick.onItemClick_NewBook(position,newBookList.get(position).getId());
                 }
             }
         });

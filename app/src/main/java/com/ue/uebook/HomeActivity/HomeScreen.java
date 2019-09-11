@@ -2,13 +2,22 @@ package com.ue.uebook.HomeActivity;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.ue.uebook.BaseActivity;
+import com.ue.uebook.Data.ApiRequest;
+import com.ue.uebook.HomeActivity.HomeFragment.Adapter.Home_recommended_Adapter;
+import com.ue.uebook.HomeActivity.HomeFragment.Adapter.New_Book_Home_Adapter;
 import com.ue.uebook.HomeActivity.HomeFragment.Bookmark_Fragment;
 import com.ue.uebook.HomeActivity.HomeFragment.CompanyInfo_Fragment;
 import com.ue.uebook.HomeActivity.HomeFragment.Home_Fragment;
+import com.ue.uebook.HomeActivity.HomeFragment.Pojo.HomeListing;
+import com.ue.uebook.HomeActivity.HomeFragment.Pojo.HomeListingResponse;
 import com.ue.uebook.HomeActivity.HomeFragment.Search_Fragment;
 import com.ue.uebook.HomeActivity.HomeFragment.UserMainFragment;
 import com.ue.uebook.HomeActivity.HomeFragment.UserProfile_Fragment;
@@ -17,25 +26,35 @@ import com.ue.uebook.R;
 import com.ue.uebook.SessionManager;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class HomeScreen extends BaseActivity implements Home_Fragment.OnFragmentInteractionListener, Bookmark_Fragment.OnFragmentInteractionListener, User_Fragment.OnFragmentInteractionListener, Search_Fragment.OnFragmentInteractionListener, UserProfile_Fragment.OnFragmentInteractionListener, UserMainFragment.OnFragmentInteractionListener, CompanyInfo_Fragment.OnFragmentInteractionListener {
     private ActionBar toolbar;
+    private List<HomeListing> recommendedList_book,newBookList;
 
 
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
-
+         recommendedList_book= new ArrayList<>();
+         newBookList = new ArrayList<>();
         displayCurrentAddress();
         toolbar = getSupportActionBar();
-
+        getRecommenedBookList("1");
+        getnewBookList("2");
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         loadFragment(new Home_Fragment());
@@ -105,6 +124,8 @@ public class HomeScreen extends BaseActivity implements Home_Fragment.OnFragment
         };
         t.start();
     }
+
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -118,5 +139,68 @@ public class HomeScreen extends BaseActivity implements Home_Fragment.OnFragment
         super.onActivityResult(requestCode, resultCode, data);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private void getRecommenedBookList(String categoryId) {
+        ApiRequest request = new ApiRequest();
+        if (recommendedList_book.size()>0)
+            recommendedList_book.clear();
+
+        request.requestforgetBookList(categoryId, new okhttp3.Callback() {
+            @Override
+            public void onFailure(okhttp3.Call call, IOException e) {
+                Log.d("error", "error");
+
+            }
+            @Override
+            public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
+                String myResponse = response.body().string();
+                Gson gson = new GsonBuilder().create();
+                final HomeListingResponse form = gson.fromJson(myResponse, HomeListingResponse.class);
+                if (form.getError().equalsIgnoreCase("false") && form.getData() != null) {
+                    recommendedList_book.addAll(form.getData());
+                }
+            }
+        });
+    }
+
+
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private void getnewBookList(String categoryId) {
+        ApiRequest request = new ApiRequest();
+        if (newBookList.size()>0)
+            newBookList.clear();
+
+        request.requestforgetBookList(categoryId, new okhttp3.Callback() {
+            @Override
+            public void onFailure(okhttp3.Call call, IOException e) {
+                Log.d("error", "error");
+
+
+            }
+
+            @Override
+            public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
+                String myResponse = response.body().string();
+                Gson gson = new GsonBuilder().create();
+                final HomeListingResponse form = gson.fromJson(myResponse, HomeListingResponse.class);
+                if (form.getError().equalsIgnoreCase("false") && form.getData() != null) {
+                    newBookList.addAll(form.getData());
+                }
+
+            }
+        });
+    }
+
+
+
+
+    public List<HomeListing> getRecommendedListBookData() {
+        return recommendedList_book;
+    }
+
+    public List<HomeListing> getnewBookData() {
+        return recommendedList_book;
+    }
 }
 

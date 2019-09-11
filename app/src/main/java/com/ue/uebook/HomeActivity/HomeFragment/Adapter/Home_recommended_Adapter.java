@@ -31,7 +31,7 @@ public class Home_recommended_Adapter extends RecyclerView.Adapter<Home_recommen
         this.mctx=mctx;
     }
     public interface RecommendedItemClick {
-        void onItemClick(int position);
+        void onItemClick(int position ,String book_id);
     }
 
     public void setItemClickListener(RecommendedItemClick clickListener) {
@@ -54,7 +54,7 @@ public class Home_recommended_Adapter extends RecyclerView.Adapter<Home_recommen
             @Override
             public void onClick(View view) {
                 if (recommendedItemClick != null) {
-                    recommendedItemClick.onItemClick(position);
+                    recommendedItemClick.onItemClick(position,recommendedList_book.get(position).getId());
                 }
             }
         });

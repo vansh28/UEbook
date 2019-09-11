@@ -24,7 +24,7 @@
                 android:layout_height="@dimen/size_180"
                 android:layout_centerHorizontal="true"
                 android:padding="@dimen/size_5"
-                android:scaleType="fitCenter"
+                android:scaleType="fitXY"
                />
     </androidx.cardview.widget.CardView>
     <TextView

@@ -7,13 +7,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 
 import com.ue.uebook.HomeActivity.HomeFragment.Adapter.Language_adapter;
 import com.ue.uebook.LoginActivity.LoginScreen;
 import com.ue.uebook.R;
+
+import java.util.Locale;
 
 public class InerfaceLanguageScreen extends AppCompatActivity implements Language_adapter.LanguageItemClick, View.OnClickListener {
 
@@ -68,5 +72,16 @@ public class InerfaceLanguageScreen extends AppCompatActivity implements Languag
         AlertDialog alert = builder.create();
         alert.show();
     }
+    private void setLanguage(String language){
 
+        Locale locale = new Locale(language);
+        Locale.setDefault(locale);
+        Configuration config = new Configuration();
+        config.locale = locale;
+        getApplicationContext().getResources().updateConfiguration(config, null);
+        Intent intent = new Intent(getApplicationContext(),HomeScreen.class);
+        startActivity(intent);
+        finish();
+
+    }
 }

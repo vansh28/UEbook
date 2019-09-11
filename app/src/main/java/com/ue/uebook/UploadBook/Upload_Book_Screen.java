@@ -51,6 +51,8 @@ import com.ue.uebook.UploadBook.Pojo.BookCategoryPojo;
 import com.ue.uebook.UploadBook.Pojo.BookCategoryResponsePojo;
 import com.ue.uebook.UploadBook.Pojo.UploadPojo;
 
+import org.apache.http.entity.mime.content.FileBody;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -58,6 +60,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
+import java.util.concurrent.TimeUnit;
 
 import in.gauriinfotech.commons.Commons;
 import io.github.lizhangqu.coreprogress.ProgressHelper;
@@ -80,7 +83,7 @@ public class Upload_Book_Screen extends AppCompatActivity implements View.OnClic
     private ImageButton back_btn_uploadbook;
     private LinearLayout upload_cover_bookBtn;
     private RelativeLayout cover_image_layout;
-    private String filePath;
+    private String filePath,selectedvideoPath;
     private String fileName;
     private String encodedString;
     private String uriData;
@@ -103,7 +106,7 @@ public class Upload_Book_Screen extends AppCompatActivity implements View.OnClic
     private Button publishBtn;
     private int categorytype;
     private EditText bookTitle, bookDesc,authorName;
-    private File coverimage;
+    private File coverimage , videofile;
     private File docfile;
     private SpeechRecognizer speech = null;
     private Intent recognizerIntent;
@@ -365,12 +368,11 @@ public class Upload_Book_Screen extends AppCompatActivity implements View.OnClic
         imageUtils.onActivityResult(requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_PICK_VIDEO) {
-            if (data == null) {
 
+            Uri selectedVideoUri = data.getData();
+            selectedvideoPath = getPath(selectedVideoUri);
+            System.out.println("SELECT_VIDEO Path : " + selectedvideoPath);
 
-            } else if (requestCode == 1) {
-
-            }
 
 
         }
@@ -391,7 +393,7 @@ public class Upload_Book_Screen extends AppCompatActivity implements View.OnClic
     }
 
 
-    public void requestforUploadVideo(final File profile_image) {
+    public void requestforUploadVideo(String profile_image) {
         String url = null;
         dialog.show();
         dialog.setTitle("Uploading");
@@ -399,11 +401,12 @@ public class Upload_Book_Screen extends AppCompatActivity implements View.OnClic
         url = " http://dnddemo.com/ebooks/api/v1/addNewBook";
         OkHttpClient client = new OkHttpClient();
         final MediaType MEDIA_TYPE_PNG = MediaType.parse("*/*");
+        FileBody filebodyVideo = new FileBody(new File(videoPath));
         RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
                 .addFormDataPart("user_id", "1")
                 .addFormDataPart("category_id", "1")
                 .addFormDataPart("book_title", "book")
-                .addFormDataPart("video_url", profile_image.getName(), RequestBody.create(MEDIA_TYPE_PNG, profile_image))
+                .addFormDataPart("video_url", String.valueOf(filebodyVideo))
                 .build();
 
         Request request = new Request.Builder()
@@ -635,6 +638,24 @@ public class Upload_Book_Screen extends AppCompatActivity implements View.OnClic
         }
         return message;
     }
+    private String getvideoPath(Uri uri) {
+        String[] projection = { MediaStore.Video.Media.DATA, MediaStore.Video.Media.SIZE, MediaStore.Video.Media.DURATION};
+        Cursor cursor = managedQuery(uri, projection, null, null, null);
+        cursor.moveToFirst();
+        String filePath = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATA));
+        int fileSize = cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.SIZE));
+        long duration = TimeUnit.MILLISECONDS.toSeconds(cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DURATION)));
+
+
+        //some extra potentially useful data to help with filtering if necessary
+        System.out.println("size: " + fileSize);
+        System.out.println("path: " + filePath);
+        System.out.println("duration: " + duration);
+
+        return filePath;
+    }
+
+
 }
 
 

@@ -58,28 +58,28 @@
         android:visibility="visible"
         android:layout_margin="6dp"
         app:cardMaxElevation="15dp">
+
         <ImageView
-            android:id="@+id/item_image"
+            android:id="@+id/bookcoverImage"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/size_200"
+            android:layout_height="191dp"
             android:layout_centerHorizontal="true"
             android:padding="@dimen/size_5"
-            android:scaleType="fitCenter"
-            android:background="@drawable/images" />
+            android:scaleType="fitXY" />
     </androidx.cardview.widget.CardView>
     <TextView
+        android:id="@+id/book_name_detail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="20sp"
-        android:text="The Good Son"
         android:layout_marginLeft="6dp"
         android:textStyle="bold"
         android:textColor="@color/black"/>
     <TextView
+        android:id="@+id/bookauthor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="16sp"
-        android:text="Author Name"
         android:layout_marginLeft="6dp"
         android:layout_marginTop="@dimen/size_5"
         android:textColor="#696868"/>
@@ -107,10 +107,10 @@
                 android:textColor="@color/black"/>
 
     <TextView
+        android:id="@+id/book_desc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="16sp"
-        android:text="@string/demoText"
         android:padding="@dimen/size_5"
         android:visibility="visible"
         android:paddingLeft="@dimen/size_10"

@@ -145,8 +145,37 @@ public class ApiRequest {
         client.newCall(request).enqueue(callback);
 
     }
+    public void requestforgetBookDetail(final String book_id ,Callback callback) {
+        String url = null;
+        url = BaseUrl + "getBookDetail";
+        OkHttpClient client = new OkHttpClient();
+        RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
+                .addFormDataPart("book_id", book_id)
+                .build();
 
+        Request request = new Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .build();
+        client.newCall(request).enqueue(callback);
 
+    }
+
+    public void requestforaddBookmark(final String book_id ,final  String bookmark_status,Callback callback) {
+        String url = null;
+        url = BaseUrl + "bookMark";
+        OkHttpClient client = new OkHttpClient();
+        RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
+                .addFormDataPart("book_id", book_id)
+                .addFormDataPart("bookmark_status", bookmark_status)
+                .build();
+        Request request = new Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .build();
+        client.newCall(request).enqueue(callback);
+
+    }
 
 }
 

@@ -192,7 +192,21 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
             }
 
         } else if (view == google_login_btn) {
-            signIn();
+
+            if (getInstance(this).isConnectingToInternet()) {
+                signIn();
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                    showLoadingIndicator();
+                }
+
+
+            } else {
+
+                showSnackBar(login_screen, getString(R.string.no_internet));
+            }
+
+
+
 
         } else if (view == have_Account_btn) {
 
@@ -261,23 +275,27 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
         GraphRequest request = GraphRequest.newMeRequest(newAccessToken, new GraphRequest.GraphJSONObjectCallback() {
             @Override
             public void onCompleted(JSONObject object, GraphResponse response) {
-                try {
-                    final String first_name = object.getString("first_name");
-                    final String last_name = object.getString("last_name");
-                    final String email = object.getString("email");
-                    String id = object.getString("id");
-                    final String image_url = "https://graph.facebook.com/" + id + "/picture?type=normal";
+                if (object!=null){
+                    try {
+                        final String first_name = object.getString("first_name");
+                        final String last_name = object.getString("last_name");
+                        final String email = object.getString("email");
+                        String id = object.getString("id");
+                        final String image_url = "https://graph.facebook.com/" + id + "/picture?type=normal";
 
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            showDialog(first_name, last_name, email, image_url);
-                        }
-                    });
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                showDialog(first_name, last_name, email, image_url);
+                            }
+                        });
 
 
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+
                 }
 
             }
