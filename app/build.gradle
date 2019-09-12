@@ -53,8 +53,4 @@ dependencies {
     implementation 'com.afollestad.material-dialogs:core:0.9.4.5'
     implementation 'in.gauriinfotech:commons:1.0.8'
     implementation 'io.github.lizhangqu:coreprogress:1.0.2'
-    compile group: 'org.apache.httpcomponents' , name: 'httpclient-android' , version: '4.3.5.1'
-    compile('org.apache.httpcomponents:httpmime:4.3') {
-        exclude module: "httpclient"
-    }
 }

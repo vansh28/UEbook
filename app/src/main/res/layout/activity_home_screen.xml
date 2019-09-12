@@ -21,6 +21,17 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
     </LinearLayout>
     </ScrollView>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+       android:id="@+id/addnotes_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
+        app:srcCompat="@drawable/plus"
+        android:layout_marginRight="@dimen/size_20"
+        android:layout_marginBottom="@dimen/size_100"
+        app:layout_anchorGravity="bottom|right|end" />
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/navigation"
         android:layout_width="match_parent"
@@ -30,5 +41,4 @@
         app:itemBackground="@drawable/bottom_navigation_bg"
         app:itemTextColor="@color/colorPrimary"
         app:menu="@menu/navigation" />
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

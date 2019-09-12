@@ -34,6 +34,7 @@ import com.ue.uebook.HomeActivity.HomeFragment.Home_Fragment;
 import com.ue.uebook.HomeActivity.HomeFragment.Pojo.HomeListingResponse;
 import com.ue.uebook.MySpannable;
 import com.ue.uebook.R;
+import com.ue.uebook.SessionManager;
 import com.ue.uebook.ShareUtils;
 import com.ue.uebook.WebviewScreen;
 
@@ -185,12 +186,11 @@ public class Book_Detail_Screen extends AppCompatActivity implements View.OnClic
             }
         });
     }
-
     private void addBookToBookmark(String book_id , String bookStatus) {
         ApiRequest request = new ApiRequest();
         dialog.setTitle("Please Wait");
         dialog.show();
-        request.requestforaddBookmark(book_id, bookStatus,new okhttp3.Callback() {
+        request.requestforaddBookmark(book_id, bookStatus,new SessionManager(getApplicationContext()).getUserID(),new okhttp3.Callback() {
             @Override
             public void onFailure(okhttp3.Call call, IOException e) {
                 Log.d("error", "error");

@@ -470,7 +470,7 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
         ApiRequest request = new ApiRequest();
         dialog.setMessage("please wait");
         dialog.show();
-        request.requestforRegistration(full_name, password, email, publisher_type, gender,country ,new okhttp3.Callback() {
+        request.requestforRegistration(full_name, password, email, publisher_type, gender,country,"" ,new okhttp3.Callback() {
             @Override
             public void onFailure(okhttp3.Call call, IOException e) {
 

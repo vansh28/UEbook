@@ -50,7 +50,7 @@ public class UserProfile_Fragment extends Fragment implements View.OnClickListen
     private String mParam2;
     private Spinner actor_Spinner;
     private ProgressDialog dialog;
-    private EditText username,useremail,userpassword,country__user;
+    private EditText username,useremail,userpassword,country__user,about_me;
     private Button update__userProfile;
     private String actortype;
 
@@ -99,6 +99,7 @@ public class UserProfile_Fragment extends Fragment implements View.OnClickListen
         useremail=view.findViewById(R.id.email_userProfile);
         userpassword=view.findViewById(R.id.password__userProfile);
         update__userProfile=view.findViewById(R.id.update__userProfile);
+        about_me=view.findViewById(R.id.brief_desc);
         country__user=view.findViewById(country__userProfile);
         update__userProfile.setOnClickListener(this);
         UserInfo(  new SessionManager(getContext()).getUserID());
@@ -158,7 +159,7 @@ public class UserProfile_Fragment extends Fragment implements View.OnClickListen
         switch (view.getId()){
 
             case R.id.update__userProfile:
-                UpdateUser(userpassword.getText().toString(),useremail.getText().toString(),actortype,country__user.getText().toString());
+                UpdateUser(userpassword.getText().toString(),useremail.getText().toString(),actortype,country__user.getText().toString(),about_me.getText().toString());
                 break;
 
         }
@@ -205,6 +206,7 @@ public class UserProfile_Fragment extends Fragment implements View.OnClickListen
                                 useremail.setText(form.getResponse().getEmail());
                                 userpassword.setText(form.getResponse().getPassword());
                                 country__user.setText(form.getResponse().getCountry());
+                                about_me.setText(form.getResponse().getAbout_me());
                                 if (form.getResponse().getPublisher_type().equalsIgnoreCase("Reader")){
                                     actor_Spinner.setSelection(0);
                                 }
@@ -224,11 +226,11 @@ public class UserProfile_Fragment extends Fragment implements View.OnClickListen
         });
     }
 
-    private void UpdateUser( String password, String email, String publisher_type ,String country ) {
+    private void UpdateUser( String password, String email, String publisher_type ,String country ,String about_me) {
         ApiRequest request = new ApiRequest();
         dialog.setMessage("please wait");
         dialog.show();
-        request.requestforUpdateProfile( new SessionManager(getContext()).getUserID(),password, email, publisher_type,country ,new okhttp3.Callback() {
+        request.requestforUpdateProfile( new SessionManager(getContext()).getUserID(),password, email, publisher_type,country,about_me ,new okhttp3.Callback() {
             @Override
             public void onFailure(okhttp3.Call call, IOException e) {
 

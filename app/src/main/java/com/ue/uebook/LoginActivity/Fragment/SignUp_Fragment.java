@@ -66,7 +66,7 @@ public class SignUp_Fragment extends Fragment implements View.OnClickListener {
     private String mParam1;
     private String mParam2;
     private NetworkAPI networkAPI;
-    private EditText username, userEmail, userPassword ,country_edit_text;
+    private EditText username, userEmail, userPassword ,country_edit_text,brief_desc;
     private RadioButton male, female;
     private CheckBox reader, writer, publisher;
     private RadioGroup radioGroup;
@@ -128,6 +128,7 @@ public class SignUp_Fragment extends Fragment implements View.OnClickListener {
         writer = view.findViewById(R.id.writer_checkbox);
         publisher = view.findViewById(R.id.publish_checkbox);
         country_edit_text=view.findViewById(R.id.country_edit_text);
+        brief_desc=view.findViewById(R.id.brief_desc);
 
         reader.setOnClickListener(this);
         writer.setOnClickListener(this);
@@ -205,7 +206,7 @@ public class SignUp_Fragment extends Fragment implements View.OnClickListener {
 
             case R.id.create_USerAccount:
                 if (isvalidate()) {
-                    registrationUser(username.getText().toString(), userPassword.getText().toString(), userEmail.getText().toString(), checkboxlist, gender ,country_edit_text.getText().toString());
+                    registrationUser(username.getText().toString(), userPassword.getText().toString(), userEmail.getText().toString(), checkboxlist, gender ,country_edit_text.getText().toString(),brief_desc.getText().toString());
                 }
                 break;
 
@@ -275,39 +276,42 @@ public class SignUp_Fragment extends Fragment implements View.OnClickListener {
 
     private Boolean isvalidate() {
         String userNAme = username.getText().toString();
+        String brief_des=brief_desc.getText().toString();
         String user_Email = userEmail.getText().toString();
         String userpass = userPassword.getText().toString();
         String country=country_edit_text.getText().toString();
         if (!userNAme.isEmpty()) {
-            if (!user_Email.isEmpty()) {
-                if (!userpass.isEmpty()) {
-                    if (!country.isEmpty()){
-                        if (gender != null) {
-                            return true;
-                        } else {
+            if (!brief_des.isEmpty()) {
+                if (!user_Email.isEmpty()) {
+                    if (!userpass.isEmpty()) {
+                        if (!country.isEmpty()) {
+                            if (gender != null) {
+                                return true;
+                            } else {
 
-                            Toast.makeText(getContext(), "Please Select your gender", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getContext(), "Please Select your gender", Toast.LENGTH_LONG).show();
+                                return false;
+                            }
+
+                        } else {
+                            Toast.makeText(getContext(), "Please Enter your Country", Toast.LENGTH_LONG).show();
                             return false;
                         }
 
-                    }
-                    else {
-                        Toast.makeText(getContext(), "Please Enter your Country", Toast.LENGTH_LONG).show();
+
+                    } else {
+
+                        Toast.makeText(getContext(), "Please Enter your Password", Toast.LENGTH_LONG).show();
                         return false;
                     }
-
-
-
                 } else {
-
-                    Toast.makeText(getContext(), "Please Enter your Password", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), "Please Enter your Email", Toast.LENGTH_LONG).show();
                     return false;
                 }
-            } else {
-                Toast.makeText(getContext(), "Please Enter your Email", Toast.LENGTH_LONG).show();
+            }else {
+                Toast.makeText(getContext(), "Please Enter your Brief Description", Toast.LENGTH_LONG).show();
                 return false;
             }
-
 
         } else {
             Toast.makeText(getContext(), "Please Enter your Username", Toast.LENGTH_LONG).show();
@@ -323,11 +327,11 @@ public class SignUp_Fragment extends Fragment implements View.OnClickListener {
     }
 
 
-    private void registrationUser(String full_name, String password, String email, String publisher_type, String gender,String country) {
+    private void registrationUser(String full_name, String password, String email, String publisher_type, String gender,String country,String about_me) {
         ApiRequest request = new ApiRequest();
         dialog.setMessage("please wait");
         dialog.show();
-        request.requestforRegistration(full_name, password, email, publisher_type, gender,country ,new okhttp3.Callback() {
+        request.requestforRegistration(full_name, password, email, publisher_type, gender,country, about_me,new okhttp3.Callback() {
             @Override
             public void onFailure(okhttp3.Call call, IOException e) {
 

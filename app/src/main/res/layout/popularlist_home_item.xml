@@ -34,6 +34,7 @@
         android:layout_marginRight="@dimen/size_5"
         android:orientation="vertical">
         <TextView
+            android:id="@+id/bookname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="18sp"
@@ -42,6 +43,7 @@
             android:layout_marginTop="@dimen/size_5"
             android:textColor="@color/black"/>
         <TextView
+            android:id="@+id/auhorname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="13sp"

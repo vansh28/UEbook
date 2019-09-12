@@ -16,6 +16,11 @@
         android:title="Search" />
 
     <item
+        android:id="@+id/notepad_bottom"
+        android:icon="@drawable/user"
+        android:title="Notepad" />
+
+    <item
         android:id="@+id/user_bottom"
         android:icon="@drawable/user"
         android:title="User" />

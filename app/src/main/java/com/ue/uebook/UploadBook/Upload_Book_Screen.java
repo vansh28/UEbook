@@ -51,7 +51,7 @@ import com.ue.uebook.UploadBook.Pojo.BookCategoryPojo;
 import com.ue.uebook.UploadBook.Pojo.BookCategoryResponsePojo;
 import com.ue.uebook.UploadBook.Pojo.UploadPojo;
 
-import org.apache.http.entity.mime.content.FileBody;
+
 
 import java.io.File;
 import java.io.IOException;
@@ -237,17 +237,13 @@ public class Upload_Book_Screen extends AppCompatActivity implements View.OnClic
                 }
                 else {
                     requestforUploadBook(new SessionManager(getApplicationContext()).getUserID(), String.valueOf(categorytype), bookTitle.getText().toString(), coverimage, bookDesc.getText().toString(),null,authorName.getText().toString());
-
                 }
             }
-
 
         } else if (view == cover_image_layout) {
             imagePreview(bitmap);
         }
     }
-
-
     private void imagePreview(Bitmap file) {
         final Dialog previewDialog = new Dialog(this);
         previewDialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
@@ -324,7 +320,6 @@ public class Upload_Book_Screen extends AppCompatActivity implements View.OnClic
                 .addFormDataPart("book_title", booktitle)
                 .addFormDataPart("book_description", book_description)
                 .addFormDataPart("author_name", author_name)
-
                 .addFormDataPart("pdf_url", docfile.getName(), RequestBody.create(MediaType.parse("text/csv"), docFile))
                 .addFormDataPart("thubm_image", profile_image.getName(), RequestBody.create(MEDIA_TYPE_PNG, profile_image))
                 .build();
@@ -393,43 +388,6 @@ public class Upload_Book_Screen extends AppCompatActivity implements View.OnClic
     }
 
 
-    public void requestforUploadVideo(String profile_image) {
-        String url = null;
-        dialog.show();
-        dialog.setTitle("Uploading");
-
-        url = " http://dnddemo.com/ebooks/api/v1/addNewBook";
-        OkHttpClient client = new OkHttpClient();
-        final MediaType MEDIA_TYPE_PNG = MediaType.parse("*/*");
-        FileBody filebodyVideo = new FileBody(new File(videoPath));
-        RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
-                .addFormDataPart("user_id", "1")
-                .addFormDataPart("category_id", "1")
-                .addFormDataPart("book_title", "book")
-                .addFormDataPart("video_url", String.valueOf(filebodyVideo))
-                .build();
-
-        Request request = new Request.Builder()
-                .url(url)
-                .post(requestBody)
-                .build();
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                dialog.dismiss();
-
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                String res = response.body().string();
-                dialog.dismiss();
-                Gson gson = new GsonBuilder().create();
-                final UploadPojo form = gson.fromJson(res, UploadPojo.class);
-
-            }
-        });
-    }
 
     private void getBookCategory() {
         ApiRequest request = new ApiRequest();

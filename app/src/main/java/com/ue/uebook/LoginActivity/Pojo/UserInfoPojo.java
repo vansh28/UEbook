@@ -19,7 +19,9 @@ public class UserInfoPojo {
     private String device_type;
     private String address;
     private String  global_posting;
-    public UserInfoPojo(String id, String register_id, String full_name, String user_name, String email, String gender, String phone_no, String url, String country, String password, String date_edited, String status, String message_status, String publisher_type, String device_token, String device_type, String address, String global_posting) {
+    private String about_me;
+
+    public UserInfoPojo(String id, String register_id, String full_name, String user_name, String email, String gender, String phone_no, String url, String country, String password, String date_edited, String status, String message_status, String publisher_type, String device_token, String device_type, String address, String global_posting, String about_me) {
         this.id = id;
         this.register_id = register_id;
         this.full_name = full_name;
@@ -38,6 +40,7 @@ public class UserInfoPojo {
         this.device_type = device_type;
         this.address = address;
         this.global_posting = global_posting;
+        this.about_me = about_me;
     }
 
     public String getId() {
@@ -182,6 +185,14 @@ public class UserInfoPojo {
 
     public void setGlobal_posting(String global_posting) {
         this.global_posting = global_posting;
+    }
+
+    public String getAbout_me() {
+        return about_me;
+    }
+
+    public void setAbout_me(String about_me) {
+        this.about_me = about_me;
     }
 }
 

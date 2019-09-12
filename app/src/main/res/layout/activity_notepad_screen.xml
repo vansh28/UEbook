@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".NotepadScreen">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary">
+
+        <ImageButton
+            android:id="@+id/back_btn_notes"
+            android:layout_width="@dimen/size_50"
+            android:layout_height="@dimen/size_50"
+            android:layout_centerVertical="true"
+            android:layout_margin="@dimen/size_5"
+            android:background="@android:color/transparent"
+            android:src="@drawable/backbtn"></ImageButton>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Your Notes"
+            android:textColor="@color/white"
+            android:textSize="@dimen/size_18"></TextView>
+        <ImageButton
+            android:id="@+id/delete_Btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            app:srcCompat="@drawable/ic_delete_black_32dp"
+            android:visibility="gone"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/size_20"></ImageButton>
+        <ImageButton
+            android:id="@+id/edit_Post"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            app:srcCompat="@drawable/edit"
+            android:visibility="gone"
+            android:layout_toLeftOf="@+id/delete_Btn"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/size_20"></ImageButton>
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <EditText
+            android:id="@+id/notes_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/size_10"
+            android:textColor="@color/black"
+            android:textSize="@dimen/size_20"
+            android:gravity="start"
+            android:hint="Write Your Notes here :"
+            ></EditText>
+
+        <Button
+            android:id="@+id/updateNote"
+            android:layout_width="match_parent"
+            android:layout_alignParentBottom="true"
+            android:background="@color/colorPrimary"
+            android:textColor="@color/white"
+            android:textSize="@dimen/size_20"
+            android:text="Update Notes"
+            android:layout_height="@dimen/size_50"></Button>
+    </RelativeLayout>
+
+</LinearLayout>

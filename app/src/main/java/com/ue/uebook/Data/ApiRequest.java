@@ -20,7 +20,7 @@ import okhttp3.RequestBody;
 public class ApiRequest {
     private static final String BaseUrl = "http://dnddemo.com/ebooks/api/v1/";
 
-    public void requestforRegistration(final String full_name, final String password, final String email, final String publisher_type, final String gender, final String country, Callback callback) {
+    public void requestforRegistration(final String full_name, final String password, final String email, final String publisher_type, final String gender, final String country,final String about_me ,Callback callback) {
         String url = null;
         url = BaseUrl + "createUser";
         OkHttpClient client = new OkHttpClient();
@@ -31,6 +31,7 @@ public class ApiRequest {
                 .addFormDataPart("publisher_type", publisher_type)
                 .addFormDataPart("gender", gender)
                 .addFormDataPart("country", country)
+                .addFormDataPart("about_me", about_me)
 
                 .build();
 
@@ -58,7 +59,7 @@ public class ApiRequest {
     }
 
 
-    public void requestforUpdateProfile(final String user_id , final String password, final String email, final String publisher_type, final  String country, Callback callback) {
+    public void requestforUpdateProfile(final String user_id , final String password, final String email, final String publisher_type, final  String country, final String about_me,Callback callback) {
         String url = null;
         url = BaseUrl + "userEdit";
         OkHttpClient client = new OkHttpClient();
@@ -68,6 +69,9 @@ public class ApiRequest {
                 .addFormDataPart("email", email)
                 .addFormDataPart("publisher_type", publisher_type)
                 .addFormDataPart("country", country)
+                .addFormDataPart("about_me", about_me)
+
+
                 .build();
 
         Request request = new Request.Builder()
@@ -161,22 +165,21 @@ public class ApiRequest {
 
     }
 
-    public void requestforaddBookmark(final String book_id ,final  String bookmark_status,Callback callback) {
+    public void requestforaddBookmark(final String book_id ,final  String bookmark_status,final  String userId,Callback callback) {
         String url = null;
         url = BaseUrl + "bookMark";
         OkHttpClient client = new OkHttpClient();
         RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
                 .addFormDataPart("book_id", book_id)
-                .addFormDataPart("bookmark_status", bookmark_status)
+                .addFormDataPart("user_id", userId)
+
                 .build();
         Request request = new Request.Builder()
                 .url(url)
                 .post(requestBody)
                 .build();
         client.newCall(request).enqueue(callback);
-
     }
-
 }
 
 

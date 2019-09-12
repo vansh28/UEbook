@@ -1,12 +1,16 @@
 package com.ue.uebook.HomeActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.ue.uebook.BaseActivity;
@@ -16,12 +20,14 @@ import com.ue.uebook.HomeActivity.HomeFragment.Adapter.New_Book_Home_Adapter;
 import com.ue.uebook.HomeActivity.HomeFragment.Bookmark_Fragment;
 import com.ue.uebook.HomeActivity.HomeFragment.CompanyInfo_Fragment;
 import com.ue.uebook.HomeActivity.HomeFragment.Home_Fragment;
+import com.ue.uebook.HomeActivity.HomeFragment.NotepadFragment;
 import com.ue.uebook.HomeActivity.HomeFragment.Pojo.HomeListing;
 import com.ue.uebook.HomeActivity.HomeFragment.Pojo.HomeListingResponse;
 import com.ue.uebook.HomeActivity.HomeFragment.Search_Fragment;
 import com.ue.uebook.HomeActivity.HomeFragment.UserMainFragment;
 import com.ue.uebook.HomeActivity.HomeFragment.UserProfile_Fragment;
 import com.ue.uebook.HomeActivity.HomeFragment.User_Fragment;
+import com.ue.uebook.NotepadScreen;
 import com.ue.uebook.R;
 import com.ue.uebook.SessionManager;
 
@@ -30,6 +36,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -37,24 +44,43 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.ue.uebook.NetworkUtils.getInstance;
 
-public class HomeScreen extends BaseActivity implements Home_Fragment.OnFragmentInteractionListener, Bookmark_Fragment.OnFragmentInteractionListener, User_Fragment.OnFragmentInteractionListener, Search_Fragment.OnFragmentInteractionListener, UserProfile_Fragment.OnFragmentInteractionListener, UserMainFragment.OnFragmentInteractionListener, CompanyInfo_Fragment.OnFragmentInteractionListener {
+
+public class HomeScreen extends BaseActivity implements Home_Fragment.OnFragmentInteractionListener, Bookmark_Fragment.OnFragmentInteractionListener, User_Fragment.OnFragmentInteractionListener, Search_Fragment.OnFragmentInteractionListener, UserProfile_Fragment.OnFragmentInteractionListener, UserMainFragment.OnFragmentInteractionListener, CompanyInfo_Fragment.OnFragmentInteractionListener, NotepadFragment.OnFragmentInteractionListener, View.OnClickListener {
     private ActionBar toolbar;
     private List<HomeListing> recommendedList_book,newBookList;
+    private FloatingActionButton addnotes_fab;
+    private CoordinatorLayout container;
 
 
 
+    @SuppressLint("RestrictedApi")
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
+        addnotes_fab=findViewById(R.id.addnotes_fab);
+        addnotes_fab.setVisibility(View.GONE);
+        container=findViewById(R.id.container);
+        addnotes_fab.setOnClickListener(this);
          recommendedList_book= new ArrayList<>();
          newBookList = new ArrayList<>();
         displayCurrentAddress();
         toolbar = getSupportActionBar();
-        getRecommenedBookList("1");
-        getnewBookList("2");
+
+        if (getInstance(this).isConnectingToInternet()){
+            getRecommenedBookList("1");
+
+            getnewBookList("2");
+
+        }
+        else {
+
+            showSnackBar(container, getString(R.string.no_internet));
+        }
+
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         loadFragment(new Home_Fragment());
@@ -62,6 +88,7 @@ public class HomeScreen extends BaseActivity implements Home_Fragment.OnFragment
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
+        @SuppressLint("RestrictedApi")
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             Fragment fragment;
@@ -69,17 +96,27 @@ public class HomeScreen extends BaseActivity implements Home_Fragment.OnFragment
                 case R.id.home_bottom:
                     fragment = new Home_Fragment();
                     loadFragment(fragment);
+                    addnotes_fab.setVisibility(View.GONE);
                     return true;
                 case R.id.search_bottom:
+                    addnotes_fab.setVisibility(View.GONE);
                     fragment = new Search_Fragment();
                     loadFragment(fragment);
+
                     return true;
                 case R.id.bookmark_bottom:
+                    addnotes_fab.setVisibility(View.GONE);
                     fragment = new Bookmark_Fragment();
                     loadFragment(fragment);
                     return true;
                 case R.id.user_bottom:
+                    addnotes_fab.setVisibility(View.GONE);
                     fragment = new User_Fragment();
+                    loadFragment(fragment);
+                    return true;
+                case R.id.notepad_bottom:
+                    addnotes_fab.setVisibility(View.VISIBLE);
+                    fragment = new NotepadFragment();
                     loadFragment(fragment);
                     return true;
             }
@@ -201,6 +238,14 @@ public class HomeScreen extends BaseActivity implements Home_Fragment.OnFragment
 
     public List<HomeListing> getnewBookData() {
         return recommendedList_book;
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (view==addnotes_fab){
+            Intent intent  = new Intent(HomeScreen.this,NotepadScreen.class);
+            startActivity(intent);
+        }
     }
 }
 
