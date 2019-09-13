@@ -20,4 +20,7 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
     <string name="ok_txt" translatable="false">ok</string>
     <string name="msg_loading" translatable="false">Loading</string>
     <string name="uploadImages">Image</string>
+    <string name="search_hint">hint</string>
+    <string name="app_label">Uebook</string>
+    <string name="nobookmark">No Bookmark List</string>
 </resources>

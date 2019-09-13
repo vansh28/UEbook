@@ -3,11 +3,9 @@ package com.ue.uebook;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
-
 import static android.content.Context.MODE_PRIVATE;
 
 public class SessionManager {
-
     private static final String SHARED_PREFERENCE_NAME = "com.ue.uebook.sharedPreference";
     private static final String userimage = "userImage";
     private static final String Location = "location";
@@ -17,7 +15,6 @@ public class SessionManager {
     private static final String UserName = "UserName";
     private SharedPreferences sharedPreference;
     private SharedPreferences.Editor editor;
-
     @SuppressLint("CommitPrefEdits")
     public SessionManager(Context mCtx) {
         if (sharedPreference == null) {
@@ -25,12 +22,10 @@ public class SessionManager {
             editor = sharedPreference.edit();
         }
     }
-
     public void storeUserImage(final String userImage) {
         editor.putString(userimage, userImage);
         editor.commit();
     }
-
     public String getUserimage() {
         return sharedPreference.getString(userimage, "");
     }
@@ -38,7 +33,6 @@ public class SessionManager {
         editor.putString(Location, location);
         editor.commit();
     }
-
     public String getUserLocation() {
         return sharedPreference.getString(Location, "");
     }
@@ -46,7 +40,6 @@ public class SessionManager {
         editor.putString(Publish, type);
         editor.commit();
     }
-
     public String getUserPublishType() {
         return sharedPreference.getString(Publish, "");
     }
@@ -55,7 +48,6 @@ public class SessionManager {
         editor.putInt(LoginStatus, type);
         editor.commit();
     }
-
     public int getLoginStatus() {
         return sharedPreference.getInt(LoginStatus, 0);
     }
@@ -63,21 +55,17 @@ public class SessionManager {
         editor.clear();
         editor.commit();
     }
-
     public void storeUseruserID(final String userId) {
         editor.putString(UserId, userId);
         editor.commit();
     }
-
     public String getUserID() {
         return sharedPreference.getString(UserId, "");
     }
-
     public void storeUserName(final String userId) {
         editor.putString(UserName, userId);
         editor.commit();
     }
-
     public String getUserName() {
         return sharedPreference.getString(UserName, "");
     }

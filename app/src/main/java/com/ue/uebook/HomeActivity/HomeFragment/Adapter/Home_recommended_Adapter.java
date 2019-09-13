@@ -18,17 +18,23 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class Home_recommended_Adapter extends RecyclerView.Adapter<Home_recommended_Adapter.MyViewHolder> {
 
     private RecommendedItemClick recommendedItemClick;
     List<HomeListing> recommendedList_book;
     private AppCompatActivity mctx;
+     // for loading main list
+    private List<HomeListing> arraylist=null;  // for loading  filter data
 
     public Home_recommended_Adapter(AppCompatActivity mctx, List<HomeListing> recommendedList_book) {
         this.recommendedList_book=recommendedList_book;
         this.mctx=mctx;
+        this.arraylist = new ArrayList<HomeListing>();
+        this.arraylist.addAll(recommendedList_book);
     }
     public interface RecommendedItemClick {
         void onItemClick(int position ,String book_id);
@@ -81,5 +87,21 @@ public class Home_recommended_Adapter extends RecyclerView.Adapter<Home_recommen
             book_cover =itemView.findViewById(R.id.item_image);
 
         }
+    }
+    public void filter(String charText) {
+        charText = charText.toLowerCase(Locale.getDefault());
+        recommendedList_book.clear();
+        if (charText.length() == 0) {
+            recommendedList_book.addAll(arraylist);
+        }
+        else
+        {
+            for (HomeListing wp : arraylist) {
+                if (wp.getBook_title().toLowerCase(Locale.getDefault()).contains(charText)) {
+                    recommendedList_book.add(wp);
+                }
+            }
+        }
+        notifyDataSetChanged();
     }
 }

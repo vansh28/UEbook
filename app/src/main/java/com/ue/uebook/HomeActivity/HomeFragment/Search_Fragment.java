@@ -1,15 +1,24 @@
 package com.ue.uebook.HomeActivity.HomeFragment;
 
+import android.app.SearchManager;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.provider.SearchRecentSuggestions;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,9 +26,20 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.ue.uebook.Data.ApiRequest;
+import com.ue.uebook.DeatailActivity.Book_Detail_Screen;
 import com.ue.uebook.HomeActivity.HomeFragment.Adapter.Language_adapter;
 import com.ue.uebook.HomeActivity.HomeFragment.Adapter.Search_History_Adapter;
+import com.ue.uebook.HomeActivity.HomeFragment.Pojo.HomeListing;
+import com.ue.uebook.HomeActivity.HomeFragment.Pojo.HomeListingResponse;
+import com.ue.uebook.MySuggestionProvider;
 import com.ue.uebook.R;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
 
@@ -43,6 +63,7 @@ public class Search_Fragment extends Fragment implements View.OnClickListener, S
     private RecyclerView search_history_list;
     private Search_History_Adapter search_history_adapter;
     private EditText edittext_search;
+    private List<HomeListing>bookList;
 
 
     private OnFragmentInteractionListener mListener;
@@ -72,12 +93,14 @@ public class Search_Fragment extends Fragment implements View.OnClickListener, S
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        bookList=new ArrayList<>();
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -85,13 +108,35 @@ public class Search_Fragment extends Fragment implements View.OnClickListener, S
         View view = inflater.inflate(R.layout.fragment_search_, container, false);
         search_history_list=view.findViewById(R.id.search_history_list);
         edittext_search=view.findViewById(R.id.edittext_search);
+        edittext_search.requestFocus();
         edittext_search.setOnClickListener(this);
+        getRecommenedBookList("1");
+        search_history_list.setNestedScrollingEnabled(true);
+        search_history_list.setVisibility(View.GONE);
         LinearLayoutManager linearLayoutManagerPopularList = new LinearLayoutManager(getActivity());
         linearLayoutManagerPopularList.setOrientation(LinearLayoutManager.VERTICAL);
         search_history_list.setLayoutManager(linearLayoutManagerPopularList);
-        search_history_adapter = new Search_History_Adapter();
-        search_history_list.setAdapter(search_history_adapter);
-        search_history_adapter.setItemClickListener(this);
+
+        edittext_search.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                search_history_list.setVisibility(View.VISIBLE);
+                search_history_adapter.filter(charSequence.toString());
+
+
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
         return  view;
     }
 
@@ -123,9 +168,14 @@ public class Search_Fragment extends Fragment implements View.OnClickListener, S
     public void onClick(View view) {
        }
 
-    @Override
-    public void onItemClick(int position) {
 
+
+    @Override
+    public void onItemClick(int position, String book_id) {
+        Intent intent = new Intent(getActivity(), Book_Detail_Screen.class);
+        intent.putExtra("book_id", book_id);
+        intent.putExtra("position",position);
+        getActivity().startActivity(intent);
     }
 
     /**
@@ -142,4 +192,37 @@ public class Search_Fragment extends Fragment implements View.OnClickListener, S
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private void getRecommenedBookList(String categoryId) {
+        ApiRequest request = new ApiRequest();
+        if (bookList.size()>0)
+            bookList.clear();
+
+        request.requestforgetBookList(categoryId, new okhttp3.Callback() {
+            @Override
+            public void onFailure(okhttp3.Call call, IOException e) {
+                Log.d("error", "error");
+
+            }
+            @Override
+            public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
+                String myResponse = response.body().string();
+                Gson gson = new GsonBuilder().create();
+                final HomeListingResponse form = gson.fromJson(myResponse, HomeListingResponse.class);
+                if (form.getError().equalsIgnoreCase("false") && form.getData() != null) {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            search_history_adapter = new Search_History_Adapter((AppCompatActivity) getActivity(),form.getData());
+                            search_history_list.setAdapter(search_history_adapter);
+                            search_history_adapter.setItemClickListener(Search_Fragment.this);
+                            search_history_adapter.notifyDataSetChanged();
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+
 }

@@ -1,17 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".HomeActivity.HomeFragment.Bookmark_Fragment">
+    <RelativeLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/colorPrimary">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:text="Bookmark Book"
+            android:textColor="@color/white"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/size_100"
+            android:textSize="@dimen/size_20"></TextView>
+
+    </RelativeLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/bookmark_Book_list"
         android:layout_width="match_parent"
+        android:layout_below="@+id/header"
         android:layout_margin="@dimen/size_10"
         android:layout_height="match_parent">
 
     </androidx.recyclerview.widget.RecyclerView>
+    <TextView
+        android:id="@+id/textNobookmarkList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:visibility="gone"
+        android:text="@string/nobookmark"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/size_20" />
 
-
-</LinearLayout>
+</RelativeLayout>

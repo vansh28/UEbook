@@ -229,15 +229,12 @@ public class HomeScreen extends BaseActivity implements Home_Fragment.OnFragment
         });
     }
 
-
-
-
     public List<HomeListing> getRecommendedListBookData() {
         return recommendedList_book;
     }
 
     public List<HomeListing> getnewBookData() {
-        return recommendedList_book;
+        return newBookList;
     }
 
     @Override

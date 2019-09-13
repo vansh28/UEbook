@@ -105,13 +105,13 @@
                 android:layout_margin="12dp"
                 android:textStyle="bold"
                 android:textColor="@color/black"/>
-
     <TextView
         android:id="@+id/book_desc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="16sp"
         android:padding="@dimen/size_5"
+        android:textIsSelectable="true"
         android:visibility="visible"
         android:paddingLeft="@dimen/size_10"
         android:layout_margin="@dimen/size_10"

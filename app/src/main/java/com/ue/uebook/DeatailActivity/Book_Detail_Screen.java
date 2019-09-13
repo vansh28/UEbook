@@ -6,11 +6,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Html;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -39,6 +43,7 @@ import com.ue.uebook.ShareUtils;
 import com.ue.uebook.WebviewScreen;
 
 import java.io.IOException;
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -59,6 +64,7 @@ public class Book_Detail_Screen extends AppCompatActivity implements View.OnClic
     private Intent intent;
     private String book_id,videourl,docurl,audiourl;
     private int position;
+    private String bookdesc;
     String docbaseUrl="http://docs.google.com/gview?embedded=true&url=";
 
     @Override
@@ -96,8 +102,27 @@ public class Book_Detail_Screen extends AppCompatActivity implements View.OnClic
         review_List.setAdapter(review_list_adapter);
         review_List.setNestedScrollingEnabled(false);
         getBookDetail(book_id);
+    }
+    private Spannable highlight(int color, Spannable original, String word) {
+        String normalized = Normalizer.normalize(original, Normalizer.Form.NFD)
+                .replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
 
+        int start = normalized.indexOf(word);
+        if (start < 0) {
+            return original;
+        } else {
+            Spannable highlighted = new SpannableString(original);
+            while (start >= 0) {
+                int spanStart = Math.min(start, original.length());
+                int spanEnd = Math.min(start+word.length(), original.length());
 
+                highlighted.setSpan(new ForegroundColorSpan(color), spanStart,
+                        spanEnd, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+
+                start =bookdesc.indexOf(word, spanEnd);
+            }
+            return highlighted;
+        }
     }
 
     @Override
@@ -169,11 +194,12 @@ public class Book_Detail_Screen extends AppCompatActivity implements View.OnClic
                     @Override
                     public void run() {
                         bookTitle.setText(form.getData().getBook_title());
-                        bookDesc.setText(form.getData().getBook_description());
                         bookAuthor.setText(form.getData().getAuthor_name());
                         videourl=form.getData().getVideo_url();
                         docurl=form.getData().getPdf_url();
                         audiourl=form.getData().getAudio_url();
+                        bookdesc=form.getData().getBook_description();
+
                         if (form.getData().getBook_description().length()>=50){
                             makeTextViewResizable(bookDesc, 5, "See More", true);
                         }

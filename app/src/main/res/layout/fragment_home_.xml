@@ -6,6 +6,18 @@
     android:layout_margin="@dimen/size_10"
     android:orientation="vertical"
     tools:context=".HomeActivity.HomeFragment.Home_Fragment">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+
+
+
     <LinearLayout
         android:id="@+id/logo_container"
         android:layout_width="match_parent"
@@ -31,6 +43,7 @@
         android:maxLines="1"
         android:gravity="center_vertical"
         android:paddingLeft="@dimen/size_10"
+        android:focusable="false"
         android:textColor="@color/black"
         android:focusedByDefault="false"
         android:textSize="@dimen/size_15"
@@ -89,11 +102,12 @@
             android:layout_alignParentRight="true"></Button>
 
     </RelativeLayout>
-    <androidx.recyclerview.widget.RecyclerView
+    <com.ue.uebook.NonScrollRecyclerView
         android:id="@+id/popular_list"
         android:layout_width="match_parent"
         android:layout_marginTop="@dimen/size_10"
         android:layout_height="wrap_content">
-    </androidx.recyclerview.widget.RecyclerView>
-
+    </com.ue.uebook.NonScrollRecyclerView>
+    </LinearLayout>
+    </ScrollView>
 </LinearLayout>

@@ -180,6 +180,49 @@ public class ApiRequest {
                 .build();
         client.newCall(request).enqueue(callback);
     }
+    public void requestforgetBookmarkList(final  String userId,Callback callback) {
+        String url = null;
+        url = BaseUrl + "getAllbookMarkByUser";
+        OkHttpClient client = new OkHttpClient();
+        RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
+                .addFormDataPart("user_id", userId)
+
+                .build();
+        Request request = new Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .build();
+        client.newCall(request).enqueue(callback);
+    }
+    public void requestforAddNotes(final  String userId,final String description,Callback callback) {
+        String url = null;
+        url = BaseUrl + "addNote";
+        OkHttpClient client = new OkHttpClient();
+        RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
+                .addFormDataPart("user_id", userId)
+                .addFormDataPart("description", description)
+                .build();
+        Request request = new Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .build();
+        client.newCall(request).enqueue(callback);
+    }
+    public void requestforgetNotesList(final  String userId,Callback callback) {
+        String url = null;
+        url = BaseUrl + "getAllNotebyUser";
+        OkHttpClient client = new OkHttpClient();
+        RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
+                .addFormDataPart("user_id", userId)
+
+                .build();
+        Request request = new Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .build();
+        client.newCall(request).enqueue(callback);
+    }
+
 }
 
 

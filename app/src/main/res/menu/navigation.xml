@@ -13,11 +13,12 @@
     <item
         android:id="@+id/search_bottom"
         android:icon="@drawable/search"
+        android:visible="false"
         android:title="Search" />
 
     <item
         android:id="@+id/notepad_bottom"
-        android:icon="@drawable/user"
+        android:icon="@drawable/notepad"
         android:title="Notepad" />
 
     <item

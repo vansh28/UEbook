@@ -34,12 +34,12 @@
 
     </RelativeLayout>
 
-        <com.ue.uebook.NonScrollRecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/notepad_list"
             android:layout_width="match_parent"
             android:layout_margin="@dimen/size_10"
             android:layout_height="match_parent">
-        </com.ue.uebook.NonScrollRecyclerView>
+        </androidx.recyclerview.widget.RecyclerView>
 
 
 

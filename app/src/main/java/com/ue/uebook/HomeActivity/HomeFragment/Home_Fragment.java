@@ -11,6 +11,7 @@ import android.os.Bundle;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -31,6 +32,7 @@ import com.ue.uebook.DeatailActivity.Book_Detail_Screen;
 import com.ue.uebook.HomeActivity.HomeFragment.Adapter.Home_recommended_Adapter;
 import com.ue.uebook.HomeActivity.HomeFragment.Adapter.New_Book_Home_Adapter;
 import com.ue.uebook.HomeActivity.HomeFragment.Adapter.PopularList_Home_Adapter;
+import com.ue.uebook.HomeActivity.HomeFragment.Adapter.Search_History_Adapter;
 import com.ue.uebook.HomeActivity.HomeFragment.Pojo.HomeListing;
 import com.ue.uebook.HomeActivity.HomeFragment.Pojo.HomeListingResponse;
 import com.ue.uebook.HomeActivity.HomeScreen;
@@ -50,7 +52,7 @@ import java.util.Objects;
  * Use the {@link Home_Fragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Home_Fragment extends Fragment implements View.OnClickListener, Home_recommended_Adapter.RecommendedItemClick, New_Book_Home_Adapter.NewBookItemClick, PopularList_Home_Adapter.PopularBookItemClick, UserMainFragment.OnFragmentInteractionListener {
+public class Home_Fragment extends Fragment implements View.OnClickListener, Home_recommended_Adapter.RecommendedItemClick, New_Book_Home_Adapter.NewBookItemClick, PopularList_Home_Adapter.PopularBookItemClick, UserMainFragment.OnFragmentInteractionListener , Search_Fragment.OnFragmentInteractionListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -146,22 +148,29 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
         popular_list.setAdapter(popularList_home_adapter);
         popularList_home_adapter.setItemClickListener(this);
         popular_list.setNestedScrollingEnabled(false);
-        edittext_search.addTextChangedListener(new TextWatcher() {
+        edittext_search.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
+            public void onClick(View view) {
+                loadFragment(new Search_Fragment());
             }
         });
+//        edittext_search.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+////                home_recommended_adapter.filter(charSequence.toString());
+////                new_book_home_adapter.filter(charSequence.toString());
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable editable) {
+//
+//            }
+//        });
         return view;
     }
 
@@ -202,7 +211,13 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
 
         }
     }
-
+    private void loadFragment(Fragment fragment) {
+        // load fragment
+        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.frame_container, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
+    }
 
 
 
@@ -229,6 +244,7 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
     public void onItemClick_NewBook(int position, String book_id) {
         Intent intent = new Intent(getActivity(), Book_Detail_Screen.class);
         intent.putExtra("book_id", book_id);
+        intent.putExtra("position",position);
         getActivity().startActivity(intent);
     }
 

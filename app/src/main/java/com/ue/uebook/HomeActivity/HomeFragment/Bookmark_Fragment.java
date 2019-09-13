@@ -1,22 +1,35 @@
 package com.ue.uebook.HomeActivity.HomeFragment;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.ue.uebook.Data.ApiRequest;
 import com.ue.uebook.DeatailActivity.Book_Detail_Screen;
+import com.ue.uebook.DeatailActivity.Pojo.BookmarkResponse;
 import com.ue.uebook.HomeActivity.HomeFragment.Adapter.Bookmark_List_Adapter;
 import com.ue.uebook.HomeActivity.HomeFragment.Adapter.PopularList_Home_Adapter;
+import com.ue.uebook.HomeActivity.HomeFragment.Pojo.UserBookmarkResponse;
 import com.ue.uebook.R;
+import com.ue.uebook.SessionManager;
+
+import java.io.IOException;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -37,6 +50,8 @@ public class Bookmark_Fragment extends Fragment implements Bookmark_List_Adapter
     private String mParam2;
     private RecyclerView bookmark_Book_list;
     private Bookmark_List_Adapter bookmark_list_adapter;
+    private ProgressDialog dialog;
+    private TextView textNobookmarkList;
 
     private OnFragmentInteractionListener mListener;
 
@@ -70,23 +85,20 @@ public class Bookmark_Fragment extends Fragment implements Bookmark_List_Adapter
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.fragment_bookmark_, container, false);
         bookmark_Book_list = view.findViewById(R.id.bookmark_Book_list);
+         dialog = new ProgressDialog(getContext());
 
         LinearLayoutManager linearLayoutManagerBookmark = new LinearLayoutManager(getContext());
         linearLayoutManagerBookmark.setOrientation(LinearLayoutManager.VERTICAL);
         bookmark_Book_list.setLayoutManager(linearLayoutManagerBookmark);
-        bookmark_list_adapter = new Bookmark_List_Adapter();
-        bookmark_Book_list.setAdapter(bookmark_list_adapter);
-        bookmark_list_adapter.setItemClickListener(this);
+        textNobookmarkList=view.findViewById(R.id.textNobookmarkList);
         return view;
     }
-
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
@@ -111,9 +123,16 @@ public class Bookmark_Fragment extends Fragment implements Bookmark_List_Adapter
         mListener = null;
     }
 
+
+    public  void onStart(){
+        super.onStart();
+        getBookmarkList(new SessionManager(getActivity().getApplicationContext()).getUserID());
+
+    }
     @Override
-    public void onItemClick(int position) {
+    public void onItemClick(int position, String bookid) {
         Intent intent = new Intent(getActivity(), Book_Detail_Screen.class);
+        intent.putExtra("book_id", bookid);
         getActivity().startActivity(intent);
     }
 
@@ -130,5 +149,50 @@ public class Bookmark_Fragment extends Fragment implements Bookmark_List_Adapter
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+    private void getBookmarkList(String user_id) {
+        ApiRequest request = new ApiRequest();
+        dialog.setTitle("Please Wait");
+        dialog.show();
+        request.requestforgetBookmarkList(user_id,new okhttp3.Callback() {
+            @Override
+            public void onFailure(okhttp3.Call call, IOException e) {
+                Log.d("error", "error");
+                dialog.dismiss();
+
+            }
+
+            @Override
+            public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
+                dialog.dismiss();
+                final String myResponse = response.body().string();
+                Gson gson = new GsonBuilder().create();
+                final UserBookmarkResponse form = gson.fromJson(myResponse, UserBookmarkResponse.class);
+             if (form.getData()!=null&&form.getError().equalsIgnoreCase("false")){
+                 getActivity().runOnUiThread(new Runnable() {
+                     @Override
+                     public void run() {
+                         bookmark_list_adapter = new Bookmark_List_Adapter((AppCompatActivity) getContext(),form.getData());
+                         bookmark_Book_list.setVisibility(View.VISIBLE);
+                         bookmark_Book_list.setAdapter(bookmark_list_adapter);
+                         bookmark_list_adapter.setItemClickListener(Bookmark_Fragment.this);
+                         bookmark_list_adapter.notifyDataSetChanged();
+                         textNobookmarkList.setVisibility(View.GONE);
+                     }
+                 });
+             }
+             else {
+                 getActivity().runOnUiThread(new Runnable() {
+                     @Override
+                     public void run() {
+                         textNobookmarkList.setVisibility(View.VISIBLE);
+                         bookmark_Book_list.setVisibility(View.GONE);
+                     }
+                 });
+
+             }
+
+            }
+        });
     }
 }

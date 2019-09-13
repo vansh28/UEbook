@@ -1,22 +1,34 @@
 package com.ue.uebook.HomeActivity.HomeFragment;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.ue.uebook.Data.ApiRequest;
+import com.ue.uebook.HomeActivity.HomeFragment.Adapter.Bookmark_List_Adapter;
 import com.ue.uebook.HomeActivity.HomeFragment.Adapter.NotepadAdapter;
 import com.ue.uebook.HomeActivity.HomeFragment.Adapter.PopularList_Home_Adapter;
+import com.ue.uebook.HomeActivity.HomeFragment.Pojo.NotepadResponse;
+import com.ue.uebook.HomeActivity.HomeFragment.Pojo.UserBookmarkResponse;
 import com.ue.uebook.NotepadScreen;
 import com.ue.uebook.R;
+import com.ue.uebook.SessionManager;
+
+import java.io.IOException;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -37,6 +49,7 @@ public class NotepadFragment extends Fragment  implements  NotepadAdapter.Notepa
     private String mParam2;
     private RecyclerView notepad_list;
     private NotepadAdapter notepadAdapter;
+    private ProgressDialog dialog;
 
     private OnFragmentInteractionListener mListener;
 
@@ -77,13 +90,12 @@ public class NotepadFragment extends Fragment  implements  NotepadAdapter.Notepa
         // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.fragment_notepad, container, false);
         notepad_list=view.findViewById(R.id.notepad_list);
+        dialog = new ProgressDialog(getContext());
+
         LinearLayoutManager linearLayoutManagerPopularList = new LinearLayoutManager(getContext());
         linearLayoutManagerPopularList.setOrientation(LinearLayoutManager.VERTICAL);
         notepad_list.setLayoutManager(linearLayoutManagerPopularList);
-        notepadAdapter = new NotepadAdapter();
-        notepad_list.setAdapter(notepadAdapter);
-        notepad_list.setNestedScrollingEnabled(true);
-        notepadAdapter.setItemClickListener(this);
+
 
 
         return  view;
@@ -113,6 +125,10 @@ public class NotepadFragment extends Fragment  implements  NotepadAdapter.Notepa
         mListener = null;
     }
 
+    public void onStart(){
+        super.onStart();
+        getBookmarkList(new SessionManager(getActivity().getApplicationContext()).getUserID());
+    }
     @Override
     public void onItemClick(int position) {
         Intent intent = new Intent(getContext(), NotepadScreen.class);
@@ -135,4 +151,47 @@ public class NotepadFragment extends Fragment  implements  NotepadAdapter.Notepa
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
+    private void getBookmarkList(String user_id) {
+        ApiRequest request = new ApiRequest();
+        dialog.setTitle("Please Wait");
+        dialog.show();
+        request.requestforgetNotesList(user_id,new okhttp3.Callback() {
+            @Override
+            public void onFailure(okhttp3.Call call, IOException e) {
+                Log.d("error", "error");
+                dialog.dismiss();
+
+            }
+            @Override
+            public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
+                dialog.dismiss();
+                final String myResponse = response.body().string();
+                Gson gson = new GsonBuilder().create();
+                final NotepadResponse form = gson.fromJson(myResponse, NotepadResponse.class);
+                if (form.getData()!=null&&form.getError().equalsIgnoreCase("false")){
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            notepadAdapter = new NotepadAdapter(form.getData());
+                            notepad_list.setAdapter(notepadAdapter);
+                            notepad_list.setNestedScrollingEnabled(true);
+                            notepadAdapter.setItemClickListener(NotepadFragment.this);
+                        }
+                    });
+                }
+                else {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+
+                        }
+                    });
+
+                }
+
+            }
+        });
+    }
+
 }

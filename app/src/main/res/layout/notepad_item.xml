@@ -12,9 +12,18 @@
         android:layout_height="wrap_content"
         android:maxLines="1"
         android:padding="@dimen/size_10"
-        android:text="hisd  hfdh kdsjh shd shshdf hsdsjk shd shd sdh "
         android:textColor="@color/black"
         android:textSize="@dimen/size_18"></TextView>
+    <TextView
+        android:id="@+id/notepadTextdate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+        android:gravity="right"
+        android:layout_marginBottom="@dimen/size_5"
+        android:textColor="@color/black"
+        android:textSize="@dimen/size_12"></TextView>
+
 
     <View
         android:layout_width="match_parent"
