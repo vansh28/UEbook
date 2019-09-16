@@ -1,14 +1,6 @@
 package com.ue.uebook.Data;
 
-import android.util.Log;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.ue.uebook.LoginActivity.Pojo.LoginResponse;
-import com.ue.uebook.SessionManager;
-
 import java.io.File;
-import java.io.IOException;
 
 import okhttp3.Callback;
 import okhttp3.MediaType;
@@ -222,7 +214,33 @@ public class ApiRequest {
                 .build();
         client.newCall(request).enqueue(callback);
     }
-
+    public void requestforupdateNote(final  String note_id,final String description,Callback callback) {
+        String url = null;
+        url = BaseUrl + "UpdateNoteBook";
+        OkHttpClient client = new OkHttpClient();
+        RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
+                .addFormDataPart("note_id", note_id)
+                .addFormDataPart("description", description)
+                .build();
+        Request request = new Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .build();
+        client.newCall(request).enqueue(callback);
+    }
+    public void requestforDeleteNote(final  String note_id , Callback callback) {
+        String url = null;
+        url = BaseUrl + "DeleteNote";
+        OkHttpClient client = new OkHttpClient();
+        RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
+                .addFormDataPart("note_id", note_id)
+                .build();
+        Request request = new Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .build();
+        client.newCall(request).enqueue(callback);
+    }
 }
 
 

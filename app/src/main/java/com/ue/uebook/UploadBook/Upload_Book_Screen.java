@@ -1,15 +1,9 @@
 package com.ue.uebook.UploadBook;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-
 import android.Manifest;
+import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.content.ContentUris;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -17,9 +11,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.DocumentsContract;
 import android.provider.MediaStore;
-import android.provider.OpenableColumns;
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
@@ -38,33 +30,28 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.ue.uebook.Data.ApiRequest;
 import com.ue.uebook.GlideUtils;
 import com.ue.uebook.ImageUtils;
-import com.ue.uebook.LoginActivity.Pojo.RegistrationResponse;
 import com.ue.uebook.R;
 import com.ue.uebook.SessionManager;
-import com.ue.uebook.UploadBook.Pojo.BookCategoryPojo;
 import com.ue.uebook.UploadBook.Pojo.BookCategoryResponsePojo;
 import com.ue.uebook.UploadBook.Pojo.UploadPojo;
-
-
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 import java.util.concurrent.TimeUnit;
 
-import in.gauriinfotech.commons.Commons;
-import io.github.lizhangqu.coreprogress.ProgressHelper;
-import io.github.lizhangqu.coreprogress.ProgressUIListener;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MediaType;
@@ -73,8 +60,6 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-
-import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class Upload_Book_Screen extends AppCompatActivity implements View.OnClickListener, ImageUtils.ImageAttachmentListener, AdapterView.OnItemSelectedListener, RecognitionListener {
     private static final int MY_PERMISSIONS_REQUEST_CAMERA = 99;
@@ -232,12 +217,12 @@ public class Upload_Book_Screen extends AppCompatActivity implements View.OnClic
 
             if (isvalidate()) {
 
-                if (docfile!=null){
-                    requestforUploadBook(new SessionManager(getApplicationContext()).getUserID(), String.valueOf(categorytype), bookTitle.getText().toString(), coverimage, bookDesc.getText().toString(),docfile,authorName.getText().toString());
-                }
-                else {
-                    requestforUploadBook(new SessionManager(getApplicationContext()).getUserID(), String.valueOf(categorytype), bookTitle.getText().toString(), coverimage, bookDesc.getText().toString(),null,authorName.getText().toString());
-                }
+//                if (docfile!=null){
+//                    requestforUploadBook(new SessionManager(getApplicationContext()).getUserID(), String.valueOf(categorytype), bookTitle.getText().toString(), coverimage, bookDesc.getText().toString(),docfile,authorName.getText().toString());
+//                }
+//                else {
+//                    requestforUploadBook(new SessionManager(getApplicationContext()).getUserID(), String.valueOf(categorytype), bookTitle.getText().toString(), coverimage, bookDesc.getText().toString(),null,authorName.getText().toString());
+//                }
             }
 
         } else if (view == cover_image_layout) {
@@ -262,7 +247,6 @@ public class Upload_Book_Screen extends AppCompatActivity implements View.OnClic
         });
         previewDialog.show();
     }
-
     private void showFileChooser() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("application/*");
@@ -277,15 +261,12 @@ public class Upload_Book_Screen extends AppCompatActivity implements View.OnClic
                     Toast.LENGTH_SHORT).show();
         }
     }
-
     private void getAudioFile() {
         Intent intent_upload = new Intent();
         intent_upload.setType("audio/*");
         intent_upload.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(intent_upload, 12);
     }
-
-
     @Override
     public void image_attachment(int from, String filename, Bitmap file, Uri uri) {
         this.bitmap = file;
@@ -302,8 +283,6 @@ public class Upload_Book_Screen extends AppCompatActivity implements View.OnClic
         } else {
             cover_image_layout.setVisibility(View.GONE);
         }
-
-
     }
 
     public void requestforUploadBook(final String userid, final String category_id, final String booktitle, final File profile_image, final String book_description ,File docFile,final String author_name) {
@@ -365,9 +344,6 @@ public class Upload_Book_Screen extends AppCompatActivity implements View.OnClic
         if (requestCode == REQUEST_PICK_VIDEO) {
 
             Uri selectedVideoUri = data.getData();
-            selectedvideoPath = getPath(selectedVideoUri);
-            System.out.println("SELECT_VIDEO Path : " + selectedvideoPath);
-
 
 
         }
@@ -375,11 +351,18 @@ public class Upload_Book_Screen extends AppCompatActivity implements View.OnClic
 
                 // Get the Uri of the selected file
                 Uri uri = data.getData();
-                String uriString = uri.toString();
-                File myFile = new File(uriString);
-                String path = myFile.getAbsolutePath();
 
+            File file = new File(uri.getPath().toString());
+            docfile=file;
             }
+        else if (requestCode==12){
+
+            Uri uri = data.getData();
+
+            String   selectedPath = getPath(uri);
+
+
+        }
 
         }
     @Override
@@ -464,19 +447,15 @@ public class Upload_Book_Screen extends AppCompatActivity implements View.OnClic
     }
 
 
+
     public String getPath(Uri uri) {
-        String[] projection = {MediaStore.Images.Media.DATA};
-        Cursor cursor = this.getContentResolver().query(uri, projection, null, null, null);
-        int column_index = 0;
-        if (cursor != null) {
-            column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-            cursor.moveToFirst();
-            String path = cursor.getString(column_index);
-            cursor.close();
-            return path;
-        } else
-            return uri.getPath();
+        String[] projection = { MediaStore.Images.Media.DATA };
+        Cursor cursor = managedQuery(uri, projection, null, null, null);
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        return cursor.getString(column_index);
     }
+
 
 
     @Override
@@ -614,6 +593,18 @@ public class Upload_Book_Screen extends AppCompatActivity implements View.OnClic
     }
 
 
+
+
+    private String getRealPathFromURIPath(Uri contentURI, Activity activity) {
+        Cursor cursor = activity.getContentResolver().query(contentURI, null, null, null, null);
+        if (cursor == null) {
+            return contentURI.getPath();
+        } else {
+            cursor.moveToFirst();
+            int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+            return cursor.getString(idx);
+        }
+    }
 }
 
 

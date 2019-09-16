@@ -1,8 +1,5 @@
 package com.ue.uebook;
 
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,12 +10,12 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.ue.uebook.Data.ApiRequest;
-import com.ue.uebook.HomeActivity.HomeFragment.Adapter.Bookmark_List_Adapter;
-import com.ue.uebook.HomeActivity.HomeFragment.Bookmark_Fragment;
-import com.ue.uebook.HomeActivity.HomeFragment.Pojo.UserBookmarkResponse;
 
 import java.io.IOException;
 
@@ -27,6 +24,8 @@ public class NotepadScreen extends AppCompatActivity implements View.OnClickList
     private Intent intent;
     private Button updateNote;
     private EditText notes_view;
+    private String description,note_id;
+    private Integer  id;
 
 
     @Override
@@ -43,11 +42,14 @@ public class NotepadScreen extends AppCompatActivity implements View.OnClickList
         delete_btn.setOnClickListener(this);
         back_btn.setOnClickListener(this);
         intent = getIntent();
-        int id = intent.getIntExtra("id",0);
+         id = intent.getIntExtra("id",0);
+        description=intent.getStringExtra("description");
+        note_id=intent.getStringExtra("note_id");
         if (id==1){
             edit_btn.setVisibility(View.VISIBLE);
             delete_btn.setVisibility(View.VISIBLE);
             notes_view.setEnabled(false);
+            notes_view.setText(description);
         }
         else {
 
@@ -75,12 +77,21 @@ public class NotepadScreen extends AppCompatActivity implements View.OnClickList
             notes_view.requestFocus();
         }
         else if (view==updateNote){
-         if (!notes_view.getText().toString().isEmpty()){
-             updateNotes(new SessionManager(getApplicationContext()).getUserID(),notes_view.getText().toString());
-         }
-         else {
-             Toast.makeText(getApplicationContext(),"Please Add Notes For Update",Toast.LENGTH_SHORT).show();
-         }
+
+            if (id==1){
+                updateNotes(note_id,notes_view.getText().toString());
+                notes_view.setEnabled(false);
+            }
+            else {
+                if (!notes_view.getText().toString().isEmpty()){
+                    AddNotes(new SessionManager(getApplicationContext()).getUserID(),notes_view.getText().toString());
+                }
+                else {
+                    Toast.makeText(getApplicationContext(),"Please Add Notes For Update",Toast.LENGTH_SHORT).show();
+                }
+
+            }
+
 
         }
     }
@@ -90,6 +101,7 @@ public class NotepadScreen extends AppCompatActivity implements View.OnClickList
                 .setCancelable(false)
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
+                        deleteNotes(note_id);
                         dialog.cancel();
                     }
                 })
@@ -101,7 +113,7 @@ public class NotepadScreen extends AppCompatActivity implements View.OnClickList
         AlertDialog alert = builder.create();
         alert.show();
     }
-    private void updateNotes(String user_id,String desc) {
+    private void AddNotes(String user_id,String desc) {
         ApiRequest request = new ApiRequest();
         request.requestforAddNotes(user_id,desc,new okhttp3.Callback() {
             @Override
@@ -123,7 +135,46 @@ public class NotepadScreen extends AppCompatActivity implements View.OnClickList
                     }
                 });
 
+            }
+        });
+    }
+    private void updateNotes(String note_id , String description) {
+        ApiRequest request = new ApiRequest();
+        request.requestforupdateNote(note_id,description,new okhttp3.Callback() {
+            @Override
+            public void onFailure(okhttp3.Call call, IOException e) {
+                Log.d("error", "error");
+            }
+            @Override
+            public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
+                final String myResponse = response.body().string();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(getApplicationContext(),"Successfuly Updated",Toast.LENGTH_SHORT).show();
 
+                    }
+                });
+            }
+        });
+    }
+    private void deleteNotes(String note_id ) {
+        ApiRequest request = new ApiRequest();
+        request.requestforDeleteNote(note_id,new okhttp3.Callback() {
+            @Override
+            public void onFailure(okhttp3.Call call, IOException e) {
+                Log.d("error", "error");
+            }
+            @Override
+            public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
+                final String myResponse = response.body().string();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(getApplicationContext(),"Successfuly Deleted",Toast.LENGTH_SHORT).show();
+                        finish();
+                    }
+                });
             }
         });
     }

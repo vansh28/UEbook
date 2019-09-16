@@ -23,4 +23,5 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
     <string name="search_hint">hint</string>
     <string name="app_label">Uebook</string>
     <string name="nobookmark">No Bookmark List</string>
+    <string name="notepad">No Notes Found</string>
 </resources>

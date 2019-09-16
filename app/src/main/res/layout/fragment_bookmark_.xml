@@ -38,7 +38,7 @@
         android:gravity="center"
         android:visibility="gone"
         android:text="@string/nobookmark"
-        android:textColor="@android:color/black"
+        android:textColor="@color/colorPrimary"
         android:textSize="@dimen/size_20" />
 
 </RelativeLayout>

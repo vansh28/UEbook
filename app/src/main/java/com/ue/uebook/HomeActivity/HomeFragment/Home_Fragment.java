@@ -3,10 +3,14 @@ package com.ue.uebook.HomeActivity.HomeFragment;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,34 +19,17 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.widget.Button;
-import android.widget.EditText;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.ue.uebook.Data.ApiRequest;
 import com.ue.uebook.DeatailActivity.Book_Detail_Screen;
 import com.ue.uebook.HomeActivity.HomeFragment.Adapter.Home_recommended_Adapter;
 import com.ue.uebook.HomeActivity.HomeFragment.Adapter.New_Book_Home_Adapter;
 import com.ue.uebook.HomeActivity.HomeFragment.Adapter.PopularList_Home_Adapter;
-import com.ue.uebook.HomeActivity.HomeFragment.Adapter.Search_History_Adapter;
 import com.ue.uebook.HomeActivity.HomeFragment.Pojo.HomeListing;
-import com.ue.uebook.HomeActivity.HomeFragment.Pojo.HomeListingResponse;
 import com.ue.uebook.HomeActivity.HomeScreen;
 import com.ue.uebook.PopularActivity.Popular_List_Screen;
 import com.ue.uebook.R;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -115,8 +102,6 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home_, container, false);
-
-
         recommended_list = view.findViewById(R.id.recommended_list);
         edittext_search = view.findViewById(R.id.edittext_search);
         newBook_list = view.findViewById(R.id.newBook_list);
@@ -126,21 +111,15 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL); // set Horizontal Orientation
         recommended_list.setLayoutManager(linearLayoutManager);
         popular_more_btn.setOnClickListener(this);
-
         activity = (HomeScreen) getActivity();
         recommendedList_book = activity.getRecommendedListBookData();
         displayData();
-
-
-
         LinearLayoutManager linearLayoutManagerBook = new LinearLayoutManager(getContext());
         linearLayoutManagerBook.setOrientation(LinearLayoutManager.HORIZONTAL);
         newBook_list.setLayoutManager(linearLayoutManagerBook);
         newBookList = activity.getnewBookData();
         recommended_list.setNestedScrollingEnabled(false);
-
         newBook_list.setNestedScrollingEnabled(false);
-
         LinearLayoutManager linearLayoutManagerPopularList = new LinearLayoutManager(getContext());
         linearLayoutManagerPopularList.setOrientation(LinearLayoutManager.VERTICAL);
         popular_list.setLayoutManager(linearLayoutManagerPopularList);
@@ -173,14 +152,12 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
 //        });
         return view;
     }
-
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
         }
     }
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -275,7 +252,7 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
             public void run() {
                 try {
                     while (!isInterrupted()) {
-                        if (recommendedList_book != null && !(recommendedList_book.isEmpty())) {
+                        if (recommendedList_book != null && !(recommendedList_book.isEmpty() && (newBook_list!=null))) {
                             Thread.sleep(1000);
                             if(getActivity()!=null){
                                 getActivity().runOnUiThread(new Runnable() {

@@ -334,6 +334,8 @@ public class SignUp_Fragment extends Fragment implements View.OnClickListener {
         request.requestforRegistration(full_name, password, email, publisher_type, gender,country, about_me,new okhttp3.Callback() {
             @Override
             public void onFailure(okhttp3.Call call, IOException e) {
+                Log.e("error",e.getLocalizedMessage());
+                dialog.dismiss();
 
             }
 

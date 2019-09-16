@@ -5,25 +5,21 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.ue.uebook.Data.ApiRequest;
-import com.ue.uebook.HomeActivity.HomeFragment.Adapter.Bookmark_List_Adapter;
 import com.ue.uebook.HomeActivity.HomeFragment.Adapter.NotepadAdapter;
-import com.ue.uebook.HomeActivity.HomeFragment.Adapter.PopularList_Home_Adapter;
 import com.ue.uebook.HomeActivity.HomeFragment.Pojo.NotepadResponse;
-import com.ue.uebook.HomeActivity.HomeFragment.Pojo.UserBookmarkResponse;
 import com.ue.uebook.NotepadScreen;
 import com.ue.uebook.R;
 import com.ue.uebook.SessionManager;
@@ -50,6 +46,7 @@ public class NotepadFragment extends Fragment  implements  NotepadAdapter.Notepa
     private RecyclerView notepad_list;
     private NotepadAdapter notepadAdapter;
     private ProgressDialog dialog;
+    private TextView textNonotepadList;
 
     private OnFragmentInteractionListener mListener;
 
@@ -91,12 +88,10 @@ public class NotepadFragment extends Fragment  implements  NotepadAdapter.Notepa
         View view= inflater.inflate(R.layout.fragment_notepad, container, false);
         notepad_list=view.findViewById(R.id.notepad_list);
         dialog = new ProgressDialog(getContext());
-
+        textNonotepadList=view.findViewById(R.id.textNonotepadList);
         LinearLayoutManager linearLayoutManagerPopularList = new LinearLayoutManager(getContext());
         linearLayoutManagerPopularList.setOrientation(LinearLayoutManager.VERTICAL);
         notepad_list.setLayoutManager(linearLayoutManagerPopularList);
-
-
 
         return  view;
     }
@@ -127,15 +122,18 @@ public class NotepadFragment extends Fragment  implements  NotepadAdapter.Notepa
 
     public void onStart(){
         super.onStart();
-        getBookmarkList(new SessionManager(getActivity().getApplicationContext()).getUserID());
+        getnotePadList(new SessionManager(getActivity().getApplicationContext()).getUserID());
     }
+
     @Override
-    public void onItemClick(int position) {
+    public void onItemClick(String note_id, String description) {
         Intent intent = new Intent(getContext(), NotepadScreen.class);
+        intent.putExtra("note_id",note_id);
+        intent.putExtra("description",description);
         intent.putExtra("id",1);
         startActivity(intent);
-
     }
+
 
     /**
      * This interface must be implemented by activities that contain this
@@ -152,7 +150,7 @@ public class NotepadFragment extends Fragment  implements  NotepadAdapter.Notepa
         void onFragmentInteraction(Uri uri);
     }
 
-    private void getBookmarkList(String user_id) {
+    private void getnotePadList(String user_id) {
         ApiRequest request = new ApiRequest();
         dialog.setTitle("Please Wait");
         dialog.show();
@@ -174,9 +172,12 @@ public class NotepadFragment extends Fragment  implements  NotepadAdapter.Notepa
                         @Override
                         public void run() {
                             notepadAdapter = new NotepadAdapter(form.getData());
+                            notepad_list.setVisibility(View.VISIBLE);
+                            textNonotepadList.setVisibility(View.GONE);
                             notepad_list.setAdapter(notepadAdapter);
                             notepad_list.setNestedScrollingEnabled(true);
                             notepadAdapter.setItemClickListener(NotepadFragment.this);
+
                         }
                     });
                 }
@@ -184,7 +185,8 @@ public class NotepadFragment extends Fragment  implements  NotepadAdapter.Notepa
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-
+                        notepad_list.setVisibility(View.GONE);
+                        textNonotepadList.setVisibility(View.VISIBLE);
                         }
                     });
 
@@ -193,5 +195,6 @@ public class NotepadFragment extends Fragment  implements  NotepadAdapter.Notepa
             }
         });
     }
+
 
 }

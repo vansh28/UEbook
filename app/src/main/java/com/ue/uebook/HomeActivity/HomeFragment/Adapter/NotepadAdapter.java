@@ -24,7 +24,7 @@ public class NotepadAdapter  extends RecyclerView.Adapter<NotepadAdapter.MyViewH
     }
 
     public interface NotepadItemClick {
-        void onItemClick(int position);
+        void onItemClick(String note_id,String description);
     }
     public void setItemClickListener(NotepadItemClick clickListener) {
         notepadItemClickl = clickListener;
@@ -42,7 +42,7 @@ public class NotepadAdapter  extends RecyclerView.Adapter<NotepadAdapter.MyViewH
             @Override
             public void onClick(View view) {
                 if (notepadItemClickl != null) {
-                    notepadItemClickl.onItemClick(position);
+                    notepadItemClickl.onItemClick(data.get(position).getId(),data.get(position).getDescription());
                 }
             }
         });

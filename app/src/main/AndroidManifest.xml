@@ -29,6 +29,7 @@
         android:networkSecurityConfig="@xml/network_configure"
         android:roundIcon="@drawable/applogo"
         android:supportsRtl="true"
+        android:exported="false"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity android:name=".NotepadScreen"></activity>

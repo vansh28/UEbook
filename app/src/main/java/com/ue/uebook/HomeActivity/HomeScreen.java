@@ -9,14 +9,19 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.ActionBar;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.ue.uebook.BaseActivity;
 import com.ue.uebook.Data.ApiRequest;
-import com.ue.uebook.HomeActivity.HomeFragment.Adapter.Home_recommended_Adapter;
-import com.ue.uebook.HomeActivity.HomeFragment.Adapter.New_Book_Home_Adapter;
 import com.ue.uebook.HomeActivity.HomeFragment.Bookmark_Fragment;
 import com.ue.uebook.HomeActivity.HomeFragment.CompanyInfo_Fragment;
 import com.ue.uebook.HomeActivity.HomeFragment.Home_Fragment;
@@ -30,15 +35,6 @@ import com.ue.uebook.HomeActivity.HomeFragment.User_Fragment;
 import com.ue.uebook.NotepadScreen;
 import com.ue.uebook.R;
 import com.ue.uebook.SessionManager;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.ActionBar;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -193,7 +189,7 @@ public class HomeScreen extends BaseActivity implements Home_Fragment.OnFragment
                 String myResponse = response.body().string();
                 Gson gson = new GsonBuilder().create();
                 final HomeListingResponse form = gson.fromJson(myResponse, HomeListingResponse.class);
-                if (form.getError().equalsIgnoreCase("false") && form.getData() != null) {
+                if (form.getError().equalsIgnoreCase("false") && form.getData() != null && !form.getData().isEmpty()) {
                     recommendedList_book.addAll(form.getData());
                 }
             }
@@ -221,7 +217,7 @@ public class HomeScreen extends BaseActivity implements Home_Fragment.OnFragment
                 String myResponse = response.body().string();
                 Gson gson = new GsonBuilder().create();
                 final HomeListingResponse form = gson.fromJson(myResponse, HomeListingResponse.class);
-                if (form.getError().equalsIgnoreCase("false") && form.getData() != null) {
+                if (form.getError().equalsIgnoreCase("false") && !form.getData().isEmpty())  {
                     newBookList.addAll(form.getData());
                 }
 

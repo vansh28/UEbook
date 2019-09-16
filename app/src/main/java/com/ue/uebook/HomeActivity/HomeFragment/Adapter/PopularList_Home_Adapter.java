@@ -1,14 +1,23 @@
 package com.ue.uebook.HomeActivity.HomeFragment.Adapter;
 
+import android.os.Build;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.ue.uebook.Data.ApiRequest;
+import com.ue.uebook.HomeActivity.HomeFragment.Pojo.HomeListingResponse;
 import com.ue.uebook.R;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
+import java.io.IOException;
 
 public class PopularList_Home_Adapter extends RecyclerView.Adapter<PopularList_Home_Adapter.MyViewHolder>{
 
@@ -59,5 +68,8 @@ public class PopularList_Home_Adapter extends RecyclerView.Adapter<PopularList_H
             book_Conatiner=itemView.findViewById(R.id.container);
         }
     }
+
+
+
 }
 
