@@ -107,7 +107,7 @@
                 android:textColor="@color/black"/>
     <TextView
         android:id="@+id/book_desc"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="16sp"
         android:padding="@dimen/size_5"
@@ -217,14 +217,13 @@
 
 
                 <RatingBar
-                    android:id="@+id/myRatingBar"
+                    android:id="@+id/myRatingBar_detail"
                     style="?android:attr/ratingBarStyleIndicator"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/size_5"
                     android:layout_marginLeft="6dp"
                     android:numStars="5"
-                    android:rating="4"
                     android:theme="@style/RatingBar"
                     android:isIndicator="false" />
                     <LinearLayout
@@ -235,8 +234,9 @@
                         android:orientation="horizontal"
                         >
                         <TextView
+                            android:id="@+id/averageRating"
                             android:layout_width="wrap_content"
-                            android:text="4.3"
+
                             android:textColor="@color/colorPrimary"
                             android:textSize="@dimen/size_25"
                             android:layout_height="wrap_content"></TextView>
@@ -276,7 +276,7 @@
                     app:errorEnabled="true">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/password_edit_text"
+                        android:id="@+id/comment_edit_text"
                         android:layout_width="match_parent"
                         android:minHeight="@dimen/size_60"
                         android:layout_height="wrap_content"
@@ -285,6 +285,7 @@
 
 
                 <Button
+                    android:id="@+id/submit_comment"
                     android:layout_width="@dimen/size_150"
                     android:layout_marginLeft="@dimen/size_12"
                     android:text="SUBMIT"
@@ -297,12 +298,14 @@
                 </Button>
 
                 <TextView
+                    android:id="@+id/topreviewView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="20sp"
                     android:text="Top Reviews"
                     android:layout_marginLeft="12dp"
                     android:layout_marginTop="@dimen/size_15"
+                    android:visibility="gone"
                     android:textStyle="bold"
                     android:textColor="@color/black"/>
             </LinearLayout>

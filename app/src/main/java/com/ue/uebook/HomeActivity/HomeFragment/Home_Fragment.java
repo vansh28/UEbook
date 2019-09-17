@@ -1,35 +1,51 @@
 package com.ue.uebook.HomeActivity.HomeFragment;
 
-import android.app.Dialog;
+import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.ue.uebook.Data.ApiRequest;
 import com.ue.uebook.DeatailActivity.Book_Detail_Screen;
 import com.ue.uebook.HomeActivity.HomeFragment.Adapter.Home_recommended_Adapter;
 import com.ue.uebook.HomeActivity.HomeFragment.Adapter.New_Book_Home_Adapter;
 import com.ue.uebook.HomeActivity.HomeFragment.Adapter.PopularList_Home_Adapter;
 import com.ue.uebook.HomeActivity.HomeFragment.Pojo.HomeListing;
+import com.ue.uebook.HomeActivity.HomeFragment.Pojo.HomeListingResponse;
 import com.ue.uebook.HomeActivity.HomeScreen;
 import com.ue.uebook.PopularActivity.Popular_List_Screen;
 import com.ue.uebook.R;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
+
+import static com.ue.uebook.NetworkUtils.getInstance;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -54,11 +70,10 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
     private PopularList_Home_Adapter popularList_home_adapter;
     private New_Book_Home_Adapter new_book_home_adapter;
     private EditText edittext_search;
-    private Dialog dialog;
-    private List<HomeListing> recommendedList_book, newBookList;
+    private List<HomeListing> recommendedList_book, newBookList,popularBook_List;
     private HomeScreen activity;
     private OnFragmentInteractionListener mListener;
-
+    private ProgressDialog dialog;
     public Home_Fragment() {
         // Required empty public constructor
     }
@@ -87,6 +102,7 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
         super.onCreate(savedInstanceState);
         recommendedList_book = new ArrayList<>();
         newBookList = new ArrayList<>();
+        popularBook_List = new ArrayList<>();
 //        getRecommenedBookList("1");
 //        getnewBookList("2");
 
@@ -103,6 +119,7 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home_, container, false);
         recommended_list = view.findViewById(R.id.recommended_list);
+        dialog = new ProgressDialog(getContext());
         edittext_search = view.findViewById(R.id.edittext_search);
         newBook_list = view.findViewById(R.id.newBook_list);
         popular_more_btn = view.findViewById(R.id.popular_more_btn);
@@ -112,20 +129,18 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
         recommended_list.setLayoutManager(linearLayoutManager);
         popular_more_btn.setOnClickListener(this);
         activity = (HomeScreen) getActivity();
-        recommendedList_book = activity.getRecommendedListBookData();
+//        recommendedList_book = activity.getRecommendedListBookData();
+//        popularBook_List=activity.getpopularBookData();
         displayData();
         LinearLayoutManager linearLayoutManagerBook = new LinearLayoutManager(getContext());
         linearLayoutManagerBook.setOrientation(LinearLayoutManager.HORIZONTAL);
         newBook_list.setLayoutManager(linearLayoutManagerBook);
-        newBookList = activity.getnewBookData();
+//        newBookList = activity.getnewBookData();
         recommended_list.setNestedScrollingEnabled(false);
         newBook_list.setNestedScrollingEnabled(false);
         LinearLayoutManager linearLayoutManagerPopularList = new LinearLayoutManager(getContext());
         linearLayoutManagerPopularList.setOrientation(LinearLayoutManager.VERTICAL);
         popular_list.setLayoutManager(linearLayoutManagerPopularList);
-        popularList_home_adapter = new PopularList_Home_Adapter();
-        popular_list.setAdapter(popularList_home_adapter);
-        popularList_home_adapter.setItemClickListener(this);
         popular_list.setNestedScrollingEnabled(false);
         edittext_search.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -175,8 +190,19 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
         mListener = null;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void onStart() {
         super.onStart();
+        if (getInstance(getActivity()).isConnectingToInternet()){
+            getRecommenedBookList("1");
+
+            getnewBookList("2");
+            getPopularList();
+        }
+        else {
+
+            Toast.makeText(getContext(),"No Internet Connection",Toast.LENGTH_SHORT);
+        }
 
     }
 
@@ -197,13 +223,6 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
     }
 
 
-
-    @Override
-    public void onItemClick_PopularBook(int position) {
-//        Intent intent = new Intent(getActivity(), Book_Detail_Screen.class);
-//        getActivity().startActivity(intent);
-    }
-
     @Override
     public void onFragmentInteraction(Uri uri) {
 
@@ -219,6 +238,14 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
 
     @Override
     public void onItemClick_NewBook(int position, String book_id) {
+        Intent intent = new Intent(getActivity(), Book_Detail_Screen.class);
+        intent.putExtra("book_id", book_id);
+        intent.putExtra("position",position);
+        getActivity().startActivity(intent);
+    }
+
+    @Override
+    public void onItemClick_PopularBook(int position, String book_id) {
         Intent intent = new Intent(getActivity(), Book_Detail_Screen.class);
         intent.putExtra("book_id", book_id);
         intent.putExtra("position",position);
@@ -252,20 +279,21 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
             public void run() {
                 try {
                     while (!isInterrupted()) {
-                        if (recommendedList_book != null && !(recommendedList_book.isEmpty() && (newBook_list!=null))) {
+                        if (recommendedList_book != null && !(recommendedList_book.isEmpty() && (newBook_list!=null) && (popularBook_List!=null))) {
                             Thread.sleep(1000);
                             if(getActivity()!=null){
                                 getActivity().runOnUiThread(new Runnable() {
+                                    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                                     @Override
                                     public void run() {
-                                        home_recommended_adapter = new Home_recommended_Adapter((AppCompatActivity) getActivity(), recommendedList_book);
-                                        recommended_list.setAdapter(home_recommended_adapter);
-                                        home_recommended_adapter.setItemClickListener(Home_Fragment.this);
-                                        home_recommended_adapter.notifyDataSetChanged();
+                                        getRecommenedBookList("1");
 
-                                        new_book_home_adapter = new New_Book_Home_Adapter((AppCompatActivity) getActivity(), newBookList);
-                                        newBook_list.setAdapter(new_book_home_adapter);
-                                        new_book_home_adapter.setItemClickListener(Home_Fragment.this);
+                                        getnewBookList("2");
+                                        getPopularList();
+
+
+
+
                                     }
                                 });
                             }
@@ -279,6 +307,125 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
         };
         t.start();
     }
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private void getRecommenedBookList(String categoryId) {
+        dialog.show();
+        ApiRequest request = new ApiRequest();
+        if (recommendedList_book.size()>0)
+            recommendedList_book.clear();
+
+        request.requestforgetBookList(categoryId, new okhttp3.Callback() {
+            @Override
+            public void onFailure(okhttp3.Call call, IOException e) {
+                Log.d("error", "error");
+                dialog.dismiss();
+
+            }
+            @Override
+            public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
+                String myResponse = response.body().string();
+                dialog.dismiss();
+                Gson gson = new GsonBuilder().create();
+                final HomeListingResponse form = gson.fromJson(myResponse, HomeListingResponse.class);
+                if (form.getError().equalsIgnoreCase("false") && form.getData() != null && !form.getData().isEmpty()) {
+                    recommendedList_book.addAll(form.getData());
+                }
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        home_recommended_adapter = new Home_recommended_Adapter((AppCompatActivity) getActivity(), recommendedList_book);
+                        recommended_list.setAdapter(home_recommended_adapter);
+                        home_recommended_adapter.setItemClickListener(Home_Fragment.this);
+                        home_recommended_adapter.notifyDataSetChanged();
+                    }
+                });
+            }
+        });
+    }
+
+
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private void getnewBookList(String categoryId) {
+        dialog.show();
+        ApiRequest request = new ApiRequest();
+        if (newBookList.size()>0)
+            newBookList.clear();
+
+        request.requestforgetBookList(categoryId, new okhttp3.Callback() {
+            @Override
+            public void onFailure(okhttp3.Call call, IOException e) {
+                Log.d("error", "error");
+                dialog.dismiss();
+
+            }
+
+            @Override
+            public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
+                String myResponse = response.body().string();
+                dialog.dismiss();
+                Gson gson = new GsonBuilder().create();
+                final HomeListingResponse form = gson.fromJson(myResponse, HomeListingResponse.class);
+                if (form.getError().equalsIgnoreCase("false") && !form.getData().isEmpty())  {
+                    newBookList.addAll(form.getData());
+                }
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    new_book_home_adapter = new New_Book_Home_Adapter((AppCompatActivity) getActivity(), newBookList);
+                    newBook_list.setAdapter(new_book_home_adapter);
+                    new_book_home_adapter.setItemClickListener(Home_Fragment.this);
+                }
+            });
+            }
+        });
+    }
+
+    private void getPopularList() {
+        if (popularBook_List.size()>0)
+            popularBook_List.clear();
+        dialog.show();
+        ApiRequest request = new ApiRequest();
+        request.requestforGetPopularBook(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.e("error", e.getLocalizedMessage());
+                dialog.dismiss();
+
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                dialog.dismiss();
+                String myresponse = response.body().string();
+                Gson gson = new GsonBuilder().create();
+                final HomeListingResponse form = gson.fromJson(myresponse, HomeListingResponse.class);
+                if (form.getError().equalsIgnoreCase("false") && !form.getData().isEmpty())  {
+                    if (form.getData().size()>3){
+                        popularBook_List.add(form.getData().get(0));
+                        popularBook_List.add(form.getData().get(1));
+                        popularBook_List.add(form.getData().get(2));
+                    }
+                    else {
+                        popularBook_List.addAll(form.getData());
+                    }
+
+                }
+              getActivity().runOnUiThread(new Runnable() {
+                  @Override
+                  public void run() {
+                      popularList_home_adapter = new PopularList_Home_Adapter((AppCompatActivity) getActivity(),popularBook_List);
+                      popular_list.setAdapter(popularList_home_adapter);
+                      popularList_home_adapter.setItemClickListener(Home_Fragment.this);
+                  }
+              });
+
+            }
+        });
+
+
+}
+
 
 
 }

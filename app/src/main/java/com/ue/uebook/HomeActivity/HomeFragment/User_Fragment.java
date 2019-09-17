@@ -9,14 +9,8 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
-
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Base64;
@@ -29,25 +23,25 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
-import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.ue.uebook.Data.ApiRequest;
 import com.ue.uebook.GlideUtils;
-import com.ue.uebook.HomeActivity.HomeScreen;
 import com.ue.uebook.ImageUtils;
 import com.ue.uebook.LoginActivity.Pojo.RegistrationResponse;
 import com.ue.uebook.R;
 import com.ue.uebook.SessionManager;
 
-
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.StringReader;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -68,6 +62,7 @@ public class User_Fragment extends Fragment implements View.OnClickListener, Use
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private static final int MY_PERMISSIONS_REQUEST_CAMERA = 99;
+    private static final int PERMISSION_REQUEST_CODE = 31;
     Context context;
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -79,7 +74,7 @@ public class User_Fragment extends Fragment implements View.OnClickListener, Use
     private String filePath;
     private String fileName;
     private String encodedString;
-    private String uriData,image;
+    private String uriData, image;
     private Bitmap bitmap;
 
     private File destination = null;
@@ -135,7 +130,7 @@ public class User_Fragment extends Fragment implements View.OnClickListener, Use
         profile_image_user.setOnClickListener(this);
         username.setText(new SessionManager(getContext().getApplicationContext()).getUserName());
         loadFragment(new UserMainFragment());
-       image = new SessionManager(getApplicationContext()).getUserimage();
+        image = new SessionManager(getApplicationContext()).getUserimage();
 
 
         return view;
@@ -173,6 +168,12 @@ public class User_Fragment extends Fragment implements View.OnClickListener, Use
         }
 
     }
+    public void onStart(){
+        super.onStart();
+        if (!isStoragePermissionGranted()){
+            isStoragePermissionGranted();
+        }
+    }
 
     @Override
     public void onFragmentInteraction(Uri uri) {
@@ -197,6 +198,7 @@ public class User_Fragment extends Fragment implements View.OnClickListener, Use
                             startActivityForResult(intent, PICK_IMAGE_CAMERA);
                         } else if (options[item].equals("Choose From Gallery")) {
                             dialog.dismiss();
+
                             Intent pickPhoto = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                             startActivityForResult(pickPhoto, PICK_IMAGE_GALLERY);
                         } else if (options[item].equals("Cancel")) {
@@ -209,6 +211,7 @@ public class User_Fragment extends Fragment implements View.OnClickListener, Use
                 ActivityCompat.requestPermissions(getActivity(),
                         new String[]{Manifest.permission.CAMERA},
                         MY_PERMISSIONS_REQUEST_CAMERA);
+
 
             }
         } catch (Exception e) {
@@ -238,32 +241,41 @@ public class User_Fragment extends Fragment implements View.OnClickListener, Use
                 encodedString = Base64.encodeToString(bytes.toByteArray(), Base64.DEFAULT);
                 imgPath = destination.getAbsolutePath();
                 profile_image_user.setImageBitmap(bitmap);
-
-
-
+                UpdateUser(new File(getPath(getImageUri(getContext(),bitmap))));
             } catch (Exception e) {
                 e.printStackTrace();
 
 
             }
         } else if (requestCode == PICK_IMAGE_GALLERY) {
-            Uri selectedImage = data.getData();
-            try {
+            if (data != null) {
+                Uri selectedImage = data.getData();
+                try {
 
-                bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), selectedImage);
-                ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 50, bytes);
-                profile_image_user.setImageBitmap(bitmap);
+                    bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), selectedImage);
+                    ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 50, bytes);
+                    profile_image_user.setImageBitmap(bitmap);
 
-                UpdateUser(new File(getPath(selectedImage)));
+                    UpdateUser(new File(getPath(selectedImage)));
 
-            } catch (Exception e) {
-                e.printStackTrace();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            } else {
+                Toast.makeText(getContext(), "Please Try Again ", Toast.LENGTH_SHORT).show();
             }
+
 
         }
     }
-
+    public Uri getImageUri(Context inContext, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
+        return Uri.parse(path);
+    }
     public String getPath(Uri uri) {
         String[] projection = {MediaStore.Images.Media.DATA};
         Cursor cursor = getContext().getContentResolver().query(uri, projection, null, null, null);
@@ -314,7 +326,7 @@ public class User_Fragment extends Fragment implements View.OnClickListener, Use
 //            Glide.with(getActivity())
 //                    .load("http://dnddemo.com/ebooks/api/v1/upload/"+image)
 //                    .into(profile_image_user);
-            GlideUtils.loadImage((AppCompatActivity) getActivity(),"http://dnddemo.com/ebooks/api/v1/upload/"+image,profile_image_user,R.drawable.user_default,R.drawable.user_default);
+            GlideUtils.loadImage((AppCompatActivity) getActivity(), "http://dnddemo.com/ebooks/api/v1/upload/" + image, profile_image_user, R.drawable.user_default, R.drawable.user_default);
         } else {
 
             profile_image_user.setImageResource(R.drawable.user_default);
@@ -351,6 +363,24 @@ public class User_Fragment extends Fragment implements View.OnClickListener, Use
                 }
             }
         });
+    }
+
+    public boolean isStoragePermissionGranted() {
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (getActivity().checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    == PackageManager.PERMISSION_GRANTED) {
+                Log.v("", "Permission is granted");
+                return true;
+            } else {
+
+                Log.v("", "Permission is revoked");
+                ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+                return false;
+            }
+        } else { //permission is automatically granted on sdk<23 upon installation
+            Log.v("", "Permission is granted");
+            return true;
+        }
     }
 
 

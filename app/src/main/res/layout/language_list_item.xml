@@ -36,6 +36,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:visibility="visible"
+            android:clickable="false"
             android:layout_marginRight="@dimen/size_10"></CheckBox>
     </RelativeLayout>
 

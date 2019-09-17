@@ -1,12 +1,7 @@
 package com.ue.uebook.DeatailActivity;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.Spannable;
@@ -20,11 +15,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -33,9 +34,6 @@ import com.ue.uebook.DeatailActivity.Pojo.BookDetails;
 import com.ue.uebook.DeatailActivity.Pojo.BookmarkResponse;
 import com.ue.uebook.DeatailActivity.Pojo.DetailsResponse;
 import com.ue.uebook.GlideUtils;
-import com.ue.uebook.HomeActivity.HomeFragment.Adapter.Home_recommended_Adapter;
-import com.ue.uebook.HomeActivity.HomeFragment.Home_Fragment;
-import com.ue.uebook.HomeActivity.HomeFragment.Pojo.HomeListingResponse;
 import com.ue.uebook.MySpannable;
 import com.ue.uebook.R;
 import com.ue.uebook.SessionManager;
@@ -45,7 +43,6 @@ import com.ue.uebook.WebviewScreen;
 import java.io.IOException;
 import java.text.Normalizer;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import static android.text.Html.fromHtml;
@@ -56,21 +53,28 @@ public class Book_Detail_Screen extends AppCompatActivity implements View.OnClic
     private Review_List_Adapter review_list_adapter;
     private ImageButton bookmark_btn;
     private Boolean isBookmark_book = false;
-    private Button readFull_Book_btn;
+    private Button readFull_Book_btn ,comment_Submit;
     private List<BookDetails>bookDetail;
     private ProgressDialog dialog;
     private ImageView book_cover;
-    private TextView bookTitle,bookDesc,bookAuthor;
+    private TextView bookTitle,bookDesc,bookAuthor,averageRating,topreviewView;
     private Intent intent;
     private String book_id,videourl,docurl,audiourl;
     private int position;
     private String bookdesc;
+    private RatingBar commnetRating;
+    private EditText user_comment;
     String docbaseUrl="http://docs.google.com/gview?embedded=true&url=";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book__detail__screen);
+        averageRating=findViewById(R.id.averageRating);
+        topreviewView=findViewById(R.id.topreviewView);
+        comment_Submit=findViewById(R.id.submit_comment);
+        commnetRating=findViewById(R.id.myRatingBar_detail);
+        user_comment=findViewById(R.id.comment_edit_text);
         bookDetail= new ArrayList<>();
         dialog = new ProgressDialog(this);
         intent = getIntent();
@@ -88,6 +92,7 @@ public class Book_Detail_Screen extends AppCompatActivity implements View.OnClic
         bookDesc=findViewById(R.id.book_desc);
         bookAuthor=findViewById(R.id.bookauthor);
         book_cover=findViewById(R.id.bookcoverImage);
+        comment_Submit.setOnClickListener(this);
         facebook_btn.setOnClickListener(this);
         google_btn.setOnClickListener(this);
         twitter_btn.setOnClickListener(this);
@@ -98,8 +103,7 @@ public class Book_Detail_Screen extends AppCompatActivity implements View.OnClic
         LinearLayoutManager linearLayoutManagerList = new LinearLayoutManager(this);
         linearLayoutManagerList.setOrientation(LinearLayoutManager.VERTICAL);
         review_List.setLayoutManager(linearLayoutManagerList);
-        review_list_adapter = new Review_List_Adapter();
-        review_List.setAdapter(review_list_adapter);
+
         review_List.setNestedScrollingEnabled(false);
         getBookDetail(book_id);
     }
@@ -160,7 +164,33 @@ public class Book_Detail_Screen extends AppCompatActivity implements View.OnClic
         else if (view==readFull_Book_btn){
            showFilterPopup(view);
         }
+        else if (view == comment_Submit){
+            if (isvalidate())
+            {
+                addCommentToBook(user_comment.getText().toString(), String.valueOf(commnetRating.getRating()));
+            }
+        }
 
+    }
+
+    private Boolean isvalidate() {
+        String user_Comment = user_comment.getText().toString();
+        Float userRating = commnetRating.getRating();
+        if (!user_Comment.isEmpty()) {
+            if (userRating!=0.0) {
+                return true;
+            }
+            else {
+                Toast.makeText(this, "Please Ratw the Book", Toast.LENGTH_LONG).show();
+
+                return false;
+            }
+
+
+        } else {
+            Toast.makeText(this, "Please Enter your Comment", Toast.LENGTH_LONG).show();
+            return false;
+        }
     }
 
     private  void  gotoWebview(String url){
@@ -195,16 +225,42 @@ public class Book_Detail_Screen extends AppCompatActivity implements View.OnClic
                     public void run() {
                         bookTitle.setText(form.getData().getBook_title());
                         bookAuthor.setText(form.getData().getAuthor_name());
+                        bookDesc.setText(form.getData().getBook_description());
                         videourl=form.getData().getVideo_url();
                         docurl=form.getData().getPdf_url();
                         audiourl=form.getData().getAudio_url();
                         bookdesc=form.getData().getBook_description();
+                        averageRating.setText(form.getAveraVal());
+                        if (form.getData().getBookmarkStatus()!=null){
+                            if (form.getData().getBookmarkStatus().equals("1")){
+                                bookmark_btn.setBackgroundResource(R.drawable.bookmark_active);
+                                isBookmark_book = true;
+                            }
+                            else {
+                                bookmark_btn.setBackgroundResource(R.drawable.bookmark_unactive);
+                                isBookmark_book=false;
+                            }
+                        }
+                        else {
 
+                            bookmark_btn.setBackgroundResource(R.drawable.bookmark_unactive);
+                            isBookmark_book=false;
+                        }
                         if (form.getData().getBook_description().length()>=50){
                             makeTextViewResizable(bookDesc, 5, "See More", true);
                         }
-
                         GlideUtils.loadImage(Book_Detail_Screen.this,"http://"+form.getData().getThubm_image(),book_cover,R.drawable.noimage,R.drawable.noimage);
+
+                        review_list_adapter = new Review_List_Adapter(Book_Detail_Screen.this,form.getReview());
+                        review_List.setAdapter(review_list_adapter);
+                        review_list_adapter.notifyDataSetChanged();
+                        if (form.getReview().size()>0){
+                            topreviewView.setVisibility(View.VISIBLE);
+                        }
+                        else {
+                            topreviewView.setVisibility(View.GONE);
+                        }
+
 
                     }
                 });
@@ -363,6 +419,31 @@ public class Book_Detail_Screen extends AppCompatActivity implements View.OnClic
         }
         return ssb;
 
+    }
+    private void addCommentToBook(String comment , String rating) {
+        dialog.show();
+        ApiRequest request = new ApiRequest();
+        request.requestforAddComment(new SessionManager(getApplicationContext()).getUserID(),book_id,comment,rating, new okhttp3.Callback() {
+            @Override
+            public void onFailure(okhttp3.Call call, IOException e) {
+                Log.d("error", "error");
+                dialog.dismiss();
+
+            }
+            @Override
+            public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
+                String myResponse = response.body().string();
+                dialog.dismiss();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        user_comment.setText("");
+                        commnetRating.setRating(0);
+                    }
+                });
+                getBookDetail(book_id);
+            }
+        });
     }
 
 }

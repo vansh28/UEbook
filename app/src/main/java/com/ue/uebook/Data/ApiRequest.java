@@ -241,6 +241,53 @@ public class ApiRequest {
                 .build();
         client.newCall(request).enqueue(callback);
     }
+
+
+    public void requestforGetPopularBook(Callback callback) {
+        String url = null;
+        url = BaseUrl + "getAllpopularBook";
+        OkHttpClient client = new OkHttpClient();
+        RequestBody body = RequestBody.create(null, new byte[]{});
+        Request request = new Request.Builder()
+                .url(url)
+                .post(body)
+                .build();
+        client.newCall(request).enqueue(callback);
+    }
+
+
+    public void requestforGetAllBook(Callback callback) {
+        String url = null;
+        url = BaseUrl + "saerchAllbooks";
+        OkHttpClient client = new OkHttpClient();
+        RequestBody body = RequestBody.create(null, new byte[]{});
+        Request request = new Request.Builder()
+                .url(url)
+                .post(body)
+                .build();
+        client.newCall(request).enqueue(callback);
+    }
+    public void requestforAddComment(final String user_id ,final  String books_id, String comment,String rating,Callback callback) {
+        String url = null;
+        url = BaseUrl + "addReview";
+        OkHttpClient client = new OkHttpClient();
+        final MediaType MEDIA_TYPE_PNG = MediaType.parse("*/*");
+        RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
+                .addFormDataPart("user_id", user_id)
+                .addFormDataPart("books_id", books_id)
+                .addFormDataPart("comment", comment)
+                .addFormDataPart("rating",rating)
+                .build();
+
+        Request request = new Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .build();
+        client.newCall(request).enqueue(callback);
+
+    }
+
+
 }
 
 

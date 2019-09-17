@@ -82,6 +82,7 @@
     </androidx.recyclerview.widget.RecyclerView>
     <RelativeLayout
         android:layout_width="match_parent"
+        android:visibility="visible"
         android:layout_height="wrap_content">
     <TextView
         android:layout_width="wrap_content"
@@ -100,12 +101,12 @@
             android:textAllCaps="false"
             android:background="@android:color/transparent"
             android:layout_alignParentRight="true"></Button>
-
     </RelativeLayout>
     <com.ue.uebook.NonScrollRecyclerView
         android:id="@+id/popular_list"
         android:layout_width="match_parent"
         android:layout_marginTop="@dimen/size_10"
+        android:visibility="visible"
         android:layout_height="wrap_content">
     </com.ue.uebook.NonScrollRecyclerView>
     </LinearLayout>

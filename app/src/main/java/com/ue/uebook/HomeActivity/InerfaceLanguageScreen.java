@@ -1,20 +1,18 @@
 package com.ue.uebook.HomeActivity;
 
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.res.Configuration;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageButton;
+
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.res.Configuration;
-import android.os.Bundle;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageButton;
-
 import com.ue.uebook.HomeActivity.HomeFragment.Adapter.Language_adapter;
-import com.ue.uebook.LoginActivity.LoginScreen;
 import com.ue.uebook.R;
 
 import java.util.Locale;
@@ -44,7 +42,7 @@ public class InerfaceLanguageScreen extends AppCompatActivity implements Languag
 
     @Override
     public void onItemClick(int position) {
-      confirmLanguageDialog();
+//      confirmLanguageDialog();
     }
 
     @Override

@@ -1,30 +1,35 @@
 package com.ue.uebook.HomeActivity.HomeFragment.Adapter;
 
-import android.os.Build;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.ue.uebook.Data.ApiRequest;
-import com.ue.uebook.HomeActivity.HomeFragment.Pojo.HomeListingResponse;
+import com.ue.uebook.GlideUtils;
+import com.ue.uebook.HomeActivity.HomeFragment.Pojo.HomeListing;
 import com.ue.uebook.R;
 
-import java.io.IOException;
+import java.util.List;
 
 public class PopularList_Home_Adapter extends RecyclerView.Adapter<PopularList_Home_Adapter.MyViewHolder>{
 
     private PopularBookItemClick popularBookItemClick;
+    private List<HomeListing> popularBook_list;
+    private AppCompatActivity mctx;
+    public PopularList_Home_Adapter(AppCompatActivity mctx ,List<HomeListing> popularBook_list) {
+        this.popularBook_list=popularBook_list;
+        this.mctx=mctx;
+
+    }
 
     public interface PopularBookItemClick {
-        void onItemClick_PopularBook(int position);
+        void onItemClick_PopularBook(int position ,String book_id);
     }
 
     public void setItemClickListener(PopularBookItemClick clickListener) {
@@ -46,30 +51,36 @@ public class PopularList_Home_Adapter extends RecyclerView.Adapter<PopularList_H
 
     @Override
     public void onBindViewHolder(@NonNull PopularList_Home_Adapter.MyViewHolder holder, final int position) {
-        holder.book_Conatiner.setOnClickListener(new View.OnClickListener() {
+        holder.book_container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (popularBookItemClick != null) {
-                    popularBookItemClick.onItemClick_PopularBook(position);
+                    popularBookItemClick.onItemClick_PopularBook(position,popularBook_list.get(position).getId());
                 }
             }
         });
-    }
+            holder.authorName.setText(popularBook_list.get(position).getAuthor_name());
+            holder.bookname.setText(popularBook_list.get(position).getBook_title());
+            GlideUtils.loadImage(mctx,"http://"+popularBook_list.get(position).getThubm_image(),holder.bookimage,R.drawable.noimage,R.drawable.noimage);
 
+    }
     @Override
     public int getItemCount() {
-        return 3;
+        return popularBook_list.size();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        private LinearLayout book_Conatiner;
+        LinearLayout book_container;
+        ImageView bookimage;
+        TextView bookname,authorName,bookDesc;
+
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            book_Conatiner=itemView.findViewById(R.id.container);
+            book_container=itemView.findViewById(R.id.container);
+            bookimage=itemView.findViewById(R.id.item_image);
+            bookname=itemView.findViewById(R.id.bookname);
+            authorName=itemView.findViewById(R.id.auhorname);
+            bookDesc=itemView.findViewById(R.id.shortDesc);
         }
-    }
-
-
-
-}
+}}
 

@@ -5,12 +5,22 @@ public class HomeListing {
     private String book_title;
     private String thubm_image ;
     private String author_name;
+    private String book_description;
 
-    public HomeListing(String id, String book_title, String thubm_image, String author_name) {
+    public HomeListing(String id, String book_title, String thubm_image, String author_name, String book_description) {
         this.id = id;
         this.book_title = book_title;
         this.thubm_image = thubm_image;
         this.author_name = author_name;
+        this.book_description = book_description;
+    }
+
+    public String getBook_description() {
+        return book_description;
+    }
+
+    public void setBook_description(String book_description) {
+        this.book_description = book_description;
     }
 
     public String getId() {

@@ -7,6 +7,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -344,6 +345,13 @@ public class Upload_Book_Screen extends AppCompatActivity implements View.OnClic
         if (requestCode == REQUEST_PICK_VIDEO) {
 
             Uri selectedVideoUri = data.getData();
+
+            String[] filePathColumn = {MediaStore.Images.Media.DATA};
+            Cursor cursor =getContentResolver().query(selectedVideoUri, filePathColumn, null, null, null);
+            cursor.moveToFirst();
+            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+            String picturePath = cursor.getString(columnIndex);
+            cursor.close();
 
 
         }

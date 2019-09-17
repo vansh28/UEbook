@@ -1,7 +1,9 @@
 package com.ue.uebook.HomeActivity;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -13,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -40,12 +43,16 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
+
 import static com.ue.uebook.NetworkUtils.getInstance;
 
 
 public class HomeScreen extends BaseActivity implements Home_Fragment.OnFragmentInteractionListener, Bookmark_Fragment.OnFragmentInteractionListener, User_Fragment.OnFragmentInteractionListener, Search_Fragment.OnFragmentInteractionListener, UserProfile_Fragment.OnFragmentInteractionListener, UserMainFragment.OnFragmentInteractionListener, CompanyInfo_Fragment.OnFragmentInteractionListener, NotepadFragment.OnFragmentInteractionListener, View.OnClickListener {
     private ActionBar toolbar;
-    private List<HomeListing> recommendedList_book,newBookList;
+    private List<HomeListing> recommendedList_book,newBookList,popularBook_List;
     private FloatingActionButton addnotes_fab;
     private CoordinatorLayout container;
 
@@ -63,13 +70,15 @@ public class HomeScreen extends BaseActivity implements Home_Fragment.OnFragment
         addnotes_fab.setOnClickListener(this);
          recommendedList_book= new ArrayList<>();
          newBookList = new ArrayList<>();
+        popularBook_List = new ArrayList<>();
         displayCurrentAddress();
         toolbar = getSupportActionBar();
 
         if (getInstance(this).isConnectingToInternet()){
-            getRecommenedBookList("1");
-
-            getnewBookList("2");
+//            getRecommenedBookList("1");
+//
+//            getnewBookList("2");
+//            getPopularList();
 
         }
         else {
@@ -159,6 +168,7 @@ public class HomeScreen extends BaseActivity implements Home_Fragment.OnFragment
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onStart() {
         super.onStart();
@@ -166,7 +176,10 @@ public class HomeScreen extends BaseActivity implements Home_Fragment.OnFragment
             PermissionRequest(34);
         else
             getCurrentLocation();
+
+
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -225,12 +238,43 @@ public class HomeScreen extends BaseActivity implements Home_Fragment.OnFragment
         });
     }
 
+    private void getPopularList() {
+        ApiRequest request = new ApiRequest();
+        request.requestforGetPopularBook(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.e("error", e.getLocalizedMessage());
+
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String myresponse = response.body().string();
+                Gson gson = new GsonBuilder().create();
+                final HomeListingResponse form = gson.fromJson(myresponse, HomeListingResponse.class);
+                if (form.getError().equalsIgnoreCase("false") && !form.getData().isEmpty())  {
+                    popularBook_List.addAll(form.getData());
+                }
+
+
+            }
+
+
+        });
+
+
+    }
+
+
     public List<HomeListing> getRecommendedListBookData() {
         return recommendedList_book;
     }
 
     public List<HomeListing> getnewBookData() {
         return newBookList;
+    }
+    public List<HomeListing> getpopularBookData() {
+        return popularBook_List;
     }
 
     @Override
@@ -240,5 +284,6 @@ public class HomeScreen extends BaseActivity implements Home_Fragment.OnFragment
             startActivity(intent);
         }
     }
+
 }
 

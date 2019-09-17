@@ -156,7 +156,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="@dimen/size_20"
-                android:src="@drawable/bcamera"></ImageView>
+               ></ImageView>
 
             <TextView
                 android:layout_width="wrap_content"

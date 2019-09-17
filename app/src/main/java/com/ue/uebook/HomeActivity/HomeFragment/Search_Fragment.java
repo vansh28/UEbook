@@ -1,47 +1,41 @@
 package com.ue.uebook.HomeActivity.HomeFragment;
 
-import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import android.provider.SearchRecentSuggestions;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
+import android.widget.ImageView;
+
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.ue.uebook.Data.ApiRequest;
 import com.ue.uebook.DeatailActivity.Book_Detail_Screen;
-import com.ue.uebook.HomeActivity.HomeFragment.Adapter.Language_adapter;
 import com.ue.uebook.HomeActivity.HomeFragment.Adapter.Search_History_Adapter;
 import com.ue.uebook.HomeActivity.HomeFragment.Pojo.HomeListing;
 import com.ue.uebook.HomeActivity.HomeFragment.Pojo.HomeListingResponse;
-import com.ue.uebook.MySuggestionProvider;
 import com.ue.uebook.R;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.facebook.FacebookSdk.getApplicationContext;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -64,6 +58,7 @@ public class Search_Fragment extends Fragment implements View.OnClickListener, S
     private Search_History_Adapter search_history_adapter;
     private EditText edittext_search;
     private List<HomeListing>bookList;
+    private ImageView bookimage_search;
 
 
     private OnFragmentInteractionListener mListener;
@@ -104,19 +99,18 @@ public class Search_Fragment extends Fragment implements View.OnClickListener, S
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_search_, container, false);
         search_history_list=view.findViewById(R.id.search_history_list);
         edittext_search=view.findViewById(R.id.edittext_search);
+        bookimage_search=view.findViewById(R.id.bookimage_search);
         edittext_search.requestFocus();
         edittext_search.setOnClickListener(this);
-        getRecommenedBookList("1");
+        getAllBookList();
         search_history_list.setNestedScrollingEnabled(true);
         search_history_list.setVisibility(View.GONE);
         LinearLayoutManager linearLayoutManagerPopularList = new LinearLayoutManager(getActivity());
         linearLayoutManagerPopularList.setOrientation(LinearLayoutManager.VERTICAL);
         search_history_list.setLayoutManager(linearLayoutManagerPopularList);
-
         edittext_search.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -125,10 +119,19 @@ public class Search_Fragment extends Fragment implements View.OnClickListener, S
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                search_history_list.setVisibility(View.VISIBLE);
-                search_history_adapter.filter(charSequence.toString());
-
-
+             try {
+                 search_history_list.setVisibility(View.VISIBLE);
+                 bookimage_search.setVisibility(View.GONE);
+                 search_history_adapter.filter(charSequence.toString());
+             } catch (Exception e) {
+                 e.printStackTrace();
+             }
+             if (charSequence.length()==0){
+                 bookimage_search.setVisibility(View.VISIBLE);
+             }
+             else {
+                 bookimage_search.setVisibility(View.GONE);
+             }
 
             }
 
@@ -146,7 +149,6 @@ public class Search_Fragment extends Fragment implements View.OnClickListener, S
             mListener.onFragmentInteraction(uri);
         }
     }
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -166,9 +168,8 @@ public class Search_Fragment extends Fragment implements View.OnClickListener, S
 
     @Override
     public void onClick(View view) {
+
        }
-
-
 
     @Override
     public void onItemClick(int position, String book_id) {
@@ -202,13 +203,29 @@ public class Search_Fragment extends Fragment implements View.OnClickListener, S
             @Override
             public void onFailure(okhttp3.Call call, IOException e) {
                 Log.d("error", "error");
-
             }
             @Override
             public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
                 String myResponse = response.body().string();
                 Gson gson = new GsonBuilder().create();
                 final HomeListingResponse form = gson.fromJson(myResponse, HomeListingResponse.class);
+
+            }
+        });
+    }
+    private void getAllBookList() {
+        ApiRequest request = new ApiRequest();
+        request.requestforGetAllBook(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.e("error", e.getLocalizedMessage());
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String myresponse = response.body().string();
+                Gson gson = new GsonBuilder().create();
+                final HomeListingResponse form = gson.fromJson(myresponse, HomeListingResponse.class);
                 if (form.getError().equalsIgnoreCase("false") && form.getData() != null) {
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
@@ -221,8 +238,12 @@ public class Search_Fragment extends Fragment implements View.OnClickListener, S
                     });
                 }
             }
+
         });
+
+
     }
+
 
 
 }
