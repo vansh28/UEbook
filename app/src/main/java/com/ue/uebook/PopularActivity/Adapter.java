@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -57,7 +58,10 @@ public class Adapter  extends RecyclerView.Adapter<Adapter.MyViewHolder>{
         holder.authorName.setText(data.get(position).getAuthor_name());
         holder.bookname.setText(data.get(position).getBook_title());
         GlideUtils.loadImage(mctx,"http://"+data.get(position).getThubm_image(),holder.bookimage,R.drawable.noimage,R.drawable.noimage);
+        if (data.get(position).getRating()!=null){
+            holder.myRatingBar.setRating( Float.valueOf(data.get(position).getRating()));
 
+        }
     }
 
     @Override
@@ -69,6 +73,7 @@ public class Adapter  extends RecyclerView.Adapter<Adapter.MyViewHolder>{
         LinearLayout book_container;
         ImageView bookimage;
         TextView bookname,authorName,bookDesc;
+        RatingBar myRatingBar;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -77,6 +82,7 @@ public class Adapter  extends RecyclerView.Adapter<Adapter.MyViewHolder>{
             bookname=itemView.findViewById(R.id.bookname);
             authorName=itemView.findViewById(R.id.auhorname);
             bookDesc=itemView.findViewById(R.id.shortDesc);
+            myRatingBar=itemView.findViewById(R.id.myRatingBar);
         }
     }
 }

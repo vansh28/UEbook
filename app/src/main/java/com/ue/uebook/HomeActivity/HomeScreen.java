@@ -1,9 +1,7 @@
 package com.ue.uebook.HomeActivity;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -15,7 +13,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -134,7 +131,7 @@ public class HomeScreen extends BaseActivity implements Home_Fragment.OnFragment
         // load fragment
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.frame_container, fragment);
-        transaction.commit();
+        transaction.commitNowAllowingStateLoss();;
     }
 
     @Override
@@ -172,6 +169,8 @@ public class HomeScreen extends BaseActivity implements Home_Fragment.OnFragment
     @Override
     protected void onStart() {
         super.onStart();
+
+
         if (!checkPermissions())
             PermissionRequest(34);
         else

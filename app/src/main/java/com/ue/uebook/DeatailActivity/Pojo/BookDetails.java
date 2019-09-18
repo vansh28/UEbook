@@ -19,9 +19,8 @@ public class BookDetails {
     private String status;
     private String created_at;
     private String updated_at;
-    private String bookmarkStatus;
 
-    public BookDetails(String id, String user_id, String category_id, String book_title, String book_slug, String thubm_image, String book_description, String author_name, String book_image, String video_url, String audio_url, String pdf_url, String bookMark, String mostView, String status, String created_at, String updated_at, String bookmarkStatus) {
+    public BookDetails(String id, String user_id, String category_id, String book_title, String book_slug, String thubm_image, String book_description, String author_name, String book_image, String video_url, String audio_url, String pdf_url, String bookMark, String mostView, String status, String created_at, String updated_at) {
         this.id = id;
         this.user_id = user_id;
         this.category_id = category_id;
@@ -39,17 +38,7 @@ public class BookDetails {
         this.status = status;
         this.created_at = created_at;
         this.updated_at = updated_at;
-        this.bookmarkStatus = bookmarkStatus;
     }
-
-    public String getBookmarkStatus() {
-        return bookmarkStatus;
-    }
-
-    public void setBookmarkStatus(String bookmarkStatus) {
-        this.bookmarkStatus = bookmarkStatus;
-    }
-
 
     public String getId() {
         return id;

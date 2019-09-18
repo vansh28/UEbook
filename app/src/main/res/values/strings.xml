@@ -24,4 +24,5 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
     <string name="app_label">Uebook</string>
     <string name="nobookmark">No Bookmark List</string>
     <string name="notepad">No Notes Found</string>
+    <string name="book">No Book Found</string>
 </resources>

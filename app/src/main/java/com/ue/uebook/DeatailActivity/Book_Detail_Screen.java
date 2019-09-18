@@ -148,16 +148,16 @@ public class Book_Detail_Screen extends AppCompatActivity implements View.OnClic
             }
         } else if (view == facebook_btn) {
 
-          ShareUtils.shareFacebook(this,"text","");
+          ShareUtils.shareFacebook(this,bookdesc,"");
 
         } else if (view == google_btn) {
-            ShareUtils.shareByGmail(this,"subject","Body");
+            ShareUtils.shareByGmail(this,"UeBook",bookdesc);
 
         } else if (view == twitter_btn) {
-            ShareUtils.shareTwitter(this,"text","","","");
+            ShareUtils.shareTwitter(this,bookdesc,"","","");
 
         } else if (view == whatsappshare_btn) {
-            ShareUtils.shareWhatsapp(this,"text","");
+            ShareUtils.shareWhatsapp(this,bookdesc,"");
 
 
         }
@@ -206,14 +206,12 @@ public class Book_Detail_Screen extends AppCompatActivity implements View.OnClic
         if (bookDetail.size()>0)
             bookDetail.clear();
 
-        request.requestforgetBookDetail(book_id, new okhttp3.Callback() {
+        request.requestforgetBookDetail(book_id,new SessionManager(getApplicationContext()).getUserID(), new okhttp3.Callback() {
             @Override
             public void onFailure(okhttp3.Call call, IOException e) {
                 Log.d("error", "error");
                 dialog.dismiss();
-
             }
-
             @Override
             public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
                  dialog.dismiss();
@@ -231,8 +229,8 @@ public class Book_Detail_Screen extends AppCompatActivity implements View.OnClic
                         audiourl=form.getData().getAudio_url();
                         bookdesc=form.getData().getBook_description();
                         averageRating.setText(form.getAveraVal());
-                        if (form.getData().getBookmarkStatus()!=null){
-                            if (form.getData().getBookmarkStatus().equals("1")){
+                        if (form.getBookMark()!=null){
+                            if (form.getBookMark().getBookmarkStatus().equals("1")){
                                 bookmark_btn.setBackgroundResource(R.drawable.bookmark_active);
                                 isBookmark_book = true;
                             }
@@ -242,7 +240,6 @@ public class Book_Detail_Screen extends AppCompatActivity implements View.OnClic
                             }
                         }
                         else {
-
                             bookmark_btn.setBackgroundResource(R.drawable.bookmark_unactive);
                             isBookmark_book=false;
                         }
@@ -250,18 +247,15 @@ public class Book_Detail_Screen extends AppCompatActivity implements View.OnClic
                             makeTextViewResizable(bookDesc, 5, "See More", true);
                         }
                         GlideUtils.loadImage(Book_Detail_Screen.this,"http://"+form.getData().getThubm_image(),book_cover,R.drawable.noimage,R.drawable.noimage);
-
-                        review_list_adapter = new Review_List_Adapter(Book_Detail_Screen.this,form.getReview());
-                        review_List.setAdapter(review_list_adapter);
-                        review_list_adapter.notifyDataSetChanged();
-                        if (form.getReview().size()>0){
+                        if (form.getReview()!=null){
+                            review_list_adapter = new Review_List_Adapter(Book_Detail_Screen.this,form.getReview());
+                            review_List.setAdapter(review_list_adapter);
+                            review_list_adapter.notifyDataSetChanged();
                             topreviewView.setVisibility(View.VISIBLE);
                         }
                         else {
                             topreviewView.setVisibility(View.GONE);
                         }
-
-
                     }
                 });
 

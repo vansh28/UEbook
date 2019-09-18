@@ -1,11 +1,11 @@
 package com.ue.uebook.HomeActivity.HomeFragment.Adapter;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,7 +17,6 @@ import com.ue.uebook.HomeActivity.HomeFragment.Pojo.BookmarkBookList;
 import com.ue.uebook.R;
 
 import java.util.List;
-import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -42,11 +41,6 @@ public class Bookmark_List_Adapter  extends RecyclerView.Adapter<Bookmark_List_A
     public void setItemClickListener(BookmarkBookItemClick clickListener) {
         bookmarkBookItemClick = clickListener;
     }
-
-
-
-
-
     @NonNull
     @Override
     public Bookmark_List_Adapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -77,6 +71,10 @@ public class Bookmark_List_Adapter  extends RecyclerView.Adapter<Bookmark_List_A
         else {
             holder.bookDesc.setText(bookList.get(position).getBook_description());
         }
+        if (bookList.get(position).getRating()!=null){
+            holder.ratingBar.setRating( Float.valueOf(bookList.get(position).getRating()));
+
+        }
     }
     public String getFirst10Words(String arg) {
         Pattern pattern = Pattern.compile("([\\S]+\\s*){1,10}");
@@ -94,6 +92,7 @@ public class Bookmark_List_Adapter  extends RecyclerView.Adapter<Bookmark_List_A
         LinearLayout book_container;
         ImageView bookimage;
         TextView bookname,authorName,bookDesc;
+        RatingBar ratingBar ;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -102,6 +101,7 @@ public class Bookmark_List_Adapter  extends RecyclerView.Adapter<Bookmark_List_A
             bookname=itemView.findViewById(R.id.bookname);
             authorName=itemView.findViewById(R.id.auhorname);
             bookDesc=itemView.findViewById(R.id.shortDesc);
+            ratingBar=itemView.findViewById(R.id.myRatingBar);
         }
     }
 }

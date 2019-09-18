@@ -13,11 +13,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-
-
-
-
-
     <LinearLayout
         android:id="@+id/logo_container"
         android:layout_width="match_parent"
@@ -50,10 +45,12 @@
         android:textColorHint="#818080" />
 
     <TextView
+        android:id="@+id/recommended_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="18sp"
         android:text="Recommended"
+        android:visibility="gone"
         android:layout_marginLeft="6dp"
         android:layout_marginTop="@dimen/size_15"
         android:textStyle="bold"
@@ -66,23 +63,36 @@
   </androidx.recyclerview.widget.RecyclerView>
 
     <TextView
+        android:id="@+id/newBook_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="18sp"
         android:text="New Books"
         android:layout_marginLeft="6dp"
         android:textStyle="bold"
+        android:visibility="gone"
         android:layout_marginTop="@dimen/size_15"
         android:textColor="@color/black"/>
-    <androidx.recyclerview.widget.RecyclerView
+        <TextView
+            android:id="@+id/textNobookfound"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:visibility="gone"
+            android:text="@string/book"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/size_20" />
+
+        <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/newBook_list"
         android:layout_width="match_parent"
         android:layout_marginTop="@dimen/size_10"
         android:layout_height="wrap_content">
     </androidx.recyclerview.widget.RecyclerView>
     <RelativeLayout
+        android:id="@+id/popularList_view"
         android:layout_width="match_parent"
-        android:visibility="visible"
+        android:visibility="gone"
         android:layout_height="wrap_content">
     <TextView
         android:layout_width="wrap_content"

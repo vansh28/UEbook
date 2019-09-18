@@ -1,13 +1,10 @@
 package com.ue.uebook.HomeActivity.HomeFragment.Adapter;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -21,6 +18,8 @@ import com.ue.uebook.R;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Search_History_Adapter   extends RecyclerView.Adapter<Search_History_Adapter.MyViewHolder> {
 
@@ -72,14 +71,20 @@ public class Search_History_Adapter   extends RecyclerView.Adapter<Search_Histor
         GlideUtils.loadImage(mctx,"http://"+dataList.get(position).getThubm_image(),holder.bookimage,R.drawable.noimage,R.drawable.noimage);
 
 
-//        if (bookList.get(position).getBook_description().length()>11){
-//            holder.bookDesc.setText(getFirst10Words(dataList.get(position).getBook_description())+"...");
-//        }
-//        else {
-//            holder.bookDesc.setText(dataList.get(position).getBook_description());
-//        }
+        if (dataList.get(position).getBook_description().length()>11){
+            holder.bookDesc.setText(getFirst10Words(dataList.get(position).getBook_description())+"...");
+        }
+        else {
+            holder.bookDesc.setText(dataList.get(position).getBook_description());
+        }
 
 
+    }
+    public String getFirst10Words(String arg) {
+        Pattern pattern = Pattern.compile("([\\S]+\\s*){1,10}");
+        Matcher matcher = pattern.matcher(arg);
+        matcher.find();
+        return matcher.group();
     }
 
     @Override

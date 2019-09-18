@@ -20,6 +20,10 @@ android {
         }
     }
 }
+repositories {
+    maven {
+        url  "http://dl.bintray.com/lukaville/maven"
+    }}
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -53,4 +57,7 @@ dependencies {
     implementation 'com.afollestad.material-dialogs:core:0.9.4.5'
     implementation 'in.gauriinfotech:commons:1.0.8'
     implementation 'io.github.lizhangqu:coreprogress:1.0.2'
+    implementation 'com.afollestad.material-dialogs:core:0.9.4.5'
+    implementation 'com.nbsp:library:1.8'
+
 }

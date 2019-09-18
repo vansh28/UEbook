@@ -141,12 +141,14 @@ public class ApiRequest {
         client.newCall(request).enqueue(callback);
 
     }
-    public void requestforgetBookDetail(final String book_id ,Callback callback) {
+    public void requestforgetBookDetail(final String book_id ,final String user_id,Callback callback) {
         String url = null;
         url = BaseUrl + "getBookDetail";
         OkHttpClient client = new OkHttpClient();
         RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
                 .addFormDataPart("book_id", book_id)
+                .addFormDataPart("user_id", user_id)
+
                 .build();
 
         Request request = new Request.Builder()

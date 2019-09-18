@@ -8,8 +8,9 @@ public class BookmarkBookList {
     private String book_description;
     private String user_id;
     private String bookmark_id;
+    private String rating;
 
-    public BookmarkBookList(String id, String book_title, String thubm_image, String author_name, String book_description, String user_id, String bookmark_id, String bm_status) {
+    public BookmarkBookList(String id, String book_title, String thubm_image, String author_name, String book_description, String user_id, String bookmark_id, String rating, String bm_status) {
         this.id = id;
         this.book_title = book_title;
         this.thubm_image = thubm_image;
@@ -17,7 +18,16 @@ public class BookmarkBookList {
         this.book_description = book_description;
         this.user_id = user_id;
         this.bookmark_id = bookmark_id;
+        this.rating = rating;
         this.bm_status = bm_status;
+    }
+
+    public String getRating() {
+        return rating;
+    }
+
+    public void setRating(String rating) {
+        this.rating = rating;
     }
 
     private String bm_status;

@@ -4,14 +4,16 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.media.ThumbnailUtils;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
@@ -26,10 +28,13 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.MediaController;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.VideoView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -38,6 +43,8 @@ import androidx.core.app.ActivityCompat;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.nbsp.materialfilepicker.MaterialFilePicker;
+import com.nbsp.materialfilepicker.ui.FilePickerActivity;
 import com.ue.uebook.Data.ApiRequest;
 import com.ue.uebook.GlideUtils;
 import com.ue.uebook.ImageUtils;
@@ -52,7 +59,10 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Pattern;
 
+import io.github.lizhangqu.coreprogress.ProgressHelper;
+import io.github.lizhangqu.coreprogress.ProgressUIListener;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MediaType;
@@ -87,8 +97,8 @@ public class Upload_Book_Screen extends AppCompatActivity implements View.OnClic
     private ImageView camera_btn, video_btn, audio_btn, documents_btn, cover_image_preview;
     private String uploadedFileName;
     private StringTokenizer tokens;
-    private TextView filname_view;
-    private ProgressDialog dialog;
+    private TextView filname_view,upload_info;
+    private ProgressDialog progressdialog;
     private Button publishBtn;
     private int categorytype;
     private EditText bookTitle, bookDesc,authorName;
@@ -99,13 +109,22 @@ public class Upload_Book_Screen extends AppCompatActivity implements View.OnClic
     static final int REQUEST_PERMISSION_KEY = 9;
     private ImageButton recordbtn;
     private ImageView profile_image_user_upload;
+    private VideoView videoview;
+    private int mCurrentPosition = 0;
+    private ProgressBar upload_progress;
+    Handler handler = new Handler();
+    int status = 0;
+    // Tag for the instance state bundle.
+    private static final String PLAYBACK_TIME = "play_time";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upload__book__screen);
         back_btn_uploadbook = findViewById(R.id.back_btn_uploadbook);
+        videoview =  findViewById(R.id.videoview);
         cover_image_layout = findViewById(R.id.cover_image_layout);
+        upload_progress=findViewById(R.id.upload_progress);
         bookTitle = findViewById(R.id.bookTitle_edit_text);
         bookDesc = findViewById(R.id.bookDesc_edit_text);
         recordbtn = findViewById(R.id.recordbtn);
@@ -118,9 +137,9 @@ public class Upload_Book_Screen extends AppCompatActivity implements View.OnClic
         publishBtn = findViewById(R.id.publish_book);
         publishBtn.setOnClickListener(this);
         imageUtils = new ImageUtils(this);
-        dialog = new ProgressDialog(this);
         upload_cover_bookBtn = findViewById(R.id.upload_cover_bookBtn);
         filname_view = findViewById(R.id.filname_view);
+        filname_view.setOnClickListener(this);
         camera_btn = findViewById(R.id.camera_btn);
         video_btn = findViewById(R.id.video_Btn);
         audio_btn = findViewById(R.id.audio_Btn);
@@ -133,6 +152,13 @@ public class Upload_Book_Screen extends AppCompatActivity implements View.OnClic
         back_btn_uploadbook.setOnClickListener(this);
         book_category.setPrompt("Select Book Category");
         book_category.setOnItemSelectedListener(this);
+        CreateProgressDialog();
+        MediaController controller = new MediaController(this);
+        controller.setMediaPlayer(videoview);
+        videoview.setMediaController(controller);
+        if (savedInstanceState != null) {
+            mCurrentPosition = savedInstanceState.getInt(PLAYBACK_TIME);
+        }
         getBookCategory();
         String image = new SessionManager(getApplicationContext()).getUserimage();
         if (!image.isEmpty()) {
@@ -197,9 +223,11 @@ public class Upload_Book_Screen extends AppCompatActivity implements View.OnClic
             imageUtils.imagepicker(1);
 
         } else if (view == video_btn) {
-            Intent pickVideoIntent = new Intent(Intent.ACTION_GET_CONTENT);
-            pickVideoIntent.setType("video/*");
-            startActivityForResult(pickVideoIntent, REQUEST_PICK_VIDEO);
+
+            videoChose();
+//            Intent pickVideoIntent = new Intent(Intent.ACTION_GET_CONTENT);
+//            pickVideoIntent.setType("video/*");
+//            startActivityForResult(pickVideoIntent, REQUEST_PICK_VIDEO);
 
         } else if (view == audio_btn) {
             getAudioFile();
@@ -219,7 +247,7 @@ public class Upload_Book_Screen extends AppCompatActivity implements View.OnClic
             if (isvalidate()) {
 
 //                if (docfile!=null){
-//                    requestforUploadBook(new SessionManager(getApplicationContext()).getUserID(), String.valueOf(categorytype), bookTitle.getText().toString(), coverimage, bookDesc.getText().toString(),docfile,authorName.getText().toString());
+                    requestforUploadBook(new SessionManager(getApplicationContext()).getUserID(), String.valueOf(categorytype), bookTitle.getText().toString(), coverimage, bookDesc.getText().toString(),docfile,authorName.getText().toString());
 //                }
 //                else {
 //                    requestforUploadBook(new SessionManager(getApplicationContext()).getUserID(), String.valueOf(categorytype), bookTitle.getText().toString(), coverimage, bookDesc.getText().toString(),null,authorName.getText().toString());
@@ -229,7 +257,27 @@ public class Upload_Book_Screen extends AppCompatActivity implements View.OnClic
         } else if (view == cover_image_layout) {
             imagePreview(bitmap);
         }
+        else if (view==filname_view){
+
+
+        }
     }
+
+//    private void displayFromFile(File file) {
+//
+//        Uri uri = Uri.fromFile(new File(file.getAbsolutePath()));
+//        pdfFileName = getFileName(uri);
+//
+//        pdfView.fromFile(file)
+//                .defaultPage(pageNumber)
+//                .onPageChange(this)
+//                .enableAnnotationRendering(true)
+//                .onLoad(this)
+//                .scrollHandle(new DefaultScrollHandle(this))
+//                .spacing(10) // in dp
+//                .onPageError(this)
+//                .load();
+//    }
     private void imagePreview(Bitmap file) {
         final Dialog previewDialog = new Dialog(this);
         previewDialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
@@ -248,19 +296,23 @@ public class Upload_Book_Screen extends AppCompatActivity implements View.OnClic
         });
         previewDialog.show();
     }
-    private void showFileChooser() {
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.setType("application/*");
-        intent.addCategory(Intent.CATEGORY_OPENABLE);
 
-        try {
-            startActivityForResult(
-                    Intent.createChooser(intent, "Select a File to Upload"),
-                    111);
-        } catch (android.content.ActivityNotFoundException ex) {
-            Toast.makeText(this, "Please install a File Manager.",
-                    Toast.LENGTH_SHORT).show();
-        }
+    private void showFileChooser() {
+        new MaterialFilePicker()
+                .withActivity(this)
+                .withRequestCode(111)
+                .withHiddenFiles(true)
+                .withTitle("Select PDF file")
+                .start();
+    }
+    private void videoChose() {
+        new MaterialFilePicker()
+                .withActivity(this)
+                .withRequestCode(REQUEST_PICK_VIDEO)
+                .withHiddenFiles(true)
+                .withFilter(Pattern.compile(".*\\.mp4$"))
+                .withTitle("Select Video file")
+                .start();
     }
     private void getAudioFile() {
         Intent intent_upload = new Intent();
@@ -288,12 +340,21 @@ public class Upload_Book_Screen extends AppCompatActivity implements View.OnClic
 
     public void requestforUploadBook(final String userid, final String category_id, final String booktitle, final File profile_image, final String book_description ,File docFile,final String author_name) {
         String url = null;
-        dialog.show();
-        dialog.setTitle("Uploading");
 
+        String docName;
+
+        if (docFile!=null){
+            docName=docFile.getName();
+        }
+        else {
+            docName="fname";
+        }
+//        File file = new File(videoPath);
         url = " http://dnddemo.com/ebooks/api/v1/addNewBook";
         OkHttpClient client = new OkHttpClient();
         final MediaType MEDIA_TYPE_PNG = MediaType.parse("image/png");
+
+
         RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
                 .addFormDataPart("user_id", userid)
                 .addFormDataPart("category_id", category_id)
@@ -302,22 +363,55 @@ public class Upload_Book_Screen extends AppCompatActivity implements View.OnClic
                 .addFormDataPart("author_name", author_name)
                 .addFormDataPart("pdf_url", docfile.getName(), RequestBody.create(MediaType.parse("text/csv"), docFile))
                 .addFormDataPart("thubm_image", profile_image.getName(), RequestBody.create(MEDIA_TYPE_PNG, profile_image))
+                .addFormDataPart("video_url", videofile.getName(),RequestBody.create(MediaType.parse("video/mp4"), videofile))
                 .build();
+
+
+
+
+        RequestBody requestBodys = ProgressHelper.withProgress(requestBody, new ProgressUIListener() {
+
+            //if you don't need this method, don't override this methd. It isn't an abstract method, just an empty method.
+            @Override
+            public void onUIProgressStart(long totalBytes) {
+                super.onUIProgressStart(totalBytes);
+                Log.e("TAG", "onUIProgressStart:" + totalBytes);
+                Toast.makeText(getApplicationContext(), "开始上传：" + totalBytes, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onUIProgressChanged(long numBytes, long totalBytes, float percent, float speed) {
+                progressdialog.show();
+
+                progressdialog.setProgress((int) (100 * percent));
+
+
+
+            }
+
+            //if you don't need this method, don't override this methd. It isn't an abstract method, just an empty method.
+            @Override
+            public void onUIProgressFinish() {
+                super.onUIProgressFinish();
+                Log.e("TAG", "onUIProgressFinish:");
+                Toast.makeText(getApplicationContext(), "结束上传", Toast.LENGTH_SHORT).show();
+                progressdialog.dismiss();
+            }
+        });
 
         Request request = new Request.Builder()
                 .url(url)
-                .post(requestBody)
+                .post(requestBodys)
                 .build();
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                dialog.dismiss();
+
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 String res = response.body().string();
-                dialog.dismiss();
                 Gson gson = new GsonBuilder().create();
                 final UploadPojo form = gson.fromJson(res, UploadPojo.class);
 
@@ -342,36 +436,36 @@ public class Upload_Book_Screen extends AppCompatActivity implements View.OnClic
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         imageUtils.onActivityResult(requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_PICK_VIDEO) {
 
-            Uri selectedVideoUri = data.getData();
+        if (resultCode == RESULT_OK) {
 
-            String[] filePathColumn = {MediaStore.Images.Media.DATA};
-            Cursor cursor =getContentResolver().query(selectedVideoUri, filePathColumn, null, null, null);
-            cursor.moveToFirst();
-            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-            String picturePath = cursor.getString(columnIndex);
-            cursor.close();
+            if (requestCode == REQUEST_PICK_VIDEO) {
+
+                if (resultCode == Activity.RESULT_OK) {
+                    String path = data.getStringExtra(FilePickerActivity.RESULT_FILE_PATH);
+                    videofile = new File(path);
+//                    video = data.getData();
+//                    videoview.setVisibility(View.VISIBLE);
+//                    videoPath = getRealVideoPathFromURI(getApplicationContext().getContentResolver(), video);
+//                    initializePlayer(video);
+                }
 
 
-        }
-        else if (requestCode==111){
+            } else if (requestCode == 111) {
+                if (resultCode == Activity.RESULT_OK) {
+                    String path = data.getStringExtra(FilePickerActivity.RESULT_FILE_PATH);
+                    docfile = new File(path);
+                    filname_view.setVisibility(View.VISIBLE);
+                    filname_view.setText(docfile.getName());
+                }
+            } else if (requestCode == 12) {
 
-                // Get the Uri of the selected file
                 Uri uri = data.getData();
+                String selectedPath = getPath(uri);
 
-            File file = new File(uri.getPath().toString());
-            docfile=file;
+
             }
-        else if (requestCode==12){
-
-            Uri uri = data.getData();
-
-            String   selectedPath = getPath(uri);
-
-
         }
-
         }
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -427,7 +521,14 @@ public class Upload_Book_Screen extends AppCompatActivity implements View.OnClic
     public void onNothingSelected(AdapterView<?> adapterView) {
 
     }
+    @Override
+    protected void onStop() {
+        super.onStop();
 
+        // Media playback takes a lot of resources, so everything should be
+        // stopped and released at this time.
+        releasePlayer();
+    }
 
     private Boolean isvalidate() {
         String booktitle = bookTitle.getText().toString();
@@ -457,14 +558,32 @@ public class Upload_Book_Screen extends AppCompatActivity implements View.OnClic
 
 
     public String getPath(Uri uri) {
-        String[] projection = { MediaStore.Images.Media.DATA };
-        Cursor cursor = managedQuery(uri, projection, null, null, null);
-        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-        cursor.moveToFirst();
-        return cursor.getString(column_index);
+        String[] projection = { MediaStore.Video.Media.DATA };
+        Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
+        if (cursor != null) {
+            // HERE YOU WILL GET A NULLPOINTER IF CURSOR IS NULL
+            // THIS CAN BE, IF YOU USED OI FILE MANAGER FOR PICKING THE MEDIA
+            int column_index = cursor
+                    .getColumnIndexOrThrow(MediaStore.Video.Media.DATA);
+            cursor.moveToFirst();
+            return cursor.getString(column_index);
+        } else
+            return null;
     }
-
-
+    public static String getRealVideoPathFromURI(ContentResolver contentResolver, Uri contentURI) {
+        Cursor cursor = contentResolver.query(contentURI, null, null, null, null);
+        if (cursor == null)
+            return contentURI.getPath();
+        else {
+            cursor.moveToFirst();
+            int idx = cursor.getColumnIndex(MediaStore.Video.VideoColumns.DATA);
+            try {
+                return cursor.getString(idx);
+            } catch (Exception exception) {
+                return null;
+            }
+        }
+    }
 
     @Override
     public void onResume() {
@@ -613,6 +732,65 @@ public class Upload_Book_Screen extends AppCompatActivity implements View.OnClic
             return cursor.getString(idx);
         }
     }
+    private void initializePlayer(Uri uri) {
+        // Show the "Buffering..." message while the video loads.
+
+        if (uri != null){
+            videoview.setVideoURI(uri);
+        }
+        // Listener for onPrepared() event (runs after the media is prepared).
+        videoview.setOnPreparedListener(
+                new MediaPlayer.OnPreparedListener() {
+                    @Override
+                    public void onPrepared(MediaPlayer mediaPlayer) {
+
+                        // Hide buffering message.
+
+
+                        // Restore saved position, if available.
+                        if (mCurrentPosition > 0) {
+                            videoview.seekTo(mCurrentPosition);
+                        } else {
+                            // Skipping to 1 shows the first frame of the video.
+                            videoview.seekTo(1);
+                        }
+
+                        // Start playing!
+                        videoview.start();
+                    }
+                });
+
+        // Listener for onCompletion() event (runs after media has finished
+        // playing).
+
+    }
+
+    private void releasePlayer() {
+        videoview.stopPlayback();
+    }
+
+    public void CreateProgressDialog()
+    {
+
+        progressdialog = new ProgressDialog(Upload_Book_Screen.this);
+
+        progressdialog.setIndeterminate(false);
+
+        progressdialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+
+        progressdialog.setCancelable(true);
+        progressdialog.setTitle("Uploading Book");
+
+        progressdialog.setMax(100);
+
+
+    }
+
+
+
+
+
+
 }
 
 

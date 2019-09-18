@@ -262,19 +262,37 @@
                 android:layout_weight=".8"
                 android:src="@drawable/document"></ImageView>
 
-
         </LinearLayout>
+        <ProgressBar
+            android:id="@+id/upload_progress"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="100"
+            android:visibility="gone"
+            android:progress="0"
+            />
 <TextView
     android:id="@+id/filname_view"
     android:layout_width="wrap_content"
     android:layout_marginTop="@dimen/size_10"
     android:layout_marginLeft="@dimen/size_20"
     android:textSize="@dimen/size_17"
-    android:visibility="gone"
+    android:visibility="visible"
+    android:clickable="true"
     android:textColor="@color/colorPrimary"
     android:layout_height="wrap_content">
 
 </TextView>
+
+        <VideoView
+            android:id="@+id/videoview"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:visibility="gone"
+            android:layout_margin="15dp"
+            />
+
         <Button
             android:id="@+id/publish_book"
             android:layout_width="match_parent"
@@ -285,6 +303,7 @@
             android:background="@drawable/createacount_bg"
             android:text="PUBLISH BOOK"
             android:textAllCaps="true"
+            android:layout_marginBottom="@dimen/size_20"
             android:textColor="@color/white"></Button>
 
     </LinearLayout>
