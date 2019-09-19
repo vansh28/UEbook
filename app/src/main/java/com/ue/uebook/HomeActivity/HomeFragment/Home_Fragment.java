@@ -416,7 +416,7 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
                 String myresponse = response.body().string();
                 Gson gson = new GsonBuilder().create();
                 final HomeListingResponse form = gson.fromJson(myresponse, HomeListingResponse.class);
-                if (form.getError().equalsIgnoreCase("false") && !form.getData().isEmpty())  {
+                if (form.getError().equalsIgnoreCase("false") && form.getData() != null && !form.getData().isEmpty()) {
                     if (getActivity()!=null){
                         getActivity().runOnUiThread(new Runnable() {
                             @Override

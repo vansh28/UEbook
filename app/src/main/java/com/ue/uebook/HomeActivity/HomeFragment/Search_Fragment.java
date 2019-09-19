@@ -127,7 +127,7 @@ public class Search_Fragment extends Fragment implements View.OnClickListener, S
                  e.printStackTrace();
              }
              if (charSequence.length()==0){
-                 bookimage_search.setVisibility(View.VISIBLE);
+                 bookimage_search.setVisibility(View.GONE);
              }
              else {
                  bookimage_search.setVisibility(View.GONE);

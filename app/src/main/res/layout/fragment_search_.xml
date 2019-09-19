@@ -40,7 +40,7 @@
         android:layout_width="300dp"
         android:layout_height="300dp"
         android:layout_centerInParent="true"
-        android:visibility="visible"
+        android:visibility="gone"
         android:background="@drawable/download_book"></ImageView>
 
 </RelativeLayout>

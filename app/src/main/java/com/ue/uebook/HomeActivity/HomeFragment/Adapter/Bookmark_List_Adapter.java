@@ -1,5 +1,6 @@
 package com.ue.uebook.HomeActivity.HomeFragment.Adapter;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,6 +58,7 @@ public class Bookmark_List_Adapter  extends RecyclerView.Adapter<Bookmark_List_A
             @Override
             public void onClick(View view) {
                 if (bookmarkBookItemClick != null) {
+                    Log.d("ddd",bookList.get(position).getId());
                     bookmarkBookItemClick.onItemClick(position,bookList.get(position).getId());
                 }
             }

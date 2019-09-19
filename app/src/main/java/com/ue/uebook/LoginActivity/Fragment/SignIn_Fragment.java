@@ -5,13 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,34 +15,25 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.material.snackbar.Snackbar;
+import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.ue.uebook.Data.NetworkAPI;
 import com.ue.uebook.Data.NetworkService;
 import com.ue.uebook.HomeActivity.HomeScreen;
-import com.ue.uebook.LoginActivity.Pojo.LoginBody;
 import com.ue.uebook.LoginActivity.Pojo.LoginResponse;
-import com.ue.uebook.LoginActivity.Pojo.RegistrationBody;
-import com.ue.uebook.LoginActivity.Pojo.RegistrationResponse;
 import com.ue.uebook.R;
 import com.ue.uebook.SessionManager;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.IOException;
 
-import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
-import static com.facebook.FacebookSdk.getApplicationContext;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -153,12 +137,11 @@ public class SignIn_Fragment extends Fragment implements View.OnClickListener {
     public void onClick(View view) {
         if (view == login_btn) {
 
-            if (isvalidate()){
-                String user=userName.getText().toString().trim();
-                String userpass=userPassword.getText().toString().trim();
-                requestforLogin(user,userpass);
+            if (isvalidate()) {
+                String user = userName.getText().toString().trim();
+                String userpass = userPassword.getText().toString().trim();
+                requestforLogin(user, userpass);
             }
-
 
 
         } else if (view == create_AccountBtn) {
@@ -224,28 +207,27 @@ public class SignIn_Fragment extends Fragment implements View.OnClickListener {
 //    }
 
 
-
-
-
     private Boolean isvalidate() {
         String user_NAme = userName.getText().toString();
         String userpass = userPassword.getText().toString();
         if (!user_NAme.isEmpty()) {
             if (!userpass.isEmpty()) {
                 return true;
-            }
-                else {
-
-                    Toast.makeText(getContext(), "Please Enter your Password", Toast.LENGTH_LONG).show();
-                    return false;
-                }
-
-
             } else {
-                Toast.makeText(getContext(), "Please Enter your Username", Toast.LENGTH_LONG).show();
+                userPassword.setError("Enter your Password");
+                userPassword.requestFocus();
+                userPassword.setEnabled(true);
                 return false;
             }
+
+        } else {
+            userName.setError("Enter your Username");
+            userName.requestFocus();
+            userName.setEnabled(true);
+
+            return false;
         }
+    }
 
 
     public void requestforLogin(final String user_name, final String password) {
@@ -254,7 +236,7 @@ public class SignIn_Fragment extends Fragment implements View.OnClickListener {
         OkHttpClient client = new OkHttpClient();
         RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
                 .addFormDataPart("user_name", user_name)
-                .addFormDataPart("password",password)
+                .addFormDataPart("password", password)
                 .build();
 
         Request request = new Request.Builder()
@@ -264,7 +246,7 @@ public class SignIn_Fragment extends Fragment implements View.OnClickListener {
         client.newCall(request).enqueue(new okhttp3.Callback() {
             @Override
             public void onFailure(okhttp3.Call call, IOException e) {
-                final String myResponse =e.getLocalizedMessage();
+                final String myResponse = e.getLocalizedMessage();
             }
 
             @Override
@@ -272,7 +254,7 @@ public class SignIn_Fragment extends Fragment implements View.OnClickListener {
                 final String myResponse = response.body().string();
                 Gson gson = new GsonBuilder().create();
                 final LoginResponse form = gson.fromJson(myResponse, LoginResponse.class);
-                if (form.getError()==false){
+                if (form.getError() == false) {
 
                     new SessionManager(getContext().getApplicationContext()).storeUserPublishtype(form.getResponse().getPublisher_type());
                     new SessionManager(getContext().getApplicationContext()).storeUseruserID(form.getResponse().getId());
@@ -280,16 +262,14 @@ public class SignIn_Fragment extends Fragment implements View.OnClickListener {
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(getContext(),"Succesfully Login",Toast.LENGTH_SHORT).show();
-                            if (keepMeSign.isChecked()){
+                            Toast.makeText(getContext(), "Succesfully Login", Toast.LENGTH_SHORT).show();
+                            if (keepMeSign.isChecked()) {
                                 new SessionManager(getContext().getApplicationContext()).storeUserLoginStatus(1);
 
-                            }
-                            else {
+                            } else {
                                 new SessionManager(getContext().getApplicationContext()).storeUserLoginStatus(0);
 
                             }
-
 
 
                         }
@@ -298,16 +278,14 @@ public class SignIn_Fragment extends Fragment implements View.OnClickListener {
                     gotoHome();
 
 
+                } else {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            showDialogWithOkButton("Login Error", form.getMessage());
+                        }
+                    });
                 }
-                else {
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    showDialogWithOkButton("Login Error",form.getMessage());
-                }
-            });
-                }
-
 
 
             }
@@ -333,4 +311,4 @@ public class SignIn_Fragment extends Fragment implements View.OnClickListener {
     }
 
 
-    }
+}

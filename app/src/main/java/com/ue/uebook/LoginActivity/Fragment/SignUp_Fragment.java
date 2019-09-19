@@ -2,16 +2,9 @@ package com.ue.uebook.LoginActivity.Fragment;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,7 +20,10 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.google.android.material.snackbar.Snackbar;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.ue.uebook.Data.ApiRequest;
@@ -40,7 +36,6 @@ import com.ue.uebook.R;
 import com.ue.uebook.SessionManager;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -129,7 +124,8 @@ public class SignUp_Fragment extends Fragment implements View.OnClickListener {
         publisher = view.findViewById(R.id.publish_checkbox);
         country_edit_text=view.findViewById(R.id.country_edit_text);
         brief_desc=view.findViewById(R.id.brief_desc);
-
+        male=view.findViewById(R.id.radioM);
+        female=view.findViewById(R.id.radioF);
         reader.setOnClickListener(this);
         writer.setOnClickListener(this);
         publisher.setOnClickListener(this);
@@ -286,35 +282,45 @@ public class SignUp_Fragment extends Fragment implements View.OnClickListener {
                     if (!userpass.isEmpty()) {
                         if (!country.isEmpty()) {
                             if (gender != null) {
+                                male.setError(null);
                                 return true;
                             } else {
-
-                                Toast.makeText(getContext(), "Please Select your gender", Toast.LENGTH_LONG).show();
+                                male.setError("Select Gender");
                                 return false;
                             }
 
                         } else {
-                            Toast.makeText(getContext(), "Please Enter your Country", Toast.LENGTH_LONG).show();
+                            country_edit_text.setError("Enter your Country ");
+                            country_edit_text.requestFocus();
+                            country_edit_text.setEnabled(true);
                             return false;
                         }
 
 
                     } else {
-
-                        Toast.makeText(getContext(), "Please Enter your Password", Toast.LENGTH_LONG).show();
+                        userPassword.setError("Enter your Password");
+                        userPassword.requestFocus();
+                        userPassword.setEnabled(true);
                         return false;
                     }
                 } else {
-                    Toast.makeText(getContext(), "Please Enter your Email", Toast.LENGTH_LONG).show();
+                    userEmail.setError("Enter your Email ");
+                    userEmail.requestFocus();
+                    userEmail.setEnabled(true);
                     return false;
                 }
             }else {
-                Toast.makeText(getContext(), "Please Enter your Brief Description", Toast.LENGTH_LONG).show();
+                brief_desc.setError("Enter your Brief Description");
+                brief_desc.requestFocus();
+                brief_desc.setEnabled(true);
                 return false;
             }
 
         } else {
-            Toast.makeText(getContext(), "Please Enter your Username", Toast.LENGTH_LONG).show();
+            username.setError("Enter your Username");
+            username.requestFocus();
+            username.setEnabled(true);
+
             return false;
         }
 

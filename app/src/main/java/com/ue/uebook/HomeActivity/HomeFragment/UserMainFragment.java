@@ -5,15 +5,14 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.appcompat.app.AlertDialog;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.ue.uebook.LoginActivity.LoginScreen;
 import com.ue.uebook.R;
@@ -41,7 +40,8 @@ public class UserMainFragment extends Fragment implements View.OnClickListener, 
 
     private OnFragmentInteractionListener mListener;
     private View view_uploadBook;
-
+    AlertDialog.Builder builder;
+    AlertDialog progressDialog;
     public UserMainFragment() {
         // Required empty public constructor
     }

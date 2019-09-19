@@ -39,6 +39,7 @@
             android:layout_height="wrap_content"
             android:textSize="18sp"
             android:layout_marginLeft="6dp"
+            android:maxLines="1"
             android:layout_marginTop="@dimen/size_5"
             android:textColor="@color/black"/>
         <TextView
@@ -46,6 +47,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="13sp"
+            android:maxLines="1"
             android:layout_marginLeft="6dp"
             android:layout_marginTop="@dimen/size_5"
             android:textColor="#9B9B9B"/>
@@ -56,6 +58,7 @@
             android:textSize="13sp"
             android:layout_marginLeft="6dp"
             android:layout_marginTop="@dimen/size_5"
+            android:maxLines="2"
             android:textColor="#9B9B9B"/>
 
         <RatingBar
