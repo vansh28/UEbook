@@ -158,7 +158,7 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
             if (getInstance(this).isConnectingToInternet()) {
                 Fblogin();
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                    showLoadingIndicator();
+//                    showLoadingIndicator();
                 }
 
 
@@ -172,7 +172,7 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
             if (getInstance(this).isConnectingToInternet()) {
                 signIn();
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                    showLoadingIndicator();
+//                    showLoadingIndicator();
                 }
 
 

@@ -17,4 +17,20 @@
         <item>camera_image</item>
         <item>remove_image</item>
     </string-array>
+    <string-array name="theme_lisT">
+        <item>Light / sans serif</item>
+        <item>Light / serif</item>
+        <item>Light / monospace</item>
+        <item>Dark / sans serif</item>
+        <item>Dark / serif</item>
+        <item>Dark / monospace</item>
+    </string-array>
+    <string-array name="theme_list_values" >
+        <item>light-sans</item>
+        <item>light-serif</item>
+        <item>light-monospace</item>
+        <item>dark-sans</item>
+        <item>dark-serif</item>
+        <item>dark-monospace</item>
+    </string-array>
 </resources>

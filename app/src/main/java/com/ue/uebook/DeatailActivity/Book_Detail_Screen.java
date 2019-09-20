@@ -2,6 +2,7 @@ package com.ue.uebook.DeatailActivity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.Spannable;
@@ -23,12 +24,13 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.ue.uebook.BaseActivity;
 import com.ue.uebook.Data.ApiRequest;
 import com.ue.uebook.DeatailActivity.Pojo.BookDetails;
 import com.ue.uebook.DeatailActivity.Pojo.BookmarkResponse;
@@ -47,7 +49,7 @@ import java.util.List;
 
 import static android.text.Html.fromHtml;
 
-public class Book_Detail_Screen extends AppCompatActivity implements View.OnClickListener {
+public class Book_Detail_Screen extends BaseActivity implements View.OnClickListener {
     private ImageButton back_btn_Deatils, facebook_btn, google_btn, twitter_btn, whatsappshare_btn;
     private RecyclerView review_List;
     private Review_List_Adapter review_list_adapter;
@@ -65,7 +67,6 @@ public class Book_Detail_Screen extends AppCompatActivity implements View.OnClic
     private RatingBar commnetRating;
     private EditText user_comment;
     String docbaseUrl="http://docs.google.com/gview?embedded=true&url=";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -129,6 +130,7 @@ public class Book_Detail_Screen extends AppCompatActivity implements View.OnClic
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void onClick(View view) {
         if (view == back_btn_Deatils) {
@@ -144,13 +146,13 @@ public class Book_Detail_Screen extends AppCompatActivity implements View.OnClic
                 bookmark_btn.setBackgroundResource(R.drawable.bookmark_unactive);
                 isBookmark_book = false;
                 addBookToBookmark(book_id,"0");
-
             }
         } else if (view == facebook_btn) {
 
           ShareUtils.shareFacebook(this,bookdesc,"");
 
         } else if (view == google_btn) {
+
             ShareUtils.shareByGmail(this,"UeBook",bookdesc);
 
         } else if (view == twitter_btn) {
@@ -199,10 +201,10 @@ public class Book_Detail_Screen extends AppCompatActivity implements View.OnClic
         startActivity(intent);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void getBookDetail(String book_id) {
         ApiRequest request = new ApiRequest();
-        dialog.setTitle("Loading");
-        dialog.show();
+        showLoadingIndicator();
         if (bookDetail.size()>0)
             bookDetail.clear();
 
@@ -210,11 +212,11 @@ public class Book_Detail_Screen extends AppCompatActivity implements View.OnClic
             @Override
             public void onFailure(okhttp3.Call call, IOException e) {
                 Log.d("error", "error");
-                dialog.dismiss();
+                hideLoadingIndicator();
             }
             @Override
             public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
-                 dialog.dismiss();
+                hideLoadingIndicator();
                 String myResponse = response.body().string();
                 Gson gson = new GsonBuilder().create();
                 final DetailsResponse form = gson.fromJson(myResponse, DetailsResponse.class);
@@ -262,21 +264,21 @@ public class Book_Detail_Screen extends AppCompatActivity implements View.OnClic
             }
         });
     }
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void addBookToBookmark(String book_id , String bookStatus) {
         ApiRequest request = new ApiRequest();
-        dialog.setTitle("Please Wait");
-        dialog.show();
+        showLoadingIndicator();
         request.requestforaddBookmark(book_id, bookStatus,new SessionManager(getApplicationContext()).getUserID(),new okhttp3.Callback() {
             @Override
             public void onFailure(okhttp3.Call call, IOException e) {
                 Log.d("error", "error");
-                dialog.dismiss();
+                hideLoadingIndicator();
 
             }
 
             @Override
             public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
-              dialog.dismiss();
+              hideLoadingIndicator();
                 final String myResponse = response.body().string();
                 Gson gson = new GsonBuilder().create();
                 final BookmarkResponse form = gson.fromJson(myResponse, BookmarkResponse.class);
@@ -414,20 +416,22 @@ public class Book_Detail_Screen extends AppCompatActivity implements View.OnClic
         return ssb;
 
     }
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void addCommentToBook(String comment , String rating) {
-        dialog.show();
+        showLoadingIndicator();
         ApiRequest request = new ApiRequest();
         request.requestforAddComment(new SessionManager(getApplicationContext()).getUserID(),book_id,comment,rating, new okhttp3.Callback() {
             @Override
             public void onFailure(okhttp3.Call call, IOException e) {
                 Log.d("error", "error");
-                dialog.dismiss();
+                hideLoadingIndicator();
 
             }
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
                 String myResponse = response.body().string();
-                dialog.dismiss();
+                hideLoadingIndicator();
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {

@@ -1,8 +1,9 @@
 package com.ue.uebook.HomeActivity.HomeFragment;
 
-import android.app.ProgressDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
@@ -39,6 +41,7 @@ import com.ue.uebook.R;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -72,9 +75,9 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
     private List<HomeListing> recommendedList_book, newBookList,popularBook_List;
     private HomeScreen activity;
     private OnFragmentInteractionListener mListener;
-    private ProgressDialog dialog;
     private TextView recommemnded_view,newBookview,textNobookfound;
     private RelativeLayout popularview;
+    private Dialog mdialog;
     public Home_Fragment() {
         // Required empty public constructor
     }
@@ -120,7 +123,6 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home_, container, false);
         recommended_list = view.findViewById(R.id.recommended_list);
-        dialog = new ProgressDialog(getContext());
         edittext_search = view.findViewById(R.id.edittext_search);
         newBook_list = view.findViewById(R.id.newBook_list);
         popular_more_btn = view.findViewById(R.id.popular_more_btn);
@@ -170,6 +172,10 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
 //
 //            }
 //        });
+
+
+
+        // Set action bar elevation
         return view;
     }
     // TODO: Rename method, update argument and hook method into UI event
@@ -313,7 +319,7 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
     }
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void getRecommenedBookList(String categoryId) {
-        dialog.show();
+        showLoadingIndicator();
         ApiRequest request = new ApiRequest();
         if (recommendedList_book.size()>0)
             recommendedList_book.clear();
@@ -322,13 +328,13 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
             @Override
             public void onFailure(okhttp3.Call call, IOException e) {
                 Log.d("error", "error");
-                dialog.dismiss();
+                hideLoadingIndicator();
 
             }
             @Override
             public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
                 String myResponse = response.body().string();
-                dialog.dismiss();
+                hideLoadingIndicator();
                 Gson gson = new GsonBuilder().create();
                 final HomeListingResponse form = gson.fromJson(myResponse, HomeListingResponse.class);
                 if (form.getError().equalsIgnoreCase("false") && form.getData() != null && !form.getData().isEmpty()) {
@@ -357,7 +363,7 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void getnewBookList(String categoryId) {
-        dialog.show();
+
         ApiRequest request = new ApiRequest();
         if (newBookList.size()>0)
             newBookList.clear();
@@ -366,14 +372,14 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
             @Override
             public void onFailure(okhttp3.Call call, IOException e) {
                 Log.d("error", "error");
-                dialog.dismiss();
+                hideLoadingIndicator();
 
             }
 
             @Override
             public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
                 String myResponse = response.body().string();
-                dialog.dismiss();
+
                 Gson gson = new GsonBuilder().create();
                 final HomeListingResponse form = gson.fromJson(myResponse, HomeListingResponse.class);
                 if (form.getError().equalsIgnoreCase("false") && form.getData() != null && !form.getData().isEmpty()) {
@@ -397,22 +403,22 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
         });
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void getPopularList() {
         if (popularBook_List.size()>0)
             popularBook_List.clear();
-        dialog.show();
         ApiRequest request = new ApiRequest();
         request.requestforGetPopularBook(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 Log.e("error", e.getLocalizedMessage());
-                dialog.dismiss();
+                hideLoadingIndicator();
 
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                dialog.dismiss();
+
                 String myresponse = response.body().string();
                 Gson gson = new GsonBuilder().create();
                 final HomeListingResponse form = gson.fromJson(myresponse, HomeListingResponse.class);
@@ -450,7 +456,22 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
 
 
 }
-
-
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public void showLoadingIndicator() {
+        mdialog = new Dialog(getContext());
+        mdialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        Objects.requireNonNull(mdialog.getWindow()).setBackgroundDrawable(
+                new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        mdialog.setContentView(R.layout.layout_loading_indicator);
+        mdialog.setCancelable(true);
+        mdialog.setCanceledOnTouchOutside(true);
+        mdialog.show();
+    }
+    public void hideLoadingIndicator() {
+        if (mdialog != null && mdialog.isShowing()) {
+            mdialog.cancel();
+            mdialog = null;
+        }
+    }
 
 }

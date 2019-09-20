@@ -12,7 +12,9 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:visibility="visible"
-        app:indicatorColor="@color/colorPrimary"
-        app:indicatorName="LineSpinFadeLoaderIndicator" />
+        android:background="@android:color/transparent"
+        app:indicatorColor="@color/red"
+        app:indicatorName="BallClipRotatePulseIndicator"
+         />
 
 </RelativeLayout>

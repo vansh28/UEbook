@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     android:layout_margin="@dimen/size_10"
     android:orientation="vertical"
+    android:id="@+id/view"
     tools:context=".HomeActivity.HomeFragment.Home_Fragment">
     <ScrollView
         android:layout_width="match_parent"

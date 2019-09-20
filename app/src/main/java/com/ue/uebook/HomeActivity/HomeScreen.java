@@ -1,7 +1,9 @@
 package com.ue.uebook.HomeActivity;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -70,7 +72,8 @@ public class HomeScreen extends BaseActivity implements Home_Fragment.OnFragment
         popularBook_List = new ArrayList<>();
         displayCurrentAddress();
         toolbar = getSupportActionBar();
-
+        SharedPreferences pref = getSharedPreferences(getPackageName() + "_preferences", Context.MODE_PRIVATE);
+        String theme = pref.getString("theme", "light-sans");
         if (getInstance(this).isConnectingToInternet()){
 //            getRecommenedBookList("1");
 //

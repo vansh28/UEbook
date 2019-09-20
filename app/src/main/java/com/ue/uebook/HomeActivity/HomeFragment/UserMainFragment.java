@@ -82,22 +82,21 @@ public class UserMainFragment extends Fragment implements View.OnClickListener, 
         userInfo_container = view.findViewById(R.id.userInfo_container);
         uploadBook_Container = view.findViewById(R.id.uploadBook_Container);
         view_uploadBook=view.findViewById(R.id.uploadBook_view);
-        if (new SessionManager(getActivity().getApplicationContext()).getUserPublishType().equalsIgnoreCase("Reader")){
-            uploadBook_Container.setVisibility(View.GONE);
-            view_uploadBook.setVisibility(View.GONE);
-        }
-        else {
-            uploadBook_Container.setVisibility(View.VISIBLE);
-            view_uploadBook.setVisibility(View.VISIBLE);
-        }
+//        if (new SessionManager(getActivity().getApplicationContext()).getUserPublishType().equalsIgnoreCase("Reader")){
+//            uploadBook_Container.setVisibility(View.GONE);
+//            view_uploadBook.setVisibility(View.GONE);
+//        }
+//        else {
+//            uploadBook_Container.setVisibility(View.VISIBLE);
+//            view_uploadBook.setVisibility(View.VISIBLE);
+//        }
+
         logOut = view.findViewById(R.id.logOut);
         logOut.setOnClickListener(this);
         uploadBook_Container.setOnClickListener(this);
         userInfo_container.setOnClickListener(this);
         companyInfo_Container = view.findViewById(R.id.companyInfo_Container);
         companyInfo_Container.setOnClickListener(this);
-
-
         return view;
     }
 
@@ -138,6 +137,8 @@ public class UserMainFragment extends Fragment implements View.OnClickListener, 
             getContext().startActivity(intent);
         } else if (view == logOut) {
             confirmLogoutDialog();
+//            Intent intent = new Intent(getContext(), SettingsActivity.class);
+//            startActivity(intent);
         }
     }
 

@@ -1,35 +1,37 @@
 package com.ue.uebook.HomeActivity.HomeFragment;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.TextView;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.ue.uebook.Data.ApiRequest;
 import com.ue.uebook.DeatailActivity.Book_Detail_Screen;
-import com.ue.uebook.DeatailActivity.Pojo.BookmarkResponse;
 import com.ue.uebook.HomeActivity.HomeFragment.Adapter.Bookmark_List_Adapter;
-import com.ue.uebook.HomeActivity.HomeFragment.Adapter.PopularList_Home_Adapter;
 import com.ue.uebook.HomeActivity.HomeFragment.Pojo.UserBookmarkResponse;
 import com.ue.uebook.R;
 import com.ue.uebook.SessionManager;
 
 import java.io.IOException;
+import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -52,6 +54,7 @@ public class Bookmark_Fragment extends Fragment implements Bookmark_List_Adapter
     private Bookmark_List_Adapter bookmark_list_adapter;
     private ProgressDialog dialog;
     private TextView textNobookmarkList;
+    private Dialog mdialog;
 
     private OnFragmentInteractionListener mListener;
 
@@ -150,21 +153,21 @@ public class Bookmark_Fragment extends Fragment implements Bookmark_List_Adapter
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void getBookmarkList(String user_id) {
         ApiRequest request = new ApiRequest();
-        dialog.setTitle("Please Wait");
-        dialog.show();
+        showLoadingIndicator();
         request.requestforgetBookmarkList(user_id,new okhttp3.Callback() {
             @Override
             public void onFailure(okhttp3.Call call, IOException e) {
                 Log.d("error", "error");
-                dialog.dismiss();
+                hideLoadingIndicator();
 
             }
 
             @Override
             public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
-                dialog.dismiss();
+                hideLoadingIndicator();
                 final String myResponse = response.body().string();
                 Gson gson = new GsonBuilder().create();
                 final UserBookmarkResponse form = gson.fromJson(myResponse, UserBookmarkResponse.class);
@@ -194,5 +197,23 @@ public class Bookmark_Fragment extends Fragment implements Bookmark_List_Adapter
 
             }
         });
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public void showLoadingIndicator() {
+        mdialog = new Dialog(getContext());
+        mdialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        Objects.requireNonNull(mdialog.getWindow()).setBackgroundDrawable(
+                new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        mdialog.setContentView(R.layout.layout_loading_indicator);
+        mdialog.setCancelable(true);
+        mdialog.setCanceledOnTouchOutside(true);
+        mdialog.show();
+    }
+    public void hideLoadingIndicator() {
+        if (mdialog != null && mdialog.isShowing()) {
+            mdialog.cancel();
+            mdialog = null;
+        }
     }
 }

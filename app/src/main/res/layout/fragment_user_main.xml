@@ -91,9 +91,7 @@
             android:layout_centerVertical="true"
             android:paddingRight="@dimen/size_10"
             android:src="@drawable/rightarrow"></ImageView>
-
     </RelativeLayout>
-
     <View
         android:id="@+id/uploadBook_view"
         android:layout_width="match_parent"
