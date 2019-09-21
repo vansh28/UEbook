@@ -1,6 +1,5 @@
 package com.ue.uebook;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,7 +9,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.gson.Gson;
@@ -18,6 +16,9 @@ import com.google.gson.GsonBuilder;
 import com.ue.uebook.Data.ApiRequest;
 
 import java.io.IOException;
+
+import libs.mjn.prettydialog.PrettyDialog;
+import libs.mjn.prettydialog.PrettyDialogCallback;
 
 public class NotepadScreen extends AppCompatActivity implements View.OnClickListener {
     private ImageButton back_btn ,edit_btn,delete_btn;
@@ -74,6 +75,7 @@ public class NotepadScreen extends AppCompatActivity implements View.OnClickList
         else if (view==edit_btn){
             notes_view.setEnabled(true);;
             notes_view.setFocusable(true);
+            notes_view.setSelection(notes_view.getText().length());
             notes_view.requestFocus();
         }
         else if (view==updateNote){
@@ -96,22 +98,54 @@ public class NotepadScreen extends AppCompatActivity implements View.OnClickList
         }
     }
     private void confirmDeleteDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("You sure, that you want Delete ")
-                .setCancelable(false)
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
+//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//        builder.setMessage("You sure, that you want Delete ")
+//                .setCancelable(false)
+//                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+//                    public void onClick(DialogInterface dialog, int id) {
+//                        deleteNotes(note_id);
+//                        dialog.cancel();
+//                    }
+//                })
+//                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+//                    public void onClick(DialogInterface dialog, int id) {
+//                        dialog.cancel();
+//                    }
+//                });
+//        AlertDialog alert = builder.create();
+//        alert.show();
+
+
+        final PrettyDialog pDialog=  new PrettyDialog(this);
+        pDialog.setIcon(R.drawable.cancel);
+        pDialog.setTitle("Notes");
+        pDialog.setMessage("You sure, that you want Delete");
+        pDialog   .addButton(
+                "Yes",					// button text
+                R.color.pdlg_color_white,		// button text color
+                R.color.red,		// button background color
+                new PrettyDialogCallback() {		// button OnClick listener
+                    @Override
+                    public void onClick() {
                         deleteNotes(note_id);
-                        dialog.cancel();
+                        pDialog.dismiss();
                     }
-                })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
+                }
+        );
+        pDialog   .addButton(
+                "No",					// button text
+                R.color.pdlg_color_white,		// button text color
+                R.color.pdlg_color_green,		// button background color
+                new PrettyDialogCallback() {		// button OnClick listener
+                    @Override
+                    public void onClick() {
+                        pDialog.dismiss();
                     }
-                });
-        AlertDialog alert = builder.create();
-        alert.show();
+                }
+        )
+                .show();
+
+
     }
     private void AddNotes(String user_id,String desc) {
         ApiRequest request = new ApiRequest();
@@ -130,8 +164,9 @@ public class NotepadScreen extends AppCompatActivity implements View.OnClickList
                     public void run() {
                         Toast.makeText(getApplicationContext(),"Notes Saved",Toast.LENGTH_SHORT).show();
                         notes_view.setEnabled(false);;
-                        delete_btn.setVisibility(View.VISIBLE);
-                        edit_btn.setVisibility(View.VISIBLE);
+                        finish();
+//                        delete_btn.setVisibility(View.VISIBLE);
+//                        edit_btn.setVisibility(View.VISIBLE);
                     }
                 });
 

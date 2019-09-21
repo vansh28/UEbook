@@ -206,7 +206,6 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
         super.onStart();
         if (getInstance(getActivity()).isConnectingToInternet()){
             getRecommenedBookList("1");
-
             getnewBookList("2");
             getPopularList();
         }

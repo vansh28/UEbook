@@ -49,7 +49,19 @@ public class ApiRequest {
         client.newCall(request).enqueue(callback);
 
     }
-
+    public void requestforforgotPassword(final  String email , Callback callback) {
+        String url = null;
+        url = BaseUrl + "forgetPassword";
+        OkHttpClient client = new OkHttpClient();
+        RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
+                .addFormDataPart("email", email)
+                .build();
+        Request request = new Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .build();
+        client.newCall(request).enqueue(callback);
+    }
 
     public void requestforUpdateProfile(final String user_id , final String password, final String email, final String publisher_type, final  String country, final String about_me,Callback callback) {
         String url = null;

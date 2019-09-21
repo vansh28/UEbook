@@ -2,17 +2,19 @@ package com.ue.uebook.PopularActivity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.ue.uebook.BaseActivity;
 import com.ue.uebook.Data.ApiRequest;
 import com.ue.uebook.DeatailActivity.Book_Detail_Screen;
 import com.ue.uebook.HomeActivity.HomeFragment.Pojo.HomeListing;
@@ -27,13 +29,14 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
-public class Popular_List_Screen extends AppCompatActivity implements View.OnClickListener ,Adapter.PopularBook_ItemClick {
+public class Popular_List_Screen extends BaseActivity implements View.OnClickListener ,Adapter.PopularBook_ItemClick {
     private RecyclerView popularList;
     private Adapter popularList_adapter;
     private ImageButton backbtn;
     private List<HomeListing>popularListData;
     private ProgressDialog dialog;
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,20 +57,21 @@ public class Popular_List_Screen extends AppCompatActivity implements View.OnCli
             finish();
         }
     }
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void getPopularList() {
-        dialog.show();
+      showLoadingIndicator();
         ApiRequest request = new ApiRequest();
         request.requestforGetPopularBook(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 Log.e("error", e.getLocalizedMessage());
-                dialog.dismiss();
+                hideLoadingIndicator();
 
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                dialog.dismiss();
+                hideLoadingIndicator();
                 String myresponse = response.body().string();
                 Gson gson = new GsonBuilder().create();
                 final HomeListingResponse form = gson.fromJson(myresponse, HomeListingResponse.class);
@@ -80,13 +84,8 @@ public class Popular_List_Screen extends AppCompatActivity implements View.OnCli
                         popularList_adapter.notifyDataSetChanged();
                     }
                 });
-
             }
-
-
         });
-
-
     }
 
     @Override

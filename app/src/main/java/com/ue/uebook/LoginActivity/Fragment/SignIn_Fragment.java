@@ -30,6 +30,8 @@ import com.ue.uebook.SessionManager;
 
 import java.io.IOException;
 
+import libs.mjn.prettydialog.PrettyDialog;
+import libs.mjn.prettydialog.PrettyDialogCallback;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -282,7 +284,24 @@ public class SignIn_Fragment extends Fragment implements View.OnClickListener {
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            showDialogWithOkButton("Login Error", form.getMessage());
+//                            showDialogWithOkButton("Login Error", form.getMessage());
+                            final PrettyDialog pDialog=  new PrettyDialog(getActivity());
+                            pDialog  .setTitle("Login Error");
+                            pDialog.setIcon(R.drawable.cancel);
+                            pDialog.setMessage(form.getMessage());
+                            pDialog   .addButton(
+                                            "OK",					// button text
+                                            R.color.pdlg_color_white,		// button text color
+                                            R.color.colorPrimary,		// button background color
+                                            new PrettyDialogCallback() {		// button OnClick listener
+                                                @Override
+                                                public void onClick() {
+                                                    pDialog.dismiss();
+                                                }
+                                            }
+                                    )
+                                    .show();
+
                         }
                     });
                 }

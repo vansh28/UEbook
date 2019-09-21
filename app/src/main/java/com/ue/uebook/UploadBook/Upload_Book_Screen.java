@@ -1,6 +1,7 @@
 package com.ue.uebook.UploadBook;
 
 import android.app.Dialog;
+import android.app.NotificationManager;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.ContentUris;
@@ -37,6 +38,7 @@ import android.widget.VideoView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.core.app.NotificationCompat;
 import androidx.loader.content.CursorLoader;
 
 import com.google.gson.Gson;
@@ -112,6 +114,10 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
     private ProgressBar upload_progress;
     Handler handler = new Handler();
     int status = 0;
+    private NotificationManager mNotifyManager;
+    private NotificationCompat.Builder mBuilder;
+    int id = 1;
+
     // Tag for the instance state bundle.
     private static final String PLAYBACK_TIME = "play_time";
     private static final int ACTIVITY_CHOOSE_FILE = 33;
@@ -234,7 +240,6 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
 
                 if (audioUrl==null&&videofile!=null){
                     requestforUploadBook(3,new SessionManager(getApplicationContext()).getUserID(), String.valueOf(categorytype), bookTitle.getText().toString(), coverimage, bookDesc.getText().toString(),docfile,authorName.getText().toString());
-
                 }
                 else  if (audioUrl!=null&&videofile == null){
                     requestforUploadBook(2,new SessionManager(getApplicationContext()).getUserID(), String.valueOf(categorytype), bookTitle.getText().toString(), coverimage, bookDesc.getText().toString(),docfile,authorName.getText().toString());
@@ -358,7 +363,6 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
         OkHttpClient client = new OkHttpClient();
         final MediaType MEDIA_TYPE_PNG = MediaType.parse("image/png");
         RequestBody requestBody;
-
         switch ( type){
             case 1:
                 requestBody    = new MultipartBody.Builder().setType(MultipartBody.FORM)
@@ -416,6 +420,7 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
         RequestBody requestBodys = ProgressHelper.withProgress(requestBody, new ProgressUIListener() {
 
             //if you don't need this method, don't override this methd. It isn't an abstract method, just an empty method.
+            @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
             @Override
             public void onUIProgressStart(long totalBytes) {
                 super.onUIProgressStart(totalBytes);
@@ -423,14 +428,11 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
                 Toast.makeText(getApplicationContext(), "Uploading Start", Toast.LENGTH_SHORT).show();
 
             }
-
             @Override
             public void onUIProgressChanged(long numBytes, long totalBytes, float percent, float speed) {
                 progressdialog.show();
 
                 progressdialog.setProgress((int) (100 * percent));
-
-
 
 
 
@@ -442,7 +444,6 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
                 super.onUIProgressFinish();
                 Log.e("TAG", "onUIProgressFinish:");
                 Toast.makeText(getApplicationContext(), "Successfully Uploaded", Toast.LENGTH_SHORT).show();
-                progressdialog.dismiss();
                 Intent intent = new Intent(Upload_Book_Screen.this, HomeScreen.class);
                 startActivity(intent);
                 finish();
@@ -456,7 +457,7 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-
+                call.cancel();
             }
 
             @Override
@@ -716,11 +717,26 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
 
         progressdialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
 
-        progressdialog.setCancelable(true);
+        progressdialog.setCancelable(false);
         progressdialog.setTitle("Uploading Book");
-
-
+        progressdialog.setCanceledOnTouchOutside(false);
         progressdialog.setMax(100);
+//        progressdialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                dialog.dismiss();
+//
+//
+//            }
+//        });
+//        progressdialog.setButton(DialogInterface.BUTTON_POSITIVE, "Upload In Background", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                dialog.dismiss();
+//            }
+//        });
+
+
 
 
     }
@@ -850,6 +866,9 @@ public static String getPathFromUri(final Context context, final Uri uri) {
         return "com.google.android.apps.photos.content".equals(uri.getAuthority());
 
     }
+
+
+
 }
 
 

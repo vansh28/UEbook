@@ -368,6 +368,7 @@ public class SignUp_Fragment extends Fragment implements View.OnClickListener {
                     });
                     gotoHome();
                 }
+
             }
         });
     }

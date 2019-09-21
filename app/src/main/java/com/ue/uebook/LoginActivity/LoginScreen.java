@@ -44,6 +44,7 @@ import com.ue.uebook.BaseActivity;
 import com.ue.uebook.Data.ApiRequest;
 import com.ue.uebook.Data.NetworkAPI;
 import com.ue.uebook.Data.NetworkService;
+import com.ue.uebook.ForgotPassWord.ForgotPasswordScreen;
 import com.ue.uebook.HomeActivity.HomeScreen;
 import com.ue.uebook.LoginActivity.Fragment.SignIn_Fragment;
 import com.ue.uebook.LoginActivity.Fragment.SignUp_Fragment;
@@ -70,7 +71,7 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
     private LinearLayout google_login_btn, facebook_login_btn, login_screen;
     private CallbackManager callbackManager;
     private GoogleApiClient mGoogleApiClient;
-    private TextView have_Account_btn, need_HelpBtn;
+    private TextView have_Account_btn, forgotpasswordBtn;
     private Boolean issignup = true;
     private NetworkAPI networkAPI;
     private ProgressDialog dialog;
@@ -87,8 +88,8 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
         facebook_login_btn = findViewById(R.id.facebook_login_btn);
         login_screen = findViewById(R.id.login_screen);
         have_Account_btn = findViewById(R.id.have_Account_btn);
-        need_HelpBtn = findViewById(R.id.need_HelpBtn);
-        need_HelpBtn.setOnClickListener(this);
+        forgotpasswordBtn = findViewById(R.id.forgotpasswordBtn);
+        forgotpasswordBtn.setOnClickListener(this);
         facebook_login_btn.setOnClickListener(this);
         google_login_btn.setOnClickListener(this);
         signUp_btn.setOnClickListener(this);
@@ -97,6 +98,7 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
         callbackManager = CallbackManager.Factory.create();
         initializeGPlusSettings();
         have_Account_btn.setOnClickListener(this);
+        hideLoadingIndicator();
 
 
 
@@ -124,6 +126,7 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
         protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken currentAccessToken) {
             if (currentAccessToken == null) {
                 showSnackBar(login_screen, "Login Error");
+                hideLoadingIndicator();
             } else
                 hideLoadingIndicator();
             loadUserProfile(currentAccessToken);
@@ -140,6 +143,7 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
     public void onClick(View view) {
         if (view == signUp_btn) {
             have_Account_btn.setText("I have an Account, Login Now");
+            forgotpasswordBtn.setVisibility(View.GONE);
             replaceFragment(new SignUp_Fragment());
             signUp_btn.setBackgroundResource(R.drawable.active_signin_border);
             signIn_btn.setBackgroundResource(R.drawable.non_active_btn_signin);
@@ -148,6 +152,7 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
             issignup = true;
         } else if (view == signIn_btn) {
             have_Account_btn.setText("Create an Account");
+            forgotpasswordBtn.setVisibility(View.VISIBLE);
             replaceFragment(new SignIn_Fragment());
             signIn_btn.setBackgroundResource(R.drawable.active_signin_border);
             signUp_btn.setBackgroundResource(R.drawable.non_active_btn_signin);
@@ -158,7 +163,7 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
             if (getInstance(this).isConnectingToInternet()) {
                 Fblogin();
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-//                    showLoadingIndicator();
+                    showLoadingIndicator();
                 }
 
 
@@ -172,7 +177,7 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
             if (getInstance(this).isConnectingToInternet()) {
                 signIn();
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-//                    showLoadingIndicator();
+                    showLoadingIndicator();
                 }
 
 
@@ -188,6 +193,7 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
 
             if (issignup) {
                 have_Account_btn.setText("Create an Account");
+                forgotpasswordBtn.setVisibility(View.VISIBLE);
                 replaceFragment(new SignIn_Fragment());
                 signIn_btn.setBackgroundResource(R.drawable.active_signin_border);
                 signUp_btn.setBackgroundResource(R.drawable.non_active_btn_signin);
@@ -197,6 +203,7 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
             } else {
 
                 have_Account_btn.setText("I have an Account, Login Now");
+                forgotpasswordBtn.setVisibility(View.GONE);
                 replaceFragment(new SignUp_Fragment());
                 signUp_btn.setBackgroundResource(R.drawable.active_signin_border);
                 signIn_btn.setBackgroundResource(R.drawable.non_active_btn_signin);
@@ -204,13 +211,18 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
                 signIn_btn.setTextColor(Color.parseColor("#000000"));
                 issignup = true;
             }
-        } else if (view == need_HelpBtn) {
-
+        } else if (view == forgotpasswordBtn) {
+              gotoForgotPassword();
 
         }
 
     }
 
+    public void gotoForgotPassword() {
+        Intent intent = new Intent(this, ForgotPasswordScreen.class);
+        startActivity(intent);
+
+    }
 
     @Override
     public void onFragmentInteraction(Uri uri) {
@@ -227,7 +239,7 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
                 new FacebookCallback<LoginResult>() {
                     @Override
                     public void onSuccess(LoginResult loginResult) {
-
+                        hideLoadingIndicator();
 
                     }
 
@@ -397,11 +409,13 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        hideLoadingIndicator();
 
     }
 
     private void handleGPlusSignInResult(GoogleSignInResult result) {
         Log.d("", "handleSignInResult:" + result.isSuccess());
+        hideLoadingIndicator();
         if (result.isSuccess()) {
             GoogleSignInAccount acct = result.getSignInAccount();
             //Fetch values

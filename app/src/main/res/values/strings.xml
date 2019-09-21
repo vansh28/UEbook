@@ -27,4 +27,6 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
     <string name="book">No Book Found</string>
     <string name="action_theme">Theme</string>
     <string name="pref_title_markdown">Markdown/HTML support</string>
+    <string name="channel_name">UeBook</string>
+    <string name="channel_description">Book</string>
 </resources>
