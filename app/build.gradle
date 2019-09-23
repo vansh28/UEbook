@@ -64,5 +64,4 @@ dependencies {
     implementation 'com.nbsp:library:1.8'
     implementation 'com.github.mjn1369:prettydialog:1.0.4'
 
-
 }

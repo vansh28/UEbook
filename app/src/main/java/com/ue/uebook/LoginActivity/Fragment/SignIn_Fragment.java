@@ -13,7 +13,6 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
@@ -154,6 +153,7 @@ public class SignIn_Fragment extends Fragment implements View.OnClickListener {
 
     public void gotoHome() {
         Intent intent = new Intent(getActivity(), HomeScreen.class);
+        intent.putExtra("login",1);
         getActivity().startActivity(intent);
         getActivity().finish();
     }
@@ -264,7 +264,7 @@ public class SignIn_Fragment extends Fragment implements View.OnClickListener {
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(getContext(), "Succesfully Login", Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(getContext(), "Succesfully Login", Toast.LENGTH_SHORT).show();
                             if (keepMeSign.isChecked()) {
                                 new SessionManager(getContext().getApplicationContext()).storeUserLoginStatus(1);
 
@@ -273,11 +273,11 @@ public class SignIn_Fragment extends Fragment implements View.OnClickListener {
 
                             }
 
-
+                            gotoHome();
                         }
                     });
 
-                    gotoHome();
+
 
 
                 } else {

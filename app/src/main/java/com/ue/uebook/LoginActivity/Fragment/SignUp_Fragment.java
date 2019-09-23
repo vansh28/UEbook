@@ -328,6 +328,7 @@ public class SignUp_Fragment extends Fragment implements View.OnClickListener {
 
     public void gotoHome() {
         Intent intent = new Intent(getActivity(), HomeScreen.class);
+        intent.putExtra("login",1);
         getActivity().startActivity(intent);
         getActivity().finish();
     }
@@ -363,10 +364,12 @@ public class SignUp_Fragment extends Fragment implements View.OnClickListener {
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(getContext(), "Succesfully Login", Toast.LENGTH_SHORT).show();
+
+                            gotoHome();
+//                            Toast.makeText(getContext(), "Succesfully Login", Toast.LENGTH_SHORT).show();
                         }
                     });
-                    gotoHome();
+
                 }
 
             }

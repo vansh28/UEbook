@@ -27,6 +27,7 @@ import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -66,11 +67,14 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
     private String bookdesc;
     private RatingBar commnetRating;
     private EditText user_comment;
+    private SwipeRefreshLayout swipeRefreshLayout;
     String docbaseUrl="http://docs.google.com/gview?embedded=true&url=";
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book__detail__screen);
+        swipeRefreshLayout=findViewById(R.id.swipe_refresh_layout);
         averageRating=findViewById(R.id.averageRating);
         topreviewView=findViewById(R.id.topreviewView);
         comment_Submit=findViewById(R.id.submit_comment);
@@ -107,6 +111,7 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
 
         review_List.setNestedScrollingEnabled(false);
         getBookDetail(book_id);
+        pullTorefreshswipe();
     }
     private Spannable highlight(int color, Spannable original, String word) {
         String normalized = Normalizer.normalize(original, Normalizer.Form.NFD)
@@ -129,7 +134,16 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
             return highlighted;
         }
     }
-
+    private void pullTorefreshswipe(){
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void onRefresh() {
+                getBookDetail(book_id);
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
+    }
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void onClick(View view) {
@@ -437,9 +451,10 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
                     public void run() {
                         user_comment.setText("");
                         commnetRating.setRating(0);
+                        getBookDetail(book_id);
                     }
                 });
-                getBookDetail(book_id);
+
             }
         });
     }

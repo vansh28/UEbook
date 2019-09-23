@@ -4,14 +4,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
+import androidx.fragment.app.Fragment;
+
+import com.ue.uebook.AboutUs.AboutusScreen;
+import com.ue.uebook.Contactus.ContactusScreen;
+import com.ue.uebook.Help.HelpCenterScreen;
 import com.ue.uebook.HomeActivity.InerfaceLanguageScreen;
 import com.ue.uebook.R;
 import com.ue.uebook.ShareUtils;
@@ -33,7 +35,7 @@ public class CompanyInfo_Fragment extends Fragment implements View.OnClickListen
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    private RelativeLayout share_container ,language_container;
+    private RelativeLayout share_container ,language_container,contactUs_container,help_container,aboutUs_container;
 
     private OnFragmentInteractionListener mListener;
 
@@ -75,6 +77,12 @@ public class CompanyInfo_Fragment extends Fragment implements View.OnClickListen
         View view = inflater.inflate(R.layout.fragment_company_info_, container, false);
         share_container=view.findViewById(R.id.share_container);
         language_container=view.findViewById(R.id.language_container);
+        contactUs_container=view.findViewById(R.id.contactUs_container);
+        help_container=view.findViewById(R.id.help_container);
+        aboutUs_container=view.findViewById(R.id.aboutUs_container);
+        help_container.setOnClickListener(this);
+        aboutUs_container.setOnClickListener(this);
+        contactUs_container.setOnClickListener(this);
         language_container.setOnClickListener(this);
 
         share_container.setOnClickListener(this);
@@ -115,6 +123,21 @@ public class CompanyInfo_Fragment extends Fragment implements View.OnClickListen
         Intent intent= new Intent(getContext(), InerfaceLanguageScreen.class);
         getContext().startActivity(intent );
         }
+        else if (view==contactUs_container){
+            Intent intent= new Intent(getContext(), ContactusScreen.class);
+            getContext().startActivity(intent );
+
+        }
+        else if (view==aboutUs_container){
+            Intent intent= new Intent(getContext(), AboutusScreen.class);
+            getContext().startActivity(intent );
+        }
+        else if (view==help_container){
+
+            Intent intent= new Intent(getContext(), HelpCenterScreen.class);
+            getContext().startActivity(intent );
+        }
+
     }
     /**
      * This interface must be implemented by activities that contain this

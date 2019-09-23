@@ -1,6 +1,7 @@
 package com.ue.uebook.HomeActivity.HomeFragment;
 
 import android.Manifest;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -18,6 +19,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -186,7 +188,7 @@ public class User_Fragment extends Fragment implements View.OnClickListener, Use
             PackageManager pm = getContext().getPackageManager();
             int hasPerm = pm.checkPermission(Manifest.permission.CAMERA, getContext().getPackageName());
             if (hasPerm == PackageManager.PERMISSION_GRANTED) {
-                final CharSequence[] options = {"Take Photo", "Choose From Gallery", "Cancel"};
+                final CharSequence[] options = {"Take Photo", "Choose From Gallery","View Profile Image", "Cancel"};
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                 builder.setTitle("Select Option");
                 builder.setItems(options, new DialogInterface.OnClickListener() {
@@ -204,7 +206,14 @@ public class User_Fragment extends Fragment implements View.OnClickListener, Use
                         } else if (options[item].equals("Cancel")) {
                             dialog.dismiss();
                         }
+                        else if (options[item].equals("View Profile Image")) {
+
+
+                           imagePreview(new SessionManager(getApplicationContext()).getUserimage());
+                        }
                     }
+
+
                 });
                 builder.show();
             } else {
@@ -218,6 +227,24 @@ public class User_Fragment extends Fragment implements View.OnClickListener, Use
             Toast.makeText(getContext(), "Camera Permission error", Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
+    }
+    private void imagePreview(String file) {
+        final Dialog previewDialog = new Dialog(getContext());
+        previewDialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        previewDialog.setContentView(getLayoutInflater().inflate(R.layout.image_layout
+                , null));
+        ImageView imageView = previewDialog.findViewById(R.id.image_view);
+        GlideUtils.loadImage((AppCompatActivity) getActivity(), "http://dnddemo.com/ebooks/api/v1/upload/" + file, imageView, R.drawable.user_default, R.drawable.user_default);
+        Button ok_Btn = previewDialog.findViewById(R.id.buton_ok);
+        ok_Btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                previewDialog.dismiss();
+
+            }
+        });
+        previewDialog.show();
     }
 
     @Override

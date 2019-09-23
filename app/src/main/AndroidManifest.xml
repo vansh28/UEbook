@@ -32,7 +32,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ForgotPassWord.ForgotPasswordScreen"></activity>
+        <activity android:name=".Help.HelpCenterScreen"></activity>
+        <activity android:name=".AboutUs.AboutusScreen" />
+        <activity android:name=".Contactus.ContactusScreen" />
+        <activity android:name=".ForgotPassWord.ForgotPasswordScreen" />
         <activity android:name=".NotepadScreen" />
         <activity
             android:name=".HomeActivity.InerfaceLanguageScreen"
@@ -60,7 +63,7 @@
         <activity android:name=".MainActivity" />
         <activity
             android:name=".SettingsActivity"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
         <activity
             android:name="com.facebook.CustomTabActivity"
             android:exported="true">

@@ -24,6 +24,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -78,6 +79,8 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
     private TextView recommemnded_view,newBookview,textNobookfound;
     private RelativeLayout popularview;
     private Dialog mdialog;
+    private SwipeRefreshLayout pullTorfrsh;
+
     public Home_Fragment() {
         // Required empty public constructor
     }
@@ -123,6 +126,7 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home_, container, false);
         recommended_list = view.findViewById(R.id.recommended_list);
+
         edittext_search = view.findViewById(R.id.edittext_search);
         newBook_list = view.findViewById(R.id.newBook_list);
         popular_more_btn = view.findViewById(R.id.popular_more_btn);
@@ -134,11 +138,13 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL); // set Horizontal Orientation
         recommended_list.setLayoutManager(linearLayoutManager);
+        pullTorfrsh=view.findViewById(R.id.swipe_refresh_layout);
         popular_more_btn.setOnClickListener(this);
         activity = (HomeScreen) getActivity();
 //        recommendedList_book = activity.getRecommendedListBookData();
 //        popularBook_List=activity.getpopularBookData();
         displayData();
+
         LinearLayoutManager linearLayoutManagerBook = new LinearLayoutManager(getContext());
         linearLayoutManagerBook.setOrientation(LinearLayoutManager.HORIZONTAL);
         newBook_list.setLayoutManager(linearLayoutManagerBook);
@@ -176,8 +182,16 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
 
 
         // Set action bar elevation
+        pullTorefreshswipe();
+
+
+
+
         return view;
     }
+
+
+
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
@@ -237,7 +251,18 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
     public void onFragmentInteraction(Uri uri) {
 
     }
-
+    private void pullTorefreshswipe(){
+        pullTorfrsh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void onRefresh() {
+                getRecommenedBookList("1");
+                getnewBookList("2");
+                getPopularList();
+                pullTorfrsh.setRefreshing(false);
+            }
+        });
+    }
     @Override
     public void onItemClick(int position, String book_id) {
         Intent intent = new Intent(getActivity(), Book_Detail_Screen.class);
@@ -296,12 +321,6 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
                                     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                                     @Override
                                     public void run() {
-//                                        getRecommenedBookList("1");
-//                                        getnewBookList("2");
-//                                        getPopularList();
-
-
-
 
                                     }
                                 });
@@ -336,7 +355,7 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
                 hideLoadingIndicator();
                 Gson gson = new GsonBuilder().create();
                 final HomeListingResponse form = gson.fromJson(myResponse, HomeListingResponse.class);
-                if (form.getError().equalsIgnoreCase("false") && form.getData() != null && !form.getData().isEmpty()) {
+                if (form.getData() != null && !form.getData().isEmpty()&&form.getError().equalsIgnoreCase("false")) {
                     recommendedList_book.addAll(form.getData());
                     if (getActivity()!=null){
                     getActivity().runOnUiThread(new Runnable() {
@@ -381,7 +400,7 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
 
                 Gson gson = new GsonBuilder().create();
                 final HomeListingResponse form = gson.fromJson(myResponse, HomeListingResponse.class);
-                if (form.getError().equalsIgnoreCase("false") && form.getData() != null && !form.getData().isEmpty()) {
+                if (form.getData() != null && !form.getData().isEmpty()&&form.getError().equalsIgnoreCase("false")) {
                     newBookList.addAll(form.getData());
                     if(getActivity()!=null) {
                         getActivity().runOnUiThread(new Runnable() {
@@ -421,7 +440,7 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
                 String myresponse = response.body().string();
                 Gson gson = new GsonBuilder().create();
                 final HomeListingResponse form = gson.fromJson(myresponse, HomeListingResponse.class);
-                if (form.getError().equalsIgnoreCase("false") && form.getData() != null && !form.getData().isEmpty()) {
+                if (form.getData() != null && !form.getData().isEmpty()&&form.getError().equalsIgnoreCase("false")) {
                     if (getActivity()!=null){
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
@@ -443,17 +462,12 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
                     else {
                         popularBook_List.addAll(form.getData());
                     }
-
                 }
                 else {
                     popularview.setVisibility(View.GONE);
                 }
-
-
             }
         });
-
-
 }
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void showLoadingIndicator() {
@@ -472,5 +486,4 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
             mdialog = null;
         }
     }
-
 }

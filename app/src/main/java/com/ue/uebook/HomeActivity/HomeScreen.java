@@ -7,6 +7,8 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.os.Handler;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,6 +21,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -54,7 +57,10 @@ public class HomeScreen extends BaseActivity implements Home_Fragment.OnFragment
     private List<HomeListing> recommendedList_book,newBookList,popularBook_List;
     private FloatingActionButton addnotes_fab;
     private CoordinatorLayout container;
-
+    private Intent intent;
+    private BottomSheetDialog mBottomSheetDialog;
+    private Handler myHandler;
+    private Runnable myRunnable;
 
 
     @SuppressLint("RestrictedApi")
@@ -72,6 +78,12 @@ public class HomeScreen extends BaseActivity implements Home_Fragment.OnFragment
         popularBook_List = new ArrayList<>();
         displayCurrentAddress();
         toolbar = getSupportActionBar();
+        intent = getIntent();
+        int loginid= intent.getIntExtra("login",0);
+        if (loginid==1){
+            showmessage();
+            showBottomSheet();
+        }
         SharedPreferences pref = getSharedPreferences(getPackageName() + "_preferences", Context.MODE_PRIVATE);
         String theme = pref.getString("theme", "light-sans");
         if (getInstance(this).isConnectingToInternet()){
@@ -285,6 +297,30 @@ public class HomeScreen extends BaseActivity implements Home_Fragment.OnFragment
             Intent intent  = new Intent(HomeScreen.this,NotepadScreen.class);
             startActivity(intent);
         }
+    }
+    private void showmessage(){
+        new CountDownTimer(3000, 1000) {
+
+            @Override
+            public void onTick(long millisUntilFinished) {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public void onFinish() {
+                // TODO Auto-generated method stub
+
+                mBottomSheetDialog.dismiss();
+            }
+        }.start();
+    }
+    private void showBottomSheet() {
+        final View bottomSheetLayout = getLayoutInflater().inflate(R.layout.bottomsheetlogininfo, null);
+        mBottomSheetDialog = new BottomSheetDialog(this);
+        mBottomSheetDialog.setContentView(bottomSheetLayout);
+        mBottomSheetDialog.show();
+
     }
 
 }

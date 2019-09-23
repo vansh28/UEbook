@@ -16,7 +16,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -119,8 +118,6 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
-
-
     AccessTokenTracker tokenTracker = new AccessTokenTracker() {
         @Override
         protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken currentAccessToken) {
@@ -138,7 +135,6 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
         ft.replace(R.id.container_Fragment, fragment, fragment.getClass().getName());
         ft.commit();
     }
-
     @Override
     public void onClick(View view) {
         if (view == signUp_btn) {
@@ -166,31 +162,21 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
                     showLoadingIndicator();
                 }
 
-
             } else {
 
                 showSnackBar(login_screen, getString(R.string.no_internet));
             }
 
         } else if (view == google_login_btn) {
-
             if (getInstance(this).isConnectingToInternet()) {
                 signIn();
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                     showLoadingIndicator();
                 }
-
-
             } else {
-
                 showSnackBar(login_screen, getString(R.string.no_internet));
             }
-
-
-
-
         } else if (view == have_Account_btn) {
-
             if (issignup) {
                 have_Account_btn.setText("Create an Account");
                 forgotpasswordBtn.setVisibility(View.VISIBLE);
@@ -201,7 +187,6 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
                 signUp_btn.setTextColor(Color.parseColor("#000000"));
                 issignup = false;
             } else {
-
                 have_Account_btn.setText("I have an Account, Login Now");
                 forgotpasswordBtn.setVisibility(View.GONE);
                 replaceFragment(new SignUp_Fragment());
@@ -213,11 +198,8 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
             }
         } else if (view == forgotpasswordBtn) {
               gotoForgotPassword();
-
         }
-
     }
-
     public void gotoForgotPassword() {
         Intent intent = new Intent(this, ForgotPasswordScreen.class);
         startActivity(intent);
@@ -402,7 +384,8 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
 
     public void gotoHome() {
         Intent intent = new Intent(this, HomeScreen.class);
-        startActivity(intent);
+        intent.putExtra("login",1);
+         startActivity(intent);
         finish();
     }
 
@@ -485,7 +468,7 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
                 runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(LoginScreen.this, "Succesfully Login", Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(LoginScreen.this, "Succesfully Login", Toast.LENGTH_SHORT).show();
                         }
                     });
                     gotoHome();
