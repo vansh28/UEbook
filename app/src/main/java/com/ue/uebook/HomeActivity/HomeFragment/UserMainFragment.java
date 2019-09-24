@@ -40,8 +40,8 @@ public class UserMainFragment extends Fragment implements View.OnClickListener, 
 
     private OnFragmentInteractionListener mListener;
     private View view_uploadBook;
-    AlertDialog.Builder builder;
-    AlertDialog progressDialog;
+
+
     public UserMainFragment() {
         // Required empty public constructor
     }
@@ -77,7 +77,6 @@ public class UserMainFragment extends Fragment implements View.OnClickListener, 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_user_main, container, false);
         userInfo_container = view.findViewById(R.id.userInfo_container);
         uploadBook_Container = view.findViewById(R.id.uploadBook_Container);
@@ -170,7 +169,6 @@ public class UserMainFragment extends Fragment implements View.OnClickListener, 
     }
 
     private void confirmLogoutDialog(){
-
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setMessage("You sure, that you want to logout?")
                 .setCancelable(false)

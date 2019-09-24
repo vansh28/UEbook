@@ -248,10 +248,11 @@ public class SignUp_Fragment extends Fragment implements View.OnClickListener {
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                gotoHome();
                                 Toast.makeText(getContext(), "Succesfully Login", Toast.LENGTH_SHORT).show();
                             }
                         });
-                        gotoHome();
+
                     } else {
 
                         Toast.makeText(getContext(), "Login Error", Toast.LENGTH_LONG).show();

@@ -6,15 +6,82 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".Contactus.ContactusScreen">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/size_50"
+        android:background="@color/colorPrimary">
+        <ImageButton
+            android:id="@+id/back_abouttus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/size_10"
+            android:background="@android:color/transparent"
+            android:padding="@dimen/size_10"
+            android:src="@drawable/backbtn">
+        </ImageButton>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="About Us"
+            android:textColor="@color/white"
+            android:textSize="@dimen/size_18"></TextView>
+    </RelativeLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/size_10"
+            android:orientation="vertical">
+            <LinearLayout
+                android:id="@+id/logo_container"
+                android:layout_width="match_parent"
+                android:layout_height="100dp">
 
-    <ImageButton
-        android:id="@+id/back_abouttus"
-        android:layout_width="wrap_content"
-        android:padding="@dimen/size_10"
-        android:layout_margin="@dimen/size_10"
-        android:src="@drawable/back_black"
-        android:background="@android:color/transparent"
-        android:layout_height="wrap_content">
-    </ImageButton>
-
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="@dimen/size_12"
+                    android:src="@drawable/loginlogo"></ImageView>
+            </LinearLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/size_10"
+                android:layout_marginTop="@dimen/size_15"
+                android:text="@string/about_me_text"
+                android:textColor="@color/black"
+                android:textSize="@dimen/size_18"
+                android:textStyle="bold">
+            </TextView>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/size_10"
+                android:layout_marginTop="@dimen/size_15"
+                android:text="@string/demoText"
+                android:textColor="@color/black"
+                android:lineSpacingExtra="@dimen/size_3"
+                android:textSize="@dimen/size_15"></TextView>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/size_10"
+                android:layout_marginTop="@dimen/size_15"
+                android:text="Head Office"
+                android:textColor="@color/black"
+                android:textSize="@dimen/size_18"
+                android:textStyle="bold"></TextView>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/size_10"
+                android:layout_marginTop="@dimen/size_5"
+                android:text="@string/address"
+                android:lineSpacingExtra="@dimen/size_5"
+                android:textSize="@dimen/size_15"></TextView>
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>

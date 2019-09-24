@@ -108,7 +108,6 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
         LinearLayoutManager linearLayoutManagerList = new LinearLayoutManager(this);
         linearLayoutManagerList.setOrientation(LinearLayoutManager.VERTICAL);
         review_List.setLayoutManager(linearLayoutManagerList);
-
         review_List.setNestedScrollingEnabled(false);
         getBookDetail(book_id);
         pullTorefreshswipe();

@@ -3,6 +3,13 @@ package com.ue.uebook;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
+import java.util.List;
+
 import static android.content.Context.MODE_PRIVATE;
 
 public class SessionManager {
@@ -69,5 +76,17 @@ public class SessionManager {
     public String getUserName() {
         return sharedPreference.getString(UserName, "");
     }
+    public void saveArrayList(List<String> list, String key){
+        Gson gson = new Gson();
+        String json = gson.toJson(list);
+        editor.putString(key, json);
+        editor.apply();     // This line is IMPORTANT !!!
+    }
 
+    public List<String> getArrayList(String key){
+        Gson gson = new Gson();
+        String json = sharedPreference.getString(key, null);
+        Type type = new TypeToken<List<String>>() {}.getType();
+        return gson.fromJson(json, type);
+    }
 }

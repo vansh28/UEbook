@@ -73,8 +73,7 @@ public class User_Fragment extends Fragment implements View.OnClickListener, Use
     private OnFragmentInteractionListener mListener;
     private ImageView profile_image_user;
 
-    private String filePath;
-    private String fileName;
+
     private String encodedString;
     private String uriData, image;
     private Bitmap bitmap;
@@ -108,7 +107,6 @@ public class User_Fragment extends Fragment implements View.OnClickListener, Use
         fragment.setArguments(args);
         return fragment;
     }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -119,7 +117,6 @@ public class User_Fragment extends Fragment implements View.OnClickListener, Use
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -180,8 +177,8 @@ public class User_Fragment extends Fragment implements View.OnClickListener, Use
     @Override
     public void onFragmentInteraction(Uri uri) {
 
-    }
 
+    }
     private void selectImage() {
 
         try {
@@ -207,8 +204,6 @@ public class User_Fragment extends Fragment implements View.OnClickListener, Use
                             dialog.dismiss();
                         }
                         else if (options[item].equals("View Profile Image")) {
-
-
                            imagePreview(new SessionManager(getApplicationContext()).getUserimage());
                         }
                     }
@@ -318,16 +313,6 @@ public class User_Fragment extends Fragment implements View.OnClickListener, Use
     }
 
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
@@ -343,23 +328,17 @@ public class User_Fragment extends Fragment implements View.OnClickListener, Use
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Log.d("image", new SessionManager(getApplicationContext()).getUserimage());
-
         String address = new SessionManager(getApplicationContext()).getUserLocation();
         if (address.length() > 0) {
             address_user.setText(address);
         }
         if (!image.isEmpty()) {
-//            Glide.with(getActivity())
-//                    .load("http://dnddemo.com/ebooks/api/v1/upload/"+image)
-//                    .into(profile_image_user);
             GlideUtils.loadImage((AppCompatActivity) getActivity(), "http://dnddemo.com/ebooks/api/v1/upload/" + image, profile_image_user, R.drawable.user_default, R.drawable.user_default);
         } else {
 
             profile_image_user.setImageResource(R.drawable.user_default);
         }
     }
-
     private void UpdateUser(File imagepath) {
         ApiRequest request = new ApiRequest();
         dialog.setMessage("please wait");
@@ -367,7 +346,6 @@ public class User_Fragment extends Fragment implements View.OnClickListener, Use
         request.requestforUpdateProfilePic(new SessionManager(getContext()).getUserID(), imagepath, new okhttp3.Callback() {
             @Override
             public void onFailure(okhttp3.Call call, IOException e) {
-                Log.d("error", "error");
                 dialog.dismiss();
             }
 
@@ -379,7 +357,6 @@ public class User_Fragment extends Fragment implements View.OnClickListener, Use
                 final RegistrationResponse form = gson.fromJson(myResponse, RegistrationResponse.class);
                 if (form.getError().equalsIgnoreCase("false") && form.getUser_data() != null) {
                     new SessionManager(getContext()).storeUserPublishtype(form.getUser_data().getPublisher_type());
-
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -404,7 +381,7 @@ public class User_Fragment extends Fragment implements View.OnClickListener, Use
                 ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
                 return false;
             }
-        } else { //permission is automatically granted on sdk<23 upon installation
+        } else {
             Log.v("", "Permission is granted");
             return true;
         }

@@ -127,6 +127,7 @@ public class Bookmark_Fragment extends Fragment implements Bookmark_List_Adapter
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public  void onStart(){
         super.onStart();
         getBookmarkList(new SessionManager(getActivity().getApplicationContext()).getUserID());

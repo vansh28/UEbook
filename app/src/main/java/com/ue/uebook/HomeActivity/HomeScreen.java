@@ -1,15 +1,12 @@
 package com.ue.uebook.HomeActivity;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.Handler;
-import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -18,21 +15,18 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.ue.uebook.BaseActivity;
-import com.ue.uebook.Data.ApiRequest;
 import com.ue.uebook.HomeActivity.HomeFragment.Bookmark_Fragment;
 import com.ue.uebook.HomeActivity.HomeFragment.CompanyInfo_Fragment;
 import com.ue.uebook.HomeActivity.HomeFragment.Home_Fragment;
 import com.ue.uebook.HomeActivity.HomeFragment.NotepadFragment;
 import com.ue.uebook.HomeActivity.HomeFragment.Pojo.HomeListing;
-import com.ue.uebook.HomeActivity.HomeFragment.Pojo.HomeListingResponse;
 import com.ue.uebook.HomeActivity.HomeFragment.Search_Fragment;
 import com.ue.uebook.HomeActivity.HomeFragment.UserMainFragment;
 import com.ue.uebook.HomeActivity.HomeFragment.UserProfile_Fragment;
@@ -41,15 +35,8 @@ import com.ue.uebook.NotepadScreen;
 import com.ue.uebook.R;
 import com.ue.uebook.SessionManager;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.Response;
-
-import static com.ue.uebook.NetworkUtils.getInstance;
 
 
 public class HomeScreen extends BaseActivity implements Home_Fragment.OnFragmentInteractionListener, Bookmark_Fragment.OnFragmentInteractionListener, User_Fragment.OnFragmentInteractionListener, Search_Fragment.OnFragmentInteractionListener, UserProfile_Fragment.OnFragmentInteractionListener, UserMainFragment.OnFragmentInteractionListener, CompanyInfo_Fragment.OnFragmentInteractionListener, NotepadFragment.OnFragmentInteractionListener, View.OnClickListener {
@@ -59,8 +46,7 @@ public class HomeScreen extends BaseActivity implements Home_Fragment.OnFragment
     private CoordinatorLayout container;
     private Intent intent;
     private BottomSheetDialog mBottomSheetDialog;
-    private Handler myHandler;
-    private Runnable myRunnable;
+
 
 
     @SuppressLint("RestrictedApi")
@@ -84,20 +70,6 @@ public class HomeScreen extends BaseActivity implements Home_Fragment.OnFragment
             showmessage();
             showBottomSheet();
         }
-        SharedPreferences pref = getSharedPreferences(getPackageName() + "_preferences", Context.MODE_PRIVATE);
-        String theme = pref.getString("theme", "light-sans");
-        if (getInstance(this).isConnectingToInternet()){
-//            getRecommenedBookList("1");
-//
-//            getnewBookList("2");
-//            getPopularList();
-
-        }
-        else {
-
-            showSnackBar(container, getString(R.string.no_internet));
-        }
-
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         loadFragment(new Home_Fragment());
@@ -143,10 +115,11 @@ public class HomeScreen extends BaseActivity implements Home_Fragment.OnFragment
 
 
     private void loadFragment(Fragment fragment) {
-        // load fragment
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.frame_container, fragment);
-        transaction.commitNowAllowingStateLoss();;
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.frame_container, fragment);
+        fragmentTransaction.commitNowAllowingStateLoss();;
+
     }
 
     @Override
@@ -198,99 +171,6 @@ public class HomeScreen extends BaseActivity implements Home_Fragment.OnFragment
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
     }
-
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    private void getRecommenedBookList(String categoryId) {
-        ApiRequest request = new ApiRequest();
-        if (recommendedList_book.size()>0)
-            recommendedList_book.clear();
-
-        request.requestforgetBookList(categoryId, new okhttp3.Callback() {
-            @Override
-            public void onFailure(okhttp3.Call call, IOException e) {
-                Log.d("error", "error");
-
-            }
-            @Override
-            public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
-                String myResponse = response.body().string();
-                Gson gson = new GsonBuilder().create();
-                final HomeListingResponse form = gson.fromJson(myResponse, HomeListingResponse.class);
-                if (form.getError().equalsIgnoreCase("false") && form.getData() != null && !form.getData().isEmpty()) {
-                    recommendedList_book.addAll(form.getData());
-                }
-            }
-        });
-    }
-
-
-
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    private void getnewBookList(String categoryId) {
-        ApiRequest request = new ApiRequest();
-        if (newBookList.size()>0)
-            newBookList.clear();
-
-        request.requestforgetBookList(categoryId, new okhttp3.Callback() {
-            @Override
-            public void onFailure(okhttp3.Call call, IOException e) {
-                Log.d("error", "error");
-
-
-            }
-
-            @Override
-            public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
-                String myResponse = response.body().string();
-                Gson gson = new GsonBuilder().create();
-                final HomeListingResponse form = gson.fromJson(myResponse, HomeListingResponse.class);
-                if (form.getError().equalsIgnoreCase("false") && !form.getData().isEmpty())  {
-                    newBookList.addAll(form.getData());
-                }
-
-            }
-        });
-    }
-
-    private void getPopularList() {
-        ApiRequest request = new ApiRequest();
-        request.requestforGetPopularBook(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                Log.e("error", e.getLocalizedMessage());
-
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                String myresponse = response.body().string();
-                Gson gson = new GsonBuilder().create();
-                final HomeListingResponse form = gson.fromJson(myresponse, HomeListingResponse.class);
-                if (form.getError().equalsIgnoreCase("false") && !form.getData().isEmpty())  {
-                    popularBook_List.addAll(form.getData());
-                }
-
-
-            }
-
-
-        });
-
-
-    }
-
-
-    public List<HomeListing> getRecommendedListBookData() {
-        return recommendedList_book;
-    }
-
-    public List<HomeListing> getnewBookData() {
-        return newBookList;
-    }
-    public List<HomeListing> getpopularBookData() {
-        return popularBook_List;
-    }
-
     @Override
     public void onClick(View view) {
         if (view==addnotes_fab){
@@ -320,8 +200,13 @@ public class HomeScreen extends BaseActivity implements Home_Fragment.OnFragment
         mBottomSheetDialog = new BottomSheetDialog(this);
         mBottomSheetDialog.setContentView(bottomSheetLayout);
         mBottomSheetDialog.show();
-
     }
-
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK){
+                   finish();
+        }
+        return true;
+    }
 }
 

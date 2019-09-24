@@ -98,24 +98,6 @@ public class NotepadScreen extends AppCompatActivity implements View.OnClickList
         }
     }
     private void confirmDeleteDialog() {
-//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//        builder.setMessage("You sure, that you want Delete ")
-//                .setCancelable(false)
-//                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int id) {
-//                        deleteNotes(note_id);
-//                        dialog.cancel();
-//                    }
-//                })
-//                .setNegativeButton("No", new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int id) {
-//                        dialog.cancel();
-//                    }
-//                });
-//        AlertDialog alert = builder.create();
-//        alert.show();
-
-
         final PrettyDialog pDialog=  new PrettyDialog(this);
         pDialog.setIcon(R.drawable.cancel);
         pDialog.setTitle("Notes");

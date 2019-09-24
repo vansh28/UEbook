@@ -110,9 +110,6 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
         recommendedList_book = new ArrayList<>();
         newBookList = new ArrayList<>();
         popularBook_List = new ArrayList<>();
-//        getRecommenedBookList("1");
-//        getnewBookList("2");
-
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -141,14 +138,10 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
         pullTorfrsh=view.findViewById(R.id.swipe_refresh_layout);
         popular_more_btn.setOnClickListener(this);
         activity = (HomeScreen) getActivity();
-//        recommendedList_book = activity.getRecommendedListBookData();
-//        popularBook_List=activity.getpopularBookData();
         displayData();
-
         LinearLayoutManager linearLayoutManagerBook = new LinearLayoutManager(getContext());
         linearLayoutManagerBook.setOrientation(LinearLayoutManager.HORIZONTAL);
         newBook_list.setLayoutManager(linearLayoutManagerBook);
-//        newBookList = activity.getnewBookData();
         recommended_list.setNestedScrollingEnabled(false);
         newBook_list.setNestedScrollingEnabled(false);
         LinearLayoutManager linearLayoutManagerPopularList = new LinearLayoutManager(getContext());
@@ -161,32 +154,7 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
                 loadFragment(new Search_Fragment());
             }
         });
-//        edittext_search.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-//
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-////                home_recommended_adapter.filter(charSequence.toString());
-////                new_book_home_adapter.filter(charSequence.toString());
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable editable) {
-//
-//            }
-//        });
-
-
-
-        // Set action bar elevation
         pullTorefreshswipe();
-
-
-
-
         return view;
     }
 
@@ -279,6 +247,7 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
         getActivity().startActivity(intent);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onItemClick_PopularBook(int position, String book_id) {
         Intent intent = new Intent(getActivity(), Book_Detail_Screen.class);

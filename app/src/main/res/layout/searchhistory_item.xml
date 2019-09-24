@@ -6,18 +6,21 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_marginTop="@dimen/size_5"
+        android:id="@+id/search_item_container"
         android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/removeBtn"
             android:layout_width="@dimen/size_20"
-            android:src="@drawable/cross"
+            android:src="@drawable/cross_s"
             android:scaleType="fitCenter"
             android:layout_marginLeft="@dimen/size_5"
+            android:clickable="true"
             android:layout_centerVertical="true"
             android:layout_height="@dimen/size_20">
         </ImageView>
         <TextView
+            android:id="@+id/search_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
            android:text="The Good Son"
@@ -30,7 +33,7 @@
         <ImageView
             android:layout_width="@dimen/size_25"
             android:layout_height="@dimen/size_25"
-            android:src="@drawable/search"
+            android:src="@drawable/sear"
             android:layout_alignParentRight="true"
             android:layout_marginRight="@dimen/size_10"
             android:layout_centerVertical="true"></ImageView>

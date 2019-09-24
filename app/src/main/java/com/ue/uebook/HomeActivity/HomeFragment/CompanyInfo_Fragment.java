@@ -84,7 +84,6 @@ public class CompanyInfo_Fragment extends Fragment implements View.OnClickListen
         aboutUs_container.setOnClickListener(this);
         contactUs_container.setOnClickListener(this);
         language_container.setOnClickListener(this);
-
         share_container.setOnClickListener(this);
         return  view;
     }

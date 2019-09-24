@@ -127,6 +127,7 @@ public class NotepadFragment extends Fragment  implements  NotepadAdapter.Notepa
         mListener = null;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void onStart(){
         super.onStart();
         getnotePadList(new SessionManager(getActivity().getApplicationContext()).getUserID());
