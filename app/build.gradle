@@ -4,13 +4,23 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.ue.uebook"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
+
+        buildConfigField("String",
+                "TWILIO_ACCESS_TOKEN",
+                "\"${getSecretProperty("TWILIO_ACCESS_TOKEN", "TWILIO_ACCESS_TOKEN")}\"")
+        buildConfigField("String",
+                "TWILIO_ACCESS_TOKEN_SERVER",
+                "\"${getSecretProperty("TWILIO_ACCESS_TOKEN_SERVER", "http://localhost:3000")}\"")
+        buildConfigField("boolean",
+                "USE_TOKEN_SERVER",
+                "${getSecretProperty("USE_TOKEN_SERVER", false)}")
     }
     buildTypes {
         release {
@@ -28,6 +38,9 @@ repositories {
 }
 
 dependencies {
+
+
+    testImplementation 'junit:junit:4.12'
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.0.2'
     implementation "com.android.support:support-compat:28.0.0"
@@ -63,5 +76,7 @@ dependencies {
     implementation 'com.afollestad.material-dialogs:core:0.9.4.5'
     implementation 'com.nbsp:library:1.8'
     implementation 'com.github.mjn1369:prettydialog:1.0.4'
-
+    implementation "com.twilio:video-android:${versions.videoAndroid}"
+    implementation "com.koushikdutta.ion:ion:${versions.ion}"
+    implementation "com.android.support:preference-v14:${versions.supportLibrary}"
 }

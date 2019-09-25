@@ -46,9 +46,6 @@ public class HomeScreen extends BaseActivity implements Home_Fragment.OnFragment
     private CoordinatorLayout container;
     private Intent intent;
     private BottomSheetDialog mBottomSheetDialog;
-
-
-
     @SuppressLint("RestrictedApi")
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
@@ -112,8 +109,6 @@ public class HomeScreen extends BaseActivity implements Home_Fragment.OnFragment
             return false;
         }
     };
-
-
     private void loadFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -157,16 +152,11 @@ public class HomeScreen extends BaseActivity implements Home_Fragment.OnFragment
     @Override
     protected void onStart() {
         super.onStart();
-
-
         if (!checkPermissions())
             PermissionRequest(34);
         else
             getCurrentLocation();
-
-
     }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -186,7 +176,6 @@ public class HomeScreen extends BaseActivity implements Home_Fragment.OnFragment
                 // TODO Auto-generated method stub
 
             }
-
             @Override
             public void onFinish() {
                 // TODO Auto-generated method stub

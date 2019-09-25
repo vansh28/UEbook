@@ -8,19 +8,52 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.5.0'
-        
+        classpath "com.google.gms:google-services:3.2.1"
+
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
+}
+ext.versions = [
+        'java': JavaVersion.VERSION_1_8,
+        'androidGradlePlugin': '3.5.0',
+        'googleServices': '3.2.1',
+        'compileSdk': 28,
+        'buildTools': '28.0.3',
+        'minSdk': 16,
+        'targetSdk': 28,
+        'supportLibrary': '26.1.0',
+        'firebase': '10.0.1',
+        'retrofit': '2.0.0-beta4',
+        'okhttp': '3.6.0',
+        'ion': '2.1.7',
+        'videoAndroid': '4.3.2'
+
+]
+ext.getSecretProperty = { key, defaultValue ->
+    def value = System.getenv(key)
+
+    if (value == null) {
+        Properties properties = new Properties()
+        if (project.rootProject.file('local.properties').exists()) {
+            properties.load(project.rootProject.file('local.properties').newDataInputStream())
+            value = properties.getProperty(key)
+        }
+    }
+
+    if (value == null) {
+        value = defaultValue
+    }
+
+    return value
 }
 
 allprojects {
     repositories {
         google()
         jcenter()
-        
-    }
-}
+        mavenCentral()
+    }}
 
 task clean(type: Delete) {
     delete rootProject.buildDir
