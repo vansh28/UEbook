@@ -1,14 +1,18 @@
 package com.ue.uebook.SplashActivity;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.widget.ImageView;
 
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.quickblox.auth.session.QBSessionManager;
+import com.quickblox.users.model.QBUser;
 import com.ue.uebook.HomeActivity.HomeScreen;
 import com.ue.uebook.LoginActivity.LoginScreen;
+import com.ue.uebook.Quickblox_Chat.utils.SharedPrefsHelper;
+import com.ue.uebook.Quickblox_Chat.utils.chat.ChatHelper;
 import com.ue.uebook.R;
 import com.ue.uebook.SessionManager;
 
@@ -57,7 +61,16 @@ public class SplashScreen extends AppCompatActivity {
         }
         SplashScreen.this.startActivity(mainIntent);
         SplashScreen.this.finish();
-
     }
-
+    private QBUser getUserFromSession() {
+        QBUser user = SharedPrefsHelper.getInstance().getQbUser();
+        QBSessionManager qbSessionManager = QBSessionManager.getInstance();
+        if (qbSessionManager.getSessionParameters() == null) {
+            ChatHelper.getInstance().destroy();
+            return null;
+        }
+        Integer userId = qbSessionManager.getSessionParameters().getUserId();
+        user.setId(userId);
+        return user;
+    }
 }

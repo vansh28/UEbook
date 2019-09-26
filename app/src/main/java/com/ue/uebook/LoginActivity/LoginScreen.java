@@ -18,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -39,6 +40,10 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.quickblox.core.QBEntityCallback;
+import com.quickblox.core.exception.QBResponseException;
+import com.quickblox.users.QBUsers;
+import com.quickblox.users.model.QBUser;
 import com.ue.uebook.BaseActivity;
 import com.ue.uebook.Data.ApiRequest;
 import com.ue.uebook.Data.NetworkAPI;
@@ -49,6 +54,9 @@ import com.ue.uebook.LoginActivity.Fragment.SignIn_Fragment;
 import com.ue.uebook.LoginActivity.Fragment.SignUp_Fragment;
 import com.ue.uebook.LoginActivity.Pojo.RegistrationBody;
 import com.ue.uebook.LoginActivity.Pojo.RegistrationResponse;
+import com.ue.uebook.Quickblox_Chat.App;
+import com.ue.uebook.Quickblox_Chat.utils.SharedPrefsHelper;
+import com.ue.uebook.Quickblox_Chat.utils.chat.ChatHelper;
 import com.ue.uebook.R;
 import com.ue.uebook.SessionManager;
 
@@ -74,7 +82,7 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
     private Boolean issignup = true;
     private NetworkAPI networkAPI;
     private ProgressDialog dialog;
-
+    private static final int UNAUTHORIZED = 401;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -293,7 +301,7 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
     }
 
 
-    public void showDialog(final String first_name, String last_name, final String email, final String image) {
+    public void showDialog(final String first_name, final String last_name, final String email, final String image) {
         hideLoadingIndicator();
         final Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -310,9 +318,15 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
         txtName.setText(first_name + " " + last_name);
         Glide.with(getApplicationContext()).load(image).into(circleImageView);
         continueToLogin.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onClick(View view) {
+                QBUser qbUser = new QBUser();
 
+                qbUser.setLogin(first_name.trim());
+                qbUser.setFullName(first_name + " " + last_name);
+                qbUser.setPassword(App.USER_DEFAULT_PASSWORD);
+                signIn(qbUser);
                 registrationUser(first_name, " ", email, "Reader", "","");
                 dialog.dismiss();
             }
@@ -333,7 +347,7 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
 
     }
 
-    public void showDialogGP(final String first_name, String last_name, final String email, final Uri image) {
+    public void showDialogGP(final String first_name, final String last_name, final String email, final Uri image) {
         hideLoadingIndicator();
         final Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -361,14 +375,17 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
         }
 
         continueToLogin.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onClick(View view) {
 //                new SessionManager(getApplicationContext()).storeUserImage(image);
                 registrationUser(first_name, " ", email, "Reader", "","");
+
+
+
                 dialog.dismiss();
             }
         });
-
         cancel_dialog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -439,7 +456,7 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
 
 
 
-    private void registrationUser(String full_name, String password, String email, String publisher_type, String gender,String country) {
+    private void registrationUser(final String full_name, String password, String email, String publisher_type, String gender, String country) {
         ApiRequest request = new ApiRequest();
         dialog.setMessage("please wait");
         dialog.show();
@@ -457,7 +474,7 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
                 String myResponse = response.body().string();
 
                 Gson gson = new GsonBuilder().create();
-                RegistrationResponse form = gson.fromJson(myResponse, RegistrationResponse.class);
+                final RegistrationResponse form = gson.fromJson(myResponse, RegistrationResponse.class);
                 new SessionManager(getApplicationContext()).storeUseruserID(form.getUser_data().getId());
                 if (form.getError().equalsIgnoreCase("false")&&form.getUser_data()!=null) {
                     new SessionManager(getApplicationContext()).storeUserName(form.getUser_data().getUser_name());
@@ -466,19 +483,104 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
                     new SessionManager(getApplicationContext()).storeUserPublishtype(form.getUser_data().getPublisher_type());
                     new SessionManager(getApplicationContext()).storeUserLoginStatus(1);
                 runOnUiThread(new Runnable() {
+                        @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                         @Override
                         public void run() {
 //                            Toast.makeText(LoginScreen.this, "Succesfully Login", Toast.LENGTH_SHORT).show();
+
+
                         }
                     });
-                    gotoHome();
+
                 }
             }
         });
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private void signIn(final QBUser user) {
+        showLoadingIndicator();
+        ChatHelper.getInstance().login(user, new QBEntityCallback<QBUser>() {
+            @Override
+            public void onSuccess(QBUser userFromRest, Bundle bundle) {
+                if (userFromRest.getFullName().equals(user.getFullName())) {
+                    loginToChat(user);
+                } else {
+                    //Need to set password NULL, because server will update user only with NULL password
+                    user.setPassword(null);
+                    updateUser(user);
+                }
+            }
 
+            @Override
+            public void onError(QBResponseException e) {
+                if (e.getHttpStatusCode() == UNAUTHORIZED) {
+                    signUp(user);
+                } else {
+                    hideLoadingIndicator();
+                    showErrorSnackbar(R.string.login_chat_login_error, e, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            signIn(user);
+                        }
+                    });
+                }
+            }
+        });
+    }
 
+    private void updateUser(final QBUser user) {
+        ChatHelper.getInstance().updateUser(user, new QBEntityCallback<QBUser>() {
+            @Override
+            public void onSuccess(QBUser user, Bundle bundle) {
+                loginToChat(user);
+            }
+
+            @Override
+            public void onError(QBResponseException e) {
+                hideLoadingIndicator();
+                showErrorSnackbar(R.string.login_chat_login_error, e, null);
+            }
+        });
+    }
+
+    private void loginToChat(final QBUser user) {
+        //Need to set password, because the server will not register to chat without password
+        user.setPassword(App.USER_DEFAULT_PASSWORD);
+        ChatHelper.getInstance().loginToChat(user, new QBEntityCallback<Void>() {
+            @Override
+            public void onSuccess(Void aVoid, Bundle bundle) {
+                SharedPrefsHelper.getInstance().saveQbUser(user);
+                gotoHome();
+                finish();
+                hideLoadingIndicator();
+            }
+
+            @Override
+            public void onError(QBResponseException e) {
+                hideLoadingIndicator();
+                showErrorSnackbar(R.string.login_chat_login_error, e, null);
+            }
+        });
+    }
+
+    private void signUp(final QBUser newUser) {
+        SharedPrefsHelper.getInstance().removeQbUser();
+        QBUsers.signUp(newUser).performAsync(new QBEntityCallback<QBUser>() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void onSuccess(QBUser user, Bundle bundle) {
+                hideLoadingIndicator();
+                signIn(newUser);
+            }
+
+            @Override
+            public void onError(QBResponseException e) {
+                hideLoadingIndicator();
+                showErrorSnackbar(R.string.login_sign_up_error, e, null);
+            }
+        });
+    }
 
 }

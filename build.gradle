@@ -8,12 +8,36 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.5.0'
-        classpath "com.google.gms:google-services:3.2.1"
-
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
 }
+
+allprojects {
+    repositories {
+        google()
+        jcenter()
+        configurations.all {
+            resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+                def requested = details.requested
+                if (requested.group == 'com.google.android.gms') {
+                    details.useVersion '12.0.1'
+                }
+                if (requested.group == 'com.google.firebase') {
+                    details.useVersion '12.0.1'
+                }
+            }
+        }
+        //end
+        maven {
+            url "https://maven.google.com"
+        }
+
+        maven {
+            url "https://github.com/QuickBlox/quickblox-android-sdk-releases/raw/master/"
+        }
+    }}
+
 ext.versions = [
         'java': JavaVersion.VERSION_1_8,
         'androidGradlePlugin': '3.5.0',
@@ -28,8 +52,59 @@ ext.versions = [
         'okhttp': '3.6.0',
         'ion': '2.1.7',
         'videoAndroid': '4.3.2'
-
 ]
+
+ext {
+    compileSdkVersion = 28
+    buildToolsVersion = "28.0.3"
+
+    minSdkVersion = 14
+    targetSdkVersion = 28
+
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+
+    lintAbortOnError = false
+
+    dimensionDefault = 'default'
+
+    lintAbortOnError = false
+
+    // QuickBlox SDK version
+    qbSdkVersion = '3.9.1'
+
+    //Firebase
+    firebaseCoreVersion = '16.0.8'
+
+    //Material
+    materialVersion = '1.0.0'
+
+    //Android X
+    fragmentAndroidXVersion = '1.0.0'
+    lifecycleViewmodelAndroidXVersion = '1.0.0'
+    coreKtxVersion = '1.0.1'
+
+    //RobotoTextView
+    robotoTextViewVersion = '4.0.0'
+
+    //Glide
+    glideVersion = '3.6.1'
+
+    //CircleImageView
+    circleImageVersion = "2.1.0"
+
+    //StickyListenerHeaders
+    stickylistheadersVersion = '0.4.2'
+
+    //Swipy
+    swipyVersion = '1.2.3'
+
+    //Crashlytics
+    crashlyticsVersion = '2.9.5'
+
+    //Fabric
+    fabricToolsVersion = '1.27.0'
+}
 ext.getSecretProperty = { key, defaultValue ->
     def value = System.getenv(key)
 

@@ -37,6 +37,7 @@ import com.ue.uebook.HomeActivity.HomeFragment.Pojo.HomeListing;
 import com.ue.uebook.HomeActivity.HomeFragment.Pojo.HomeListingResponse;
 import com.ue.uebook.HomeActivity.HomeScreen;
 import com.ue.uebook.PopularActivity.Popular_List_Screen;
+import com.ue.uebook.Quickblox_Chat.utils.SharedPrefsHelper;
 import com.ue.uebook.R;
 
 import java.io.IOException;
@@ -155,7 +156,10 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
             }
         });
         pullTorefreshswipe();
+
+        Toast.makeText(getContext(),  SharedPrefsHelper.getInstance().getQbUser().getId().toString(),Toast.LENGTH_SHORT).show();
         return view;
+
     }
 
 

@@ -15,9 +15,9 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.ue.uebook.LoginActivity.LoginScreen;
+import com.ue.uebook.Quickblox_Chat.utils.ui.activity.DialogsActivity;
 import com.ue.uebook.R;
 import com.ue.uebook.SessionManager;
-import com.ue.uebook.UploadBook.Upload_Book_Screen;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -132,7 +132,7 @@ public class UserMainFragment extends Fragment implements View.OnClickListener, 
 
             loadFragment(new CompanyInfo_Fragment());
         } else if (view == uploadBook_Container) {
-            Intent intent = new Intent(getContext(), Upload_Book_Screen.class);
+            Intent intent = new Intent(getContext(), DialogsActivity.class);
             getContext().startActivity(intent);
         } else if (view == logOut) {
             confirmLogoutDialog();
