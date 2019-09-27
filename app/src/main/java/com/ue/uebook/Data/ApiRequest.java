@@ -317,6 +317,51 @@ public class ApiRequest {
                 .post(requestBody)
                 .build();
         client.newCall(request).enqueue(callback);
+    }
+    public void requestforPostChatId(final  String user_id , final  String chat_id ,Callback callback) {
+        String url = null;
+        url = BaseUrl + "createChatId";
+        OkHttpClient client = new OkHttpClient();
+        RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
+                .addFormDataPart("user_id", user_id)
+                .addFormDataPart("chat_id", chat_id)
+                .build();
+        Request request = new Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .build();
+        client.newCall(request).enqueue(callback);
+    }
+
+    public void requestforSendFriendRequest(final  String user_id , final  String frnd_id ,Callback callback) {
+        String url = null;
+        url = BaseUrl + "sendFrndReq";
+        OkHttpClient client = new OkHttpClient();
+        RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
+                .addFormDataPart("user_id", user_id)
+                .addFormDataPart("frnd_id", frnd_id)
+                .build();
+        Request request = new Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .build();
+        client.newCall(request).enqueue(callback);
+    }
+
+
+    public void requestforgetUploadByInfo( String user_id, Callback callback) {
+        String url = null;
+        url = BaseUrl + "getUserDetails";
+        OkHttpClient client = new OkHttpClient();
+        RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
+                .addFormDataPart("user_id",user_id)
+                .build();
+
+        Request request = new Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .build();
+        client.newCall(request).enqueue(callback);
 
     }
 

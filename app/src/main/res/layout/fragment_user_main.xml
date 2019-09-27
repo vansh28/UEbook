@@ -6,6 +6,15 @@
     android:orientation="vertical"
     tools:context=".HomeActivity.HomeFragment.UserMainFragment">
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+
     <RelativeLayout
         android:id="@+id/userInfo_container"
         android:layout_width="match_parent"
@@ -92,8 +101,91 @@
             android:paddingRight="@dimen/size_10"
             android:src="@drawable/rightarrow"></ImageView>
     </RelativeLayout>
+
     <View
         android:id="@+id/uploadBook_view"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/black"></View>
+    <RelativeLayout
+        android:id="@+id/chat_Container"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/size_60"
+        android:paddingLeft="@dimen/size_10">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="Chat with Author"
+            android:textColor="@color/black"
+            android:drawableLeft="@drawable/addbook"
+            android:drawablePadding="@dimen/size_20"
+            android:textSize="@dimen/size_18"></TextView>
+        <ImageView
+            android:layout_width="@dimen/size_30"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:paddingRight="@dimen/size_10"
+            android:src="@drawable/rightarrow"></ImageView>
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/black"></View>
+            <RelativeLayout
+                android:id="@+id/pendingRequest_Container"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/size_60"
+                android:paddingLeft="@dimen/size_10">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="Pending Request"
+                    android:textColor="@color/black"
+                    android:drawableLeft="@drawable/addbook"
+                    android:drawablePadding="@dimen/size_20"
+                    android:textSize="@dimen/size_18"></TextView>
+                <ImageView
+                    android:layout_width="@dimen/size_30"
+                    android:layout_height="30dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:paddingRight="@dimen/size_10"
+                    android:src="@drawable/rightarrow"></ImageView>
+            </RelativeLayout>
+
+            <View
+                android:id="@+id/pending_view"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/black"></View>
+    <RelativeLayout
+        android:id="@+id/author_Container"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/size_60"
+        android:paddingLeft="@dimen/size_10">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="Our Best Author"
+            android:textColor="@color/black"
+            android:drawableLeft="@drawable/addbook"
+            android:drawablePadding="@dimen/size_20"
+            android:textSize="@dimen/size_18"></TextView>
+        <ImageView
+            android:layout_width="@dimen/size_30"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:paddingRight="@dimen/size_10"
+            android:src="@drawable/rightarrow"></ImageView>
+    </RelativeLayout>
+
+    <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/black"></View>
@@ -117,4 +209,6 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/black"></View>
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>

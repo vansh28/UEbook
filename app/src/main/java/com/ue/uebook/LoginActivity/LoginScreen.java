@@ -321,12 +321,7 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onClick(View view) {
-                QBUser qbUser = new QBUser();
 
-                qbUser.setLogin(first_name.trim());
-                qbUser.setFullName(first_name + " " + last_name);
-                qbUser.setPassword(App.USER_DEFAULT_PASSWORD);
-                signIn(qbUser);
                 registrationUser(first_name, " ", email, "Reader", "","");
                 dialog.dismiss();
             }
@@ -487,8 +482,14 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
                         @Override
                         public void run() {
 //                            Toast.makeText(LoginScreen.this, "Succesfully Login", Toast.LENGTH_SHORT).show();
-
-
+                           Log.d("user_id",form.getUser_data().getId());
+                            String arr[] = form.getUser_data().getUser_name().split(" ", 2);
+                            String firstWord = arr[0];   //the
+                            QBUser qbUser = new QBUser();
+                            qbUser.setLogin(firstWord.trim());
+                            qbUser.setFullName(form.user_data.getUser_name());
+                            qbUser.setPassword(App.USER_DEFAULT_PASSWORD);
+                            signIn(qbUser);
                         }
                     });
 
@@ -549,9 +550,11 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
         //Need to set password, because the server will not register to chat without password
         user.setPassword(App.USER_DEFAULT_PASSWORD);
         ChatHelper.getInstance().loginToChat(user, new QBEntityCallback<Void>() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onSuccess(Void aVoid, Bundle bundle) {
                 SharedPrefsHelper.getInstance().saveQbUser(user);
+                updateUserChatId(String.valueOf(user.getId()));
                 gotoHome();
                 finish();
                 hideLoadingIndicator();
@@ -582,5 +585,24 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
             }
         });
     }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private void updateUserChatId(String chatID ) {
+        ApiRequest request = new ApiRequest();
+        request.requestforPostChatId(new SessionManager(getApplicationContext()).getUserID(),chatID, new okhttp3.Callback() {
+            @Override
+            public void onFailure(okhttp3.Call call, IOException e) {
+
+            }
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
+                String myResponse = response.body().string();
+
+
+            }
+        });
+    }
+
 
 }

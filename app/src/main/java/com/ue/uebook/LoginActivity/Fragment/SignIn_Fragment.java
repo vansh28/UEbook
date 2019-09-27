@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,16 +15,25 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.quickblox.core.QBEntityCallback;
+import com.quickblox.core.exception.QBResponseException;
+import com.quickblox.users.QBUsers;
+import com.quickblox.users.model.QBUser;
+import com.ue.uebook.Data.ApiRequest;
 import com.ue.uebook.Data.NetworkAPI;
 import com.ue.uebook.Data.NetworkService;
 import com.ue.uebook.HomeActivity.HomeScreen;
 import com.ue.uebook.LoginActivity.Pojo.LoginResponse;
+import com.ue.uebook.Quickblox_Chat.App;
+import com.ue.uebook.Quickblox_Chat.utils.SharedPrefsHelper;
+import com.ue.uebook.Quickblox_Chat.utils.chat.ChatHelper;
 import com.ue.uebook.R;
 import com.ue.uebook.SessionManager;
 
@@ -35,6 +45,8 @@ import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
+
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -60,7 +72,7 @@ public class SignIn_Fragment extends Fragment implements View.OnClickListener {
     private EditText userName, userPassword;
     private CheckBox keepMeSign;
     private LinearLayout fragment;
-
+    private static final int UNAUTHORIZED = 401;
     public SignIn_Fragment() {
         // Required empty public constructor
     }
@@ -262,6 +274,7 @@ public class SignIn_Fragment extends Fragment implements View.OnClickListener {
                     new SessionManager(getContext().getApplicationContext()).storeUseruserID(form.getResponse().getId());
                     new SessionManager(getContext().getApplicationContext()).storeUserName(form.getResponse().getUser_name());
                     getActivity().runOnUiThread(new Runnable() {
+                        @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                         @Override
                         public void run() {
 //                            Toast.makeText(getContext(), "Succesfully Login", Toast.LENGTH_SHORT).show();
@@ -273,7 +286,13 @@ public class SignIn_Fragment extends Fragment implements View.OnClickListener {
 
                             }
 
-                            gotoHome();
+                            String arr[] = form.getResponse().getUser_name().split(" ", 2);
+                            String firstWord = arr[0];   //the
+                            QBUser qbUser = new QBUser();
+                            qbUser.setLogin(firstWord.trim());
+                            qbUser.setFullName(form.getResponse().getUser_name());
+                            qbUser.setPassword(App.USER_DEFAULT_PASSWORD);
+                            signIn(qbUser);
                         }
                     });
 
@@ -327,6 +346,101 @@ public class SignIn_Fragment extends Fragment implements View.OnClickListener {
         });
         AlertDialog alertDialog = dialog.create();
         alertDialog.show();
+    }
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private void signIn(final QBUser user) {
+        ChatHelper.getInstance().login(user, new QBEntityCallback<QBUser>() {
+            @Override
+            public void onSuccess(QBUser userFromRest, Bundle bundle) {
+                if (userFromRest.getFullName().equals(user.getFullName())) {
+                    loginToChat(user);
+                } else {
+                    //Need to set password NULL, because server will update user only with NULL password
+                    user.setPassword(null);
+                    updateUser(user);
+                }
+            }
+
+            @Override
+            public void onError(QBResponseException e) {
+                if (e.getHttpStatusCode() == UNAUTHORIZED) {
+                    signUp(user);
+                } else {
+
+                    signIn(user);
+                }
+
+
+            }
+        });
+    }
+
+    private void updateUser(final QBUser user) {
+        ChatHelper.getInstance().updateUser(user, new QBEntityCallback<QBUser>() {
+            @Override
+            public void onSuccess(QBUser user, Bundle bundle) {
+                loginToChat(user);
+            }
+
+            @Override
+            public void onError(QBResponseException e) {
+
+            }
+        });
+    }
+
+    private void loginToChat(final QBUser user) {
+        //Need to set password, because the server will not register to chat without password
+        user.setPassword(App.USER_DEFAULT_PASSWORD);
+        ChatHelper.getInstance().loginToChat(user, new QBEntityCallback<Void>() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void onSuccess(Void aVoid, Bundle bundle) {
+                SharedPrefsHelper.getInstance().saveQbUser(user);
+                updateUserChatId(String.valueOf(user.getId()));
+                gotoHome();
+            }
+
+            @Override
+            public void onError(QBResponseException e) {
+
+            }
+        });
+    }
+
+    private void signUp(final QBUser newUser) {
+        SharedPrefsHelper.getInstance().removeQbUser();
+        QBUsers.signUp(newUser).performAsync(new QBEntityCallback<QBUser>() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void onSuccess(QBUser user, Bundle bundle) {
+
+                signIn(newUser);
+            }
+
+            @Override
+            public void onError(QBResponseException e) {
+
+            }
+        });
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private void updateUserChatId(String chatID ) {
+        ApiRequest request = new ApiRequest();
+        request.requestforPostChatId(new SessionManager(getApplicationContext()).getUserID(),chatID, new okhttp3.Callback() {
+            @Override
+            public void onFailure(okhttp3.Call call, IOException e) {
+
+            }
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
+                String myResponse = response.body().string();
+
+
+            }
+        });
     }
 
 

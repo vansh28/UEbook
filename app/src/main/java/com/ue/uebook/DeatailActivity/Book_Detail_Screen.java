@@ -11,6 +11,7 @@ import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ForegroundColorSpan;
+import android.text.style.UnderlineSpan;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,6 +32,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.ue.uebook.AuthorProfileActivity.AuthorProfileScreen;
 import com.ue.uebook.BaseActivity;
 import com.ue.uebook.Data.ApiRequest;
 import com.ue.uebook.DeatailActivity.Pojo.BookDetails;
@@ -60,7 +62,7 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
     private List<BookDetails>bookDetail;
     private ProgressDialog dialog;
     private ImageView book_cover;
-    private TextView bookTitle,bookDesc,bookAuthor,averageRating,topreviewView;
+    private TextView bookTitle,bookDesc,bookAuthor,averageRating,topreviewView,book_uploadBy;
     private Intent intent;
     private String book_id,videourl,docurl,audiourl;
     private int position;
@@ -68,6 +70,7 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
     private RatingBar commnetRating;
     private EditText user_comment;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private String ulpoadByUserId;
     String docbaseUrl="http://docs.google.com/gview?embedded=true&url=";
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
@@ -75,6 +78,7 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book__detail__screen);
         swipeRefreshLayout=findViewById(R.id.swipe_refresh_layout);
+        book_uploadBy=findViewById(R.id.book_uploadBy);
         averageRating=findViewById(R.id.averageRating);
         topreviewView=findViewById(R.id.topreviewView);
         comment_Submit=findViewById(R.id.submit_comment);
@@ -96,6 +100,7 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
         bookTitle = findViewById(R.id.book_name_detail);
         bookDesc=findViewById(R.id.book_desc);
         bookAuthor=findViewById(R.id.bookauthor);
+        book_uploadBy.setOnClickListener(this);
         book_cover=findViewById(R.id.bookcoverImage);
         comment_Submit.setOnClickListener(this);
         facebook_btn.setOnClickListener(this);
@@ -185,6 +190,22 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
                 addCommentToBook(user_comment.getText().toString(), String.valueOf(commnetRating.getRating()));
             }
         }
+        else if (view==book_uploadBy){
+
+            if (ulpoadByUserId.equalsIgnoreCase(new SessionManager(getApplicationContext()).getUserID())){
+                Intent intent = new Intent(Book_Detail_Screen.this, AuthorProfileScreen.class);
+                intent.putExtra("id",1);
+                intent.putExtra("userID",new SessionManager(getApplicationContext()).getUserID());
+                startActivity(intent);
+            }
+            else {
+                Intent intent = new Intent(this, AuthorProfileScreen.class);
+                intent.putExtra("userID",ulpoadByUserId);
+                startActivity(intent);
+            }
+
+
+        }
 
     }
 
@@ -220,7 +241,6 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
         showLoadingIndicator();
         if (bookDetail.size()>0)
             bookDetail.clear();
-
         request.requestforgetBookDetail(book_id,new SessionManager(getApplicationContext()).getUserID(), new okhttp3.Callback() {
             @Override
             public void onFailure(okhttp3.Call call, IOException e) {
@@ -237,7 +257,11 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
                     @Override
                     public void run() {
                         bookTitle.setText(form.getData().getBook_title());
-                        bookAuthor.setText(form.getData().getAuthor_name());
+                         bookAuthor.setText(form.getData().getAuthor_name());
+                        ulpoadByUserId=form.getData().getUser_id();
+                        SpannableString content = new SpannableString(form.getData().getUser_name());
+                        content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
+                        book_uploadBy.setText("Upload by : "+ content);
                         bookDesc.setText(form.getData().getBook_description());
                         videourl=form.getData().getVideo_url();
                         docurl=form.getData().getPdf_url();

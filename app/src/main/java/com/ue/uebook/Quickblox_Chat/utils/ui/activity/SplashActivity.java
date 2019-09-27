@@ -87,7 +87,7 @@ public class SplashActivity extends BaseActivity {
     }
 
     private void loginToChat(final QBUser user) {
-        ProgressDialogFragment.show(getSupportFragmentManager(), R.string.dlg_restoring_chat_session);
+//        ProgressDialogFragment.show(getSupportFragmentManager(), R.string.dlg_restoring_chat_session);
 
         ChatHelper.getInstance().loginToChat(user, new QBEntityCallback<Void>() {
             @Override

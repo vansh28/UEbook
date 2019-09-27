@@ -19,8 +19,9 @@ public class BookDetails {
     private String status;
     private String created_at;
     private String updated_at;
+    private String user_name;
 
-    public BookDetails(String id, String user_id, String category_id, String book_title, String book_slug, String thubm_image, String book_description, String author_name, String book_image, String video_url, String audio_url, String pdf_url, String bookMark, String mostView, String status, String created_at, String updated_at) {
+    public BookDetails(String id, String user_id, String category_id, String book_title, String book_slug, String thubm_image, String book_description, String author_name, String book_image, String video_url, String audio_url, String pdf_url, String bookMark, String mostView, String status, String created_at, String updated_at, String user_name) {
         this.id = id;
         this.user_id = user_id;
         this.category_id = category_id;
@@ -38,6 +39,15 @@ public class BookDetails {
         this.status = status;
         this.created_at = created_at;
         this.updated_at = updated_at;
+        this.user_name = user_name;
+    }
+
+    public String getUser_name() {
+        return user_name;
+    }
+
+    public void setUser_name(String user_name) {
+        this.user_name = user_name;
     }
 
     public String getId() {

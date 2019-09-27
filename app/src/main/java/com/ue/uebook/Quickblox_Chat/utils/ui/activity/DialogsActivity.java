@@ -105,9 +105,9 @@ public class DialogsActivity extends BaseActivity implements DialogsManager.Mana
 
         initUi();
 
-        if (actionBar != null) {
-            actionBar.setTitle(getString(R.string.dialogs_logged_in_as, currentUser.getFullName()));
-        }
+//        if (actionBar != null) {
+//            actionBar.setTitle(getString(R.string.dialogs_logged_in_as, currentUser.getFullName()));
+//        }
 
         if (QbDialogHolder.getInstance().getDialogs().size() > 0) {
             loadDialogsFromQb(true, true);

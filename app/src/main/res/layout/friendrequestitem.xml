@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_marginTop="@dimen/size_8"
+        android:layout_height="match_parent">
+        <de.hdodenhof.circleimageview.CircleImageView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/image_user"
+            android:layout_width="@dimen/size_70"
+            android:layout_height="@dimen/size_70"
+            android:src="@drawable/user_default"
+            android:layout_centerVertical="true"
+            app:civ_border_width="2dp"
+            app:civ_border_color="#ffffff"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_marginLeft="@dimen/size_25"
+            android:layout_toRightOf="@+id/image_user"
+            android:layout_marginTop="@dimen/size_5"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="USername"
+                android:textSize="@dimen/size_17"
+                android:layout_marginLeft="@dimen/size_5"
+                android:textColor="@color/black"
+                android:textStyle="bold">
+            </TextView>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Reader"
+                android:textSize="@dimen/size_16"
+                android:layout_marginLeft="@dimen/size_5"
+                android:textColor="@color/black">
+            </TextView>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:weightSum="2"
+                android:layout_height="wrap_content">
+                <Button
+                    android:layout_width="0dp"
+                    android:layout_height="35dp"
+                    android:layout_weight="1"
+                    android:text="Confirm"
+                    android:layout_margin="@dimen/size_5"
+                    android:background="@color/colorAccent"
+                    android:textColor="@color/white"
+                    android:textAllCaps="false"></Button>
+                <Button
+                    android:layout_width="0dp"
+                    android:layout_height="35dp"
+                    android:layout_weight="1"
+                    android:text="Delete"
+                    android:background="#d3d3d3"
+                    android:layout_margin="@dimen/size_5"
+                    android:textAllCaps="false"></Button>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/size_1"
+        android:layout_marginTop="@dimen/size_8"
+        android:background="#d3d3d3"></View>
+
+</LinearLayout>

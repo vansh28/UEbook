@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,17 +22,25 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.quickblox.core.QBEntityCallback;
+import com.quickblox.core.exception.QBResponseException;
+import com.quickblox.users.QBUsers;
+import com.quickblox.users.model.QBUser;
 import com.ue.uebook.Data.ApiRequest;
 import com.ue.uebook.Data.NetworkAPI;
 import com.ue.uebook.Data.NetworkService;
 import com.ue.uebook.HomeActivity.HomeScreen;
 import com.ue.uebook.LoginActivity.Pojo.RegistrationBody;
 import com.ue.uebook.LoginActivity.Pojo.RegistrationResponse;
+import com.ue.uebook.Quickblox_Chat.App;
+import com.ue.uebook.Quickblox_Chat.utils.SharedPrefsHelper;
+import com.ue.uebook.Quickblox_Chat.utils.chat.ChatHelper;
 import com.ue.uebook.R;
 import com.ue.uebook.SessionManager;
 
@@ -72,7 +81,7 @@ public class SignUp_Fragment extends Fragment implements View.OnClickListener {
     private Spinner actorType;
     private ProgressDialog dialog;
     private LinearLayout viewLinear;
-
+    private static final int UNAUTHORIZED = 401;
     public SignUp_Fragment() {
         // Required empty public constructor
     }
@@ -240,6 +249,7 @@ public class SignUp_Fragment extends Fragment implements View.OnClickListener {
             public void onResponse(@NonNull Call<RegistrationResponse> call, @NonNull Response<RegistrationResponse> response) {
                 RegistrationResponse registrationResponse = response.body();
                 Log.d("response", registrationResponse.toString());
+
                 if (registrationResponse != null) {
                     if (registrationResponse.getError().equalsIgnoreCase("true")) {
                         Log.d("pub", registrationResponse.getUser_data().getPublisher_type());
@@ -248,6 +258,8 @@ public class SignUp_Fragment extends Fragment implements View.OnClickListener {
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+
+
                                 gotoHome();
                                 Toast.makeText(getContext(), "Succesfully Login", Toast.LENGTH_SHORT).show();
                             }
@@ -353,25 +365,127 @@ public class SignUp_Fragment extends Fragment implements View.OnClickListener {
                 String myResponse = response.body().string();
 
                 Gson gson = new GsonBuilder().create();
-                RegistrationResponse form = gson.fromJson(myResponse, RegistrationResponse.class);
+                final RegistrationResponse form = gson.fromJson(myResponse, RegistrationResponse.class);
                 new SessionManager(getContext().getApplicationContext()).storeUseruserID(form.getUser_data().getId());
                 new SessionManager(getContext().getApplicationContext()).storeUserName(form.getUser_data().getUser_name());
                 new SessionManager(getApplicationContext()).storeUserImage(form.getUser_data().getUrl());
 
                 if (form.getError().equalsIgnoreCase("false")) {
-
+                    Log.d("user_id",form.getUser_data().getId());
                     new SessionManager(getContext().getApplicationContext()).storeUserPublishtype(form.getUser_data().getPublisher_type());
                     new SessionManager(getContext().getApplicationContext()).storeUserLoginStatus(1);
                     getActivity().runOnUiThread(new Runnable() {
+                        @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                         @Override
                         public void run() {
-
-                            gotoHome();
+                            String arr[] = form.getUser_data().getUser_name().split(" ", 2);
+                            String firstWord = arr[0];   //the
+                            QBUser qbUser = new QBUser();
+                            qbUser.setLogin(firstWord.trim());
+                            qbUser.setFullName(form.user_data.getUser_name());
+                            qbUser.setPassword(App.USER_DEFAULT_PASSWORD);
+                            signIn(qbUser);
 //                            Toast.makeText(getContext(), "Succesfully Login", Toast.LENGTH_SHORT).show();
                         }
                     });
 
                 }
+
+            }
+        });
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private void signIn(final QBUser user) {
+        ChatHelper.getInstance().login(user, new QBEntityCallback<QBUser>() {
+            @Override
+            public void onSuccess(QBUser userFromRest, Bundle bundle) {
+                if (userFromRest.getFullName().equals(user.getFullName())) {
+                    loginToChat(user);
+                } else {
+                    //Need to set password NULL, because server will update user only with NULL password
+                    user.setPassword(null);
+                    updateUser(user);
+                }
+            }
+
+            @Override
+            public void onError(QBResponseException e) {
+                if (e.getHttpStatusCode() == UNAUTHORIZED) {
+                    signUp(user);
+                } else {
+
+                            signIn(user);
+                        }
+
+
+            }
+        });
+    }
+
+    private void updateUser(final QBUser user) {
+        ChatHelper.getInstance().updateUser(user, new QBEntityCallback<QBUser>() {
+            @Override
+            public void onSuccess(QBUser user, Bundle bundle) {
+                loginToChat(user);
+            }
+
+            @Override
+            public void onError(QBResponseException e) {
+
+            }
+        });
+    }
+
+    private void loginToChat(final QBUser user) {
+        //Need to set password, because the server will not register to chat without password
+        user.setPassword(App.USER_DEFAULT_PASSWORD);
+        ChatHelper.getInstance().loginToChat(user, new QBEntityCallback<Void>() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void onSuccess(Void aVoid, Bundle bundle) {
+                SharedPrefsHelper.getInstance().saveQbUser(user);
+                updateUserChatId(String.valueOf(user.getId()));
+                gotoHome();
+            }
+
+            @Override
+            public void onError(QBResponseException e) {
+
+            }
+        });
+    }
+
+    private void signUp(final QBUser newUser) {
+        SharedPrefsHelper.getInstance().removeQbUser();
+        QBUsers.signUp(newUser).performAsync(new QBEntityCallback<QBUser>() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void onSuccess(QBUser user, Bundle bundle) {
+
+                signIn(newUser);
+            }
+
+            @Override
+            public void onError(QBResponseException e) {
+
+            }
+        });
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private void updateUserChatId(String chatID ) {
+        ApiRequest request = new ApiRequest();
+        request.requestforPostChatId(new SessionManager(getApplicationContext()).getUserID(),chatID, new okhttp3.Callback() {
+            @Override
+            public void onFailure(okhttp3.Call call, IOException e) {
+
+            }
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
+                String myResponse = response.body().string();
+
 
             }
         });

@@ -14,10 +14,15 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.ue.uebook.AuthorProfileActivity.AuthorList;
+import com.ue.uebook.AuthorProfileActivity.AuthorProfileScreen;
+import com.ue.uebook.AuthorProfileActivity.PendingRequestScreen;
 import com.ue.uebook.LoginActivity.LoginScreen;
+import com.ue.uebook.Quickblox_Chat.utils.SharedPrefsHelper;
 import com.ue.uebook.Quickblox_Chat.utils.ui.activity.DialogsActivity;
 import com.ue.uebook.R;
 import com.ue.uebook.SessionManager;
+import com.ue.uebook.UploadBook.Upload_Book_Screen;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -36,10 +41,10 @@ public class UserMainFragment extends Fragment implements View.OnClickListener, 
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    private RelativeLayout userInfo_container, companyInfo_Container, uploadBook_Container, logOut;
+    private RelativeLayout userInfo_container, companyInfo_Container, uploadBook_Container, logOut,chat_Container,author_Container,pendingRequest_Container;
 
     private OnFragmentInteractionListener mListener;
-    private View view_uploadBook;
+    private View view_uploadBook,pendingRequest_view;
 
 
     public UserMainFragment() {
@@ -79,17 +84,27 @@ public class UserMainFragment extends Fragment implements View.OnClickListener, 
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_user_main, container, false);
         userInfo_container = view.findViewById(R.id.userInfo_container);
+        chat_Container=view.findViewById(R.id.chat_Container);
+        pendingRequest_Container=view.findViewById(R.id.pendingRequest_Container);
+        pendingRequest_Container.setOnClickListener(this);
+        pendingRequest_view=view.findViewById(R.id.pending_view);
+        chat_Container.setOnClickListener(this);
         uploadBook_Container = view.findViewById(R.id.uploadBook_Container);
         view_uploadBook=view.findViewById(R.id.uploadBook_view);
-//        if (new SessionManager(getActivity().getApplicationContext()).getUserPublishType().equalsIgnoreCase("Reader")){
-//            uploadBook_Container.setVisibility(View.GONE);
-//            view_uploadBook.setVisibility(View.GONE);
-//        }
-//        else {
-//            uploadBook_Container.setVisibility(View.VISIBLE);
-//            view_uploadBook.setVisibility(View.VISIBLE);
-//        }
-
+        author_Container=view.findViewById(R.id.author_Container);
+        author_Container.setOnClickListener(this);
+        if (new SessionManager(getActivity().getApplicationContext()).getUserPublishType().equalsIgnoreCase("Reader")){
+            uploadBook_Container.setVisibility(View.GONE);
+            view_uploadBook.setVisibility(View.GONE);
+            pendingRequest_Container.setVisibility(View.GONE);
+            pendingRequest_view.setVisibility(View.GONE);
+        }
+        else {
+            uploadBook_Container.setVisibility(View.VISIBLE);
+            view_uploadBook.setVisibility(View.VISIBLE);
+            pendingRequest_Container.setVisibility(View.VISIBLE);
+            pendingRequest_view.setVisibility(View.VISIBLE);
+        }
         logOut = view.findViewById(R.id.logOut);
         logOut.setOnClickListener(this);
         uploadBook_Container.setOnClickListener(this);
@@ -126,18 +141,40 @@ public class UserMainFragment extends Fragment implements View.OnClickListener, 
     @Override
     public void onClick(View view) {
         if (view == userInfo_container) {
+            if ((new SessionManager(getActivity().getApplicationContext()).getUserPublishType().equalsIgnoreCase("Reader"))){
 
-            loadFragment(new UserProfile_Fragment());
+                loadFragment(new UserProfile_Fragment());
+            }
+            else {
+
+                Intent intent = new Intent(getContext(), AuthorProfileScreen.class);
+                intent.putExtra("id",1);
+                intent.putExtra("userID",new SessionManager(getActivity().getApplicationContext()).getUserID());
+                getContext().startActivity(intent);
+            }
+
         } else if (view == companyInfo_Container) {
 
             loadFragment(new CompanyInfo_Fragment());
         } else if (view == uploadBook_Container) {
-            Intent intent = new Intent(getContext(), DialogsActivity.class);
+            Intent intent = new Intent(getContext(), Upload_Book_Screen.class);
             getContext().startActivity(intent);
         } else if (view == logOut) {
             confirmLogoutDialog();
 //            Intent intent = new Intent(getContext(), SettingsActivity.class);
 //            startActivity(intent);
+        }
+        else if (view==chat_Container){
+            Intent intent = new Intent(getContext(), DialogsActivity.class);
+            getContext().startActivity(intent);
+        }
+        else if (view==author_Container){
+            Intent intent = new Intent(getContext(), AuthorList.class);
+            getContext().startActivity(intent);
+        }
+        else if (view==pendingRequest_Container){
+            Intent intent = new Intent(getContext(), PendingRequestScreen.class);
+            getContext().startActivity(intent);
         }
     }
 
@@ -177,6 +214,7 @@ public class UserMainFragment extends Fragment implements View.OnClickListener, 
                         new SessionManager(getActivity().getApplicationContext()).clearUserCredentials();
                         Intent intent = new Intent(getContext(), LoginScreen.class);
                         getContext().startActivity(intent);
+                        SharedPrefsHelper.getInstance().clearAllData();
                         getActivity().finish();
                     }
                 })

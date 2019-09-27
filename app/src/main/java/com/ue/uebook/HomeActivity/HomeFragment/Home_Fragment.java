@@ -37,7 +37,6 @@ import com.ue.uebook.HomeActivity.HomeFragment.Pojo.HomeListing;
 import com.ue.uebook.HomeActivity.HomeFragment.Pojo.HomeListingResponse;
 import com.ue.uebook.HomeActivity.HomeScreen;
 import com.ue.uebook.PopularActivity.Popular_List_Screen;
-import com.ue.uebook.Quickblox_Chat.utils.SharedPrefsHelper;
 import com.ue.uebook.R;
 
 import java.io.IOException;
@@ -156,8 +155,6 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
             }
         });
         pullTorefreshswipe();
-
-        Toast.makeText(getContext(),  SharedPrefsHelper.getInstance().getQbUser().getId().toString(),Toast.LENGTH_SHORT).show();
         return view;
 
     }
@@ -328,7 +325,7 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
                 hideLoadingIndicator();
                 Gson gson = new GsonBuilder().create();
                 final HomeListingResponse form = gson.fromJson(myResponse, HomeListingResponse.class);
-                if (form.getData() != null && !form.getData().isEmpty()&&form.getError().equalsIgnoreCase("false")) {
+                if (form.getData() != null || !form.getData().isEmpty()||form.getError().equalsIgnoreCase("false")) {
                     recommendedList_book.addAll(form.getData());
                     if (getActivity()!=null){
                     getActivity().runOnUiThread(new Runnable() {
@@ -373,7 +370,7 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
 
                 Gson gson = new GsonBuilder().create();
                 final HomeListingResponse form = gson.fromJson(myResponse, HomeListingResponse.class);
-                if (form.getData() != null && !form.getData().isEmpty()&&form.getError().equalsIgnoreCase("false")) {
+                if (form.getData() != null || !form.getData().isEmpty()||form.getError().equalsIgnoreCase("false")) {
                     newBookList.addAll(form.getData());
                     if(getActivity()!=null) {
                         getActivity().runOnUiThread(new Runnable() {
@@ -413,7 +410,7 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
                 String myresponse = response.body().string();
                 Gson gson = new GsonBuilder().create();
                 final HomeListingResponse form = gson.fromJson(myresponse, HomeListingResponse.class);
-                if (form.getData() != null && !form.getData().isEmpty()&&form.getError().equalsIgnoreCase("false")) {
+                if (form.getData() != null || !form.getData().isEmpty()||form.getError().equalsIgnoreCase("false")) {
                     if (getActivity()!=null){
                         getActivity().runOnUiThread(new Runnable() {
                             @Override

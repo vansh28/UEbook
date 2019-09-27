@@ -19,7 +19,6 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
-
     <application
         android:name=".Quickblox_Chat.App"
         android:allowBackup="true"
@@ -30,10 +29,12 @@
         android:roundIcon="@drawable/applogo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-
-        tools:ignore="GoogleAppIndexingWarning"
-        android:usesCleartextTraffic="true">
-
+        android:usesCleartextTraffic="true"
+        tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".AuthorProfileActivity.PendingRequestScreen"></activity>
+        <activity android:name=".Quickblox_Chat.utils.ui.activity.FriendListScreen" />
+        <activity android:name=".AuthorProfileActivity.AuthorList" />
+        <activity android:name=".AuthorProfileActivity.AuthorProfileScreen" />
         <activity
             android:name=".HomeActivity.InerfaceLanguageScreen"
             android:screenOrientation="portrait" />
@@ -59,8 +60,7 @@
             android:theme="@style/AppTheme" />
         <activity
             android:name=".Quickblox_Chat.utils.ui.activity.SplashActivity"
-            android:screenOrientation="portrait"
-           />
+            android:screenOrientation="portrait" />
         <activity android:name=".MainActivity" />
         <activity
             android:name=".SettingsActivity"
@@ -79,16 +79,13 @@
         </activity>
         <activity
             android:name=".SplashActivity.SplashScreen"
-            android:configChanges="orientation|screenSize"
-           >
+            android:configChanges="orientation|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
-
         <activity android:name=".Help.HelpCenterScreen" />
         <activity android:name=".AboutUs.AboutusScreen" />
         <activity android:name=".Contactus.ContactusScreen" />
@@ -108,57 +105,45 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths" />
         </provider>
+
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="4b96a3f33893a42103eae91d2166d0c517b833d3" />
-
-
-
-
 
         <activity
             android:name=".Quickblox_Chat.utils.ui.activity.LoginActivity"
             android:label="@string/login_title"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".Quickblox_Chat.utils.ui.activity.SelectUsersActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".Quickblox_Chat.utils.ui.activity.DialogsActivity"
-            android:theme="@style/AppThemenew"
-            android:screenOrientation="portrait" />
-
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemenew" />
         <activity
             android:name=".Quickblox_Chat.utils.ui.activity.ChatActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppThemenew"
             android:windowSoftInputMode="stateHidden|adjustResize" />
-
         <activity
             android:name=".Quickblox_Chat.utils.ui.activity.ChatInfoActivity"
             android:label="@string/chat_info"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".Quickblox_Chat.utils.ui.activity.AttachmentImageActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
-
         <activity
             android:name=".Quickblox_Chat.utils.ui.activity.AppInfoActivity"
             android:screenOrientation="portrait" />
 
-        <service
-            android:name=".Quickblox_Chat.utils.fcm.PushListenerService">
+        <service android:name=".Quickblox_Chat.utils.fcm.PushListenerService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-
-        <service
-            android:name="com.quickblox.messages.services.fcm.QBFcmPushInstanceIDService">
+        <service android:name="com.quickblox.messages.services.fcm.QBFcmPushInstanceIDService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
@@ -167,15 +152,12 @@
         <meta-data
             android:name="com.quickblox.messages.TYPE"
             android:value="GCM" />
-
         <meta-data
             android:name="com.quickblox.messages.SENDER_ID"
             android:value="@string/sender_id" />
-
         <meta-data
             android:name="com.quickblox.messages.QB_ENVIRONMENT"
             android:value="DEVELOPMENT" />
-
     </application>
 
 </manifest>
