@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "130074891036",
+    "firebase_url": "https://uebookapp.firebaseio.com",
+    "project_id": "uebookapp",
+    "storage_bucket": "uebookapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:130074891036:android:8374417e8ff6a7f3be60d9",
+        "android_client_info": {
+          "package_name": "com.ue.uebook"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "130074891036-f1fcg7gt8hek8r6tjo43pkp0fne9m0bc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAoImv7LAwIMr2uhbwKtyQZ9QGkmeQeZiY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "130074891036-f1fcg7gt8hek8r6tjo43pkp0fne9m0bc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
