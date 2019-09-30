@@ -335,6 +335,7 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
                             recommended_list.setAdapter(home_recommended_adapter);
                             home_recommended_adapter.setItemClickListener(Home_Fragment.this);
                             home_recommended_adapter.notifyDataSetChanged();
+                            recommended_list.setNestedScrollingEnabled(false);
                             recommemnded_view.setVisibility(View.VISIBLE);
                         }
                     });

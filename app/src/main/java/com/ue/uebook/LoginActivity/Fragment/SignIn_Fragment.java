@@ -1,5 +1,6 @@
 package com.ue.uebook.LoginActivity.Fragment;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -72,6 +73,7 @@ public class SignIn_Fragment extends Fragment implements View.OnClickListener {
     private EditText userName, userPassword;
     private CheckBox keepMeSign;
     private LinearLayout fragment;
+    private ProgressDialog dialog;
     private static final int UNAUTHORIZED = 401;
     public SignIn_Fragment() {
         // Required empty public constructor
@@ -112,6 +114,8 @@ public class SignIn_Fragment extends Fragment implements View.OnClickListener {
         View view = inflater.inflate(R.layout.fragment_sign_in_, container, false);
 
         login_btn = view.findViewById(R.id.login_btn);
+        dialog = new ProgressDialog(getContext());
+
         create_AccountBtn = view.findViewById(R.id.create_AccountBtn);
         userName = view.findViewById(R.id.user_login);
         userPassword = view.findViewById(R.id.password_login);
@@ -246,6 +250,8 @@ public class SignIn_Fragment extends Fragment implements View.OnClickListener {
 
     public void requestforLogin(final String user_name, final String password) {
         String url = null;
+        dialog.setMessage("please wait");
+        dialog.show();
         url = "http://dnddemo.com/ebooks/api/v1/userLogin";
         OkHttpClient client = new OkHttpClient();
         RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
@@ -261,6 +267,7 @@ public class SignIn_Fragment extends Fragment implements View.OnClickListener {
             @Override
             public void onFailure(okhttp3.Call call, IOException e) {
                 final String myResponse = e.getLocalizedMessage();
+                dialog.dismiss();
             }
 
             @Override
@@ -396,6 +403,7 @@ public class SignIn_Fragment extends Fragment implements View.OnClickListener {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onSuccess(Void aVoid, Bundle bundle) {
+                dialog.dismiss();
                 SharedPrefsHelper.getInstance().saveQbUser(user);
                 updateUserChatId(String.valueOf(user.getId()));
                 gotoHome();

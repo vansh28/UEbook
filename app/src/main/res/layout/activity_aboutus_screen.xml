@@ -81,6 +81,7 @@
                 android:layout_marginTop="@dimen/size_5"
                 android:text="@string/address"
                 android:lineSpacingExtra="@dimen/size_5"
+                android:paddingBottom="@dimen/size_50"
                 android:textSize="@dimen/size_15"></TextView>
         </LinearLayout>
     </ScrollView>

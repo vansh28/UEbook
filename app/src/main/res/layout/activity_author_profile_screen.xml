@@ -165,7 +165,7 @@
                 android:layout_weight="1"
                 android:textSize="@dimen/size_15"
                 android:textColor="@color/colorAccent"
-                android:text="Send Request"></Button>
+                android:text="Follow"></Button>
             <Button
                 android:id="@+id/email_btn"
                 android:layout_width="0dp"

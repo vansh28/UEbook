@@ -15,7 +15,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.ue.uebook.AuthorProfileActivity.AuthorList;
-import com.ue.uebook.AuthorProfileActivity.AuthorProfileScreen;
 import com.ue.uebook.AuthorProfileActivity.PendingRequestScreen;
 import com.ue.uebook.LoginActivity.LoginScreen;
 import com.ue.uebook.Quickblox_Chat.utils.SharedPrefsHelper;
@@ -102,8 +101,8 @@ public class UserMainFragment extends Fragment implements View.OnClickListener, 
         else {
             uploadBook_Container.setVisibility(View.VISIBLE);
             view_uploadBook.setVisibility(View.VISIBLE);
-            pendingRequest_Container.setVisibility(View.VISIBLE);
-            pendingRequest_view.setVisibility(View.VISIBLE);
+            pendingRequest_Container.setVisibility(View.GONE);
+            pendingRequest_view.setVisibility(View.GONE);
         }
         logOut = view.findViewById(R.id.logOut);
         logOut.setOnClickListener(this);
@@ -146,11 +145,12 @@ public class UserMainFragment extends Fragment implements View.OnClickListener, 
                 loadFragment(new UserProfile_Fragment());
             }
             else {
+                loadFragment(new UserProfile_Fragment());
 
-                Intent intent = new Intent(getContext(), AuthorProfileScreen.class);
-                intent.putExtra("id",1);
-                intent.putExtra("userID",new SessionManager(getActivity().getApplicationContext()).getUserID());
-                getContext().startActivity(intent);
+//                Intent intent = new Intent(getContext(), AuthorProfileScreen.class);
+//                intent.putExtra("id",1);
+//                intent.putExtra("userID",new SessionManager(getActivity().getApplicationContext()).getUserID());
+//                getContext().startActivity(intent);
             }
 
         } else if (view == companyInfo_Container) {

@@ -90,6 +90,16 @@ public class QbDialogHolder {
 
         return null;
     }
+    public QBChatDialog getPrivateDialogWithUser(String id) {
+        for (QBChatDialog chatDialog : dialogsMap.values()) {
+            if (QBDialogType.PRIVATE.equals(chatDialog.getType())
+                    && chatDialog.getOccupants().contains(Integer.valueOf(id))) {
+                return chatDialog;
+            }
+        }
+
+        return null;
+    }
 
     private Map<String, QBChatDialog> getSortedMap(Map<String, QBChatDialog> unsortedMap) {
         Map<String, QBChatDialog> sortedMap = new TreeMap(new LastMessageDateSentComparator(unsortedMap));

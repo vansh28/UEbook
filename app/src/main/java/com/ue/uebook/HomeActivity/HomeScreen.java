@@ -33,6 +33,7 @@ import com.ue.uebook.HomeActivity.HomeFragment.UserProfile_Fragment;
 import com.ue.uebook.HomeActivity.HomeFragment.User_Fragment;
 import com.ue.uebook.NotepadScreen;
 import com.ue.uebook.R;
+import com.ue.uebook.SessionManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,7 +59,7 @@ public class HomeScreen extends BaseActivity implements Home_Fragment.OnFragment
          recommendedList_book= new ArrayList<>();
          newBookList = new ArrayList<>();
         popularBook_List = new ArrayList<>();
-//        displayCurrentAddress();
+        displayCurrentAddress();
         toolbar = getSupportActionBar();
         intent = getIntent();
         int loginid= intent.getIntExtra("login",0);
@@ -121,42 +122,40 @@ public class HomeScreen extends BaseActivity implements Home_Fragment.OnFragment
 
     }
 
-//    private void displayCurrentAddress() {
-//        Thread t = new Thread() {
-//            @Override
-//            public void run() {
-//                try {
-//                    while (!isInterrupted()) {
-//                        if (updateLocationUI() != null && !(updateLocationUI().isEmpty())) {
-//                            Thread.sleep(1000);
-//                            runOnUiThread(new Runnable() {
-//                                @Override
-//                                public void run() {
-//                                    new SessionManager(getApplicationContext()).storeUserLocation(updateLocationUI());
-//                                }
-//                            });
-//                            break;
-//                        } else
-//                        Thread.sleep(1000);
-//                    }
-//                } catch (InterruptedException ignored) {
-//                }
-//            }
-//        };
-//        t.start();
-//    }
-
-
+    private void displayCurrentAddress() {
+        Thread t = new Thread() {
+            @Override
+            public void run() {
+                try {
+                    while (!isInterrupted()) {
+                        if (updateLocationUI() != null && !(updateLocationUI().isEmpty())) {
+                            Thread.sleep(1000);
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    new SessionManager(getApplicationContext()).storeUserLocation(updateLocationUI());
+                                }
+                            });
+                            break;
+                        } else
+                        Thread.sleep(1000);
+                    }
+                } catch (InterruptedException ignored) {
+                }
+            }
+        };
+        t.start();
+    }
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onStart() {
         super.onStart();
-//        if (!checkPermissions())
-//            PermissionRequest(34);
-//        else{
-//
-//        }
-////            getCurrentLocation();
+        if (!checkPermissions())
+            PermissionRequest(34);
+        else{
+
+        }
+            getCurrentLocation();
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

@@ -62,7 +62,7 @@ public class AuthorProfileScreen extends BaseActivity implements View.OnClickLis
         emailToAuthor = findViewById(R.id.email_btn);
         int id = intent.getIntExtra("id",0);
         if (id==1){
-            editt_profile_view.setVisibility(View.VISIBLE);
+            editt_profile_view.setVisibility(View.GONE);
             sendRequest_view.setVisibility(View.GONE);
         }
         else {

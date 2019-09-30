@@ -11,7 +11,6 @@ import com.ue.uebook.Quickblox_Chat.utils.ui.activity.SplashActivity;
 import com.ue.uebook.R;
 
 import java.util.Map;
-
 public class PushListenerService extends QBFcmPushListenerService {
     private static final String TAG = PushListenerService.class.getSimpleName();
     private static final int NOTIFICATION_ID = 1;
@@ -19,7 +18,7 @@ public class PushListenerService extends QBFcmPushListenerService {
     protected void showNotification(String message) {
         NotificationUtils.showNotification(App.getInstance(), SplashActivity.class,
                 App.getInstance().getString(R.string.notification_title), message,
-                R.mipmap.ic_launcher, NOTIFICATION_ID);
+                R.drawable.applogo, NOTIFICATION_ID);
     }
 
     @Override

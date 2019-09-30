@@ -361,7 +361,7 @@ public class SignUp_Fragment extends Fragment implements View.OnClickListener {
 
             @Override
             public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
-                dialog.dismiss();
+
                 String myResponse = response.body().string();
 
                 Gson gson = new GsonBuilder().create();
@@ -444,6 +444,7 @@ public class SignUp_Fragment extends Fragment implements View.OnClickListener {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onSuccess(Void aVoid, Bundle bundle) {
+                dialog.dismiss();
                 SharedPrefsHelper.getInstance().saveQbUser(user);
                 updateUserChatId(String.valueOf(user.getId()));
                 gotoHome();
@@ -451,7 +452,7 @@ public class SignUp_Fragment extends Fragment implements View.OnClickListener {
 
             @Override
             public void onError(QBResponseException e) {
-
+                dialog.dismiss();
             }
         });
     }

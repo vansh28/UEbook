@@ -410,7 +410,6 @@ public class DialogsActivity extends BaseActivity implements DialogsManager.Mana
                         ArrayList<QBChatDialog> dialogs = new ArrayList<>();
                         dialogs.add(dialog);
                         new DialogJoinerAsyncTask(DialogsActivity.this, dialogs, false).execute();
-
                         ChatActivity.startForResult(DialogsActivity.this, REQUEST_DIALOG_ID_FOR_UPDATE, dialog, true);
                         ProgressDialogFragment.hide(getSupportFragmentManager());
                     }
@@ -621,4 +620,5 @@ public class DialogsActivity extends BaseActivity implements DialogsManager.Mana
             ToastUtils.shortToast("Error: " + e.getMessage());
         }
     }
+
 }

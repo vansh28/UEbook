@@ -876,4 +876,6 @@ public class ChatActivity extends BaseActivity implements OnImagePickedListener,
             loadChatHistory();
         }
     }
+
+
 }

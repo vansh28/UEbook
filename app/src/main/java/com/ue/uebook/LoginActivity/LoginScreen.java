@@ -81,14 +81,14 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
     private TextView have_Account_btn, forgotpasswordBtn;
     private Boolean issignup = true;
     private NetworkAPI networkAPI;
-    private ProgressDialog dialog;
+    private ProgressDialog pdialog;
     private static final int UNAUTHORIZED = 401;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_screen);
         networkAPI = NetworkService.getAPI().create(NetworkAPI.class);
-        dialog= new ProgressDialog(this);
+        pdialog= new ProgressDialog(this);
         signIn_btn = findViewById(R.id.signIn_btn);
         signUp_btn = findViewById(R.id.signUp_btn);
         google_login_btn = findViewById(R.id.google_login_btn);
@@ -451,21 +451,21 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
 
 
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void registrationUser(final String full_name, String password, String email, String publisher_type, String gender, String country) {
         ApiRequest request = new ApiRequest();
-        dialog.setMessage("please wait");
-        dialog.show();
+       showLoadingIndicator();
         request.requestforRegistration(full_name, password, email, publisher_type, gender,country,"" ,new okhttp3.Callback() {
             @Override
             public void onFailure(okhttp3.Call call, IOException e) {
                 Log.e("error",e.getLocalizedMessage());
-                dialog.dismiss();
+                hideLoadingIndicator();
 
             }
 
             @Override
             public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
-                dialog.dismiss();
+
                 String myResponse = response.body().string();
 
                 Gson gson = new GsonBuilder().create();
@@ -554,10 +554,11 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
             @Override
             public void onSuccess(Void aVoid, Bundle bundle) {
                 SharedPrefsHelper.getInstance().saveQbUser(user);
+                hideLoadingIndicator();
                 updateUserChatId(String.valueOf(user.getId()));
                 gotoHome();
                 finish();
-                hideLoadingIndicator();
+
             }
 
             @Override
@@ -574,7 +575,6 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onSuccess(QBUser user, Bundle bundle) {
-                hideLoadingIndicator();
                 signIn(newUser);
             }
 
@@ -597,6 +597,7 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
+                hideLoadingIndicator();
                 String myResponse = response.body().string();
 
 

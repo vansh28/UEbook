@@ -1,9 +1,11 @@
 package com.ue.uebook.Quickblox_Chat.utils.ui.activity;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.text.TextUtils;
@@ -16,8 +18,11 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.quickblox.chat.model.QBChatDialog;
 import com.quickblox.core.QBEntityCallback;
 import com.quickblox.core.exception.QBResponseException;
@@ -25,20 +30,26 @@ import com.quickblox.core.request.GenericQueryRule;
 import com.quickblox.core.request.QBPagedRequestBuilder;
 import com.quickblox.users.QBUsers;
 import com.quickblox.users.model.QBUser;
+import com.ue.uebook.Data.ApiRequest;
 import com.ue.uebook.Quickblox_Chat.utils.ToastUtils;
 import com.ue.uebook.Quickblox_Chat.utils.chat.ChatHelper;
+import com.ue.uebook.Quickblox_Chat.utils.qb.QbDialogHolder;
+import com.ue.uebook.Quickblox_Chat.utils.ui.FriendListPojo;
 import com.ue.uebook.Quickblox_Chat.utils.ui.adapter.CheckboxUsersAdapter;
+import com.ue.uebook.Quickblox_Chat.utils.ui.adapter.FriendlistAdapter;
 import com.ue.uebook.R;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-public class SelectUsersActivity extends BaseActivity {
+public class SelectUsersActivity extends BaseActivity implements FriendlistAdapter.ItemClick {
     public static final String EXTRA_QB_USERS = "qb_users";
     public static final String EXTRA_CHAT_NAME = "chat_name";
     public static final int MINIMUM_CHAT_OCCUPANTS_SIZE = 2;
     public static final int PRIVATE_CHAT_OCCUPANTS_SIZE = 2;
+    private static final int REQUEST_DIALOG_ID_FOR_UPDATE = 165;
 
     private static final int PER_PAGE_SIZE = 100;
 
@@ -56,6 +67,7 @@ public class SelectUsersActivity extends BaseActivity {
     private long lastClickTime = 0l;
     private QBChatDialog qbChatDialog;
     private String chatName;
+    private FriendlistAdapter friendlistAdapter;
 
     public static void start(Context context) {
         Intent intent = new Intent(context, SelectUsersActivity.class);
@@ -81,30 +93,33 @@ public class SelectUsersActivity extends BaseActivity {
         activity.startActivityForResult(intent, code);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_users);
+        initUi();
         qbChatDialog = (QBChatDialog) getIntent().getSerializableExtra(EXTRA_QB_DIALOG);
 
-        initUi();
+
         loadUsersFromQb();
     }
 
+    @SuppressLint("WrongViewCast")
     private void initUi() {
         progressBar = findViewById(R.id.progress_select_users);
         usersListView = findViewById(R.id.list_select_users);
 
+
+//
         TextView listHeader = (TextView) LayoutInflater.from(this)
                 .inflate(R.layout.include_list_hint_header, usersListView, false);
-        listHeader.setText(R.string.select_users_list_hint);
-        usersListView.addHeaderView(listHeader, null, false);
 
-//        if (isEditingChat()) {
-//            setActionBarTitle(getString(R.string.select_users_edit_chat));
-//        } else {
-//            setActionBarTitle(getString(R.string.select_users_create_chat));
-//        }
+        if (isEditingChat()) {
+            setActionBarTitle(getString(R.string.select_users_edit_chat));
+        } else {
+            setActionBarTitle(getString(R.string.select_users_create_chat));
+        }
 //        actionBar.setDisplayHomeAsUpEnabled(true);
     }
 
@@ -280,5 +295,45 @@ public class SelectUsersActivity extends BaseActivity {
                 progressBar.setVisibility(View.GONE);
             }
         });
+    }
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private void getAllFriends(String userid) {
+        ApiRequest request = new ApiRequest();
+//        showLoadingIndicator();
+        request.requestforgetAllFriendList(userid, new okhttp3.Callback() {
+            @Override
+            public void onFailure(okhttp3.Call call, IOException e) {
+//                hideLoadingIndicator();
+            }
+
+            @Override
+            public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
+//                hideLoadingIndicator();
+                String myResponse = response.body().string();
+                Gson gson = new GsonBuilder().create();
+                final FriendListPojo form = gson.fromJson(myResponse, FriendListPojo.class);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        progressBar.setVisibility(View.GONE);
+
+//                        friendlistAdapter= new FriendlistAdapter(SelectUsersActivity.this,form.getData());
+//                        usersListView.setAdapter(friendlistAdapter);
+//                        friendlistAdapter.setItemClickListener(SelectUsersActivity.this);
+
+
+
+                    }
+                });
+
+            }
+
+        });
+    }
+
+    @Override
+    public void onuserclick(int position, String chatid) {
+        QBChatDialog existingPrivateDialog = QbDialogHolder.getInstance().getPrivateDialogWithUser(chatid);
+        ChatActivity.startForResult(SelectUsersActivity.this, REQUEST_DIALOG_ID_FOR_UPDATE, existingPrivateDialog);
     }
 }

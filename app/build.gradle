@@ -109,7 +109,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-messaging:11.8.0'
     implementation 'com.google.firebase:firebase-core:11.8.0'
 
-
+    implementation 'com.google.firebase:firebase-firestore:17.0.2'
     implementation "com.google.android.material:material:$rootProject.materialVersion"
     implementation "androidx.fragment:fragment:$rootProject.fragmentAndroidXVersion"
     implementation "androidx.lifecycle:lifecycle-viewmodel:$rootProject.lifecycleViewmodelAndroidXVersion"

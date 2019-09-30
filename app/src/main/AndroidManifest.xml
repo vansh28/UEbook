@@ -116,6 +116,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".Quickblox_Chat.utils.ui.activity.SelectUsersActivity"
+            android:theme="@style/AppThemenew"
             android:screenOrientation="portrait" />
         <activity
             android:name=".Quickblox_Chat.utils.ui.activity.DialogsActivity"
