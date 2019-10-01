@@ -45,6 +45,7 @@ public class HomeScreen extends BaseActivity implements Home_Fragment.OnFragment
     private FloatingActionButton addnotes_fab;
     private CoordinatorLayout container;
     private Intent intent;
+
     private BottomSheetDialog mBottomSheetDialog;
     @SuppressLint("RestrictedApi")
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)

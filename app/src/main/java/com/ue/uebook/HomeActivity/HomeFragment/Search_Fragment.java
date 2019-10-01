@@ -1,10 +1,12 @@
 package com.ue.uebook.HomeActivity.HomeFragment;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.speech.RecognizerIntent;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -27,15 +29,22 @@ import com.ue.uebook.Data.ApiRequest;
 import com.ue.uebook.DeatailActivity.Book_Detail_Screen;
 import com.ue.uebook.HomeActivity.HomeFragment.Adapter.Search_History_Adapter;
 import com.ue.uebook.HomeActivity.HomeFragment.Adapter.User_Search_List;
+import com.ue.uebook.HomeActivity.HomeFragment.Pojo.HomeListing;
 import com.ue.uebook.HomeActivity.HomeFragment.Pojo.HomeListingResponse;
 import com.ue.uebook.R;
+import com.ue.uebook.SessionManager;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
+
+import static android.app.Activity.RESULT_OK;
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -57,10 +66,12 @@ public class Search_Fragment extends Fragment implements View.OnClickListener, S
     private RecyclerView search_history_list,search_list;
     private Search_History_Adapter search_history_adapter;
     private EditText edittext_search;
-    private ImageView bookimage_search;
+    private ImageView bookimage_search ,audio_search_btn;
+    private List<HomeListing>data;
     private User_Search_List user_search_list;
     private OnFragmentInteractionListener mListener;
     private List<String> list;
+    private final int REQ_CODE_SPEECH_INPUT = 100;
     public Search_Fragment() {
         // Required empty public constructor
     }
@@ -86,6 +97,7 @@ public class Search_Fragment extends Fragment implements View.OnClickListener, S
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        data= new ArrayList<>();
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -101,6 +113,8 @@ public class Search_Fragment extends Fragment implements View.OnClickListener, S
         search_list=view.findViewById(R.id.search_list);
 //        Log.d("size", String.valueOf(new SessionManager(getActivity().getApplicationContext()).getArrayList("list").size()));
         edittext_search=view.findViewById(R.id.edittext_search);
+        audio_search_btn=view.findViewById(R.id.audio_search_btn);
+        audio_search_btn.setOnClickListener(this);
         bookimage_search=view.findViewById(R.id.bookimage_search);
         edittext_search.requestFocus();
         edittext_search.setOnClickListener(this);
@@ -110,15 +124,14 @@ public class Search_Fragment extends Fragment implements View.OnClickListener, S
         LinearLayoutManager linearLayoutManagerPopularList = new LinearLayoutManager(getActivity());
         linearLayoutManagerPopularList.setOrientation(LinearLayoutManager.VERTICAL);
         search_history_list.setLayoutManager(linearLayoutManagerPopularList);
-//        int size=new SessionManager(getActivity().getApplicationContext()).getArrayList("list").size();
-//        if (size>0){
+        if (new SessionManager(getActivity().getApplicationContext()).getArrayList("list")!=null){
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
             linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
             search_list.setLayoutManager(linearLayoutManager);
-            user_search_list = new User_Search_List();
+            user_search_list = new User_Search_List(new SessionManager(getActivity()).getArrayList("list"));
             search_list.setAdapter(user_search_list);
         user_search_list.setItemClickListener(this);
-//        }
+        }
 
 
         edittext_search.addTextChangedListener(new TextWatcher() {
@@ -139,6 +152,14 @@ public class Search_Fragment extends Fragment implements View.OnClickListener, S
              }
              if (charSequence.length()==0){
                  bookimage_search.setVisibility(View.GONE);
+                 if (new SessionManager(getActivity().getApplicationContext()).getArrayList("list")!=null){
+                     LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+                     linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+                     search_list.setLayoutManager(linearLayoutManager);
+                     user_search_list = new User_Search_List(new SessionManager(getActivity()).getArrayList("list"));
+                     search_list.setAdapter(user_search_list);
+                     user_search_list.setItemClickListener(Search_Fragment.this);
+                 }
                  search_list.setVisibility(View.VISIBLE);
              }
              else {
@@ -181,6 +202,11 @@ public class Search_Fragment extends Fragment implements View.OnClickListener, S
 
     @Override
     public void onClick(View view) {
+        if (view==audio_search_btn)
+        {
+       promptSpeechInput();
+
+        }
 
        }
 
@@ -189,8 +215,23 @@ public class Search_Fragment extends Fragment implements View.OnClickListener, S
         Intent intent = new Intent(getActivity(), Book_Detail_Screen.class);
         intent.putExtra("book_id", book_id);
         intent.putExtra("position",position);
-//        list.add("the good son");
-//        new SessionManager(getActivity().getApplicationContext()).saveArrayList(list,"list");
+        List<String>list =new ArrayList<>();
+        if (new SessionManager(getActivity().getApplicationContext()).getArrayList("list")==null){
+            list.add(data.get(position).getBook_title());
+        }
+        else {
+            if (new SessionManager(getActivity().getApplicationContext()).getArrayList("list").contains(data.get(position).getBook_title())){
+                list.addAll(new SessionManager(getActivity().getApplicationContext()).getArrayList("list"));
+
+            }
+            else {
+                list.addAll(new SessionManager(getActivity().getApplicationContext()).getArrayList("list"));
+                list.add(data.get(position).getBook_title());
+            }
+
+        }
+
+        new SessionManager(getActivity().getApplicationContext()).saveArrayList(list,"list");
         getActivity().startActivity(intent);
     }
 
@@ -236,6 +277,7 @@ public class Search_Fragment extends Fragment implements View.OnClickListener, S
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+                            data=form.getData();
                             search_history_adapter = new Search_History_Adapter((AppCompatActivity) getActivity(),form.getData());
                             search_history_list.setAdapter(search_history_adapter);
                             search_history_adapter.setItemClickListener(Search_Fragment.this);
@@ -246,7 +288,37 @@ public class Search_Fragment extends Fragment implements View.OnClickListener, S
             }
 
         });
-
-
     }
+    private void promptSpeechInput() {
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+        intent.putExtra(RecognizerIntent.EXTRA_PROMPT,
+                getString(R.string.speech_prompt));
+        try {
+            startActivityForResult(intent, REQ_CODE_SPEECH_INPUT);
+        } catch (ActivityNotFoundException a) {
+            Toast.makeText(getApplicationContext(),
+                    getString(R.string.speech_not_supported),
+                    Toast.LENGTH_SHORT).show();
+        }
+    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case REQ_CODE_SPEECH_INPUT: {
+                if (resultCode == RESULT_OK && null != data) {
+                    ArrayList<String> result = data
+                            .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+                    edittext_search.setText(result.get(0));
+                    edittext_search.setSelection(edittext_search.getText().length());
+                }
+                break;
+            }
+
+        }
+    }
+
 }

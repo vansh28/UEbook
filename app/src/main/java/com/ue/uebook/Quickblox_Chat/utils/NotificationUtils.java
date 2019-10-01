@@ -11,18 +11,14 @@ import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
-
 import androidx.annotation.DrawableRes;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 
 import com.ue.uebook.Quickblox_Chat.utils.ui.activity.SplashActivity;
-
-
 public class NotificationUtils {
     private static final String CHANNEL_ONE_ID = "com.quickblox.samples.ONE";// The id of the channel.
     private static final String CHANNEL_ONE_NAME = "Channel One";
-
     public static void showNotification(Context context, Class<SplashActivity> activityClass,
                                         String title, String message, @DrawableRes int icon,
                                         int notificationId) {

@@ -58,11 +58,11 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
     private Review_List_Adapter review_list_adapter;
     private ImageButton bookmark_btn;
     private Boolean isBookmark_book = false;
-    private Button readFull_Book_btn ,comment_Submit;
+    private Button  comment_Submit;
     private List<BookDetails>bookDetail;
     private ProgressDialog dialog;
     private ImageView book_cover;
-    private TextView bookTitle,bookDesc,bookAuthor,averageRating,topreviewView,book_uploadBy;
+    private TextView bookTitle,bookDesc,bookAuthor,averageRating,topreviewView,book_uploadBy ,book_asignment ,readFull_Book_btn;
     private Intent intent;
     private String book_id,videourl,docurl,audiourl;
     private int position;
@@ -84,6 +84,8 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
         comment_Submit=findViewById(R.id.submit_comment);
         commnetRating=findViewById(R.id.myRatingBar_detail);
         user_comment=findViewById(R.id.comment_edit_text);
+        book_asignment=findViewById(R.id.book_asignment);
+        book_asignment.setOnClickListener(this);
         bookDetail= new ArrayList<>();
         dialog = new ProgressDialog(this);
         intent = getIntent();
@@ -110,6 +112,9 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
         bookmark_btn.setOnClickListener(this);
         back_btn_Deatils.setOnClickListener(this);
         review_List = findViewById(R.id.review_List);
+        SpannableString content = new SpannableString("Click here for Book Assignment");
+        content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
+        book_asignment.setText(content);
         LinearLayoutManager linearLayoutManagerList = new LinearLayoutManager(this);
         linearLayoutManagerList.setOrientation(LinearLayoutManager.VERTICAL);
         review_List.setLayoutManager(linearLayoutManagerList);
@@ -204,6 +209,11 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
                 startActivity(intent);
             }
 
+
+        }
+        else if (view==book_asignment){
+            Intent intent = new Intent(this, Book_Assignment.class);
+            startActivity(intent);
 
         }
 

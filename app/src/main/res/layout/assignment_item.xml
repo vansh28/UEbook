@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:src="@drawable/notepad"
+        android:layout_margin="@dimen/size_10"
+        android:layout_height="wrap_content">
+    </ImageView>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/size_8"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/question"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/size_15"
+            android:textColor="@color/black"
+            android:layout_marginTop="@dimen/size_10"
+            android:text="Whichis the best app for the books"></TextView>
+        <TextView
+            android:id="@+id/answer_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/size_15"
+            android:textColor="@color/colorAccent"
+            android:layout_marginTop="@dimen/size_5"
+            android:text="Answer"></TextView>
+    </LinearLayout>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/answer_view"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:layout_marginTop="@dimen/size_8">
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/email_text_input"
+            style="@style/TextInputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Answer"
+            app:errorEnabled="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/answer_edit"
+                android:layout_width="match_parent"
+                android:gravity="start"
+                android:minHeight="@dimen/size_100"
+                android:layout_height="wrap_content" />
+        </com.google.android.material.textfield.TextInputLayout>
+        <Button
+            android:id="@+id/submit_answer"
+            android:layout_width="@dimen/size_150"
+            android:layout_height="@dimen/size_40"
+            android:text="Submit"
+            android:textAllCaps="false"
+            android:layout_marginLeft="@dimen/size_8"
+            android:layout_marginRight="@dimen/size_8"
+            android:layout_marginBottom="@dimen/size_10"
+            android:background="@drawable/createacount_bg"
+            android:textColor="@color/white">
+        </Button>
+
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginTop="@dimen/size_8"
+        android:background="@drawable/dottedline"></View>
+</LinearLayout>

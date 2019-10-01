@@ -153,13 +153,11 @@ public class DialogsActivity extends BaseActivity implements DialogsManager.Mana
             }
         }
     }
-
     @Override
     protected void onPause() {
         super.onPause();
         LocalBroadcastManager.getInstance(this).unregisterReceiver(pushBroadcastReceiver);
     }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();

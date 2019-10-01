@@ -47,12 +47,8 @@ public class Search_History_Adapter   extends RecyclerView.Adapter<Search_Histor
     @NonNull
     @Override
     public Search_History_Adapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-// infalte the item Layout
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.popularlist_home_item, parent, false);
-// set the view's size, margins, paddings and layout parameters
         Search_History_Adapter.MyViewHolder vh = new Search_History_Adapter.MyViewHolder(v); // pass the view to View Holder
-
-
         return vh;
     }
 
@@ -86,18 +82,14 @@ public class Search_History_Adapter   extends RecyclerView.Adapter<Search_Histor
         matcher.find();
         return matcher.group();
     }
-
     @Override
     public int getItemCount() {
         return dataList.size();
     }
-
     public class MyViewHolder extends RecyclerView.ViewHolder {
-
         LinearLayout book_container;
         ImageView bookimage;
         TextView bookname,authorName,bookDesc;
-
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             book_container=itemView.findViewById(R.id.container);
@@ -107,7 +99,6 @@ public class Search_History_Adapter   extends RecyclerView.Adapter<Search_Histor
             bookDesc=itemView.findViewById(R.id.shortDesc);
         }
     }
-
     public void filter(String charText) {
         charText = charText.toLowerCase(Locale.getDefault());
         dataList.clear();

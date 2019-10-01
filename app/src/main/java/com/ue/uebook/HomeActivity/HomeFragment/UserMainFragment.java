@@ -9,15 +9,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.quickblox.auth.session.QBSessionManager;
+import com.quickblox.core.QBEntityCallback;
+import com.quickblox.core.exception.QBResponseException;
+import com.quickblox.users.model.QBUser;
 import com.ue.uebook.AuthorProfileActivity.AuthorList;
 import com.ue.uebook.AuthorProfileActivity.PendingRequestScreen;
 import com.ue.uebook.LoginActivity.LoginScreen;
 import com.ue.uebook.Quickblox_Chat.utils.SharedPrefsHelper;
+import com.ue.uebook.Quickblox_Chat.utils.chat.ChatHelper;
 import com.ue.uebook.Quickblox_Chat.utils.ui.activity.DialogsActivity;
 import com.ue.uebook.R;
 import com.ue.uebook.SessionManager;
@@ -165,8 +171,10 @@ public class UserMainFragment extends Fragment implements View.OnClickListener, 
 //            startActivity(intent);
         }
         else if (view==chat_Container){
-            Intent intent = new Intent(getContext(), DialogsActivity.class);
-            getContext().startActivity(intent);
+
+            if (SharedPrefsHelper.getInstance().hasQbUser()) {
+                restoreChatSession();
+            }
         }
         else if (view==author_Container){
             Intent intent = new Intent(getContext(), AuthorList.class);
@@ -225,6 +233,65 @@ public class UserMainFragment extends Fragment implements View.OnClickListener, 
                 });
         AlertDialog alert = builder.create();
         alert.show();
+    }
+    private QBUser getUserFromSession() {
+        QBUser user = SharedPrefsHelper.getInstance().getQbUser();
+        QBSessionManager qbSessionManager = QBSessionManager.getInstance();
+        if (qbSessionManager.getSessionParameters() == null) {
+            ChatHelper.getInstance().destroy();
+            return null;
+        }
+        Integer userId = qbSessionManager.getSessionParameters().getUserId();
+        user.setId(userId);
+        return user;
+    }
+
+    private void restoreChatSession() {
+        if (ChatHelper.getInstance().isLogged()) {
+            Intent intent = new Intent(getContext(), DialogsActivity.class);
+            getContext().startActivity(intent);
+
+        } else {
+            QBUser currentUser = getUserFromSession();
+            if (currentUser == null) {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(getContext(),"Network Error please try Again",Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+            } else {
+                loginToChat(currentUser);
+            }
+        }
+    }
+
+    private void loginToChat(final QBUser user) {
+//        com.quickblox.sample.chat.java.ui.dialog.ProgressDialogFragment.show(getSupportFragmentManager(), R.string.dlg_restoring_chat_session);
+
+        ChatHelper.getInstance().loginToChat(user, new QBEntityCallback<Void>() {
+            @Override
+            public void onSuccess(Void result, Bundle bundle) {
+
+//                com.quickblox.sample.chat.java.ui.dialog.ProgressDialogFragment.hide(getSupportFragmentManager());
+
+
+            }
+
+            @Override
+            public void onError(QBResponseException e) {
+                if (e.getMessage().equals("You have already logged in chat")) {
+                    loginToChat(user);
+                } else {
+                    Toast.makeText(getContext(),"Network Error please try Again",Toast.LENGTH_SHORT).show();
+
+//                    com.quickblox.sample.chat.java.ui.dialog.ProgressDialogFragment.hide(getSupportFragmentManager());
+                    loginToChat(user);
+
+                }
+            }
+        });
     }
 
 }

@@ -20,7 +20,6 @@ public class BookmarkPojo {
     public String getBookmarkStatus() {
         return bookmarkStatus;
     }
-
     public void setBookmarkStatus(String bookmarkStatus) {
         this.bookmarkStatus = bookmarkStatus;
     }

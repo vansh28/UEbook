@@ -31,7 +31,8 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".AuthorProfileActivity.PendingRequestScreen"></activity>
+        <activity android:name=".DeatailActivity.Book_Assignment"></activity>
+        <activity android:name=".AuthorProfileActivity.PendingRequestScreen" />
         <activity android:name=".Quickblox_Chat.utils.ui.activity.FriendListScreen" />
         <activity android:name=".AuthorProfileActivity.AuthorList" />
         <activity android:name=".AuthorProfileActivity.AuthorProfileScreen" />
@@ -70,7 +71,6 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
-
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
@@ -116,8 +116,8 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".Quickblox_Chat.utils.ui.activity.SelectUsersActivity"
-            android:theme="@style/AppThemenew"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemenew" />
         <activity
             android:name=".Quickblox_Chat.utils.ui.activity.DialogsActivity"
             android:screenOrientation="portrait"

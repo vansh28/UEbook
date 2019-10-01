@@ -7,32 +7,51 @@
     android:orientation="vertical"
     tools:context=".HomeActivity.HomeFragment.Search_Fragment">
 
-    <EditText
-        android:id="@+id/edittext_search"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/size_50"
-        android:layout_marginLeft="22dp"
-        android:layout_marginTop="@dimen/size_5"
-        android:layout_marginRight="@dimen/size_25"
+        android:orientation="horizontal"
+        android:id="@+id/view"
+        android:layout_margin="@dimen/size_10"
         android:background="@drawable/searchbg"
-        android:drawableLeft="@drawable/search"
-        android:drawablePadding="@dimen/size_15"
-        android:hint="Enter the Name of Book or Author "
-        android:maxLines="1"
-        android:gravity="center_vertical"
-        android:paddingLeft="@dimen/size_10"
-        android:textColor="@color/black"
-        android:focusable="true"
-        android:textSize="@dimen/size_15"
+        android:layout_height="@dimen/size_50">
 
-        android:textColorHint="#818080" />
+        <EditText
+            android:id="@+id/edittext_search"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/size_50"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="@dimen/size_25"
+            android:drawableLeft="@drawable/search"
+            android:drawablePadding="@dimen/size_10"
+            android:background="@android:color/transparent"
+            android:hint="Enter the Name of Book or Author "
+            android:maxLines="1"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/size_10"
+            android:textColor="@color/black"
+            android:focusable="true"
+            android:textSize="@dimen/size_15"
+            android:textColorHint="#818080" />
+        <ImageView
+            android:id="@+id/audio_search_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/size_8"
+            android:layout_toRightOf="@id/edittext_search"
+            android:layout_marginRight="@dimen/size_10"
+            android:layout_marginTop="@dimen/size_8"
+            android:src="@drawable/audio"></ImageView>
+
+    </LinearLayout>
+
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/search_history_list"
         android:layout_width="match_parent"
         android:layout_margin="@dimen/size_5"
         android:visibility="gone"
-        android:layout_below="@id/edittext_search"
+        android:layout_below="@id/view"
         android:layout_height="match_parent">
     </androidx.recyclerview.widget.RecyclerView>
     <ImageView
@@ -47,7 +66,7 @@
         android:layout_width="match_parent"
         android:layout_margin="@dimen/size_5"
         android:visibility="visible"
-        android:layout_below="@id/edittext_search"
+        android:layout_below="@id/view"
         android:layout_height="match_parent">
     </androidx.recyclerview.widget.RecyclerView>
 

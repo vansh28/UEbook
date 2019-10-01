@@ -16,6 +16,7 @@
             android:scaleType="fitCenter"
             android:layout_marginLeft="@dimen/size_5"
             android:clickable="true"
+            android:visibility="gone"
             android:layout_centerVertical="true"
             android:layout_height="@dimen/size_20">
         </ImageView>
@@ -23,7 +24,6 @@
             android:id="@+id/search_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-           android:text="The Good Son"
             android:layout_toRightOf="@+id/removeBtn"
             android:layout_marginLeft="@dimen/size_20"
             android:layout_centerVertical="true"

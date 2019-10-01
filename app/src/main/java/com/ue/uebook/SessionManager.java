@@ -89,4 +89,5 @@ public class SessionManager {
         Type type = new TypeToken<List<String>>() {}.getType();
         return gson.fromJson(json, type);
     }
+
 }

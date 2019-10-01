@@ -22,7 +22,8 @@ public class User_Search_List  extends RecyclerView.Adapter<User_Search_List.MyV
     private List<String> dataList;
     private List<HomeListing> arraylist=null;
     private AppCompatActivity mctx;
-    public User_Search_List() {
+    public User_Search_List(List<String> list) {
+        this.dataList=list;
 
     }
     public interface SearchListItemClick {
@@ -51,7 +52,7 @@ public class User_Search_List  extends RecyclerView.Adapter<User_Search_List.MyV
             @Override
             public void onClick(View view) {
                 if (searchListItemClick != null) {
-                    searchListItemClick.onItemClick("the good son");
+                    searchListItemClick.onItemClick(dataList.get(position));
                 }
             }
         });
@@ -63,12 +64,12 @@ public class User_Search_List  extends RecyclerView.Adapter<User_Search_List.MyV
                 }
             }
         });
-//        holder.search_title.setText(dataList.get(position));
+        holder.search_title.setText(dataList.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return 1;
+        return dataList.size();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
