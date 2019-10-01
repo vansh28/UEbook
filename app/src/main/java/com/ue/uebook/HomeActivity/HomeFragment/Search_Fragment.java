@@ -243,9 +243,7 @@ public class Search_Fragment extends Fragment implements View.OnClickListener, S
         search_history_list.setVisibility(View.VISIBLE);
         search_history_adapter.filter(book_id);
         search_list.setVisibility(View.GONE);
-
     }
-
     @Override
     public void ondeleteItemClick(String position) {
         getActivity().runOnUiThread(new Runnable() {
@@ -255,7 +253,6 @@ public class Search_Fragment extends Fragment implements View.OnClickListener, S
             }
         });
     }
-
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
@@ -267,7 +264,6 @@ public class Search_Fragment extends Fragment implements View.OnClickListener, S
             public void onFailure(Call call, IOException e) {
                 Log.e("error", e.getLocalizedMessage());
             }
-
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 String myresponse = response.body().string();
