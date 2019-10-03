@@ -116,7 +116,7 @@ dependencies {
     implementation "androidx.core:core-ktx:$rootProject.coreKtxVersion"
 
     implementation "com.github.johnkil.android-robototextview:robototextview:$rootProject.robotoTextViewVersion"
-    implementation "com.github.bumptech.glide:glide:3.6.1"
+    implementation 'com.github.bumptech.glide:glide:3.8.0'
     implementation "de.hdodenhof:circleimageview:$rootProject.circleImageVersion"
 
     implementation "com.timehop.stickyheadersrecyclerview:library:$rootProject.stickylistheadersVersion@aar"

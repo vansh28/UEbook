@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Dictionary.DictionaryScreen">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/size_50"
+        android:background="@color/colorPrimary">
+        <ImageButton
+            android:id="@+id/back_dictionary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/size_10"
+            android:background="@android:color/transparent"
+            android:padding="@dimen/size_10"
+            android:src="@drawable/backbtn">
+        </ImageButton>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Dictionary"
+            android:textColor="@color/white"
+            android:textSize="@dimen/size_18"></TextView>
+    </RelativeLayout>
+
+
+    <EditText
+        android:id="@+id/word"
+        android:layout_width="match_parent"
+        android:hint="Enter your Word"
+        android:layout_margin="@dimen/size_10"
+        android:layout_height="wrap_content"></EditText>
+    <Button
+        android:id="@+id/searchbtn"
+        android:layout_width="match_parent"
+        android:text="Search"
+        android:background="#d3d3d3"
+        android:layout_height="wrap_content"></Button>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/output"
+        android:textColor="@color/black"
+        android:layout_margin="@dimen/size_10"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></TextView>
+    </ScrollView>
+</LinearLayout>

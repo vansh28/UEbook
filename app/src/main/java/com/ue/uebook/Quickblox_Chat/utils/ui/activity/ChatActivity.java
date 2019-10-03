@@ -34,7 +34,6 @@ import com.quickblox.core.QBEntityCallback;
 import com.quickblox.core.exception.QBResponseException;
 import com.quickblox.core.request.GenericQueryRule;
 import com.quickblox.core.request.QBPagedRequestBuilder;
-import com.quickblox.sample.chat.java.ui.dialog.ProgressDialogFragment;
 import com.quickblox.users.QBUsers;
 import com.quickblox.users.model.QBUser;
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration;
@@ -53,6 +52,7 @@ import com.ue.uebook.Quickblox_Chat.utils.qb.VerboseQbChatConnectionListener;
 import com.ue.uebook.Quickblox_Chat.utils.ui.adapter.AttachmentPreviewAdapter;
 import com.ue.uebook.Quickblox_Chat.utils.ui.adapter.ChatAdapter;
 import com.ue.uebook.Quickblox_Chat.utils.ui.adapter.listeners.AttachClickListener;
+import com.ue.uebook.Quickblox_Chat.utils.ui.dialog.ProgressDialogFragment;
 import com.ue.uebook.Quickblox_Chat.utils.ui.widget.AttachmentPreviewAdapterView;
 import com.ue.uebook.R;
 

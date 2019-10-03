@@ -31,7 +31,8 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".DeatailActivity.Book_Assignment"></activity>
+        <activity android:name=".Dictionary.DictionaryScreen"></activity>
+        <activity android:name=".DeatailActivity.Book_Assignment" />
         <activity android:name=".AuthorProfileActivity.PendingRequestScreen" />
         <activity android:name=".Quickblox_Chat.utils.ui.activity.FriendListScreen" />
         <activity android:name=".AuthorProfileActivity.AuthorList" />
@@ -71,6 +72,7 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
@@ -134,7 +136,8 @@
         <activity
             android:name=".Quickblox_Chat.utils.ui.activity.AttachmentImageActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppThemenew"
+            />
         <activity
             android:name=".Quickblox_Chat.utils.ui.activity.AppInfoActivity"
             android:screenOrientation="portrait" />
@@ -149,7 +152,6 @@
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
-
         <meta-data
             android:name="com.quickblox.messages.TYPE"
             android:value="GCM" />

@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/ListItem"
+    android:id="@+id/container_user"
     tools:ignore="RtlHardcoded">
 
     <ImageView
@@ -14,5 +15,6 @@
 
     <CheckBox
         android:id="@+id/checkbox_user"
+
         style="@style/UserCheckboxStyle" />
 </LinearLayout>

@@ -1,7 +1,6 @@
 package com.ue.uebook.DeatailActivity.Pojo;
 
 public class BookDetails {
-
     private String id;
     private String user_id;
     private String category_id;

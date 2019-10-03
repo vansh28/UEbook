@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
+import com.ue.uebook.GlideUtils;
 import com.ue.uebook.Quickblox_Chat.utils.ResourceUtils;
 import com.ue.uebook.R;
 
@@ -35,8 +36,8 @@ public class AttachmentImageActivity extends BaseActivity {
     }
 
     private void initUI() {
-//        actionBar.setDisplayHomeAsUpEnabled(true);
-//        actionBar.setDisplayShowTitleEnabled(false);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setDisplayShowTitleEnabled(false);
         imageView = findViewById(R.id.image_full_view);
         progressBar = findViewById(R.id.progress_bar_show_image);
     }
@@ -57,6 +58,9 @@ public class AttachmentImageActivity extends BaseActivity {
 //                .dontTransform()
 //                .override(PREFERRED_IMAGE_SIZE_FULL, PREFERRED_IMAGE_SIZE_FULL)
 //                .into(imageView);
+
+        progressBar.setVisibility(View.GONE);
+        GlideUtils.loadImage(this,url,imageView,R.drawable.placeholder,R.drawable.noimage);
     }
 
 //    private class RequestListenerImpl implements RequestListener<String, GlideDrawable> {

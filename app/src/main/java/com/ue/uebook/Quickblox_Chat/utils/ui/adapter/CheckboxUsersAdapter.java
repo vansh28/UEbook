@@ -23,6 +23,15 @@ public class CheckboxUsersAdapter extends UsersAdapter {
 
         this.initiallySelectedUsers = new ArrayList<>();
     }
+    private ItemClick itemClick;
+
+    public interface ItemClick {
+        void onItemClick(Set<QBUser> selectedUsers);
+    }
+
+    public void setItemClickListener(ItemClick clickListener) {
+        itemClick = clickListener;
+    }
 
     public void addSelectedUsers(List<Integer> userIds) {
         for (QBUser user : userList) {
@@ -49,17 +58,22 @@ public class CheckboxUsersAdapter extends UsersAdapter {
                 if (!isAvailableForSelection(user)) {
                     return;
                 }
+                selectedUsers.add(user);
+                if (itemClick!=null){
+                    itemClick.onItemClick(selectedUsers);
+                }
 
                 holder.userCheckBox.setChecked(!holder.userCheckBox.isChecked());
-                if (holder.userCheckBox.isChecked()) {
-                    selectedUsers.add(user);
-                } else {
-                    selectedUsers.remove(user);
-                }
+//                if (holder.userCheckBox.isChecked()) {
+//                    selectedUsers.add(user);
+//                } else {
+//                    selectedUsers.remove(user);
+//                }
             }
         });
 
-        holder.userCheckBox.setVisibility(View.VISIBLE);
+
+        holder.userCheckBox.setVisibility(View.GONE);
         holder.userCheckBox.setChecked(selectedUsers.contains(user));
 
         return view;

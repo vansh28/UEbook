@@ -42,9 +42,10 @@ import com.ue.uebook.R;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-public class SelectUsersActivity extends BaseActivity implements FriendlistAdapter.ItemClick {
+public class SelectUsersActivity extends BaseActivity implements FriendlistAdapter.ItemClick ,CheckboxUsersAdapter.ItemClick{
     public static final String EXTRA_QB_USERS = "qb_users";
     public static final String EXTRA_CHAT_NAME = "chat_name";
     public static final int MINIMUM_CHAT_OCCUPANTS_SIZE = 2;
@@ -68,6 +69,7 @@ public class SelectUsersActivity extends BaseActivity implements FriendlistAdapt
     private QBChatDialog qbChatDialog;
     private String chatName;
     private FriendlistAdapter friendlistAdapter;
+    private CheckboxUsersAdapter checkboxUsersAdapter;
 
     public static void start(Context context) {
         Intent intent = new Intent(context, SelectUsersActivity.class);
@@ -99,9 +101,8 @@ public class SelectUsersActivity extends BaseActivity implements FriendlistAdapt
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_users);
         initUi();
+
         qbChatDialog = (QBChatDialog) getIntent().getSerializableExtra(EXTRA_QB_DIALOG);
-
-
         loadUsersFromQb();
     }
 
@@ -109,7 +110,6 @@ public class SelectUsersActivity extends BaseActivity implements FriendlistAdapt
     private void initUi() {
         progressBar = findViewById(R.id.progress_select_users);
         usersListView = findViewById(R.id.list_select_users);
-
 
 //
         TextView listHeader = (TextView) LayoutInflater.from(this)
@@ -225,6 +225,8 @@ public class SelectUsersActivity extends BaseActivity implements FriendlistAdapt
                     getDialog();
                 } else {
                     usersAdapter = new CheckboxUsersAdapter(SelectUsersActivity.this, users);
+                    usersAdapter.setItemClickListener(SelectUsersActivity.this);
+
                     updateUsersAdapter();
                 }
             }
@@ -335,5 +337,21 @@ public class SelectUsersActivity extends BaseActivity implements FriendlistAdapt
     public void onuserclick(int position, String chatid) {
         QBChatDialog existingPrivateDialog = QbDialogHolder.getInstance().getPrivateDialogWithUser(chatid);
         ChatActivity.startForResult(SelectUsersActivity.this, REQUEST_DIALOG_ID_FOR_UPDATE, existingPrivateDialog);
+    }
+
+    @Override
+    public void onItemClick(Set<QBUser> selectedUsers) {
+        if (usersAdapter != null) {
+            List<QBUser> users = new ArrayList<>(selectedUsers);
+            if (users.size() < MINIMUM_CHAT_OCCUPANTS_SIZE) {
+                ToastUtils.shortToast(R.string.select_users_choose_users);
+            } else {
+                if (qbChatDialog == null && users.size() > PRIVATE_CHAT_OCCUPANTS_SIZE) {
+                    showChatNameDialog();
+                } else {
+                    passResultToCallerActivity();
+                }
+            }
+        }
     }
 }

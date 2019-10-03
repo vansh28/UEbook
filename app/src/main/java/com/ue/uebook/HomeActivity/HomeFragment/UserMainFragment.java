@@ -1,16 +1,21 @@
 package com.ue.uebook.HomeActivity.HomeFragment;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -19,8 +24,8 @@ import com.quickblox.auth.session.QBSessionManager;
 import com.quickblox.core.QBEntityCallback;
 import com.quickblox.core.exception.QBResponseException;
 import com.quickblox.users.model.QBUser;
-import com.ue.uebook.AuthorProfileActivity.AuthorList;
 import com.ue.uebook.AuthorProfileActivity.PendingRequestScreen;
+import com.ue.uebook.Dictionary.DictionaryScreen;
 import com.ue.uebook.LoginActivity.LoginScreen;
 import com.ue.uebook.Quickblox_Chat.utils.SharedPrefsHelper;
 import com.ue.uebook.Quickblox_Chat.utils.chat.ChatHelper;
@@ -28,6 +33,8 @@ import com.ue.uebook.Quickblox_Chat.utils.ui.activity.DialogsActivity;
 import com.ue.uebook.R;
 import com.ue.uebook.SessionManager;
 import com.ue.uebook.UploadBook.Upload_Book_Screen;
+
+import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -50,7 +57,7 @@ public class UserMainFragment extends Fragment implements View.OnClickListener, 
 
     private OnFragmentInteractionListener mListener;
     private View view_uploadBook,pendingRequest_view;
-
+    private Dialog mdialog;
 
     public UserMainFragment() {
         // Required empty public constructor
@@ -143,6 +150,7 @@ public class UserMainFragment extends Fragment implements View.OnClickListener, 
         mListener = null;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void onClick(View view) {
         if (view == userInfo_container) {
@@ -172,12 +180,15 @@ public class UserMainFragment extends Fragment implements View.OnClickListener, 
         }
         else if (view==chat_Container){
 
+            showLoadingIndicator();
+
             if (SharedPrefsHelper.getInstance().hasQbUser()) {
                 restoreChatSession();
             }
+
         }
         else if (view==author_Container){
-            Intent intent = new Intent(getContext(), AuthorList.class);
+            Intent intent = new Intent(getContext(), DictionaryScreen.class);
             getContext().startActivity(intent);
         }
         else if (view==pendingRequest_Container){
@@ -248,12 +259,15 @@ public class UserMainFragment extends Fragment implements View.OnClickListener, 
 
     private void restoreChatSession() {
         if (ChatHelper.getInstance().isLogged()) {
+            hideLoadingIndicator();
             Intent intent = new Intent(getContext(), DialogsActivity.class);
             getContext().startActivity(intent);
 
         } else {
             QBUser currentUser = getUserFromSession();
+
             if (currentUser == null) {
+                hideLoadingIndicator();
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -273,14 +287,16 @@ public class UserMainFragment extends Fragment implements View.OnClickListener, 
         ChatHelper.getInstance().loginToChat(user, new QBEntityCallback<Void>() {
             @Override
             public void onSuccess(Void result, Bundle bundle) {
-
+                   hideLoadingIndicator();
 //                com.quickblox.sample.chat.java.ui.dialog.ProgressDialogFragment.hide(getSupportFragmentManager());
-
+                Intent intent = new Intent(getContext(), DialogsActivity.class);
+                getContext().startActivity(intent);
 
             }
 
             @Override
             public void onError(QBResponseException e) {
+                hideLoadingIndicator();
                 if (e.getMessage().equals("You have already logged in chat")) {
                     loginToChat(user);
                 } else {
@@ -292,6 +308,23 @@ public class UserMainFragment extends Fragment implements View.OnClickListener, 
                 }
             }
         });
+    }  @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public void showLoadingIndicator() {
+        mdialog = new Dialog(getContext());
+        mdialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        Objects.requireNonNull(mdialog.getWindow()).setBackgroundDrawable(
+                new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        mdialog.setContentView(R.layout.layout_loading_indicator);
+        mdialog.setCancelable(true);
+        mdialog.setCanceledOnTouchOutside(true);
+        mdialog.show();
     }
+    public void hideLoadingIndicator() {
+        if (mdialog != null && mdialog.isShowing()) {
+            mdialog.cancel();
+            mdialog = null;
+        }
+    }
+
 
 }

@@ -168,13 +168,13 @@
         android:id="@+id/author_Container"
         android:layout_width="match_parent"
         android:layout_height="@dimen/size_60"
-        android:visibility="gone"
+        android:visibility="visible"
         android:paddingLeft="@dimen/size_10">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:text="Our Best Author"
+            android:text="Dictionary"
             android:textColor="@color/black"
             android:drawableLeft="@drawable/addbook"
             android:drawablePadding="@dimen/size_20"
@@ -191,7 +191,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:visibility="gone"
+        android:visibility="visible"
         android:background="@color/black"></View>
     <RelativeLayout
         android:id="@+id/logOut"

@@ -10,10 +10,10 @@ import android.util.Log;
 
 import androidx.fragment.app.FragmentManager;
 
-import com.quickblox.sample.chat.java.ui.dialog.ProgressDialogFragment;
 import com.ue.uebook.Quickblox_Chat.App;
 import com.ue.uebook.Quickblox_Chat.utils.ImageUtils;
 import com.ue.uebook.Quickblox_Chat.utils.async.BaseAsyncTask;
+import com.ue.uebook.Quickblox_Chat.utils.ui.dialog.ProgressDialogFragment;
 
 import java.io.File;
 import java.io.IOException;

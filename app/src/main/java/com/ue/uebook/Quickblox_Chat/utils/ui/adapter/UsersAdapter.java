@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.quickblox.chat.QBChatService;
@@ -55,6 +56,7 @@ public class UsersAdapter extends BaseAdapter {
             holder.userImageView = (ImageView) convertView.findViewById(R.id.image_user);
             holder.loginTextView = (TextView) convertView.findViewById(R.id.text_user_login);
             holder.userCheckBox = (CheckBox) convertView.findViewById(R.id.checkbox_user);
+            holder.container_user=convertView.findViewById(R.id.container_user);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -105,5 +107,7 @@ public class UsersAdapter extends BaseAdapter {
         ImageView userImageView;
         TextView loginTextView;
         CheckBox userCheckBox;
+        LinearLayout container_user;
+
     }
 }

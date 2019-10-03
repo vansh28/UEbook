@@ -10,10 +10,10 @@ import android.widget.TextView;
 import com.quickblox.auth.session.QBSessionManager;
 import com.quickblox.core.QBEntityCallback;
 import com.quickblox.core.exception.QBResponseException;
-import com.quickblox.sample.chat.java.ui.dialog.ProgressDialogFragment;
 import com.quickblox.users.model.QBUser;
 import com.ue.uebook.Quickblox_Chat.utils.SharedPrefsHelper;
 import com.ue.uebook.Quickblox_Chat.utils.chat.ChatHelper;
+import com.ue.uebook.Quickblox_Chat.utils.ui.dialog.ProgressDialogFragment;
 import com.ue.uebook.R;
 
 

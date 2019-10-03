@@ -39,7 +39,6 @@ import com.quickblox.core.helper.CollectionUtils;
 import com.quickblox.core.request.QBRequestGetBuilder;
 import com.quickblox.messages.services.QBPushManager;
 import com.quickblox.messages.services.SubscribeService;
-import com.quickblox.sample.chat.java.ui.dialog.ProgressDialogFragment;
 import com.quickblox.users.QBUsers;
 import com.quickblox.users.model.QBUser;
 import com.ue.uebook.Quickblox_Chat.utils.FcmConsts;
@@ -53,6 +52,7 @@ import com.ue.uebook.Quickblox_Chat.utils.qb.QbDialogHolder;
 import com.ue.uebook.Quickblox_Chat.utils.qb.callback.QBPushSubscribeListenerImpl;
 import com.ue.uebook.Quickblox_Chat.utils.qb.callback.QbEntityCallbackImpl;
 import com.ue.uebook.Quickblox_Chat.utils.ui.adapter.DialogsAdapter;
+import com.ue.uebook.Quickblox_Chat.utils.ui.dialog.ProgressDialogFragment;
 import com.ue.uebook.R;
 
 import java.lang.ref.WeakReference;

@@ -83,6 +83,7 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
     private NetworkAPI networkAPI;
     private ProgressDialog pdialog;
     private static final int UNAUTHORIZED = 401;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -376,9 +377,8 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
 //                new SessionManager(getApplicationContext()).storeUserImage(image);
                 registrationUser(first_name, " ", email, "Reader", "","");
 
-
-
                 dialog.dismiss();
+
             }
         });
         cancel_dialog.setOnClickListener(new View.OnClickListener() {

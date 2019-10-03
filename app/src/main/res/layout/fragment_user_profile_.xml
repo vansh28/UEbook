@@ -133,9 +133,6 @@
                 </Spinner>
 
             </LinearLayout>
-
-
-
             <Button
                 android:id="@+id/update__userProfile"
                 android:layout_width="match_parent"
@@ -149,7 +146,6 @@
                 android:background="@drawable/createacount_bg"
                 android:textColor="@color/white">
             </Button>
-
         </LinearLayout>
     </ScrollView>
 

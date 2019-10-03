@@ -101,6 +101,7 @@
         <item name="android:layout_marginRight">@dimen/list_item_side_margin</item>
         <item name="android:clickable">false</item>
         <item name="android:gravity">right</item>
+        <item name="android:visibility">gone</item>
     </style>
 
     <style name="MessageContainerStyle" parent="MatchWidth">

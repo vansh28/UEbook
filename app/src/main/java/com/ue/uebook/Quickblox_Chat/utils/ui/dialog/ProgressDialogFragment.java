@@ -1,4 +1,4 @@
-package com.quickblox.sample.chat.java.ui.dialog;
+package com.ue.uebook.Quickblox_Chat.utils.ui.dialog;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;

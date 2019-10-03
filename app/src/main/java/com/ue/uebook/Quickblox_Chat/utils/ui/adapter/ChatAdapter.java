@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import androidx.annotation.IdRes;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.request.RequestListener;
@@ -25,6 +26,7 @@ import com.quickblox.content.model.QBFile;
 import com.quickblox.core.helper.CollectionsUtil;
 import com.quickblox.users.model.QBUser;
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersAdapter;
+import com.ue.uebook.GlideUtils;
 import com.ue.uebook.Quickblox_Chat.utils.LinkUtils;
 import com.ue.uebook.Quickblox_Chat.utils.MessageTextClickMovement;
 import com.ue.uebook.Quickblox_Chat.utils.TimeUtils;
@@ -283,7 +285,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MessageViewHol
         int valueType = getItemViewType(position);
         String avatarUrl = obtainAvatarUrl(valueType, chatMessage);
         if (avatarUrl != null) {
-//            displayAvatarImage(avatarUrl, holder.avatar);
+            displayAvatarImage(avatarUrl, holder.avatar);
         }
 
         setItemAttachClickListener(getAttachListenerByType(position), holder, getAttachment(position), position);
@@ -311,7 +313,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MessageViewHol
         int valueType = getItemViewType(position);
         String avatarUrl = obtainAvatarUrl(valueType, chatMessage);
         if (avatarUrl != null) {
-//            displayAvatarImage(avatarUrl, holder.avatar);
+            displayAvatarImage(avatarUrl, holder.avatar);
         }
 
         List<String> urlsList = LinkUtils.extractUrls(chatMessage.getBody());
@@ -569,19 +571,19 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MessageViewHol
 //                .error(R.drawable.ic_error)
 //                .into(((ImageAttachHolder) holder).attachImageView);
 
+
+        GlideUtils.loadImage((AppCompatActivity) context,url,((ImageAttachHolder) holder).attachImageView,R.drawable.placeholder,R.drawable.noimage);
+
     }
 
     private RequestListener getRequestListener(MessageViewHolder holder, int position) {
         return (RequestListener) new ImageLoadListener<>((ImageAttachHolder) holder);
     }
 
-//    private void displayAvatarImage(String url, ImageView imageView) {
-//        Glide.with(context)
-//                .load(url)
-//                .placeholder(R.drawable.placeholder_user)
-//                .dontAnimate()
-//                .into(imageView);
-//    }
+    private void displayAvatarImage(String url, ImageView imageView) {
+        GlideUtils.loadImage((AppCompatActivity) context,url,imageView,R.drawable.user_default,R.drawable.user_default);
+
+    }
 
     private void setItemAttachClickListener(AttachClickListener listener, MessageViewHolder holder, QBAttachment qbAttachment, int position) {
         if (listener != null) {
@@ -660,7 +662,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MessageViewHol
 
         private ImageLoadListener(ImageAttachHolder holder) {
             this.holder = holder;
-            holder.attachProgressBar.setVisibility(View.VISIBLE);
+            holder.attachProgressBar.setVisibility(View.GONE);
         }
 
 
