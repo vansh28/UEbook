@@ -122,6 +122,8 @@ public class SignUp_Fragment extends Fragment implements View.OnClickListener {
         View view = inflater.inflate(R.layout.fragment_sign_up_, container, false);
         networkAPI = NetworkService.getAPI().create(NetworkAPI.class);
         dialog = new ProgressDialog(getContext());
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
         username = view.findViewById(R.id.username_edit_text);
         viewLinear = view.findViewById(R.id.signupView);
         userEmail = view.findViewById(R.id.email_edit_text);
@@ -333,12 +335,9 @@ public class SignUp_Fragment extends Fragment implements View.OnClickListener {
             username.setError("Enter your Username");
             username.requestFocus();
             username.setEnabled(true);
-
             return false;
         }
-
     }
-
     public void gotoHome() {
         Intent intent = new Intent(getActivity(), HomeScreen.class);
         intent.putExtra("login",1);

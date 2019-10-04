@@ -29,14 +29,28 @@
             android:textColor="@color/black"
             android:layout_marginTop="@dimen/size_10"
             android:text="Whichis the best app for the books"></TextView>
-        <TextView
-            android:id="@+id/answer_btn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/size_15"
-            android:textColor="@color/colorAccent"
-            android:layout_marginTop="@dimen/size_5"
-            android:text="Answer"></TextView>
+      <RelativeLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content">
+          <TextView
+              android:id="@+id/answer_btn"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:textSize="@dimen/size_15"
+              android:textColor="@color/colorAccent"
+              android:layout_marginRight="@dimen/size_60"
+              android:layout_marginTop="@dimen/size_5"
+              android:text="Answer"></TextView>
+          <ImageButton
+              android:id="@+id/editanswer"
+              android:layout_width="@dimen/size_30"
+              android:layout_height="@dimen/size_30"
+              android:layout_alignParentRight="true"
+              android:visibility="gone"
+              android:layout_marginRight="@dimen/size_15"
+              android:background="@android:color/transparent"
+              android:src="@drawable/editp"></ImageButton>
+      </RelativeLayout>
     </LinearLayout>
 
     </LinearLayout>
@@ -48,7 +62,7 @@
         android:visibility="gone"
         android:layout_marginTop="@dimen/size_8">
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/email_text_input"
+            android:id="@+id/answer_text_input"
             style="@style/TextInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

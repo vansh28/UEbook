@@ -2,7 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.ue.uebook">
-
     <uses-feature
         android:glEsVersion="0x00020000"
         android:required="true" />
@@ -81,18 +80,23 @@
         </activity>
         <activity
             android:name=".SplashActivity.SplashScreen"
+            android:screenOrientation="portrait"
             android:configChanges="orientation|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Help.HelpCenterScreen" />
-        <activity android:name=".AboutUs.AboutusScreen" />
-        <activity android:name=".Contactus.ContactusScreen" />
-        <activity android:name=".ForgotPassWord.ForgotPasswordScreen" />
-        <activity android:name=".NotepadScreen" />
+        <activity android:name=".Help.HelpCenterScreen"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".AboutUs.AboutusScreen"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Contactus.ContactusScreen"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ForgotPassWord.ForgotPasswordScreen"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".NotepadScreen"
+            android:screenOrientation="portrait"/>
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
@@ -162,5 +166,4 @@
             android:name="com.quickblox.messages.QB_ENVIRONMENT"
             android:value="DEVELOPMENT" />
     </application>
-
 </manifest>

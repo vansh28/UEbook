@@ -88,6 +88,7 @@
                     android:layout_alignParentRight="true"
                     android:text="Forgot Password"
                     android:textStyle="bold"
+                    android:visibility="gone"
                     android:textColor="@color/black"
                     android:textSize="15dp"></TextView>
             </RelativeLayout>

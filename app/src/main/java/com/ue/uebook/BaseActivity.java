@@ -91,8 +91,8 @@ public abstract class BaseActivity extends AppCompatActivity {
         Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(
                 new ColorDrawable(android.graphics.Color.TRANSPARENT));
         dialog.setContentView(R.layout.layout_loading_indicator);
-        dialog.setCancelable(true);
-        dialog.setCanceledOnTouchOutside(true);
+        dialog.setCancelable(false);
+        dialog.setCanceledOnTouchOutside(false);
         dialog.show();
     }
 

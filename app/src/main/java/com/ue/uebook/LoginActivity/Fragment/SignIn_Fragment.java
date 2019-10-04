@@ -115,7 +115,8 @@ public class SignIn_Fragment extends Fragment implements View.OnClickListener {
 
         login_btn = view.findViewById(R.id.login_btn);
         dialog = new ProgressDialog(getContext());
-
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
         create_AccountBtn = view.findViewById(R.id.create_AccountBtn);
         userName = view.findViewById(R.id.user_login);
         userPassword = view.findViewById(R.id.password_login);
@@ -251,6 +252,7 @@ public class SignIn_Fragment extends Fragment implements View.OnClickListener {
     public void requestforLogin(final String user_name, final String password) {
         String url = null;
         dialog.setMessage("please wait");
+
         dialog.show();
         url = "http://dnddemo.com/ebooks/api/v1/userLogin";
         OkHttpClient client = new OkHttpClient();

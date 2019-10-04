@@ -38,6 +38,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.quickblox.core.QBEntityCallback;
@@ -381,12 +383,21 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
 
             }
         });
+
         cancel_dialog.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                dialog.dismiss();
+            public void onClick(View v) {
+                Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
+                        new ResultCallback<Status>() {
+                            @Override
+                            public void onResult(Status status) {
+                              dialog.dismiss();
+                            }
+                        });
             }
         });
+
+
         try {
             dialog.show();
         } catch (WindowManager.BadTokenException e) {

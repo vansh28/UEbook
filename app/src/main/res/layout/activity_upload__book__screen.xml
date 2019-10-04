@@ -190,6 +190,38 @@
 
         </RelativeLayout>
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_10"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/size_20"
+                android:text="Book Assignment"
+                android:layout_centerVertical="true"
+                android:textColor="@color/black"
+                android:textSize="@dimen/size_16">
+            </TextView>
+            <Button
+                android:id="@+id/add_question"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="Add"
+                android:background="@android:color/transparent"
+                android:layout_gravity="end"></Button>
+
+        </RelativeLayout>
+        <LinearLayout
+            android:id="@+id/question_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/size_10"
+            android:orientation="vertical"></LinearLayout>
+
 
         <TextView
             android:layout_width="wrap_content"

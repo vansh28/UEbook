@@ -38,7 +38,6 @@ public class Bookmark_List_Adapter  extends RecyclerView.Adapter<Bookmark_List_A
     public interface BookmarkBookItemClick {
         void onItemClick(int position ,String bookid);
     }
-
     public void setItemClickListener(BookmarkBookItemClick clickListener) {
         bookmarkBookItemClick = clickListener;
     }

@@ -118,7 +118,7 @@
             android:layout_centerVertical="true"
             android:text="Chat with Others"
             android:textColor="@color/black"
-            android:drawableLeft="@drawable/addbook"
+            android:drawableLeft="@drawable/chat"
             android:drawablePadding="@dimen/size_20"
             android:textSize="@dimen/size_18"></TextView>
         <ImageView
@@ -176,7 +176,7 @@
             android:layout_centerVertical="true"
             android:text="Dictionary"
             android:textColor="@color/black"
-            android:drawableLeft="@drawable/addbook"
+            android:drawableLeft="@drawable/dictionary"
             android:drawablePadding="@dimen/size_20"
             android:textSize="@dimen/size_18"></TextView>
         <ImageView

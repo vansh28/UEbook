@@ -35,6 +35,7 @@ import com.google.gson.GsonBuilder;
 import com.ue.uebook.AuthorProfileActivity.AuthorProfileScreen;
 import com.ue.uebook.BaseActivity;
 import com.ue.uebook.Data.ApiRequest;
+import com.ue.uebook.DeatailActivity.Pojo.Assignment;
 import com.ue.uebook.DeatailActivity.Pojo.BookDetails;
 import com.ue.uebook.DeatailActivity.Pojo.BookmarkResponse;
 import com.ue.uebook.DeatailActivity.Pojo.DetailsResponse;
@@ -46,6 +47,7 @@ import com.ue.uebook.ShareUtils;
 import com.ue.uebook.WebviewScreen;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.List;
@@ -71,6 +73,7 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
     private EditText user_comment;
     private SwipeRefreshLayout swipeRefreshLayout;
     private String ulpoadByUserId;
+    private List<Assignment>assignmentList;
     String docbaseUrl="http://docs.google.com/gview?embedded=true&url=";
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
@@ -87,6 +90,7 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
         book_asignment=findViewById(R.id.book_asignment);
         book_asignment.setOnClickListener(this);
         bookDetail= new ArrayList<>();
+        assignmentList = new ArrayList<>();
         dialog = new ProgressDialog(this);
         intent = getIntent();
          book_id = intent.getStringExtra("book_id");
@@ -213,6 +217,7 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
         }
         else if (view==book_asignment){
             Intent intent = new Intent(this, Book_Assignment.class);
+            intent.putExtra("QuestionListExtra", (Serializable) assignmentList);
             startActivity(intent);
 
         }
@@ -251,6 +256,8 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
         showLoadingIndicator();
         if (bookDetail.size()>0)
             bookDetail.clear();
+        if (assignmentList.size()>0)
+            assignmentList.clear();
         request.requestforgetBookDetail(book_id,new SessionManager(getApplicationContext()).getUserID(), new okhttp3.Callback() {
             @Override
             public void onFailure(okhttp3.Call call, IOException e) {
@@ -266,6 +273,7 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        assignmentList=form.getAssignment();
                         bookTitle.setText(form.getData().getBook_title());
                          bookAuthor.setText(form.getData().getAuthor_name());
                         ulpoadByUserId=form.getData().getUser_id();

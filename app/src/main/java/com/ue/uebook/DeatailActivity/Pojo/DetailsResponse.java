@@ -8,13 +8,23 @@ public class DetailsResponse {
     private List<ReviewPojo>review;
     private String averaVal;
     private BookmarkPojo bookMark;
+    private List<Assignment>assignment;
 
-    public DetailsResponse(String error, BookDetails data, List<ReviewPojo> review, String averaVal, BookmarkPojo bookMark) {
+    public DetailsResponse(String error, BookDetails data, List<ReviewPojo> review, String averaVal, BookmarkPojo bookMark, List<Assignment> assignment) {
         this.error = error;
         this.data = data;
         this.review = review;
         this.averaVal = averaVal;
         this.bookMark = bookMark;
+        this.assignment = assignment;
+    }
+
+    public List<Assignment> getAssignment() {
+        return assignment;
+    }
+
+    public void setAssignment(List<Assignment> assignment) {
+        this.assignment = assignment;
     }
 
     public String getError() {

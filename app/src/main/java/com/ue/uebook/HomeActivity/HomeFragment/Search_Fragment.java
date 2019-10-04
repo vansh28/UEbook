@@ -36,6 +36,7 @@ import com.ue.uebook.SessionManager;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -227,10 +228,11 @@ public class Search_Fragment extends Fragment implements View.OnClickListener, S
             else {
                 list.addAll(new SessionManager(getActivity().getApplicationContext()).getArrayList("list"));
                 list.add(data.get(position).getBook_title());
+
             }
 
         }
-
+        Collections.reverse(list);
         new SessionManager(getActivity().getApplicationContext()).saveArrayList(list,"list");
         getActivity().startActivity(intent);
     }

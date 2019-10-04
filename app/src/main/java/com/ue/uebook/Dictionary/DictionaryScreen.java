@@ -31,35 +31,34 @@ public class DictionaryScreen extends AppCompatActivity implements View.OnClickL
         back_btn=findViewById(R.id.back_dictionary);
         translation_data_source = new TranslationDataSource(this);
         back_btn.setOnClickListener(this);
-        seachbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                searchResult.setText("");
-                ArrayList<Translation> translation_array_long = translation_data_source.getEngEngTranslation(word.getText().toString());
-                if(translation_array_long.size() > 0)
-                {
-                    searchResult.append(Html.fromHtml("<p><b>Source: Wikipedia</b></p>"));
-                    for(int i = 0; i < translation_array_long.size(); i++)
-                    {
-                        searchResult.append(Html.fromHtml("<p>" + translation_array_long.get(i).getTranslation() + "</p>"));
-                    }
-
-                    searchResult.append(Html.fromHtml("<br/><br/>"));
-                }
-                else
-                {
-                    searchResult.append("Word is not Found!");
-                }
-            }
-        });
-
-
     }
 
     @Override
     public void onClick(View view) {
         if (view==back_btn){
             finish();
+        }
+        else if (view==seachbtn){
+
+
+        }
+    }
+    private void  searchWordDetails(){
+        searchResult.setText("");
+        ArrayList<Translation> translation_array_long = translation_data_source.getEngEngTranslation(word.getText().toString());
+        if(translation_array_long.size() > 0)
+        {
+            searchResult.append(Html.fromHtml("<p><b>Source: Wikipedia</b></p>"));
+            for(int i = 0; i < translation_array_long.size(); i++)
+            {
+                searchResult.append(Html.fromHtml("<p>" + translation_array_long.get(i).getTranslation() + "</p>"));
+            }
+
+            searchResult.append(Html.fromHtml("<br/><br/>"));
+        }
+        else
+        {
+            searchResult.append("Word is not Found!");
         }
     }
 }
