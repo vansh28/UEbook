@@ -9,14 +9,24 @@ public class DetailsResponse {
     private String averaVal;
     private BookmarkPojo bookMark;
     private List<Assignment>assignment;
+    private List<user_answer>user_answer;
 
-    public DetailsResponse(String error, BookDetails data, List<ReviewPojo> review, String averaVal, BookmarkPojo bookMark, List<Assignment> assignment) {
+    public DetailsResponse(String error, BookDetails data, List<ReviewPojo> review, String averaVal, BookmarkPojo bookMark, List<Assignment> assignment, List<com.ue.uebook.DeatailActivity.Pojo.user_answer> user_answer) {
         this.error = error;
         this.data = data;
         this.review = review;
         this.averaVal = averaVal;
         this.bookMark = bookMark;
         this.assignment = assignment;
+        this.user_answer = user_answer;
+    }
+
+    public List<com.ue.uebook.DeatailActivity.Pojo.user_answer> getUser_answer() {
+        return user_answer;
+    }
+
+    public void setUser_answer(List<com.ue.uebook.DeatailActivity.Pojo.user_answer> user_answer) {
+        this.user_answer = user_answer;
     }
 
     public List<Assignment> getAssignment() {

@@ -39,6 +39,7 @@ import com.ue.uebook.DeatailActivity.Pojo.Assignment;
 import com.ue.uebook.DeatailActivity.Pojo.BookDetails;
 import com.ue.uebook.DeatailActivity.Pojo.BookmarkResponse;
 import com.ue.uebook.DeatailActivity.Pojo.DetailsResponse;
+import com.ue.uebook.DeatailActivity.Pojo.user_answer;
 import com.ue.uebook.GlideUtils;
 import com.ue.uebook.MySpannable;
 import com.ue.uebook.R;
@@ -74,6 +75,8 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
     private SwipeRefreshLayout swipeRefreshLayout;
     private String ulpoadByUserId;
     private List<Assignment>assignmentList;
+    private List<user_answer>user_answers;
+
     String docbaseUrl="http://docs.google.com/gview?embedded=true&url=";
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
@@ -91,6 +94,7 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
         book_asignment.setOnClickListener(this);
         bookDetail= new ArrayList<>();
         assignmentList = new ArrayList<>();
+        user_answers=new ArrayList<>();
         dialog = new ProgressDialog(this);
         intent = getIntent();
          book_id = intent.getStringExtra("book_id");
@@ -218,6 +222,8 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
         else if (view==book_asignment){
             Intent intent = new Intent(this, Book_Assignment.class);
             intent.putExtra("QuestionListExtra", (Serializable) assignmentList);
+            intent.putExtra("answer", (Serializable) user_answers);
+            intent.putExtra("book_id",book_id);
             startActivity(intent);
 
         }
@@ -256,8 +262,7 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
         showLoadingIndicator();
         if (bookDetail.size()>0)
             bookDetail.clear();
-        if (assignmentList.size()>0)
-            assignmentList.clear();
+
         request.requestforgetBookDetail(book_id,new SessionManager(getApplicationContext()).getUserID(), new okhttp3.Callback() {
             @Override
             public void onFailure(okhttp3.Call call, IOException e) {
@@ -274,6 +279,7 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
                     @Override
                     public void run() {
                         assignmentList=form.getAssignment();
+                        user_answers=form.getUser_answer();
                         bookTitle.setText(form.getData().getBook_title());
                          bookAuthor.setText(form.getData().getAuthor_name());
                         ulpoadByUserId=form.getData().getUser_id();
@@ -498,6 +504,39 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
 
             }
         });
+    }
+    public void onStart()
+    {
+        super.onStart();
+
+        Log.d("detailpage", "In the onStart() event");
+    }
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public void onRestart()
+    {
+        super.onRestart();
+        getBookDetail(book_id);
+        Log.d("detailpage", "In the onRestart() event");
+    }
+    public void onResume()
+    {
+        super.onResume();
+        Log.d("detailpage", "In the onResume() event");
+    }
+    public void onPause()
+    {
+        super.onPause();
+        Log.d("detailpage", "In the onPause() event");
+    }
+    public void onStop()
+    {
+        super.onStop();
+        Log.d("detailpage", "In the onStop() event");
+    }
+    public void onDestroy()
+    {
+        super.onDestroy();
+        Log.d("detailpage", "In the onDestroy() event");
     }
 
 }

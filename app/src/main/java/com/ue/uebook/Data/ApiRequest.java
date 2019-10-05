@@ -347,8 +347,6 @@ public class ApiRequest {
                 .build();
         client.newCall(request).enqueue(callback);
     }
-
-
     public void requestforgetUploadByInfo( String user_id, Callback callback) {
         String url = null;
         url = BaseUrl + "getUserDetails";
@@ -410,24 +408,19 @@ public class ApiRequest {
         client.newCall(request).enqueue(callback);
 
     }
-    public void requestforsubmitAssignmentAnswer(String user_id, String questionID,String answer,Callback callback) {
+    public void requestforsubmitAssignmentAnswer(String answer,Callback callback) {
         String url = null;
-        url = BaseUrl + "updateAssignment";
+        url = BaseUrl + "answerQuestion";
         OkHttpClient client = new OkHttpClient();
         RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
-                .addFormDataPart("answered_by", user_id)
-                .addFormDataPart("assignment_id", questionID)
                 .addFormDataPart("answer", answer)
                 .build();
-
         Request request = new Request.Builder()
                 .url(url)
                 .post(requestBody)
                 .build();
         client.newCall(request).enqueue(callback);
-
     }
-
 }
 
 

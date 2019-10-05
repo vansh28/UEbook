@@ -26,6 +26,7 @@ public class AssignmentAdapter   extends RecyclerView.Adapter<AssignmentAdapter.
     private boolean isshow=false;
     private List<Assignment> questionList;
     private SubmitAnswerClick submitAnswerClick;
+    List<EditText> allEds;
 
     public AssignmentAdapter(List<Assignment> questionList) {
         this.questionList=questionList;
@@ -96,6 +97,14 @@ public class AssignmentAdapter   extends RecyclerView.Adapter<AssignmentAdapter.
                        }
                    }
                });
+
+//        for(int i = 0; i < questionList.size(); i++){
+//            if (!allEds.get(i).getText().toString().isEmpty()){
+//                Log.d("Value ","Val " + allEds.get(i).getText());
+//                questionList.add( allEds.get(i).getText().toString());
+//            }
+//        }
+//        String json = new Gson().toJson(questionList );
 
     }
 
