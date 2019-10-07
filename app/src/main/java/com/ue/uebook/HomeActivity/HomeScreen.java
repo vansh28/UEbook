@@ -45,7 +45,7 @@ public class HomeScreen extends BaseActivity implements Home_Fragment.OnFragment
     private FloatingActionButton addnotes_fab;
     private CoordinatorLayout container;
     private Intent intent;
-
+    Fragment fragment;
     private BottomSheetDialog mBottomSheetDialog;
     @SuppressLint("RestrictedApi")
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -64,10 +64,12 @@ public class HomeScreen extends BaseActivity implements Home_Fragment.OnFragment
         toolbar = getSupportActionBar();
         intent = getIntent();
         int loginid= intent.getIntExtra("login",0);
+        int id = intent.getIntExtra("id",0);
         if (loginid==1){
             showmessage();
             showBottomSheet();
         }
+
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         loadFragment(new Home_Fragment());
@@ -78,7 +80,7 @@ public class HomeScreen extends BaseActivity implements Home_Fragment.OnFragment
         @SuppressLint("RestrictedApi")
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            Fragment fragment;
+
             switch (item.getItemId()) {
                 case R.id.home_bottom:
                     fragment = new Home_Fragment();

@@ -4,7 +4,6 @@
         <item>Reader</item>
         <item>Writer</item>
         <item>Publish House</item>
-        <item>Reader and Writer</item>
     </string-array>
     <string-array name="uploadImages">
         <item>Pick from gallery</item>

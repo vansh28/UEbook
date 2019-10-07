@@ -281,7 +281,7 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
                         assignmentList=form.getAssignment();
                         user_answers=form.getUser_answer();
                         bookTitle.setText(form.getData().getBook_title());
-                         bookAuthor.setText(form.getData().getAuthor_name());
+                        bookAuthor.setText(form.getData().getAuthor_name());
                         ulpoadByUserId=form.getData().getUser_id();
                         SpannableString content = new SpannableString(form.getData().getUser_name());
                         content.setSpan(new UnderlineSpan(), 0, content.length(), 0);

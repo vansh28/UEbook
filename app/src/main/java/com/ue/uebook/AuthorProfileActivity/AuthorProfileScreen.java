@@ -1,6 +1,7 @@
 package com.ue.uebook.AuthorProfileActivity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -10,6 +11,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -21,12 +24,14 @@ import com.ue.uebook.BaseActivity;
 import com.ue.uebook.Data.ApiRequest;
 import com.ue.uebook.DeatailActivity.Book_Detail_Screen;
 import com.ue.uebook.GlideUtils;
+import com.ue.uebook.HomeActivity.HomeFragment.UserProfile_Fragment;
+import com.ue.uebook.HomeActivity.HomeFragment.User_Fragment;
 import com.ue.uebook.R;
 import com.ue.uebook.SessionManager;
 
 import java.io.IOException;
 
-public class AuthorProfileScreen extends BaseActivity implements View.OnClickListener ,Author_BookListAdapter.BookItemClick{
+public class AuthorProfileScreen extends BaseActivity implements View.OnClickListener ,Author_BookListAdapter.BookItemClick,UserProfile_Fragment.OnFragmentInteractionListener,User_Fragment.OnFragmentInteractionListener{
     private ImageView backbtn, author_profile;
     private RecyclerView post_list;
     private TextView author_name, author_desc, author_post_count, author_follower, author_following;
@@ -60,9 +65,10 @@ public class AuthorProfileScreen extends BaseActivity implements View.OnClickLis
         author_following = findViewById(R.id.author_following);
         follow_To_author = findViewById(R.id.follow_btn);
         emailToAuthor = findViewById(R.id.email_btn);
+
         int id = intent.getIntExtra("id",0);
         if (id==1){
-            editt_profile_view.setVisibility(View.GONE);
+            editt_profile_view.setVisibility(View.VISIBLE);
             sendRequest_view.setVisibility(View.GONE);
         }
         else {
@@ -108,7 +114,18 @@ public class AuthorProfileScreen extends BaseActivity implements View.OnClickLis
 
 
         }
+        else if (view== editProfile){
 
+
+
+        }
+
+    }
+    private void loadFragment(Fragment fragment) {
+        // load fragment
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.frame_container, fragment);
+        transaction.commit();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -175,4 +192,8 @@ public class AuthorProfileScreen extends BaseActivity implements View.OnClickLis
         });
     }
 
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
+    }
 }

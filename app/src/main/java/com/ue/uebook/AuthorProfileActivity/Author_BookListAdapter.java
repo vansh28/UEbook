@@ -1,10 +1,13 @@
 package com.ue.uebook.AuthorProfileActivity;
 
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -49,8 +52,8 @@ public class Author_BookListAdapter extends RecyclerView.Adapter<Author_BookList
     }
 
     @Override
-    public void onBindViewHolder(@NonNull Author_BookListAdapter.MyViewHolder holder, final int position) {
-
+    public void onBindViewHolder(@NonNull final Author_BookListAdapter.MyViewHolder holder, final int position) {
+          holder.button_menu.setVisibility(View.VISIBLE);
         holder.book_container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -70,7 +73,32 @@ public class Author_BookListAdapter extends RecyclerView.Adapter<Author_BookList
         if (Book_list.get(position).getRating()!=null){
             holder.ratingBar.setRating( Float.valueOf(Book_list.get(position).getRating()));
         }
+      holder.button_menu.setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View v) {
+              final PopupMenu popup = new PopupMenu(mctx, holder.button_menu);
+              popup.getMenuInflater().inflate(R.menu.context_menu, popup.getMenu());
+              popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                  public boolean onMenuItemClick(MenuItem item) {
+                      int i = item.getItemId();
+                      if (i == R.id.edit_menu) {
+                          //do something
+                          return true;
+                      }
+                      else if (i == R.id.delete_menu){
+                          //do something
+                          return true;
+                      }
 
+                      else {
+                          return onMenuItemClick(item);
+                      }
+                  }
+              });
+
+              popup.show();
+          }
+      });
     }
     public String getFirst10Words(String arg) {
         Pattern pattern = Pattern.compile("([\\S]+\\s*){1,10}");
@@ -87,6 +115,7 @@ public class Author_BookListAdapter extends RecyclerView.Adapter<Author_BookList
         ImageView bookimage;
         TextView bookname,authorName,bookDesc;
         RatingBar ratingBar;
+        ImageButton button_menu;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             book_container=itemView.findViewById(R.id.container);
@@ -95,6 +124,7 @@ public class Author_BookListAdapter extends RecyclerView.Adapter<Author_BookList
             authorName=itemView.findViewById(R.id.auhorname);
             bookDesc=itemView.findViewById(R.id.shortDesc);
             ratingBar =itemView.findViewById(R.id.myRatingBar);
+            button_menu=itemView.findViewById(R.id.button_menu);
         }
     }}
 

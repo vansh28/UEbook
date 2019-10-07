@@ -24,6 +24,7 @@ import com.quickblox.auth.session.QBSessionManager;
 import com.quickblox.core.QBEntityCallback;
 import com.quickblox.core.exception.QBResponseException;
 import com.quickblox.users.model.QBUser;
+import com.ue.uebook.AuthorProfileActivity.AuthorProfileScreen;
 import com.ue.uebook.AuthorProfileActivity.PendingRequestScreen;
 import com.ue.uebook.Dictionary.DictionaryScreen;
 import com.ue.uebook.LoginActivity.LoginScreen;
@@ -158,13 +159,17 @@ public class UserMainFragment extends Fragment implements View.OnClickListener, 
 
                 loadFragment(new UserProfile_Fragment());
             }
+//            else if ((new SessionManager(getActivity().getApplicationContext()).getUserPublishType().equalsIgnoreCase("Writer"))){
+//
+//               loadFragment(new UserProfile_Fragment());
+//
+//
+//            }
             else {
-                loadFragment(new UserProfile_Fragment());
-
-//                Intent intent = new Intent(getContext(), AuthorProfileScreen.class);
-//                intent.putExtra("id",1);
-//                intent.putExtra("userID",new SessionManager(getActivity().getApplicationContext()).getUserID());
-//                getContext().startActivity(intent);
+                Intent intent = new Intent(getContext(), AuthorProfileScreen.class);
+                intent.putExtra("id",1);
+                intent.putExtra("userID",new SessionManager(getActivity().getApplicationContext()).getUserID());
+                getContext().startActivity(intent);
             }
 
         } else if (view == companyInfo_Container) {

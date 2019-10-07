@@ -255,10 +255,12 @@ public class ChatActivity extends BaseActivity implements OnImagePickedListener,
         MenuItem menuItemLeave = menu.findItem(R.id.menu_chat_action_leave);
         MenuItem menuItemAdd = menu.findItem(R.id.menu_chat_action_add);
         MenuItem menuItemDelete = menu.findItem(R.id.menu_chat_action_delete);
+        MenuItem itemVideo=menu.findItem(R.id.menu_video);
 
         switch (qbChatDialog.getType()) {
             case GROUP:
                 menuItemDelete.setVisible(false);
+                itemVideo.setVisible(false);
                 break;
             case PRIVATE:
                 menuItemAdd.setVisible(false);
@@ -268,6 +270,7 @@ public class ChatActivity extends BaseActivity implements OnImagePickedListener,
                 menuItemAdd.setVisible(false);
                 menuItemLeave.setVisible(false);
                 menuItemDelete.setVisible(false);
+                itemVideo.setVisible(false);
                 break;
         }
         return true;
@@ -296,6 +299,9 @@ public class ChatActivity extends BaseActivity implements OnImagePickedListener,
             case android.R.id.home:
                 onBackPressed();
                 return true;
+            case R.id.menu_video:
+
+                return  true;
 
             default:
                 return super.onOptionsItemSelected(item);
@@ -322,7 +328,7 @@ public class ChatActivity extends BaseActivity implements OnImagePickedListener,
         });
     }
 
-    private void loadUsersFromQb(final QBChatDialog qbChatDialog) {
+    private void loadUsersFromQb(final QBChatDialog x) {
         ArrayList<GenericQueryRule> rules = new ArrayList<>();
         rules.add(new GenericQueryRule(ORDER_RULE, ORDER_VALUE));
 
