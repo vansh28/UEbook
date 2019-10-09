@@ -80,7 +80,7 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="5">
+                android:layout_weight="4.5">
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/TextInputLayout"
                 android:layout_width="match_parent"
@@ -99,9 +99,11 @@
    <ImageButton
        android:id="@+id/recordbtn"
        android:layout_width="0dp"
-       android:layout_weight="1"
+       android:layout_weight=".5"
        android:src="@drawable/audio"
-       android:visibility="gone"
+       android:visibility="visible"
+       android:layout_marginTop="@dimen/size_15"
+       android:background="@android:color/transparent"
        android:layout_height="wrap_content">
 
    </ImageButton>

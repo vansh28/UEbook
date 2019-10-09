@@ -17,6 +17,8 @@ import android.os.Environment;
 import android.os.Handler;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.speech.RecognitionListener;
+import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -73,11 +75,12 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class Upload_Book_Screen extends BaseActivity implements View.OnClickListener, ImageUtils.ImageAttachmentListener, AdapterView.OnItemSelectedListener {
+public class Upload_Book_Screen extends BaseActivity implements View.OnClickListener, ImageUtils.ImageAttachmentListener, AdapterView.OnItemSelectedListener, RecognitionListener {
     private static final int MY_PERMISSIONS_REQUEST_CAMERA = 99;
     private static final int PICK_FILE_REQUEST = 12;
     private static final int REQUEST_PICK_VIDEO = 4;
     private static final String CHANNEL_ID = "channelID";
+    private static final int VOICE_RECOGNITION_REQUEST_CODE = 122;
     private ImageButton back_btn_uploadbook;
     private LinearLayout upload_cover_bookBtn,question_layout;
     private RelativeLayout cover_image_layout;
@@ -123,9 +126,11 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
     private List<String>questionList;
     List<EditText> allEds;
 
+    private SpeechRecognizer speechRecognizer = null;
     // Tag for the instance state bundle.
     private static final String PLAYBACK_TIME = "play_time";
     private static final int ACTIVITY_CHOOSE_FILE = 33;
+    private String speechString =" ";
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
@@ -144,6 +149,7 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
         bookTitle = findViewById(R.id.bookTitle_edit_text);
         bookDesc = findViewById(R.id.bookDesc_edit_text);
         recordbtn = findViewById(R.id.recordbtn);
+        recordbtn.setOnClickListener(this);
         authorName =findViewById(R.id.authorName_edit_text);
         categoryName = new ArrayList<>();
         allEds = new ArrayList<EditText>();
@@ -188,6 +194,17 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
             profile_image_user_upload.setImageResource(R.drawable.user_default);
         }
  Add_Line();
+
+
+        speech = SpeechRecognizer.createSpeechRecognizer(this);
+        speechRecognizer = SpeechRecognizer.createSpeechRecognizer(this);
+        speech.setRecognitionListener(this);
+        recognizerIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        recognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_PREFERENCE,
+                "en");
+        recognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        recognizerIntent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 3);
     }
 
     @Override
@@ -270,8 +287,20 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
 
                 Add_Line();
 
-
         }
+        else if (view==recordbtn)
+        {
+            startVoiceRecognitionActivity();
+        }
+    }
+
+    public void startVoiceRecognitionActivity() {
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        intent.putExtra(RecognizerIntent.EXTRA_PROMPT,
+                "Speech recognition demo");
+        startActivityForResult(intent, VOICE_RECOGNITION_REQUEST_CODE);
     }
 
     public void Add_Line() {
@@ -514,19 +543,17 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
             if (requestCode == REQUEST_PICK_VIDEO) {
 //                    String path = data.getStringExtra(FilePickerActivity.RESULT_FILE_PATH);
 //                    videofile = new File(path);
-                    Uri selectedVideo = data.getData();
-                    try {
-                        String videoPathStr =getPath(selectedVideo);
-                        videofile = new File(videoPathStr);
-                        initializePlayer(selectedVideo);
-                        videoview.setVisibility(View.VISIBLE);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        Toast.makeText(this,"Please Select Again",Toast.LENGTH_SHORT).show();
-                    }
+                Uri selectedVideo = data.getData();
+                try {
+                    String videoPathStr = getPath(selectedVideo);
+                    videofile = new File(videoPathStr);
+                    initializePlayer(selectedVideo);
+                    videoview.setVisibility(View.VISIBLE);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Toast.makeText(this, "Please Select Again", Toast.LENGTH_SHORT).show();
                 }
-
-             else if (requestCode == 111) {
+            } else if (requestCode == 111) {
 
 //                    String path = data.getStringExtra(FilePickerActivity.RESULT_FILE_PATH);
 //                    docfile = new File(path);
@@ -537,13 +564,13 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
 //                    docfile = new File(FilePath);
                 Uri selectedfile = data.getData();
                 try {
-                    String filePathStr = getRealPathFromURI( selectedfile);
+                    String filePathStr = getRealPathFromURI(selectedfile);
                     docfile = new File(filePathStr);
 //                    filname_view.setVisibility(View.VISIBLE);
 //                    filname_view.setText(docfile.getName());
                 } catch (Exception e) {
                     e.printStackTrace();
-                    Toast.makeText(this,"Please Select Again",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Please Select Again", Toast.LENGTH_SHORT).show();
                 }
 
             } else if (requestCode == 12) {
@@ -557,13 +584,20 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
 
                 } catch (Exception e) {
                     e.printStackTrace();
-                    Toast.makeText(this,"Please Select Again",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Please Select Again", Toast.LENGTH_SHORT).show();
                 }
-
-
             }
         }
+        if (requestCode == VOICE_RECOGNITION_REQUEST_CODE && resultCode == RESULT_OK) {
+            ArrayList<String> result = data
+                    .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+            speechString = bookDesc.getText().toString() + result.get(0);
+            bookDesc.setText(speechString);
+            bookDesc.setSelection(bookDesc.getText().length());
+            bookDesc.requestFocus();
+            bookDesc.setEnabled(true);
         }
+    }
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         imageUtils.request_permission_result(requestCode, permissions, grantResults);
@@ -890,7 +924,59 @@ public static String getPathFromUri(final Context context, final Uri uri) {
     }
 
 
+    @Override
+    public void onReadyForSpeech(Bundle params) {
 
+    }
+
+    @Override
+    public void onBeginningOfSpeech() {
+
+    }
+
+    @Override
+    public void onRmsChanged(float rmsdB) {
+
+    }
+
+    @Override
+    public void onBufferReceived(byte[] buffer) {
+
+    }
+
+    @Override
+    public void onEndOfSpeech() {
+
+    }
+
+    @Override
+    public void onError(int error) {
+
+    }
+
+    @Override
+    public void onResults(Bundle results) {
+
+        ArrayList<String> matches = results
+                .getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
+        speechString = speechString  + matches.get(0);
+        bookDesc.setText( speechString );
+    }
+    @Override
+    public void onPartialResults(Bundle arg0) {
+
+
+        ArrayList<String> matches = arg0
+                .getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
+
+
+
+    }
+
+    @Override
+    public void onEvent(int eventType, Bundle params) {
+
+    }
 }
 
 

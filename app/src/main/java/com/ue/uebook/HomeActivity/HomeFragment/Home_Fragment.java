@@ -325,7 +325,7 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
                 hideLoadingIndicator();
                 Gson gson = new GsonBuilder().create();
                 final HomeListingResponse form = gson.fromJson(myResponse, HomeListingResponse.class);
-                if (form.getData() != null || !form.getData().isEmpty()||form.getError().equalsIgnoreCase("false")) {
+                if (form.getData() != null ) {
                     recommendedList_book.addAll(form.getData());
                     if (getActivity()!=null){
                     getActivity().runOnUiThread(new Runnable() {
@@ -371,7 +371,7 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
 
                 Gson gson = new GsonBuilder().create();
                 final HomeListingResponse form = gson.fromJson(myResponse, HomeListingResponse.class);
-                if (form.getData() != null || !form.getData().isEmpty()||form.getError().equalsIgnoreCase("false")) {
+                if (form.getData() != null ) {
                     newBookList.addAll(form.getData());
                     if(getActivity()!=null) {
                         getActivity().runOnUiThread(new Runnable() {
@@ -411,7 +411,7 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
                 String myresponse = response.body().string();
                 Gson gson = new GsonBuilder().create();
                 final HomeListingResponse form = gson.fromJson(myresponse, HomeListingResponse.class);
-                if (form.getData() != null || !form.getData().isEmpty()||form.getError().equalsIgnoreCase("false")) {
+                if (form.getData() != null ) {
                     if (getActivity()!=null){
                         getActivity().runOnUiThread(new Runnable() {
                             @Override

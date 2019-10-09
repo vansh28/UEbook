@@ -4,8 +4,76 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".HomeActivity.HomeFragment.UserProfile_Fragment">
+    android:orientation="vertical"
+    tools:context=".AuthorProfileActivity.AuthorEditProfile">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:background="@color/colorPrimary"
+        android:layout_height="260dp">
+        <ImageButton
+            android:id="@+id/back_profile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/backbtn"
+            android:background="@android:color/transparent"
+            android:layout_margin="@dimen/size_10"></ImageButton>
+        <TextView
+            android:id="@+id/edit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="EDIT PROFILE"
+            android:textStyle="bold"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/size_10"
+            android:textSize="22dp"
+            android:textColor="@color/white">
+        </TextView>
+        <de.hdodenhof.circleimageview.CircleImageView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/profile_image_user"
+            android:layout_width="@dimen/size_120"
+            android:layout_height="@dimen/size_120"
+            android:src="@drawable/user_default"
+            app:civ_border_width="2dp"
+            android:layout_below="@id/edit"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/size_15"
+            app:civ_border_color="#ffffff"/>
+        <ImageView
+            android:id="@+id/camera"
+            android:layout_width="wrap_content"
+            android:src="@drawable/camera"
+            android:layout_below="@id/edit"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="115dp"
+            android:layout_height="wrap_content">
+        </ImageView>
+        <TextView
+            android:id="@+id/username"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/camera"
+            android:text="Username"
+            android:textColor="@color/white"
+            android:textSize="@dimen/size_20"
+            android:gravity="center_horizontal"
+            android:textStyle="bold"
+            ></TextView>
+
+        <TextView
+            android:id="@+id/address_user"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/username"
+            android:text="Address fetching..."
+            android:textColor="@color/white"
+            android:textSize="@dimen/size_14"
+            android:layout_centerHorizontal="true"
+            android:drawableLeft="@drawable/placeholder"
+            android:drawablePadding="@dimen/size_10"
+            ></TextView>
+    </RelativeLayout>
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -51,7 +119,7 @@
                     android:id="@+id/brief_desc"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                   />
+                    />
             </com.google.android.material.textfield.TextInputLayout>
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/TextInputLayout"
@@ -105,7 +173,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/size_10"
                 android:visibility="gone"
-
                 android:hint=" Update Password"
                 app:errorEnabled="true">
 
@@ -151,5 +218,6 @@
             </Button>
         </LinearLayout>
     </ScrollView>
+
 
 </LinearLayout>

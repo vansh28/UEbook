@@ -50,9 +50,10 @@ public class UserProfile_Fragment extends Fragment implements View.OnClickListen
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    private Spinner actor_Spinner;
+
     private ProgressDialog dialog;
     private EditText username, useremail, userpassword, country__user, about_me;
+    private Spinner actor_Spinner;
     private Button update__userProfile;
     private String actortype;
     private Dialog mdialog;

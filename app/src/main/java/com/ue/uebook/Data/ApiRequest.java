@@ -12,7 +12,7 @@ import okhttp3.RequestBody;
 public class ApiRequest {
     private static final String BaseUrl = "http://dnddemo.com/ebooks/api/v1/";
 
-    public void requestforRegistration(final String full_name, final String password, final String email, final String publisher_type, final String gender, final String country,final String about_me ,Callback callback) {
+    public void requestforRegistration(final String full_name, final String password, final String email, final String publisher_type, final String gender, final String country, final String about_me, Callback callback) {
         String url = null;
         url = BaseUrl + "createUser";
         OkHttpClient client = new OkHttpClient();
@@ -34,12 +34,13 @@ public class ApiRequest {
         client.newCall(request).enqueue(callback);
 
     }
-    public void requestforgetUserInfo( String user_id, Callback callback) {
+
+    public void requestforgetUserInfo(String user_id, Callback callback) {
         String url = null;
         url = BaseUrl + "getUserInfo";
         OkHttpClient client = new OkHttpClient();
         RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
-                .addFormDataPart("user_id",user_id)
+                .addFormDataPart("user_id", user_id)
                 .build();
 
         Request request = new Request.Builder()
@@ -49,7 +50,8 @@ public class ApiRequest {
         client.newCall(request).enqueue(callback);
 
     }
-    public void requestforforgotPassword(final  String email , Callback callback) {
+
+    public void requestforforgotPassword(final String email, Callback callback) {
         String url = null;
         url = BaseUrl + "forgetPassword";
         OkHttpClient client = new OkHttpClient();
@@ -63,7 +65,7 @@ public class ApiRequest {
         client.newCall(request).enqueue(callback);
     }
 
-    public void requestforUpdateProfile(final String user_id , final String password, final String email, final String publisher_type, final  String country, final String about_me,Callback callback) {
+    public void requestforUpdateProfile(final String user_id, final String password, final String email, final String publisher_type, final String country, final String about_me, Callback callback) {
         String url = null;
         url = BaseUrl + "userEdit";
         OkHttpClient client = new OkHttpClient();
@@ -86,7 +88,7 @@ public class ApiRequest {
 
     }
 
-    public void requestforUpdateProfilePic(final String user_id ,File profile_image, Callback callback) {
+    public void requestforUpdateProfilePic(final String user_id, File profile_image, Callback callback) {
         String url = null;
         url = BaseUrl + "UpdatePrfilePic";
         OkHttpClient client = new OkHttpClient();
@@ -104,7 +106,7 @@ public class ApiRequest {
 
     }
 
-    public void requestforUploadBook(final String user_id ,File video, String category_id,String book_title,Callback callback) {
+    public void requestforUploadBook(final String user_id, File video, String category_id, String book_title, Callback callback) {
         String url = null;
         url = BaseUrl + "addNewBook";
         OkHttpClient client = new OkHttpClient();
@@ -137,7 +139,8 @@ public class ApiRequest {
         client.newCall(request).enqueue(callback);
 
     }
-    public void requestforgetBookList(final String category_id ,Callback callback) {
+
+    public void requestforgetBookList(final String category_id, Callback callback) {
         String url = null;
         url = BaseUrl + "getBooksByTypes";
         OkHttpClient client = new OkHttpClient();
@@ -153,7 +156,8 @@ public class ApiRequest {
         client.newCall(request).enqueue(callback);
 
     }
-    public void requestforgetBookDetail(final String book_id ,final String user_id,Callback callback) {
+
+    public void requestforgetBookDetail(final String book_id, final String user_id, Callback callback) {
         String url = null;
         url = BaseUrl + "getBookDetail";
         OkHttpClient client = new OkHttpClient();
@@ -171,7 +175,7 @@ public class ApiRequest {
 
     }
 
-    public void requestforaddBookmark(final String book_id ,final  String bookmark_status,final  String userId,Callback callback) {
+    public void requestforaddBookmark(final String book_id, final String bookmark_status, final String userId, Callback callback) {
         String url = null;
         url = BaseUrl + "bookMark";
         OkHttpClient client = new OkHttpClient();
@@ -186,7 +190,8 @@ public class ApiRequest {
                 .build();
         client.newCall(request).enqueue(callback);
     }
-    public void requestforgetBookmarkList(final  String userId,Callback callback) {
+
+    public void requestforgetBookmarkList(final String userId, Callback callback) {
         String url = null;
         url = BaseUrl + "getAllbookMarkByUser";
         OkHttpClient client = new OkHttpClient();
@@ -200,7 +205,8 @@ public class ApiRequest {
                 .build();
         client.newCall(request).enqueue(callback);
     }
-    public void requestforAddNotes(final  String userId,final String description,Callback callback) {
+
+    public void requestforAddNotes(final String userId, final String description, Callback callback) {
         String url = null;
         url = BaseUrl + "addNote";
         OkHttpClient client = new OkHttpClient();
@@ -214,7 +220,8 @@ public class ApiRequest {
                 .build();
         client.newCall(request).enqueue(callback);
     }
-    public void requestforgetNotesList(final  String userId,Callback callback) {
+
+    public void requestforgetNotesList(final String userId, Callback callback) {
         String url = null;
         url = BaseUrl + "getAllNotebyUser";
         OkHttpClient client = new OkHttpClient();
@@ -228,7 +235,8 @@ public class ApiRequest {
                 .build();
         client.newCall(request).enqueue(callback);
     }
-    public void requestforupdateNote(final  String note_id,final String description,Callback callback) {
+
+    public void requestforupdateNote(final String note_id, final String description, Callback callback) {
         String url = null;
         url = BaseUrl + "UpdateNoteBook";
         OkHttpClient client = new OkHttpClient();
@@ -242,7 +250,8 @@ public class ApiRequest {
                 .build();
         client.newCall(request).enqueue(callback);
     }
-    public void requestforDeleteNote(final  String note_id , Callback callback) {
+
+    public void requestforDeleteNote(final String note_id, Callback callback) {
         String url = null;
         url = BaseUrl + "DeleteNote";
         OkHttpClient client = new OkHttpClient();
@@ -281,7 +290,8 @@ public class ApiRequest {
                 .build();
         client.newCall(request).enqueue(callback);
     }
-    public void requestforAddComment(final String user_id ,final  String books_id, String comment,String rating,Callback callback) {
+
+    public void requestforAddComment(final String user_id, final String books_id, String comment, String rating, Callback callback) {
         String url = null;
         url = BaseUrl + "addReview";
         OkHttpClient client = new OkHttpClient();
@@ -290,7 +300,7 @@ public class ApiRequest {
                 .addFormDataPart("user_id", user_id)
                 .addFormDataPart("books_id", books_id)
                 .addFormDataPart("comment", comment)
-                .addFormDataPart("rating",rating)
+                .addFormDataPart("rating", rating)
                 .build();
 
         Request request = new Request.Builder()
@@ -300,7 +310,8 @@ public class ApiRequest {
         client.newCall(request).enqueue(callback);
 
     }
-    public void requestforContactUs(final String user_id ,final  String name, String email,String phone,String contatMessage,Callback callback) {
+
+    public void requestforContactUs(final String user_id, final String name, String email, String phone, String contatMessage, Callback callback) {
         String url = null;
         url = BaseUrl + "contact_us";
         OkHttpClient client = new OkHttpClient();
@@ -308,8 +319,8 @@ public class ApiRequest {
                 .addFormDataPart("user_id", user_id)
                 .addFormDataPart("name", name)
                 .addFormDataPart("email", email)
-                .addFormDataPart("phone",phone)
-                .addFormDataPart("contatMessage",contatMessage)
+                .addFormDataPart("phone", phone)
+                .addFormDataPart("contatMessage", contatMessage)
                 .build();
 
         Request request = new Request.Builder()
@@ -318,7 +329,8 @@ public class ApiRequest {
                 .build();
         client.newCall(request).enqueue(callback);
     }
-    public void requestforPostChatId(final  String user_id , final  String chat_id ,Callback callback) {
+
+    public void requestforPostChatId(final String user_id, final String chat_id, Callback callback) {
         String url = null;
         url = BaseUrl + "createChatId";
         OkHttpClient client = new OkHttpClient();
@@ -333,7 +345,7 @@ public class ApiRequest {
         client.newCall(request).enqueue(callback);
     }
 
-    public void requestforSendFriendRequest(final  String user_id , final  String frnd_id ,Callback callback) {
+    public void requestforSendFriendRequest(final String user_id, final String frnd_id, Callback callback) {
         String url = null;
         url = BaseUrl + "sendFrndReq";
         OkHttpClient client = new OkHttpClient();
@@ -347,12 +359,13 @@ public class ApiRequest {
                 .build();
         client.newCall(request).enqueue(callback);
     }
-    public void requestforgetUploadByInfo( String user_id, Callback callback) {
+
+    public void requestforgetUploadByInfo(String user_id, Callback callback) {
         String url = null;
         url = BaseUrl + "getUserDetails";
         OkHttpClient client = new OkHttpClient();
         RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
-                .addFormDataPart("user_id",user_id)
+                .addFormDataPart("user_id", user_id)
                 .build();
 
         Request request = new Request.Builder()
@@ -362,6 +375,7 @@ public class ApiRequest {
         client.newCall(request).enqueue(callback);
 
     }
+
     public void requestforgetPendingRequest(String user_id, Callback callback) {
         String url = null;
         url = BaseUrl + "getAllRequestbyUser";
@@ -375,9 +389,9 @@ public class ApiRequest {
                 .post(requestBody)
                 .build();
         client.newCall(request).enqueue(callback);
-
     }
-    public void requestforAcceptRequest(String friend_id,String status, Callback callback) {
+
+    public void requestforAcceptRequest(String friend_id, String status, Callback callback) {
         String url = null;
         url = BaseUrl + "acceptedRequest";
         OkHttpClient client = new OkHttpClient();
@@ -393,6 +407,7 @@ public class ApiRequest {
         client.newCall(request).enqueue(callback);
 
     }
+
     public void requestforgetAllFriendList(String user_id, Callback callback) {
         String url = null;
         url = BaseUrl + "getAllAcceptedFriend";
@@ -400,20 +415,33 @@ public class ApiRequest {
         RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
                 .addFormDataPart("user_id", user_id)
                 .build();
-
         Request request = new Request.Builder()
                 .url(url)
                 .post(requestBody)
                 .build();
         client.newCall(request).enqueue(callback);
-
     }
-    public void requestforsubmitAssignmentAnswer(String answer,Callback callback) {
+
+    public void requestforsubmitAssignmentAnswer(String answer, Callback callback) {
         String url = null;
         url = BaseUrl + "answerQuestion";
         OkHttpClient client = new OkHttpClient();
         RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
                 .addFormDataPart("answer", answer)
+                .build();
+        Request request = new Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .build();
+        client.newCall(request).enqueue(callback);
+    }
+
+    public void requestforDeleteAuthorBook(String answer, Callback callback) {
+        String url = null;
+        url = BaseUrl + "DeleteBook";
+        OkHttpClient client = new OkHttpClient();
+        RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
+                .addFormDataPart("books_id", answer)
                 .build();
         Request request = new Request.Builder()
                 .url(url)

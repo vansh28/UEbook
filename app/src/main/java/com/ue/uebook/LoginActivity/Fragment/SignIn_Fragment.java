@@ -75,6 +75,7 @@ public class SignIn_Fragment extends Fragment implements View.OnClickListener {
     private LinearLayout fragment;
     private ProgressDialog dialog;
     private static final int UNAUTHORIZED = 401;
+
     public SignIn_Fragment() {
         // Required empty public constructor
     }
@@ -325,6 +326,7 @@ public class SignIn_Fragment extends Fragment implements View.OnClickListener {
                                                 @Override
                                                 public void onClick() {
                                                     pDialog.dismiss();
+                                                    dialog.dismiss();
                                                 }
                                             }
                                     )

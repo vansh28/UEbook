@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.ue.uebook">
+
     <uses-feature
         android:glEsVersion="0x00020000"
         android:required="true" />
@@ -30,7 +31,8 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".Dictionary.DictionaryScreen"></activity>
+        <activity android:name=".AuthorProfileActivity.AuthorEditProfile"></activity>
+        <activity android:name=".Dictionary.DictionaryScreen" />
         <activity android:name=".DeatailActivity.Book_Assignment" />
         <activity android:name=".AuthorProfileActivity.PendingRequestScreen" />
         <activity android:name=".Quickblox_Chat.utils.ui.activity.FriendListScreen" />
@@ -80,23 +82,29 @@
         </activity>
         <activity
             android:name=".SplashActivity.SplashScreen"
-            android:screenOrientation="portrait"
-            android:configChanges="orientation|screenSize">
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Help.HelpCenterScreen"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".AboutUs.AboutusScreen"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".Contactus.ContactusScreen"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ForgotPassWord.ForgotPasswordScreen"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".NotepadScreen"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".Help.HelpCenterScreen"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".AboutUs.AboutusScreen"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Contactus.ContactusScreen"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ForgotPassWord.ForgotPasswordScreen"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".NotepadScreen"
+            android:screenOrientation="portrait" />
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
@@ -140,8 +148,7 @@
         <activity
             android:name=".Quickblox_Chat.utils.ui.activity.AttachmentImageActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppThemenew"
-            />
+            android:theme="@style/AppThemenew" />
         <activity
             android:name=".Quickblox_Chat.utils.ui.activity.AppInfoActivity"
             android:screenOrientation="portrait" />
@@ -156,6 +163,7 @@
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
+
         <meta-data
             android:name="com.quickblox.messages.TYPE"
             android:value="GCM" />
@@ -166,4 +174,5 @@
             android:name="com.quickblox.messages.QB_ENVIRONMENT"
             android:value="DEVELOPMENT" />
     </application>
+
 </manifest>

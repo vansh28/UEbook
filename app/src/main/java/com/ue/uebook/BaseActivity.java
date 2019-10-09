@@ -45,7 +45,7 @@ import java.util.Objects;
 public abstract class BaseActivity extends AppCompatActivity {
 
     private static final String TAG = "BaseActivity";
-    private static final int REQUEST_PERMISSIONS_REQUEST_CODE =34 ;
+    private static final int REQUEST_PERMISSIONS_REQUEST_CODE = 34;
     public static Runnable mOnWritePermissionGranted;
     private Dialog dialog;
     private Double lattt;
@@ -79,7 +79,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
-   
 
     /**
      * This method is called to display a loading progress indicator in the screen.
@@ -123,16 +122,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void showSnackBar(final View view, final String message) {
         Snackbar.make(view, message, Snackbar.LENGTH_LONG).show();
     }
-
-
-
-
-
-
-
-
-
-
 
     @SuppressLint({"MissingPermission", "RestrictedApi"})
     public void getCurrentLocation() {
@@ -196,7 +185,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         if (mCurrentLocation != null) {
 
             add = CommonUtils.getAddressFromLocation(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude(), this);
-            lattt=mCurrentLocation.getLatitude();
+            lattt = mCurrentLocation.getLatitude();
             //setStringToText(text_Address, add);
             locationlongitude();
             locationlatitude();
@@ -209,20 +198,19 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     }
 
-    public Double locationlatitude(){
+    public Double locationlatitude() {
         Double lat = 0.0;
-        if (mCurrentLocation != null)
-        {
+        if (mCurrentLocation != null) {
             lat = mCurrentLocation.getLatitude();
 
         }
 
         return lat;
     }
-    public Double locationlongitude(){
+
+    public Double locationlongitude() {
         Double longi = 0.0;
-        if (mCurrentLocation != null)
-        {
+        if (mCurrentLocation != null) {
             longi = mCurrentLocation.getLongitude();
 
         }
@@ -292,7 +280,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
 
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
@@ -334,13 +321,14 @@ public abstract class BaseActivity extends AppCompatActivity {
             mOnWritePermissionGranted = null; //reset to prevent future calls issues...
         }
     }
-protected void showErrorSnackbar(@StringRes int resId, Exception e, View.OnClickListener clickListener) {
-    View rootView = getWindow().getDecorView().findViewById(android.R.id.content);
-    if (rootView != null) {
-        ErrorUtils.showSnackbar(rootView, resId, e,
-                R.string.dialog_retry, clickListener).show();
+
+    protected void showErrorSnackbar(@StringRes int resId, Exception e, View.OnClickListener clickListener) {
+        View rootView = getWindow().getDecorView().findViewById(android.R.id.content);
+        if (rootView != null) {
+            ErrorUtils.showSnackbar(rootView, resId, e,
+                    R.string.dialog_retry, clickListener).show();
+        }
     }
-}
 
 
 }

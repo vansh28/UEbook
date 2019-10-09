@@ -1,7 +1,6 @@
 package com.ue.uebook.AuthorProfileActivity;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -24,14 +23,12 @@ import com.ue.uebook.BaseActivity;
 import com.ue.uebook.Data.ApiRequest;
 import com.ue.uebook.DeatailActivity.Book_Detail_Screen;
 import com.ue.uebook.GlideUtils;
-import com.ue.uebook.HomeActivity.HomeFragment.UserProfile_Fragment;
-import com.ue.uebook.HomeActivity.HomeFragment.User_Fragment;
 import com.ue.uebook.R;
 import com.ue.uebook.SessionManager;
 
 import java.io.IOException;
 
-public class AuthorProfileScreen extends BaseActivity implements View.OnClickListener ,Author_BookListAdapter.BookItemClick,UserProfile_Fragment.OnFragmentInteractionListener,User_Fragment.OnFragmentInteractionListener{
+public class AuthorProfileScreen extends BaseActivity implements View.OnClickListener ,Author_BookListAdapter.BookItemClick{
     private ImageView backbtn, author_profile;
     private RecyclerView post_list;
     private TextView author_name, author_desc, author_post_count, author_follower, author_following;
@@ -41,6 +38,7 @@ public class AuthorProfileScreen extends BaseActivity implements View.OnClickLis
     private String userID;
     private SwipeRefreshLayout pullTorfrsh;
     private LinearLayout editt_profile_view,sendRequest_view;
+    private int id;
 
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -66,7 +64,7 @@ public class AuthorProfileScreen extends BaseActivity implements View.OnClickLis
         follow_To_author = findViewById(R.id.follow_btn);
         emailToAuthor = findViewById(R.id.email_btn);
 
-        int id = intent.getIntExtra("id",0);
+         id = intent.getIntExtra("id",0);
         if (id==1){
             editt_profile_view.setVisibility(View.VISIBLE);
             sendRequest_view.setVisibility(View.GONE);
@@ -115,7 +113,8 @@ public class AuthorProfileScreen extends BaseActivity implements View.OnClickLis
 
         }
         else if (view== editProfile){
-
+         Intent intent = new Intent(this,AuthorEditProfile.class);
+         startActivity(intent);
 
 
         }
@@ -148,14 +147,24 @@ public class AuthorProfileScreen extends BaseActivity implements View.OnClickLis
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        if (form.getData()!=null){
                         author_name.setText(form.getData().getUser_name());
                         author_desc.setText(form.getData().getAbout_me());
                         GlideUtils.loadImage(AuthorProfileScreen.this, "http://dnddemo.com/ebooks/api/v1/upload/" + form.getData().getUrl(), author_profile, R.drawable.user_default, R.drawable.user_default);
-                        author_postAdapter = new Author_BookListAdapter(AuthorProfileScreen.this,form.getBooklist());
-                        post_list.setAdapter(author_postAdapter);
-                        author_postAdapter.setItemClickListener(AuthorProfileScreen.this);
 
-                    }
+                        if (form.getBooklist()!=null){
+                            post_list.setVisibility(View.VISIBLE);
+                            author_postAdapter = new Author_BookListAdapter(AuthorProfileScreen.this,form.getBooklist(),id);
+                            post_list.setAdapter(author_postAdapter);
+                            author_postAdapter.setItemClickListener(AuthorProfileScreen.this);
+                            author_post_count.setText(String.valueOf(form.getBooklist().size()));
+                        }
+                        else {
+                            post_list.setVisibility(View.GONE);
+                            author_post_count.setText("0");
+                        }
+
+                    }}
                 });
 
             }
@@ -169,6 +178,12 @@ public class AuthorProfileScreen extends BaseActivity implements View.OnClickLis
         intent.putExtra("book_id", book_id);
         intent.putExtra("position",position);
         startActivity(intent);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    @Override
+    public void OndeleteBook(String book_id) {
+        deleteBook(book_id);
     }
 
 
@@ -192,8 +207,29 @@ public class AuthorProfileScreen extends BaseActivity implements View.OnClickLis
         });
     }
 
-    @Override
-    public void onFragmentInteraction(Uri uri) {
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private void deleteBook(String book_id) {
+        ApiRequest request = new ApiRequest();
+        showLoadingIndicator();
+        request.requestforDeleteAuthorBook( book_id, new okhttp3.Callback() {
+            @Override
+            public void onFailure(okhttp3.Call call, IOException e) {
+                hideLoadingIndicator();
+            }
 
+            @Override
+            public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
+                hideLoadingIndicator();
+                String myResponse = response.body().string();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        AuthorInfo(userID);
+                    }
+                });
+            }
+        });
     }
+
+
 }

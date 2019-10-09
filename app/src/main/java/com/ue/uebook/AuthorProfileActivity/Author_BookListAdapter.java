@@ -28,16 +28,19 @@ public class Author_BookListAdapter extends RecyclerView.Adapter<Author_BookList
    private BookItemClick bookItemClick;
     private List<AuthorBookList>Book_list;
     private AppCompatActivity mctx;
+    private Integer id;
     public interface BookItemClick {
         void onItemClick_PopularBook(int position ,String book_id);
+        void  OndeleteBook(String book_id);
     }
 
     public void setItemClickListener(BookItemClick clickListener) {
         bookItemClick = clickListener;
     }
-    public Author_BookListAdapter(AppCompatActivity applicationContext, List<AuthorBookList> booklist) {
+    public Author_BookListAdapter(AppCompatActivity applicationContext, List<AuthorBookList> booklist, int id) {
         this.Book_list=booklist;
         this.mctx=applicationContext;
+        this.id=id;
     }
 
 
@@ -54,6 +57,13 @@ public class Author_BookListAdapter extends RecyclerView.Adapter<Author_BookList
     @Override
     public void onBindViewHolder(@NonNull final Author_BookListAdapter.MyViewHolder holder, final int position) {
           holder.button_menu.setVisibility(View.VISIBLE);
+          if (id==1){
+              holder.button_menu.setVisibility(View.VISIBLE);
+          }
+          else {
+              holder.button_menu.setVisibility(View.GONE);
+
+          }
         holder.book_container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -86,7 +96,9 @@ public class Author_BookListAdapter extends RecyclerView.Adapter<Author_BookList
                           return true;
                       }
                       else if (i == R.id.delete_menu){
-                          //do something
+                          if (bookItemClick != null) {
+                              bookItemClick.OndeleteBook(Book_list.get(position).getId());
+                          }
                           return true;
                       }
 

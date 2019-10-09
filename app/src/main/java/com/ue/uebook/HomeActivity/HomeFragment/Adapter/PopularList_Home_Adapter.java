@@ -28,20 +28,14 @@ public class PopularList_Home_Adapter extends RecyclerView.Adapter<PopularList_H
     public PopularList_Home_Adapter(AppCompatActivity mctx ,List<HomeListing> popularBook_list) {
         this.popularBook_list=popularBook_list;
         this.mctx=mctx;
-
     }
 
     public interface PopularBookItemClick {
         void onItemClick_PopularBook(int position ,String book_id);
     }
-
     public void setItemClickListener(PopularBookItemClick clickListener) {
         popularBookItemClick = clickListener;
     }
-
-
-
-
     @NonNull
     @Override
     public PopularList_Home_Adapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
