@@ -485,6 +485,7 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
                 if (form.getError().equalsIgnoreCase("false")&&form.getUser_data()!=null) {
                     new SessionManager(getApplicationContext()).storeUserName(form.getUser_data().getUser_name());
                     new SessionManager(getApplicationContext()).storeUserImage(form.getUser_data().getUrl());
+                    new SessionManager(getApplicationContext()).storeUserEmail(form.getUser_data().getEmail());
 
                     new SessionManager(getApplicationContext()).storeUserPublishtype(form.getUser_data().getPublisher_type());
                     new SessionManager(getApplicationContext()).storeUserLoginStatus(1);

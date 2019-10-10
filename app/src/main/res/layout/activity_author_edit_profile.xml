@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".AuthorProfileActivity.AuthorEditProfile">
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:background="@color/colorPrimary"
@@ -189,7 +188,7 @@
                 android:background="@drawable/spinnerbg"
                 android:layout_marginLeft="@dimen/size_5"
                 android:layout_marginRight="@dimen/size_5"
-                android:visibility="gone"
+                android:visibility="visible"
                 android:orientation="horizontal">
 
                 <Spinner

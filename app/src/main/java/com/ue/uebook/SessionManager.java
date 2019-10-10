@@ -20,6 +20,7 @@ public class SessionManager {
     private static final String LoginStatus = "login";
     private static final String UserId = "UserId";
     private static final String UserName = "UserName";
+    private static final String UserEmail = "UserEmail";
     private SharedPreferences sharedPreference;
     private SharedPreferences.Editor editor;
     @SuppressLint("CommitPrefEdits")
@@ -75,6 +76,13 @@ public class SessionManager {
     }
     public String getUserName() {
         return sharedPreference.getString(UserName, "");
+    }
+    public void storeUserEmail(final String userEmail) {
+        editor.putString(UserEmail, userEmail);
+        editor.commit();
+    }
+    public String getUserEmail() {
+        return sharedPreference.getString(UserEmail, "");
     }
     public void saveArrayList(List<String> list, String key){
         Gson gson = new Gson();

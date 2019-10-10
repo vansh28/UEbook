@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">UEbook</string>
+    <string name="chat_with_others" translatable="false">" Chattez avec d'autres"</string>
+    <string name="company_info" translatable="false">Information d\'entreprise</string>
+    <string name="dictionary" translatable="false">" dictionnaire"</string>
+    <string name="logout">Se déconnecter</string>
+    <string name="user_info" translatable="false">informations utilisateur</string>
+    <string name="upload_book" translatable="false">Télécharger un livre</string>
+
+    <string name="recommended">conseillé</string>
+    <string name="new_books">Nouveaux livres</string>
+    <string name="popular_lists">Listes populaires</string>
+
+
+    <string name="home">Accueil</string>
+    <string name="bookmark">Sceau</string>
+    <string name="search">Chercher</string>
+    <string name="notepadv">Bloc-notes</string>
+    <string name="user">Utilisateur</string>
+    <string name="edit_profile">EDITER LE PROFIL</string>
+    <string name="more">Plus</string>
+
+    <string name="interface_language">Langue de linterface</string>
+    <string name="share_us_to_friend">Partagez-nous à un ami</string>
+    <string name="help_center">Centre daide</string>
+    <string name="about_us">À propos de nous</string>
+    <string name="contact_us">Contactez-nous</string>
+    <string name="enter_the_name_of_book_or_author">Entrez le nom du livre ou de l\'auteur</string>
+    <string name="bookmark_book">Livre de signets</string>
+</resources>

@@ -257,6 +257,8 @@ public class SignUp_Fragment extends Fragment implements View.OnClickListener {
                         Log.d("pub", registrationResponse.getUser_data().getPublisher_type());
                         new SessionManager(getActivity().getApplicationContext()).storeUserPublishtype(registrationResponse.getUser_data().getPublisher_type());
                         new SessionManager(getActivity().getApplicationContext()).storeUserLoginStatus(1);
+                        new SessionManager(getApplicationContext()).storeUserEmail(registrationResponse.getUser_data().getEmail());
+
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {

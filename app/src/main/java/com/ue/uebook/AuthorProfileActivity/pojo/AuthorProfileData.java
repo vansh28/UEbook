@@ -7,14 +7,24 @@ public class AuthorProfileData {
     private String email;
     private String about_me;
     private String chat_id;
+    private String publisher_type;
 
-    public AuthorProfileData(String id, String user_name, String url, String email, String about_me, String chat_id) {
+    public AuthorProfileData(String id, String user_name, String url, String email, String about_me, String chat_id, String publisher_type) {
         this.id = id;
         this.user_name = user_name;
         this.url = url;
         this.email = email;
         this.about_me = about_me;
         this.chat_id = chat_id;
+        this.publisher_type = publisher_type;
+    }
+
+    public String getPublisher_type() {
+        return publisher_type;
+    }
+
+    public void setPublisher_type(String publisher_type) {
+        this.publisher_type = publisher_type;
     }
 
     public String getChat_id() {

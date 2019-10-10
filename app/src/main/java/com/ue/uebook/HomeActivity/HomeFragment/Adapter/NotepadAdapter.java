@@ -3,6 +3,7 @@ package com.ue.uebook.HomeActivity.HomeFragment.Adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -25,6 +26,7 @@ public class NotepadAdapter  extends RecyclerView.Adapter<NotepadAdapter.MyViewH
 
     public interface NotepadItemClick {
         void onItemClick(String note_id,String description);
+        void sharenotes(String note);
     }
     public void setItemClickListener(NotepadItemClick clickListener) {
         notepadItemClickl = clickListener;
@@ -49,15 +51,26 @@ public class NotepadAdapter  extends RecyclerView.Adapter<NotepadAdapter.MyViewH
 
         holder.notepadTextdate.setText(data.get(position).getCreated_at());
         if (data.get(position).getDescription().length()>11){
-            holder.textView.setText(getFirst10Words(data.get(position).getDescription())+"...");
+//            holder.textView.setText(getFirst10Words(data.get(position).getDescription())+"...");
+
+            holder.textView.setText(data.get(position).getDescription().substring(0, Math.min(data.get(position).getDescription().length(), 30))+"...");
         }
         else {
             holder.textView.setText(data.get(position).getDescription());
         }
+
+        holder.shareNotes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (notepadItemClickl!=null){
+                    notepadItemClickl.sharenotes(data.get(position).getDescription());
+                }
+            }
+        });
     }
 
     public String getFirst10Words(String arg) {
-        Pattern pattern = Pattern.compile("([\\S]+\\s*){1,10}");
+        Pattern pattern = Pattern.compile("([\\S]+\\s*){1,5}");
         Matcher matcher = pattern.matcher(arg);
         matcher.find();
         return matcher.group();
@@ -69,11 +82,14 @@ public class NotepadAdapter  extends RecyclerView.Adapter<NotepadAdapter.MyViewH
     public class MyViewHolder extends RecyclerView.ViewHolder {
         TextView textView,notepadTextdate;
         LinearLayout notepadContainer;
+        ImageButton  shareNotes;
+
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             notepadContainer=itemView.findViewById(R.id.notepadContainer);
             textView=itemView.findViewById(R.id.notepadText);
             notepadTextdate=itemView.findViewById(R.id.notepadTextdate);
+            shareNotes = itemView.findViewById(R.id.shareNotes);
         }
     }
 }

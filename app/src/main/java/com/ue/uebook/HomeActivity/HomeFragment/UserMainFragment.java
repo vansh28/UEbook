@@ -206,6 +206,7 @@ public class UserMainFragment extends Fragment implements View.OnClickListener, 
         // load fragment
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.user_Container, fragment);
+        transaction.addToBackStack(null);
         transaction.commit();
     }
 

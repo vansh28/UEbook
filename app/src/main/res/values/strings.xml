@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">UEbook</string>
+    <string name="app_name">UEbook</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -56,7 +56,7 @@
     <string name="menu_add_users_to_chat">Add Users to Chat</string>
     <string name="menu_leave_chat">Leave Chat</string>
     <string name="menu_delete_chat">Delete Chat</string>
-    <string name="menu_dialogs_logout">Logout</string>
+    <string name="menu_dialogs_logout" translatable="false">Logout</string>
     <string name="menu_dialogs_delete">Delete</string>
     <string name="menu_dialogs_app_info">App Info</string>
     <string name="menu_select_people_done">Done</string>
@@ -179,4 +179,27 @@
     <string name="speech_prompt">Say something&#8230;</string>
     <string name="speech_not_supported">Sorry! Your device doesn\'t support speech input</string>
     <string name="tap_on_mic">Tap on mic to speak</string>
+    <string name="user_info" translatable="false">User Info</string>
+    <string name="company_info" translatable="false">Company Info</string>
+    <string name="upload_book" translatable="false">Upload Book</string>
+    <string name="chat_with_others" translatable="false">Chat with Others</string>
+    <string name="dictionary" translatable="false">Dictionary</string>
+    <string name="logout">Logout</string>
+    <string name="recommended">Recommended</string>
+    <string name="new_books">New Books</string>
+    <string name="popular_lists">Popular Lists</string>
+    <string name="home">Home</string>
+    <string name="bookmark">Bookmark</string>
+    <string name="search">Search</string>
+    <string name="notepadv">Notepad</string>
+    <string name="user">User</string>
+    <string name="more">More</string>
+    <string name="edit_profile">EDIT PROFILE</string>
+    <string name="interface_language">Interface Language</string>
+    <string name="share_us_to_friend">Share us to Friend</string>
+    <string name="help_center">Help Center</string>
+    <string name="about_us">About Us</string>
+    <string name="contact_us">Contact Us</string>
+    <string name="bookmark_book">Bookmark Book</string>
+    <string name="enter_the_name_of_book_or_author">Enter the Name of Book or Author</string>
 </resources>

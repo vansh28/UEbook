@@ -24,7 +24,7 @@
             android:drawableLeft="@drawable/search"
             android:drawablePadding="@dimen/size_10"
             android:background="@android:color/transparent"
-            android:hint="Enter the Name of Book or Author "
+            android:hint="@string/enter_the_name_of_book_or_author"
             android:maxLines="1"
             android:gravity="center_vertical"
             android:paddingLeft="@dimen/size_10"

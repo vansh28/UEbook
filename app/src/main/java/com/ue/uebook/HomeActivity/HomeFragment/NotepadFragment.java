@@ -28,6 +28,7 @@ import com.ue.uebook.HomeActivity.HomeFragment.Pojo.NotepadResponse;
 import com.ue.uebook.NotepadScreen;
 import com.ue.uebook.R;
 import com.ue.uebook.SessionManager;
+import com.ue.uebook.ShareUtils;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -140,6 +141,11 @@ public class NotepadFragment extends Fragment  implements  NotepadAdapter.Notepa
         intent.putExtra("description",description);
         intent.putExtra("id",1);
         startActivity(intent);
+    }
+
+    @Override
+    public void sharenotes(String note) {
+        ShareUtils.shareToAllApp(getActivity(),note);
     }
 
 

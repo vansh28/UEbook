@@ -5,8 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -23,6 +21,7 @@ public class Language_adapter extends RecyclerView.Adapter<Language_adapter.MyVi
     private String[] language_name;
     private Context context;
     private Boolean isSelectedLanguage = false;
+    private String val []={"en","fr"};
 
     private static CheckBox lastChecked = null;
     private static int mCheckedPostion = 0;
@@ -35,7 +34,7 @@ public class Language_adapter extends RecyclerView.Adapter<Language_adapter.MyVi
 
 
     public interface LanguageItemClick {
-        void onItemClick(int position);
+        void onItemClick(int position ,String value);
     }
 
     public void setItemClickListener(LanguageItemClick clickListener) {
@@ -63,7 +62,7 @@ public class Language_adapter extends RecyclerView.Adapter<Language_adapter.MyVi
             @Override
             public void onClick(View view) {
                 if (languageItemClick != null) {
-                    languageItemClick.onItemClick(position);
+                    languageItemClick.onItemClick(position,val[position]);
                     if (position == mCheckedPostion) {
                         holder.selected_language.setChecked(false);
                         mCheckedPostion = -1;

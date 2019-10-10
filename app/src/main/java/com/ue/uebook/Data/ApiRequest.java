@@ -449,6 +449,23 @@ public class ApiRequest {
                 .build();
         client.newCall(request).enqueue(callback);
     }
+    public void requestforSendMail(String from, String emailto,String subject,String message ,Callback callback) {
+        String url = null;
+        url = BaseUrl + "sendEmailData";
+        OkHttpClient client = new OkHttpClient();
+        RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
+                .addFormDataPart("from", from)
+                .addFormDataPart("emailto", emailto)
+                .addFormDataPart("subject", subject)
+                .addFormDataPart("message", message)
+
+                .build();
+        Request request = new Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .build();
+        client.newCall(request).enqueue(callback);
+    }
 }
 
 

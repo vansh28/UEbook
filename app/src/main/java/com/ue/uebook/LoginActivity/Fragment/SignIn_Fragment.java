@@ -161,11 +161,15 @@ public class SignIn_Fragment extends Fragment implements View.OnClickListener {
                 String userpass = userPassword.getText().toString().trim();
                 requestforLogin(user, userpass);
             }
+//            else {
+//                userPassword.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+//            }
 
 
         } else if (view == create_AccountBtn) {
 
             loadFragment(new SignUp_Fragment());
+
         }
     }
 
@@ -279,6 +283,7 @@ public class SignIn_Fragment extends Fragment implements View.OnClickListener {
                 Gson gson = new GsonBuilder().create();
                 final LoginResponse form = gson.fromJson(myResponse, LoginResponse.class);
                 if (form.getError() == false) {
+                    new SessionManager(getApplicationContext()).storeUserEmail(form.getResponse().getEmail());
 
                     new SessionManager(getContext().getApplicationContext()).storeUserPublishtype(form.getResponse().getPublisher_type());
                     new SessionManager(getContext().getApplicationContext()).storeUseruserID(form.getResponse().getId());
