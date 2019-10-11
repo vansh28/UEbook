@@ -21,6 +21,7 @@ public class SessionManager {
     private static final String UserId = "UserId";
     private static final String UserName = "UserName";
     private static final String UserEmail = "UserEmail";
+    private static final String Lang = "lang";
     private SharedPreferences sharedPreference;
     private SharedPreferences.Editor editor;
     @SuppressLint("CommitPrefEdits")
@@ -97,5 +98,11 @@ public class SessionManager {
         Type type = new TypeToken<List<String>>() {}.getType();
         return gson.fromJson(json, type);
     }
-
+    public void setCurrentLanguage(String language){
+        editor.putString(Lang, language);
+        editor.commit();
+    }
+    public String getCurrentLanguage(){
+        return sharedPreference.getString(Lang, "en");
+    }
 }

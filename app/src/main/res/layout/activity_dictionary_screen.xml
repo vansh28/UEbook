@@ -25,7 +25,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="Dictionary"
+            android:text="@string/dictionary"
             android:textColor="@color/white"
             android:textSize="@dimen/size_18"></TextView>
     </RelativeLayout>
@@ -35,13 +35,15 @@
         android:id="@+id/word"
         android:layout_width="match_parent"
         android:hint="Enter your Word"
-        android:layout_margin="@dimen/size_10"
+        android:layout_margin="@dimen/size_15"
         android:layout_height="wrap_content"></EditText>
     <Button
         android:id="@+id/searchbtn"
         android:layout_width="match_parent"
-        android:text="Search"
-        android:background="#d3d3d3"
+        android:text="@string/search"
+        android:textColor="@color/white"
+        android:layout_marginTop="@dimen/size_10"
+        android:background="@color/colorPrimary"
         android:layout_height="wrap_content"></Button>
 
     <ScrollView

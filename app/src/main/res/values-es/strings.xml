@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">UEbook</string>
+
+    <string name="user_info" translatable="false">Información de usuario</string>
+    <string name="company_info" translatable="false">Información de la compañía</string>
+    <string name="upload_book" translatable="false">Subir libro</string>
+    <string name="chat_with_others" translatable="false">Chatear con otros</string>
+    <string name="dictionary" translatable="false">Diccionario</string>
+    <string name="logout">Cerrar sesión</string>
+    <string name="recommended">Recomendado</string>
+    <string name="new_books">Libros nuevos</string>
+    <string name="popular_lists">Listas Populares</string>
+    <string name="home">Casa</string>
+    <string name="bookmark">Marcador</string>
+
+    <string name="notepadv">Bloc</string>
+    <string name="user">Usuario</string>
+    <string name="more">Más</string>
+    <string name="edit_profile">EDITAR PERFIL</string>
+    <string name="interface_language">Lenguaje de interfaz</string>
+    <string name="share_us_to_friend">Compártanos con un amigo</string>
+    <string name="help_center">Centro de ayuda</string>
+    <string name="about_us">Sobre nosotros</string>
+    <string name="contact_us">Contáctenos</string>
+    <string name="bookmark_book">Libro de marcadores</string>
+    <string name="enter_the_name_of_book_or_author">Ingrese el nombre del libro o autor</string>
+    <string name="help">Ayuda</string>
+
+    <string name="book_descriptioon">Descripcion del libro</string>
+    <string name="read_full_book">Leer libro completo</string>
+    <string name="click_for_book_assignment">Haga clic para Asignación de libros</string>
+    <string name="share_stories_on">Compartir historias en</string>
+    <string name="rate_this_book">Califica este libro</string>
+    <string name="reviews">Comentarios</string>
+    <string name="write_your_comments">Escribe tus comentarios</string>
+    <string name="submit">ENVIAR</string>
+    <string name="top_reviews">Opiniones principales</string>
+    <string name="book_assigment">Asignación de libros</string>
+    <string name="search">Buscar</string>
+
+    <string name="book_title">Titulo del libro</string>
+    <string name="book_description">Descripción del libro</string>
+    <string name="book_author">Autor del libro</string>
+    <string name="upload_cover_image">Subir imagen de portada</string>
+    <string name="add">Añadir</string>
+    <string name="upload_more_multimedia_file">Subir más archivos multimedia</string>
+    <string name="publish_book">PUBLICAR LIBRO</string>
+
+    <string name="change_username">Cambie el nombre de usuario</string>
+    <string name="brief_description">Breve descripción</string>
+    <string name="update_email">Actualizar correo electrónico</string>
+    <string name="update_address">Actualizar dirección</string>
+    <string name="update_country">Actualizar país</string>
+    <string name="update_password">Actualiza contraseña</string>
+    <string name="update">ACTUALIZAR</string>
+
+    <string name="address_fetching">Recuperación de direcciones ...</string>
+    <string name="email"></string>
+</resources>

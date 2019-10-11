@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">UEbook</string>
+    <string name="user_info" translatable="false">Benutzerinformation</string>
+    <string name="company_info" translatable="false">Firmeninfo</string>
+    <string name="upload_book" translatable="false">Buch hochladen</string>
+    <string name="chat_with_others" translatable="false">Chatten Sie mit anderen</string>
+    <string name="dictionary" translatable="false">Wörterbuch</string>
+    <string name="logout">Ausloggen</string>
+    <string name="recommended">Empfohlen</string>
+    <string name="new_books">Neue Bücher</string>
+    <string name="popular_lists">Beliebte Listen</string>
+    <string name="home">Zuhause</string>
+    <string name="bookmark">Lesezeichen</string>
+
+    <string name="notepadv">Notizblock</string>
+    <string name="user">Benutzer</string>
+    <string name="more">Mehr</string>
+    <string name="edit_profile">PROFIL BEARBEITEN</string>
+    <string name="interface_language">Schnittstellensprache</string>
+    <string name="share_us_to_friend">Teile uns mit einem Freund</string>
+    <string name="help_center">Hilfezentrum</string>
+    <string name="about_us">Über uns</string>
+    <string name="contact_us">Kontaktiere uns</string>
+    <string name="bookmark_book">Lesezeichen Buch</string>
+    <string name="enter_the_name_of_book_or_author">Geben Sie den Namen des Buches oder Autors ein</string>
+    <string name="help">Hilfe</string>
+
+    <string name="book_descriptioon">Buchbeschreibung</string>
+    <string name="read_full_book">Lesen Sie das ganze Buch</string>
+    <string name="click_for_book_assignment">Klicken Sie für die Buchzuweisung</string>
+    <string name="share_stories_on">Geschichten teilen auf</string>
+    <string name="rate_this_book"></string>
+    <string name="reviews">Bewerten Sie dieses Buch</string>
+    <string name="write_your_comments">Schreiben Sie Ihre Kommentare</string>
+    <string name="submit">EINREICHEN</string>
+    <string name="top_reviews">Top Bewertungen</string>
+    <string name="book_assigment">Buchzuordnung</string>
+    <string name="search">Suche</string>
+
+
+    <string name="book_title">Buchtitel</string>
+    <string name="book_description">Buchbeschreibung</string>
+    <string name="book_author">Buchautor</string>
+    <string name="upload_cover_image">Titelbild hochladen</string>
+    <string name="add">Hinzufügen</string>
+    <string name="upload_more_multimedia_file">Laden Sie weitere Multimedia-Dateien hoch</string>
+    <string name="publish_book">PUBLISH BOOK</string>
+
+
+    <string name="change_username">Benutzernamen ändern</string>
+    <string name="brief_description">Kurze Beschreibung</string>
+    <string name="update_email">E-Mail aktualisieren</string>
+    <string name="update_address">Adresse aktualisieren</string>
+    <string name="update_country">Land aktualisieren</string>
+    <string name="update_password">Passwort erneuern</string>
+    <string name="update">AKTUALISIEREN</string>
+
+    <string name="address_fetching">Adresse wird abgerufen ...</string>
+    <string name="email">Email</string>
+</resources>

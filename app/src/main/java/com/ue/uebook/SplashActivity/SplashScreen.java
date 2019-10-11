@@ -1,8 +1,11 @@
 package com.ue.uebook.SplashActivity;
 
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.DisplayMetrics;
 import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,6 +23,8 @@ import com.ue.uebook.Quickblox_Chat.utils.ui.activity.LoginActivity;
 import com.ue.uebook.R;
 import com.ue.uebook.SessionManager;
 
+import java.util.Locale;
+
 public class SplashScreen extends AppCompatActivity {
     private Handler myHandler;
     private Runnable myRunnable;
@@ -31,6 +36,7 @@ public class SplashScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
         showSplashimage();
+        setLocale(new SessionManager(getApplicationContext()).getCurrentLanguage());
         if (SharedPrefsHelper.getInstance().hasQbUser()) {
             restoreChatSession();
         }
@@ -122,5 +128,14 @@ public class SplashScreen extends AppCompatActivity {
                 }
             }
         });
+    }
+    public void setLocale(String lang) {
+        Locale myLocale = new Locale(lang);
+        Resources res = getResources();
+        DisplayMetrics dm = res.getDisplayMetrics();
+        Configuration conf = res.getConfiguration();
+        conf.locale = myLocale;
+        res.updateConfiguration(conf, dm);
+
     }
 }

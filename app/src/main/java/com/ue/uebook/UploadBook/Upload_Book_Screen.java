@@ -475,7 +475,6 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
             @Override
             public void onUIProgressStart(long totalBytes) {
                 super.onUIProgressStart(totalBytes);
-                Log.e("TAG", "onUIProgressStart:" + totalBytes);
                 Toast.makeText(getApplicationContext(), "Uploading Start", Toast.LENGTH_SHORT).show();
 
             }
@@ -493,7 +492,6 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
             @Override
             public void onUIProgressFinish() {
                 super.onUIProgressFinish();
-                Log.e("TAG", "onUIProgressFinish:");
                 Toast.makeText(getApplicationContext(), "Successfully Uploaded", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(Upload_Book_Screen.this, HomeScreen.class);
                 startActivity(intent);

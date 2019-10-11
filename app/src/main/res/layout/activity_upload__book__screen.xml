@@ -25,7 +25,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="Upload Book"
+            android:text="@string/upload_book"
             android:textColor="@color/white"
             android:textSize="@dimen/size_18"></TextView>
 
@@ -63,7 +63,7 @@
             style="@style/TextInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Book Title"
+            android:hint="@string/book_title"
             app:errorEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -85,7 +85,7 @@
                 style="@style/TextInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Book Description"
+                android:hint="@string/book_description"
                 app:errorEnabled="true">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -113,7 +113,7 @@
             style="@style/TextInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Book Author"
+            android:hint="@string/book_author"
             app:errorEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -167,7 +167,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="@dimen/size_15"
-                android:text="Upload Cover Image"
+                android:text="@string/upload_cover_image"
                 android:textColor="@color/black"
                 android:textSize="@dimen/size_16">
 
@@ -202,7 +202,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="@dimen/size_20"
-                android:text="Book Assignment"
+                android:text="@string/book_assigment"
                 android:layout_centerVertical="true"
                 android:textColor="@color/black"
                 android:textSize="@dimen/size_16">
@@ -212,7 +212,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:text="Add"
+                android:text="@string/add"
                 android:background="@android:color/transparent"
                 android:layout_gravity="end"></Button>
 
@@ -231,7 +231,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="@dimen/size_20"
             android:layout_marginTop="@dimen/size_16"
-            android:text="Upload more Multimedia File"
+            android:text="@string/upload_more_multimedia_file"
             android:textColor="@color/black"
             android:textSize="@dimen/size_16">
 
@@ -336,7 +336,7 @@
             android:layout_marginTop="@dimen/size_40"
             android:layout_marginRight="@dimen/size_8"
             android:background="@drawable/createacount_bg"
-            android:text="PUBLISH BOOK"
+            android:text="@string/publish_book"
             android:textAllCaps="true"
             android:layout_marginBottom="@dimen/size_20"
             android:textColor="@color/white"></Button>

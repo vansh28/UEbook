@@ -21,7 +21,7 @@
             android:id="@+id/edit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="EDIT PROFILE"
+            android:text="@string/edit_profile"
             android:textStyle="bold"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/size_10"
@@ -95,7 +95,7 @@
                 style="@style/TextInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Change Username"
+                android:hint="@string/change_username"
                 app:errorEnabled="true">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -111,7 +111,7 @@
                 style="@style/TextInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Brief Description"
+                android:hint="@string/brief_description"
                 app:errorEnabled="true">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -124,7 +124,7 @@
                 style="@style/TextInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Update Email"
+                android:hint="@string/update_email"
                 app:errorEnabled="true">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -139,7 +139,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:visibility="gone"
-                android:hint="Update Address"
+                android:hint="@string/update_address"
                 app:errorEnabled="true">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -154,7 +154,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/size_5"
-                android:hint=" Update Country"
+                android:hint="@string/update_country"
                 app:errorEnabled="true">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -172,7 +172,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/size_10"
                 android:visibility="gone"
-                android:hint=" Update Password"
+                android:hint="@string/update_password"
                 app:errorEnabled="true">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -207,7 +207,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/size_50"
-                android:text="UPDATE"
+                android:text="@string/update"
                 android:textAllCaps="true"
                 android:layout_marginTop="@dimen/size_25"
                 android:layout_marginLeft="@dimen/size_8"

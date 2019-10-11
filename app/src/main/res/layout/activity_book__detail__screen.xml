@@ -114,7 +114,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="20sp"
-                android:text="Book Descriptioon"
+                android:text="@string/book_descriptioon"
                 android:layout_margin="12dp"
                 android:textStyle="bold"
                 android:textColor="@color/black"/>
@@ -139,14 +139,14 @@
         android:gravity="bottom"
         android:layout_marginLeft="@dimen/size_18"
         android:textAllCaps="false"
-        android:text="Read Full Book">
+        android:text="@string/read_full_book">
     </TextView>
 
     <TextView
         android:id="@+id/book_asignment"
         android:layout_width="match_parent"
         android:layout_marginTop="@dimen/size_10"
-        android:text="Click for Book Assignment"
+        android:text="@string/click_for_book_assignment"
         android:layout_marginLeft="@dimen/size_18"
         android:textColor="@color/colorAccent"
         android:textStyle="italic"
@@ -170,7 +170,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="20sp"
-                    android:text="Share Stories On"
+                    android:text="@string/share_stories_on"
                     android:layout_marginLeft="10dp"
                     android:textStyle="bold"
                     android:textColor="@color/black"/>
@@ -230,7 +230,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="20sp"
-                    android:text="Rate This Book"
+                    android:text="@string/rate_this_book"
                     android:layout_marginLeft="12dp"
                     android:layout_marginTop="@dimen/size_10"
                     android:textStyle="bold"
@@ -287,7 +287,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="20sp"
-                    android:text="Reviews"
+                    android:text="@string/reviews"
                     android:layout_marginLeft="12dp"
                     android:layout_marginTop="@dimen/size_10"
                     android:textStyle="bold"
@@ -297,7 +297,7 @@
                     style="@style/TextInputLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Write your Comments"
+                    android:hint="@string/write_your_comments"
                     android:layout_marginTop="@dimen/size_10"
                     app:errorEnabled="true">
 
@@ -314,7 +314,7 @@
                     android:id="@+id/submit_comment"
                     android:layout_width="@dimen/size_150"
                     android:layout_marginLeft="@dimen/size_12"
-                    android:text="SUBMIT"
+                    android:text="@string/submit"
                     android:padding="@dimen/size_10"
                     android:background="@drawable/submitbg"
                     android:textSize="@dimen/size_15"
@@ -328,7 +328,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="20sp"
-                    android:text="Top Reviews"
+                    android:text="@string/top_reviews"
                     android:layout_marginLeft="12dp"
                     android:layout_marginTop="@dimen/size_15"
                     android:visibility="gone"

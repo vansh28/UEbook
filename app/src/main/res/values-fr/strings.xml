@@ -28,4 +28,40 @@
     <string name="contact_us">Contactez-nous</string>
     <string name="enter_the_name_of_book_or_author">Entrez le nom du livre ou de l\'auteur</string>
     <string name="bookmark_book">Livre de signets</string>
+
+    <string name="help">Aidez-moi</string>
+
+    <string name="book_descriptioon">Livre Descriptioon</string>
+    <string name="read_full_book">Lire le livre en entier</string>
+    <string name="click_for_book_assignment">Cliquez pour assigner un livre</string>
+    <string name="share_stories_on">Partager des histoires sur</string>
+    <string name="rate_this_book">Noter ce livre</string>
+    <string name="reviews">Commentaires</string>
+    <string name="write_your_comments">Écrivez vos commentaires</string>
+    <string name="submit">SOUMETTRE</string>
+    <string name="top_reviews">Top Commentaires</string>
+    <string name="book_assigment">Assignation de livre</string>
+
+
+
+    <string name="book_title">Titre de livre</string>
+    <string name="book_description">Description du livre</string>
+    <string name="book_author">Auteur du livre</string>
+    <string name="upload_cover_image">Télécharger l\'image de couverture</string>
+    <string name="add">Ajouter</string>
+    <string name="upload_more_multimedia_file">Télécharger plus de fichier multimédia</string>
+    <string name="publish_book">LIVRE PUBLIC</string>
+
+    <string name="change_username">Changer le nom d\'utilisateur</string>
+    <string name="brief_description">Brève description</string>
+    <string name="update_email">Mettre à jour l\'email</string>
+    <string name="update_address">Mettre à jour l\'adresse</string>
+    <string name="update_country">Mettre à jour le pays</string>
+    <string name="update_password">Mettre à jour le mot de passe</string>
+    <string name="update">MISE À JOUR</string>
+
+    <string name="address_fetching">Récupération d\'adresse ...</string>
+
+    <string name="email">Email</string>
+
 </resources>

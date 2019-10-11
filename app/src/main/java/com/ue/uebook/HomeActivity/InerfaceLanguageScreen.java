@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.ue.uebook.HomeActivity.HomeFragment.Adapter.Language_adapter;
 import com.ue.uebook.R;
+import com.ue.uebook.SessionManager;
 
 import java.util.Locale;
 
@@ -23,8 +24,8 @@ public class InerfaceLanguageScreen extends AppCompatActivity implements Languag
 
     private RecyclerView language_List;
     private Language_adapter language_adapter;
-    private String[] language = {"English", "Franch"};
-    private String[] language_name = {"English", "Franch"};
+    private String[] language = {"English", "French" ,"German","Spanish"};
+    private String[] language_name = {"en", "fr","de","es"};
     private ImageButton back_btn_language;
 
     @Override
@@ -60,6 +61,7 @@ public class InerfaceLanguageScreen extends AppCompatActivity implements Languag
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         setLocale(value);
+                        new SessionManager(getApplicationContext()).setCurrentLanguage(value);
                         dialog.cancel();
                     }
                 })
@@ -80,8 +82,9 @@ public class InerfaceLanguageScreen extends AppCompatActivity implements Languag
         conf.locale = myLocale;
         res.updateConfiguration(conf, dm);
         Intent refresh = new Intent(this, HomeScreen.class);
-        finish();
+        refresh.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(refresh);
+        finish();
     }
 
     @Override

@@ -120,7 +120,7 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
         bookmark_btn.setOnClickListener(this);
         back_btn_Deatils.setOnClickListener(this);
         review_List = findViewById(R.id.review_List);
-        SpannableString content = new SpannableString("Click here for Book Assignment");
+        SpannableString content = new SpannableString(getResources().getString(R.string.click_for_book_assignment));
         content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
         book_asignment.setText(content);
         LinearLayoutManager linearLayoutManagerList = new LinearLayoutManager(this);

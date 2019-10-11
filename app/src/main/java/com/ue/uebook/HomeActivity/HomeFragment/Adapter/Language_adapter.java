@@ -21,7 +21,7 @@ public class Language_adapter extends RecyclerView.Adapter<Language_adapter.MyVi
     private String[] language_name;
     private Context context;
     private Boolean isSelectedLanguage = false;
-    private String val []={"en","fr"};
+    private String val []={"en", "fr","de","es"};
 
     private static CheckBox lastChecked = null;
     private static int mCheckedPostion = 0;
