@@ -54,7 +54,20 @@
     <string name="update_country">Actualizar país</string>
     <string name="update_password">Actualiza contraseña</string>
     <string name="update">ACTUALIZAR</string>
-
+    <string name="uploadby">Subir por :</string>
     <string name="address_fetching">Recuperación de direcciones ...</string>
     <string name="email"></string>
+
+    <string name="nobookmark">Sin lista de marcadores</string>
+    <string name="notepad">No se encontraron notas</string>
+    <string name="enter_your_word">Ingrese su palabra</string>
+    <string name="delete">Eliminar</string>
+    <string name="post">Enviar -</string>
+    <string name="contact_number">Número de contacto</string>
+    <string name="write_your_message">escribe tu mensaje</string>
+
+    <string name="send">ENVIAR</string>
+    <string name="your_notes">Tus notas</string>
+    <string name="write_your_notes_here">Escriba sus notas aquí :</string>
+    <string name="update_notes">Notas de actualización</string>
 </resources>

@@ -10,7 +10,7 @@
     <item
         android:id="@+id/delete_menu"
         android:icon="@drawable/ic_dashboard_black_24dp"
-        android:title="Delete" />
+        android:title="@string/delete" />
 
 
 </menu>

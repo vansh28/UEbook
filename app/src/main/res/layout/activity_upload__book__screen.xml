@@ -36,8 +36,8 @@
             android:layout_alignParentRight="true"
             android:layout_marginRight="@dimen/size_18"
             android:padding="@dimen/size_5"
-            android:visibility="gone"
             android:src="@drawable/imageprofile"
+            android:visibility="gone"
             app:civ_border_color="#ffffff"
             app:civ_border_width="2dp" />
     </RelativeLayout>
@@ -45,303 +45,332 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="@dimen/size_5"
-        android:layout_marginTop="@dimen/size_10"
-        android:layout_marginRight="@dimen/size_5"
-        android:orientation="vertical">
-
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/TextInputLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/book_title"
-            app:errorEnabled="true">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/bookTitle_edit_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:weightSum="5"
-            android:orientation="horizontal">
             <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="4.5">
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/TextInputLayout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/book_description"
-                app:errorEnabled="true">
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/size_5"
+                android:layout_marginTop="@dimen/size_10"
+                android:layout_marginRight="@dimen/size_5"
+                android:orientation="vertical">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/bookDesc_edit_text"
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/TextInputLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="start"
-                    android:minHeight="@dimen/size_100" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:hint="@string/book_title"
+                    app:errorEnabled="true">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/bookTitle_edit_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="5">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="4.5">
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/TextInputLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/book_description"
+                            app:errorEnabled="true">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/bookDesc_edit_text"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="start"
+                                android:minHeight="@dimen/size_100" />
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </LinearLayout>
+
+                    <ImageButton
+                        android:id="@+id/recordbtn"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/size_15"
+                        android:layout_weight=".5"
+                        android:background="@android:color/transparent"
+                        android:src="@drawable/audio"
+                        android:visibility="visible">
+
+                    </ImageButton>
+
+                </LinearLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/TextInputLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/book_author"
+                    app:errorEnabled="true">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/authorName_edit_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="@dimen/size_5"
+                    android:layout_marginTop="@dimen/size_10"
+                    android:layout_marginRight="@dimen/size_5"
+                    android:background="@drawable/spinnerbg"
+                    android:orientation="horizontal">
+
+                    <Spinner
+                        android:id="@+id/book_category"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:paddingLeft="@dimen/size_5"
+                        android:spinnerMode="dropdown">
+
+                    </Spinner>
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/upload_cover_bookBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/size_60"
+                    android:layout_marginLeft="@dimen/size_5"
+                    android:layout_marginTop="@dimen/size_15"
+                    android:layout_marginRight="@dimen/size_5"
+                    android:background="@drawable/buttonbg">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="@dimen/size_20"></ImageView>
+
+                    <TextView
+                        android:id="@+id/uploadcover_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="@dimen/size_15"
+                        android:text="@string/upload_cover_image"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/size_16">
+
+                    </TextView>
+
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:id="@+id/cover_image_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/size_80"
+                    android:layout_marginTop="@dimen/size_10"
+                    android:paddingRight="@dimen/size_10"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:id="@+id/cover_image_preview"
+                        android:layout_width="80dp"
+                        android:layout_height="match_parent"
+                        android:layout_margin="@dimen/size_10">
+
+                    </ImageView>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_10"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="@dimen/size_20"
+                        android:text="@string/book_assigment"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/size_16"></TextView>
+
+                    <Button
+                        android:id="@+id/add_question"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_gravity="end"
+                        android:background="@android:color/transparent"
+                        android:text="@string/add"></Button>
+
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:id="@+id/question_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/size_10"
+                    android:orientation="vertical"></LinearLayout>
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/size_20"
+                    android:layout_marginTop="@dimen/size_16"
+                    android:text="@string/upload_more_multimedia_file"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/size_16">
+
+                </TextView>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/size_60"
+                    android:layout_marginLeft="@dimen/size_5"
+                    android:layout_marginTop="@dimen/size_10"
+                    android:layout_marginRight="@dimen/size_5"
+                    android:background="@drawable/buttonbg"
+                    android:orientation="horizontal"
+                    android:weightSum="3">
+
+                    <ImageView
+                        android:id="@+id/camera_btn"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:src="@drawable/bcamera"
+                        android:visibility="gone"></ImageView>
+
+                    <ImageView
+                        android:id="@+id/video_Btn"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:src="@drawable/video"></ImageView>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight=".2">
+
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:background="@color/black"></View>
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/audio_Btn"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight=".8"
+                        android:src="@drawable/audio"></ImageView>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight=".2">
+
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:background="@color/black"></View>
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/documents_Btn"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight=".8"
+                        android:src="@drawable/document"></ImageView>
+
+                </LinearLayout>
+
+                <ProgressBar
+                    android:id="@+id/upload_progress"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:max="100"
+                    android:progress="0"
+                    android:visibility="gone" />
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/filname_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/size_20"
+                    android:layout_marginTop="@dimen/size_10"
+                    android:clickable="true"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/size_17"
+                    android:visibility="gone"></TextView>
+                    <TextView
+                        android:id="@+id/audioname_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/size_20"
+                        android:layout_marginTop="@dimen/size_10"
+                        android:clickable="true"
+                        android:layout_below="@+id/filname_view"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="@dimen/size_17"
+                        android:visibility="gone"></TextView>
+
+                </RelativeLayout>
+
+
+                <VideoView
+                    android:id="@+id/videoview"
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
+                    android:layout_margin="15dp"
+                    android:visibility="gone" />
+
+                <Button
+                    android:id="@+id/publish_book"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/size_8"
+                    android:layout_marginTop="@dimen/size_40"
+                    android:layout_marginRight="@dimen/size_8"
+                    android:layout_marginBottom="@dimen/size_20"
+                    android:background="@drawable/createacount_bg"
+                    android:text="@string/publish_book"
+                    android:textAllCaps="true"
+                    android:textColor="@color/white"></Button>
+
             </LinearLayout>
-   <ImageButton
-       android:id="@+id/recordbtn"
-       android:layout_width="0dp"
-       android:layout_weight=".5"
-       android:src="@drawable/audio"
-       android:visibility="visible"
-       android:layout_marginTop="@dimen/size_15"
-       android:background="@android:color/transparent"
-       android:layout_height="wrap_content">
-
-   </ImageButton>
-
-        </LinearLayout>
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/TextInputLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/book_author"
-            app:errorEnabled="true">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/authorName_edit_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:background="@drawable/spinnerbg"
-            android:layout_marginLeft="@dimen/size_5"
-            android:layout_marginRight="@dimen/size_5"
-            android:layout_marginTop="@dimen/size_10"
-            android:orientation="horizontal">
-
-            <Spinner
-                android:id="@+id/book_category"
-                android:layout_width="match_parent"
-                android:layout_gravity="center_vertical"
-                android:spinnerMode="dropdown"
-                android:paddingLeft="@dimen/size_5"
-                android:layout_height="wrap_content">
-
-            </Spinner>
-
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:id="@+id/upload_cover_bookBtn"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/size_60"
-            android:layout_marginLeft="@dimen/size_5"
-            android:layout_marginTop="@dimen/size_15"
-            android:layout_marginRight="@dimen/size_5"
-            android:background="@drawable/buttonbg">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="@dimen/size_20"
-               ></ImageView>
-
-            <TextView
-                android:id="@+id/uploadcover_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="@dimen/size_15"
-                android:text="@string/upload_cover_image"
-                android:textColor="@color/black"
-                android:textSize="@dimen/size_16">
-
-            </TextView>
-
-        </LinearLayout>
-
-        <RelativeLayout
-            android:id="@+id/cover_image_layout"
-            android:layout_width="match_parent"
-            android:layout_marginTop="@dimen/size_10"
-            android:paddingRight="@dimen/size_10"
-            android:visibility="gone"
-            android:layout_height="@dimen/size_80">
-            <ImageView
-                android:id="@+id/cover_image_preview"
-                android:layout_width="80dp"
-                android:layout_margin="@dimen/size_10"
-                android:layout_height="match_parent">
-
-            </ImageView>
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/size_10"
-            android:orientation="horizontal">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="@dimen/size_20"
-                android:text="@string/book_assigment"
-                android:layout_centerVertical="true"
-                android:textColor="@color/black"
-                android:textSize="@dimen/size_16">
-            </TextView>
-            <Button
-                android:id="@+id/add_question"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:text="@string/add"
-                android:background="@android:color/transparent"
-                android:layout_gravity="end"></Button>
-
-        </RelativeLayout>
-        <LinearLayout
-            android:id="@+id/question_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/size_10"
-            android:orientation="vertical"></LinearLayout>
-
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="@dimen/size_20"
-            android:layout_marginTop="@dimen/size_16"
-            android:text="@string/upload_more_multimedia_file"
-            android:textColor="@color/black"
-            android:textSize="@dimen/size_16">
-
-        </TextView>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/size_60"
-            android:layout_marginLeft="@dimen/size_5"
-            android:layout_marginTop="@dimen/size_10"
-            android:layout_marginRight="@dimen/size_5"
-            android:background="@drawable/buttonbg"
-            android:orientation="horizontal"
-            android:weightSum="3">
-
-            <ImageView
-                android:id="@+id/camera_btn"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="1"
-                android:visibility="gone"
-                android:src="@drawable/bcamera"></ImageView>
-            <ImageView
-                android:id="@+id/video_Btn"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="1"
-                android:src="@drawable/video"></ImageView>
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight=".2">
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:background="@color/black"></View>
-            </LinearLayout>
-
-            <ImageView
-                android:id="@+id/audio_Btn"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_weight=".8"
-                android:src="@drawable/audio"></ImageView>
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight=".2">
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:background="@color/black"></View>
-            </LinearLayout>
-
-            <ImageView
-                android:id="@+id/documents_Btn"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_weight=".8"
-                android:src="@drawable/document"></ImageView>
-
-        </LinearLayout>
-        <ProgressBar
-            android:id="@+id/upload_progress"
-            style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:max="100"
-            android:visibility="gone"
-            android:progress="0"
-            />
-<TextView
-    android:id="@+id/filname_view"
-    android:layout_width="wrap_content"
-    android:layout_marginTop="@dimen/size_10"
-    android:layout_marginLeft="@dimen/size_20"
-    android:textSize="@dimen/size_17"
-    android:visibility="visible"
-    android:clickable="true"
-    android:textColor="@color/colorPrimary"
-    android:layout_height="wrap_content">
-
-</TextView>
-
-        <VideoView
-            android:id="@+id/videoview"
-            android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:visibility="gone"
-            android:layout_margin="15dp"
-            />
-
-        <Button
-            android:id="@+id/publish_book"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/size_8"
-            android:layout_marginTop="@dimen/size_40"
-            android:layout_marginRight="@dimen/size_8"
-            android:background="@drawable/createacount_bg"
-            android:text="@string/publish_book"
-            android:textAllCaps="true"
-            android:layout_marginBottom="@dimen/size_20"
-            android:textColor="@color/white"></Button>
-
-    </LinearLayout>
 
         </LinearLayout>
     </ScrollView>

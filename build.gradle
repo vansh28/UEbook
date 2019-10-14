@@ -13,7 +13,6 @@ buildscript {
         // in the individual module build.gradle files
     }
 }
-
 allprojects {
     repositories {
         google()
@@ -58,25 +57,17 @@ ext.versions = [
 ext {
     compileSdkVersion = 28
     buildToolsVersion = "28.0.3"
-
     minSdkVersion = 14
     targetSdkVersion = 28
-
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
-
     lintAbortOnError = false
-
     dimensionDefault = 'default'
-
     lintAbortOnError = false
-
     // QuickBlox SDK version
     qbSdkVersion = '3.9.1'
-
     //Firebase
     firebaseCoreVersion = '16.0.8'
-
     //Material
     materialVersion = '1.0.0'
 
@@ -99,10 +90,8 @@ ext {
 
     //Swipy
     swipyVersion = '1.2.3'
-
     //Crashlytics
     crashlyticsVersion = '2.9.5'
-
     //Fabric
     fabricToolsVersion = '1.27.0'
 }

@@ -27,6 +27,7 @@ public class InerfaceLanguageScreen extends AppCompatActivity implements Languag
     private String[] language = {"English", "French" ,"German","Spanish"};
     private String[] language_name = {"en", "fr","de","es"};
     private ImageButton back_btn_language;
+    private int id= 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,10 +36,21 @@ public class InerfaceLanguageScreen extends AppCompatActivity implements Languag
         language_List = findViewById(R.id.language_list);
         back_btn_language = findViewById(R.id.back_btn_language);
         back_btn_language.setOnClickListener(this);
+        String lang = new SessionManager(getApplicationContext()).getCurrentLanguage();
+        if (lang.equalsIgnoreCase("en")) {
+            id=0;
+        } else if (lang.equalsIgnoreCase("fr")) {
+            id=1;
+        } else if (lang.equalsIgnoreCase("de")) {
+            id=2;
+        } else if (lang.equalsIgnoreCase("es")) {
+            id=3;
+        }
+
         LinearLayoutManager linearLayoutManagerPopularList = new LinearLayoutManager(this);
         linearLayoutManagerPopularList.setOrientation(LinearLayoutManager.VERTICAL);
         language_List.setLayoutManager(linearLayoutManagerPopularList);
-        language_adapter = new Language_adapter(getApplicationContext(), language, language_name);
+        language_adapter = new Language_adapter(getApplicationContext(), language, language_name ,id);
         language_List.setAdapter(language_adapter);
         language_adapter.setItemClickListener(this);
 
@@ -60,8 +72,9 @@ public class InerfaceLanguageScreen extends AppCompatActivity implements Languag
                 .setCancelable(false)
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        setLocale(value);
                         new SessionManager(getApplicationContext()).setCurrentLanguage(value);
+                        setLocale(value);
+
                         dialog.cancel();
                     }
                 })
@@ -89,6 +102,7 @@ public class InerfaceLanguageScreen extends AppCompatActivity implements Languag
 
     @Override
     public void onItemClick(int position, String value) {
+
         confirmLanguageDialog(value);
     }
 }

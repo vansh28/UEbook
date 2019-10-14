@@ -34,7 +34,7 @@
     <EditText
         android:id="@+id/word"
         android:layout_width="match_parent"
-        android:hint="Enter your Word"
+        android:hint="@string/enter_your_word"
         android:layout_margin="@dimen/size_15"
         android:layout_height="wrap_content"></EditText>
     <Button

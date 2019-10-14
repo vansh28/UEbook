@@ -239,6 +239,7 @@ public class UserMainFragment extends Fragment implements View.OnClickListener, 
                         new SessionManager(getActivity().getApplicationContext()).clearUserCredentials();
                         Intent intent = new Intent(getContext(), LoginScreen.class);
                         getContext().startActivity(intent);
+                        new SessionManager(getActivity().getApplicationContext()).setCurrentLanguage("en");
                         SharedPrefsHelper.getInstance().clearAllData();
                         getActivity().finish();
                     }

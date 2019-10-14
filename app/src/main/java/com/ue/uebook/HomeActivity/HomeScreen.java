@@ -3,10 +3,13 @@ package com.ue.uebook.HomeActivity;
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.util.DisplayMetrics;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
@@ -39,6 +42,7 @@ import com.ue.uebook.SessionManager;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 
 public class HomeScreen extends BaseActivity implements Home_Fragment.OnFragmentInteractionListener, Bookmark_Fragment.OnFragmentInteractionListener, User_Fragment.OnFragmentInteractionListener, Search_Fragment.OnFragmentInteractionListener, UserProfile_Fragment.OnFragmentInteractionListener, UserMainFragment.OnFragmentInteractionListener, CompanyInfo_Fragment.OnFragmentInteractionListener, NotepadFragment.OnFragmentInteractionListener, View.OnClickListener {
@@ -55,6 +59,7 @@ public class HomeScreen extends BaseActivity implements Home_Fragment.OnFragment
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
+        setLocale(new SessionManager(getApplicationContext()).getCurrentLanguage());
         addnotes_fab=findViewById(R.id.addnotes_fab);
         addnotes_fab.setVisibility(View.GONE);
         container=findViewById(R.id.container);
@@ -65,6 +70,7 @@ public class HomeScreen extends BaseActivity implements Home_Fragment.OnFragment
         displayCurrentAddress();
         toolbar = getSupportActionBar();
         intent = getIntent();
+
         int loginid= intent.getIntExtra("login",0);
         int id = intent.getIntExtra("id",0);
         if (loginid==1){
@@ -215,6 +221,15 @@ public class HomeScreen extends BaseActivity implements Home_Fragment.OnFragment
 
         }}
         return true;
+    }
+    public void setLocale(String lang) {
+        Locale myLocale = new Locale(lang);
+        Resources res = getResources();
+        DisplayMetrics dm = res.getDisplayMetrics();
+        Configuration conf = res.getConfiguration();
+        conf.locale = myLocale;
+        res.updateConfiguration(conf, dm);
+
     }
 }
 

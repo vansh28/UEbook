@@ -36,7 +36,7 @@
         style="@style/TextInputLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Email"
+        android:hint="@string/email"
         app:errorEnabled="true">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -49,7 +49,7 @@
         style="@style/TextInputLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Contact Number"
+        android:hint="@string/contact_number"
         app:errorEnabled="true">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -64,7 +64,7 @@
         style="@style/TextInputLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Write your message"
+        android:hint="@string/write_your_message"
         app:errorEnabled="true">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -78,7 +78,7 @@
         android:id="@+id/send_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="SEND"
+        android:text="@string/send"
         android:textAllCaps="true"
         android:layout_marginTop="@dimen/size_25"
         android:layout_marginLeft="@dimen/size_8"

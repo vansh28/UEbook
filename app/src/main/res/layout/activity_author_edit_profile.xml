@@ -65,7 +65,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/username"
-            android:text="Address fetching..."
+            android:text="@string/address_fetching"
             android:textColor="@color/white"
             android:textSize="@dimen/size_14"
             android:layout_centerHorizontal="true"

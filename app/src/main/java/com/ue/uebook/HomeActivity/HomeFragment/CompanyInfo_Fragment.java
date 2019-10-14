@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
@@ -16,6 +17,7 @@ import com.ue.uebook.Contactus.ContactusScreen;
 import com.ue.uebook.Help.HelpCenterScreen;
 import com.ue.uebook.HomeActivity.InerfaceLanguageScreen;
 import com.ue.uebook.R;
+import com.ue.uebook.SessionManager;
 import com.ue.uebook.ShareUtils;
 
 /**
@@ -35,9 +37,10 @@ public class CompanyInfo_Fragment extends Fragment implements View.OnClickListen
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    private RelativeLayout share_container ,language_container,contactUs_container,help_container,aboutUs_container;
+    private RelativeLayout share_container, language_container, contactUs_container, help_container, aboutUs_container;
 
     private OnFragmentInteractionListener mListener;
+    private TextView language_name;
 
     public CompanyInfo_Fragment() {
         // Required empty public constructor
@@ -75,17 +78,28 @@ public class CompanyInfo_Fragment extends Fragment implements View.OnClickListen
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_company_info_, container, false);
-        share_container=view.findViewById(R.id.share_container);
-        language_container=view.findViewById(R.id.language_container);
-        contactUs_container=view.findViewById(R.id.contactUs_container);
-        help_container=view.findViewById(R.id.help_container);
-        aboutUs_container=view.findViewById(R.id.aboutUs_container);
+        share_container = view.findViewById(R.id.share_container);
+        language_container = view.findViewById(R.id.language_container);
+        contactUs_container = view.findViewById(R.id.contactUs_container);
+        help_container = view.findViewById(R.id.help_container);
+        language_name = view.findViewById(R.id.language_name);
+        aboutUs_container = view.findViewById(R.id.aboutUs_container);
         help_container.setOnClickListener(this);
         aboutUs_container.setOnClickListener(this);
         contactUs_container.setOnClickListener(this);
         language_container.setOnClickListener(this);
         share_container.setOnClickListener(this);
-        return  view;
+        String lang = new SessionManager(getActivity().getApplicationContext()).getCurrentLanguage();
+        if (lang.equalsIgnoreCase("en")) {
+            langName(1);
+        } else if (lang.equalsIgnoreCase("fr")) {
+            langName(2);
+        } else if (lang.equalsIgnoreCase("de")) {
+            langName(3);
+        } else if (lang.equalsIgnoreCase("es")) {
+            langName(4);
+        }
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -114,30 +128,27 @@ public class CompanyInfo_Fragment extends Fragment implements View.OnClickListen
 
     @Override
     public void onClick(View view) {
-        if (view==share_container){
+        if (view == share_container) {
 
-            ShareUtils.shareToAllApp(getActivity(),"this is Uebook App");
-        }
-        else if (view == language_container){
-        Intent intent= new Intent(getContext(), InerfaceLanguageScreen.class);
-        getContext().startActivity(intent );
-        }
-        else if (view==contactUs_container){
-            Intent intent= new Intent(getContext(), ContactusScreen.class);
-            getContext().startActivity(intent );
+            ShareUtils.shareToAllApp(getActivity(), "this is Uebook App");
+        } else if (view == language_container) {
+            Intent intent = new Intent(getContext(), InerfaceLanguageScreen.class);
+            getContext().startActivity(intent);
+        } else if (view == contactUs_container) {
+            Intent intent = new Intent(getContext(), ContactusScreen.class);
+            getContext().startActivity(intent);
 
-        }
-        else if (view==aboutUs_container){
-            Intent intent= new Intent(getContext(), AboutusScreen.class);
-            getContext().startActivity(intent );
-        }
-        else if (view==help_container){
+        } else if (view == aboutUs_container) {
+            Intent intent = new Intent(getContext(), AboutusScreen.class);
+            getContext().startActivity(intent);
+        } else if (view == help_container) {
 
-            Intent intent= new Intent(getContext(), HelpCenterScreen.class);
-            getContext().startActivity(intent );
+            Intent intent = new Intent(getContext(), HelpCenterScreen.class);
+            getContext().startActivity(intent);
         }
 
     }
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -152,4 +163,33 @@ public class CompanyInfo_Fragment extends Fragment implements View.OnClickListen
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
+    @Override
+    public void onResume() {
+
+
+        super.onResume();
+    }
+
+    private void langName(int id) {
+        switch (id) {
+            case 1:
+                language_name.setText("English");
+                break;
+            case 2:
+                language_name.setText("French");
+                break;
+            case 3:
+                language_name.setText("German");
+                break;
+            case 4:
+                language_name.setText("Spanish");
+                break;
+
+            default:
+                language_name.setText("English");
+                break;
+        }
+    }
 }
+

@@ -285,7 +285,7 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
                         ulpoadByUserId=form.getData().getUser_id();
                         SpannableString content = new SpannableString(form.getData().getUser_name());
                         content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
-                        book_uploadBy.setText("Upload by : "+ content);
+                        book_uploadBy.setText(getResources().getString(R.string.uploadby)+ content);
                         bookDesc.setText(form.getData().getBook_description());
                         videourl=form.getData().getVideo_url();
                         docurl=form.getData().getPdf_url();

@@ -233,5 +233,15 @@
     <string name="update">UPDATE</string>
     <string name="address_fetching">Address fetching...</string>
     <string name="email">Email</string>
+    <string name="delete">Delete</string>
+    <string name="enter_your_word">Enter your Word</string>
+    <string name="post">Post -</string>
+    <string name="contact_number">Contact Number</string>
+    <string name="write_your_message">Write your message</string>
+    <string name="send">SEND</string>
+    <string name="uploadby">Upload by :</string>
+    <string name="your_notes">Your Notes</string>
+    <string name="write_your_notes_here">Write Your Notes here :</string>
+    <string name="update_notes">Update Notes</string>
 
 </resources>
