@@ -1,7 +1,9 @@
 package com.ue.uebook.AuthorProfileActivity;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -37,7 +39,7 @@ import java.io.IOException;
 public class AuthorProfileScreen extends BaseActivity implements View.OnClickListener ,Author_BookListAdapter.BookItemClick{
     private ImageView backbtn, author_profile;
     private RecyclerView post_list;
-    private TextView author_name, author_desc, author_post_count, author_follower, author_following,publisher_type;
+    private TextView author_name, postView,author_desc, author_post_count, author_follower, author_following,publisher_type;
     private Button follow_To_author, emailToAuthor,editProfile;
     private Author_BookListAdapter author_postAdapter;
     private Intent intent;
@@ -46,6 +48,7 @@ public class AuthorProfileScreen extends BaseActivity implements View.OnClickLis
     private LinearLayout editt_profile_view,sendRequest_view;
     private int id;
     private String authorEmail=" ";
+    private int textSize;
 
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -54,11 +57,13 @@ public class AuthorProfileScreen extends BaseActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_author_profile_screen);
         intent = getIntent();
+        fontsize();
         userID=intent.getStringExtra("userID");
         editt_profile_view=findViewById(R.id.editt_profile_view);
         sendRequest_view=findViewById(R.id.sendRequest_view);
         editProfile=findViewById(R.id.editt_profile);
         editProfile.setOnClickListener(this);
+        postView=findViewById(R.id.postView);
         backbtn = findViewById(R.id.back_author_profile);
         author_profile = findViewById(R.id.profile_author);
         pullTorfrsh=findViewById(R.id.swipe_refresh_layout);
@@ -71,7 +76,11 @@ public class AuthorProfileScreen extends BaseActivity implements View.OnClickLis
         follow_To_author = findViewById(R.id.follow_btn);
         emailToAuthor = findViewById(R.id.email_btn);
         publisher_type=findViewById(R.id.publisher_type);
-
+        editProfile.setTextSize(textSize);
+        author_desc.setTextSize(textSize);
+        author_name.setTextSize(textSize);
+        postView.setTextSize(textSize);
+        emailToAuthor.setTextSize(textSize);
 
          id = intent.getIntExtra("id",0);
         if (id==1){
@@ -164,7 +173,7 @@ public class AuthorProfileScreen extends BaseActivity implements View.OnClickLis
                         authorEmail=form.getData().getEmail();
                         if (form.getBooklist()!=null){
                             post_list.setVisibility(View.VISIBLE);
-                            author_postAdapter = new Author_BookListAdapter(AuthorProfileScreen.this,form.getBooklist(),id);
+                            author_postAdapter = new Author_BookListAdapter(AuthorProfileScreen.this,form.getBooklist(),id,textSize);
                             post_list.setAdapter(author_postAdapter);
                             author_postAdapter.setItemClickListener(AuthorProfileScreen.this);
                             author_post_count.setText(String.valueOf(form.getBooklist().size()));
@@ -355,6 +364,24 @@ public class AuthorProfileScreen extends BaseActivity implements View.OnClickLis
 
         builder.show();
     }
+    private void fontsize(){
+        SharedPreferences pref = getSharedPreferences(getPackageName() + "_preferences", Context.MODE_PRIVATE);
+        switch(pref.getString("font_size", "normal")) {
+            case "smallest":
+                textSize = 12;
+                break;
+            case "small":
+                textSize = 14;
+                break;
+            case "normal":
+                textSize = 16;
+                break;
+            case "large":
+                textSize = 18;
+                break;
+            case "largest":
+                textSize = 24;
+                break;
+        }
 
-
-}
+}}

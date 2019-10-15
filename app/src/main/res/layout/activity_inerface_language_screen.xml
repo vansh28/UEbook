@@ -33,9 +33,23 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/language_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_margin="@dimen/size_10">
-
     </androidx.recyclerview.widget.RecyclerView>
 
+    <Button
+        android:id="@+id/fontview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:text="Font / Theme"
+        android:textSize="@dimen/size_17"
+        android:textAllCaps="false"
+        android:layout_margin="@dimen/size_10"
+        ></Button>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/size_1"
+        android:layout_marginTop="@dimen/size_5"
+        android:background="#d3d3d3"></View>
 </LinearLayout>

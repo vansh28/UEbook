@@ -28,10 +28,12 @@ public class Search_History_Adapter   extends RecyclerView.Adapter<Search_Histor
     private List<HomeListing>dataList;
     private List<HomeListing> arraylist=null;
     private AppCompatActivity mctx;
-    public Search_History_Adapter(AppCompatActivity mctx,List<HomeListing> data) {
+    private int textsize;
+    public Search_History_Adapter(AppCompatActivity mctx, List<HomeListing> data, int textSize) {
         this.dataList=data;
         this.arraylist = new ArrayList<HomeListing>();
         this.arraylist.addAll(data);
+        this.textsize=textSize;
         this.mctx=mctx;
     }
 
@@ -49,6 +51,8 @@ public class Search_History_Adapter   extends RecyclerView.Adapter<Search_Histor
     public Search_History_Adapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.popularlist_home_item, parent, false);
         Search_History_Adapter.MyViewHolder vh = new Search_History_Adapter.MyViewHolder(v); // pass the view to View Holder
+        vh.authorName.setTextSize(textsize);
+        vh.authorName.setTextSize(textsize);
         return vh;
     }
 

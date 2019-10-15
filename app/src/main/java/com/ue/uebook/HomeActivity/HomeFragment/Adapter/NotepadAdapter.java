@@ -20,8 +20,10 @@ import java.util.regex.Pattern;
 public class NotepadAdapter  extends RecyclerView.Adapter<NotepadAdapter.MyViewHolder>{
     private  NotepadItemClick notepadItemClickl;
     private List<NotepadUserList>data;
-    public NotepadAdapter(List<NotepadUserList> data) {
+    private int textsize;
+    public NotepadAdapter(List<NotepadUserList> data, int textSize) {
         this.data=data;
+        this.textsize=textSize;
     }
 
     public interface NotepadItemClick {
@@ -36,6 +38,7 @@ public class NotepadAdapter  extends RecyclerView.Adapter<NotepadAdapter.MyViewH
     public NotepadAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.notepad_item, parent, false);
         NotepadAdapter.MyViewHolder vh = new NotepadAdapter.MyViewHolder(v);
+         vh.textView.setTextSize(textsize);
         return vh;
     }
     @Override

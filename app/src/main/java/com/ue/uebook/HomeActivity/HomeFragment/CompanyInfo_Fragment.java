@@ -2,6 +2,7 @@ package com.ue.uebook.HomeActivity.HomeFragment;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -40,8 +41,8 @@ public class CompanyInfo_Fragment extends Fragment implements View.OnClickListen
     private RelativeLayout share_container, language_container, contactUs_container, help_container, aboutUs_container;
 
     private OnFragmentInteractionListener mListener;
-    private TextView language_name;
-
+    private TextView language_name,language_interface,shareview,helpview,aboutview,contactview;
+    private int textSize;
     public CompanyInfo_Fragment() {
         // Required empty public constructor
     }
@@ -67,6 +68,7 @@ public class CompanyInfo_Fragment extends Fragment implements View.OnClickListen
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+         fontsize();
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -84,6 +86,16 @@ public class CompanyInfo_Fragment extends Fragment implements View.OnClickListen
         help_container = view.findViewById(R.id.help_container);
         language_name = view.findViewById(R.id.language_name);
         aboutUs_container = view.findViewById(R.id.aboutUs_container);
+        language_interface=view.findViewById(R.id.language_interface);
+        shareview=view.findViewById(R.id.shareview);
+        helpview=view.findViewById(R.id.helpview);
+        aboutview=view.findViewById(R.id.aboutview);
+        contactview=view.findViewById(R.id.contactview);
+        language_interface.setTextSize(textSize);
+        shareview.setTextSize(textSize);
+        helpview.setTextSize(textSize);
+        aboutview.setTextSize(textSize);
+        contactview.setTextSize(textSize);
         help_container.setOnClickListener(this);
         aboutUs_container.setOnClickListener(this);
         contactUs_container.setOnClickListener(this);
@@ -99,6 +111,9 @@ public class CompanyInfo_Fragment extends Fragment implements View.OnClickListen
         } else if (lang.equalsIgnoreCase("es")) {
             langName(4);
         }
+
+
+
         return view;
     }
 
@@ -191,5 +206,28 @@ public class CompanyInfo_Fragment extends Fragment implements View.OnClickListen
                 break;
         }
     }
+
+    private void fontsize(){
+        SharedPreferences pref = getActivity().getSharedPreferences(getActivity().getPackageName() + "_preferences", Context.MODE_PRIVATE);
+        switch(pref.getString("font_size", "normal")) {
+            case "smallest":
+                textSize = 12;
+                break;
+            case "small":
+                textSize = 14;
+                break;
+            case "normal":
+                textSize = 16;
+                break;
+            case "large":
+                textSize = 18;
+                break;
+            case "largest":
+                textSize = 24;
+                break;
+        }
+
+    }
+
 }
 

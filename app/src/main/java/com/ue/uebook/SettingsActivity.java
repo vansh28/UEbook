@@ -1,13 +1,13 @@
 package com.ue.uebook;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.os.Build;
+import android.content.Intent;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
+
+import com.ue.uebook.HomeActivity.HomeScreen;
 
 public class SettingsActivity  extends PreferenceActivity implements Preference.OnPreferenceChangeListener{
 
@@ -24,17 +24,17 @@ public class SettingsActivity  extends PreferenceActivity implements Preference.
         // to reflect the new value, per the Android Design guidelines.
         bindPreferenceSummaryToValue(findPreference("theme"));
         bindPreferenceSummaryToValue(findPreference("font_size"));
-        bindPreferenceSummaryToValue(findPreference("sort_by"));
+//        bindPreferenceSummaryToValue(findPreference("sort_by"));
 
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            addPreferencesFromResource(R.xml.settings_preferences_md);
-            SharedPreferences pref = getSharedPreferences(getPackageName() + "_preferences", Context.MODE_PRIVATE);
-            findPreference("direct_edit").setOnPreferenceChangeListener(this);
-            findPreference("direct_edit").setEnabled(!pref.getBoolean("markdown", false));
-
-            findPreference("markdown").setOnPreferenceChangeListener(this);
-            findPreference("markdown").setEnabled(!pref.getBoolean("direct_edit", false));
-        }
+//        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            addPreferencesFromResource(R.xml.settings_preferences_md);
+//            SharedPreferences pref = getSharedPreferences(getPackageName() + "_preferences", Context.MODE_PRIVATE);
+//            findPreference("direct_edit").setOnPreferenceChangeListener(this);
+//            findPreference("direct_edit").setEnabled(!pref.getBoolean("markdown", false));
+//
+//            findPreference("markdown").setOnPreferenceChangeListener(this);
+//            findPreference("markdown").setEnabled(!pref.getBoolean("direct_edit", false));
+//        }
     }
 
     /**
@@ -51,6 +51,7 @@ public class SettingsActivity  extends PreferenceActivity implements Preference.
                 // the preference's 'entries' list.
                 ListPreference listPreference = (ListPreference) preference;
                 int index = listPreference.findIndexOfValue(stringValue);
+
 
                 // Set the summary to reflect the new value.
                 preference.setSummary(index >= 0 ? listPreference.getEntries()[index] : null);
@@ -84,7 +85,10 @@ public class SettingsActivity  extends PreferenceActivity implements Preference.
                 preference,
                 PreferenceManager.getDefaultSharedPreferences(
                         preference.getContext()).getString(preference.getKey(),
-                        ""));
+                        "")
+
+        );
+
     }
 
     @SuppressWarnings("deprecation")
@@ -97,8 +101,13 @@ public class SettingsActivity  extends PreferenceActivity implements Preference.
             case "markdown":
                 findPreference("direct_edit").setEnabled(!(Boolean) value);
                 break;
+
         }
 
         return true;
+    }
+    private void gotoh(){
+        Intent intent = new Intent(SettingsActivity.this, HomeScreen.class);
+        startActivity(intent);
     }
 }

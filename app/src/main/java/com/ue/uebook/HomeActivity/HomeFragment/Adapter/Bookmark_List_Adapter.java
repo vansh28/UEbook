@@ -27,11 +27,13 @@ public class Bookmark_List_Adapter extends RecyclerView.Adapter<Bookmark_List_Ad
     private BookmarkBookItemClick bookmarkBookItemClick;
     private AppCompatActivity context;
     private List<BookmarkBookList> bookList;
+    private int textsize;
 
 
-    public Bookmark_List_Adapter(AppCompatActivity context, List<BookmarkBookList> data) {
+    public Bookmark_List_Adapter(AppCompatActivity context, List<BookmarkBookList> data, int textSize) {
         this.bookList = data;
         this.context = context;
+        this.textsize=textSize;
     }
 
     public interface BookmarkBookItemClick {
@@ -49,6 +51,9 @@ public class Bookmark_List_Adapter extends RecyclerView.Adapter<Bookmark_List_Ad
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.popularlist_home_item, parent, false);
 // set the view's size, margins, paddings and layout parameters
         Bookmark_List_Adapter.MyViewHolder vh = new Bookmark_List_Adapter.MyViewHolder(v); // pass the view to View Holder
+        vh.bookDesc.setTextSize(textsize);
+        vh.authorName.setTextSize(textsize);
+        vh.bookname.setTextSize(textsize);
         return vh;
     }
 

@@ -1,7 +1,9 @@
 package com.ue.uebook.PopularActivity;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -35,12 +37,14 @@ public class Popular_List_Screen extends BaseActivity implements View.OnClickLis
     private ImageButton backbtn;
     private List<HomeListing>popularListData;
     private ProgressDialog dialog;
+    private int textSize;
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_popular__list__screen);
+        fontsize();
         popularList=findViewById(R.id.popularList);
         dialog= new ProgressDialog(this);
         popularListData= new ArrayList<>();
@@ -78,7 +82,7 @@ public class Popular_List_Screen extends BaseActivity implements View.OnClickLis
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        popularList_adapter = new Adapter(Popular_List_Screen.this,form.getData());
+                        popularList_adapter = new Adapter(Popular_List_Screen.this,form.getData(),textSize);
                         popularList.setAdapter(popularList_adapter);
                          popularList_adapter.setItemClickListener(Popular_List_Screen.this);
                         popularList_adapter.notifyDataSetChanged();
@@ -95,4 +99,41 @@ public class Popular_List_Screen extends BaseActivity implements View.OnClickLis
         intent.putExtra("position",position);
         startActivity(intent);
     }
+    private void fontsize(){
+        SharedPreferences pref = getSharedPreferences(getPackageName() + "_preferences", Context.MODE_PRIVATE);
+//        String theme = pref.getString("theme", "light-sans");
+//        if(theme.contains("light"))
+//            viewL.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.window_background));
+//        recommemnded_view.setTextColor(Color.parseColor("#000000"));
+//        popular_view.setTextColor(Color.parseColor("#000000"));
+//        newBookview.setTextColor(Color.parseColor("#000000"));
+//        if(theme.contains("dark"))
+//            viewL.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.window_background_dark));
+//            recommemnded_view.setTextColor(Color.parseColor("#ffffff"));
+//            popular_view.setTextColor(Color.parseColor("#ffffff"));
+//            newBookview.setTextColor(Color.parseColor("#ffffff"));
+        switch(pref.getString("font_size", "normal")) {
+            case "smallest":
+                textSize = 12;
+                break;
+            case "small":
+                textSize = 14;
+                break;
+            case "normal":
+                textSize = 16;
+                break;
+            case "large":
+                textSize = 18;
+                break;
+            case "largest":
+                textSize = 24;
+                break;
+        }
+
+
+
+
+
+    }
+
 }

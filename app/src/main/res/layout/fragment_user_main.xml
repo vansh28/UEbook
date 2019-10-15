@@ -22,6 +22,7 @@
         android:paddingLeft="@dimen/size_10">
 
         <TextView
+            android:id="@+id/user_info_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
@@ -52,13 +53,14 @@
         android:paddingLeft="@dimen/size_10">
 
         <TextView
+            android:id="@+id/company_info_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:text="@string/company_info"
-            android:textColor="@color/black"
             android:drawableLeft="@drawable/companyinfo"
             android:drawablePadding="@dimen/size_20"
+            android:text="@string/company_info"
+            android:layout_centerVertical="true"
+            android:textColor="@color/black"
             android:textSize="@dimen/size_18"></TextView>
 
         <ImageView
@@ -84,6 +86,7 @@
         android:paddingLeft="@dimen/size_10">
 
         <TextView
+            android:id="@+id/upload_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
@@ -113,6 +116,7 @@
         android:layout_height="@dimen/size_60"
         android:paddingLeft="@dimen/size_10">
         <TextView
+            android:id="@+id/chatWithOther_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
@@ -171,6 +175,7 @@
         android:visibility="visible"
         android:paddingLeft="@dimen/size_10">
         <TextView
+            android:id="@+id/dictionary_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
@@ -200,6 +205,7 @@
         android:paddingLeft="@dimen/size_10">
 
         <TextView
+            android:id="@+id/logout_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"

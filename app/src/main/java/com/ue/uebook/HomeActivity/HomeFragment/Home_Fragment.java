@@ -3,6 +3,7 @@ package com.ue.uebook.HomeActivity.HomeFragment;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
@@ -14,6 +15,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -76,11 +78,12 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
     private List<HomeListing> recommendedList_book, newBookList,popularBook_List;
     private HomeScreen activity;
     private OnFragmentInteractionListener mListener;
-    private TextView recommemnded_view,newBookview,textNobookfound;
+    private TextView recommemnded_view,newBookview,textNobookfound,popular_view;
     private RelativeLayout popularview;
     private Dialog mdialog;
+    private LinearLayout viewL;
     private SwipeRefreshLayout pullTorfrsh;
-
+     private  int textSize=16;
     public Home_Fragment() {
         // Required empty public constructor
     }
@@ -110,6 +113,7 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
         recommendedList_book = new ArrayList<>();
         newBookList = new ArrayList<>();
         popularBook_List = new ArrayList<>();
+
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -123,12 +127,13 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home_, container, false);
         recommended_list = view.findViewById(R.id.recommended_list);
-
+        viewL=view.findViewById(R.id.view);
         edittext_search = view.findViewById(R.id.edittext_search);
         newBook_list = view.findViewById(R.id.newBook_list);
         popular_more_btn = view.findViewById(R.id.popular_more_btn);
         popular_list = view.findViewById(R.id.popular_list);
         recommemnded_view=view.findViewById(R.id.recommended_view);
+        popular_view= view.findViewById(R.id.popular_view);
         newBookview=view.findViewById(R.id.newBook_view);
         popularview=view.findViewById(R.id.popularList_view);
         textNobookfound=view.findViewById(R.id.textNobookfound);
@@ -155,10 +160,47 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
             }
         });
         pullTorefreshswipe();
+        fontsize();
         return view;
 
     }
 
+    private void fontsize(){
+        SharedPreferences pref = getActivity().getSharedPreferences(getActivity().getPackageName() + "_preferences", Context.MODE_PRIVATE);
+//        String theme = pref.getString("theme", "light-sans");
+//        if(theme.contains("light"))
+//            viewL.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.window_background));
+//        recommemnded_view.setTextColor(Color.parseColor("#000000"));
+//        popular_view.setTextColor(Color.parseColor("#000000"));
+//        newBookview.setTextColor(Color.parseColor("#000000"));
+//        if(theme.contains("dark"))
+//            viewL.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.window_background_dark));
+//            recommemnded_view.setTextColor(Color.parseColor("#ffffff"));
+//            popular_view.setTextColor(Color.parseColor("#ffffff"));
+//            newBookview.setTextColor(Color.parseColor("#ffffff"));
+        switch(pref.getString("font_size", "normal")) {
+            case "smallest":
+                textSize = 12;
+                break;
+            case "small":
+                textSize = 14;
+                break;
+            case "normal":
+                textSize = 16;
+                break;
+            case "large":
+                textSize = 18;
+                break;
+            case "largest":
+                textSize = 24;
+                break;
+        }
+
+
+
+
+
+    }
 
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -331,12 +373,13 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            home_recommended_adapter = new Home_recommended_Adapter((AppCompatActivity) getActivity(), recommendedList_book);
+                            home_recommended_adapter = new Home_recommended_Adapter((AppCompatActivity) getActivity(), recommendedList_book ,textSize);
                             recommended_list.setAdapter(home_recommended_adapter);
                             home_recommended_adapter.setItemClickListener(Home_Fragment.this);
                             home_recommended_adapter.notifyDataSetChanged();
                             recommended_list.setNestedScrollingEnabled(false);
                             recommemnded_view.setVisibility(View.VISIBLE);
+                            recommemnded_view.setTextSize(textSize);
                         }
                     });
                 }}
@@ -377,10 +420,11 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                new_book_home_adapter = new New_Book_Home_Adapter((AppCompatActivity) getActivity(), newBookList);
+                                new_book_home_adapter = new New_Book_Home_Adapter((AppCompatActivity) getActivity(), newBookList,textSize);
                                 newBook_list.setAdapter(new_book_home_adapter);
                                 new_book_home_adapter.setItemClickListener(Home_Fragment.this);
                                 newBookview.setVisibility(View.VISIBLE);
+                                newBookview.setTextSize(textSize);
                             }
                         });
                     }
@@ -416,10 +460,12 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                popularList_home_adapter = new PopularList_Home_Adapter((AppCompatActivity) getActivity(),popularBook_List);
+                                popularList_home_adapter = new PopularList_Home_Adapter((AppCompatActivity) getActivity(),popularBook_List ,textSize);
                                 popular_list.setAdapter(popularList_home_adapter);
                                 popularList_home_adapter.setItemClickListener(Home_Fragment.this);
                                 popularview.setVisibility(View.VISIBLE);
+                                popular_view.setTextSize(textSize);
+                                popular_more_btn.setTextSize(textSize);
                             }
                         });
 

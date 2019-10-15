@@ -7,6 +7,7 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 
 import androidx.appcompat.app.AlertDialog;
@@ -17,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ue.uebook.HomeActivity.HomeFragment.Adapter.Language_adapter;
 import com.ue.uebook.R;
 import com.ue.uebook.SessionManager;
+import com.ue.uebook.SettingsActivity;
 
 import java.util.Locale;
 
@@ -27,6 +29,7 @@ public class InerfaceLanguageScreen extends AppCompatActivity implements Languag
     private String[] language = {"English", "French" ,"German","Spanish"};
     private String[] language_name = {"en", "fr","de","es"};
     private ImageButton back_btn_language;
+    private Button fontview;
     private int id= 0;
 
     @Override
@@ -35,6 +38,9 @@ public class InerfaceLanguageScreen extends AppCompatActivity implements Languag
         setContentView(R.layout.activity_inerface_language_screen);
         language_List = findViewById(R.id.language_list);
         back_btn_language = findViewById(R.id.back_btn_language);
+        fontview=findViewById(R.id.fontview);
+        fontview.setOnClickListener(this);
+
         back_btn_language.setOnClickListener(this);
         String lang = new SessionManager(getApplicationContext()).getCurrentLanguage();
         if (lang.equalsIgnoreCase("en")) {
@@ -46,7 +52,6 @@ public class InerfaceLanguageScreen extends AppCompatActivity implements Languag
         } else if (lang.equalsIgnoreCase("es")) {
             id=3;
         }
-
         LinearLayoutManager linearLayoutManagerPopularList = new LinearLayoutManager(this);
         linearLayoutManagerPopularList.setOrientation(LinearLayoutManager.VERTICAL);
         language_List.setLayoutManager(linearLayoutManagerPopularList);
@@ -62,6 +67,11 @@ public class InerfaceLanguageScreen extends AppCompatActivity implements Languag
     public void onClick(View view) {
         if (view == back_btn_language) {
             finish();
+        }
+        else if (view==fontview){
+
+            Intent intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
         }
 
     }

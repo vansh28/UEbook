@@ -6,7 +6,10 @@
     <color name="white">#ffffff</color>
     <color name="black">#000000</color>
     <color name="red">#9C0909</color>
-
+    <color name="window_background">#FFFFFF</color>
+    <color name="window_background_dark">#424242</color>
+    <color name="text_color_primary">#000000</color>
+    <color name="text_color_primary_dark">#FAFAFA</color>
     <color name="color_grey">#d3d3d3</color>
 
     <color name="color_primary">@color/white</color>
@@ -41,7 +44,6 @@
 
     <color name="blue">#007FFF</color>
 
-    <color name="text_color_primary">#212121</color>
     <color name="text_color_white">#ffffff</color>
     <color name="text_color_black">#000000</color>
     <color name="text_color_light_grey">#dedede</color>

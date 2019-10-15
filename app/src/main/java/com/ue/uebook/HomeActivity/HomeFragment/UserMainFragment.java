@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
@@ -59,7 +61,8 @@ public class UserMainFragment extends Fragment implements View.OnClickListener, 
     private OnFragmentInteractionListener mListener;
     private View view_uploadBook,pendingRequest_view;
     private Dialog mdialog;
-
+    private int textSize;
+    private TextView userView,companyView,uploadView,chatView,dictionaryView,logoutView;
     public UserMainFragment() {
         // Required empty public constructor
     }
@@ -85,7 +88,7 @@ public class UserMainFragment extends Fragment implements View.OnClickListener, 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        fontsize();
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -98,6 +101,18 @@ public class UserMainFragment extends Fragment implements View.OnClickListener, 
         View view = inflater.inflate(R.layout.fragment_user_main, container, false);
         userInfo_container = view.findViewById(R.id.userInfo_container);
         chat_Container=view.findViewById(R.id.chat_Container);
+        userView=view.findViewById(R.id.user_info_view);
+        companyView=view.findViewById(R.id.company_info_view);
+        uploadView=view.findViewById(R.id.upload_view);
+        chatView=view.findViewById(R.id.chatWithOther_view);
+        dictionaryView=view.findViewById(R.id.dictionary_view);
+        logoutView=view.findViewById(R.id.logout_view);
+        userView.setTextSize(textSize);
+        companyView.setTextSize(textSize);
+        uploadView.setTextSize(textSize);
+        chatView.setTextSize(textSize);
+        dictionaryView.setTextSize(textSize);
+        logoutView.setTextSize(textSize);
         pendingRequest_Container=view.findViewById(R.id.pendingRequest_Container);
         pendingRequest_Container.setOnClickListener(this);
         pendingRequest_view=view.findViewById(R.id.pending_view);
@@ -331,6 +346,27 @@ public class UserMainFragment extends Fragment implements View.OnClickListener, 
             mdialog.cancel();
             mdialog = null;
         }
+    }
+    private void fontsize(){
+        SharedPreferences pref = getActivity().getSharedPreferences(getActivity().getPackageName() + "_preferences", Context.MODE_PRIVATE);
+        switch(pref.getString("font_size", "normal")) {
+            case "smallest":
+                textSize = 12;
+                break;
+            case "small":
+                textSize = 14;
+                break;
+            case "normal":
+                textSize = 16;
+                break;
+            case "large":
+                textSize = 18;
+                break;
+            case "largest":
+                textSize = 24;
+                break;
+        }
+
     }
 
 

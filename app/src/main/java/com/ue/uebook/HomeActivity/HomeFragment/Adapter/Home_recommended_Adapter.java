@@ -1,6 +1,5 @@
 package com.ue.uebook.HomeActivity.HomeFragment.Adapter;
 
-import android.app.Activity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,14 +8,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.ue.uebook.GlideUtils;
 import com.ue.uebook.HomeActivity.HomeFragment.Pojo.HomeListing;
 import com.ue.uebook.R;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentActivity;
-import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,13 +26,15 @@ public class Home_recommended_Adapter extends RecyclerView.Adapter<Home_recommen
     List<HomeListing> recommendedList_book;
     private AppCompatActivity mctx;
      // for loading main list
-    private List<HomeListing> arraylist=null;  // for loading  filter data
+    private List<HomeListing> arraylist=null;
+    private int textsize;// for loading  filter data
 
-    public Home_recommended_Adapter(AppCompatActivity mctx, List<HomeListing> recommendedList_book) {
+    public Home_recommended_Adapter(AppCompatActivity mctx, List<HomeListing> recommendedList_book, int textSize) {
         this.recommendedList_book=recommendedList_book;
         this.mctx=mctx;
         this.arraylist = new ArrayList<HomeListing>();
         this.arraylist.addAll(recommendedList_book);
+        this.textsize=textSize;
     }
     public interface RecommendedItemClick {
         void onItemClick(int position ,String book_id);
@@ -50,12 +50,19 @@ public class Home_recommended_Adapter extends RecyclerView.Adapter<Home_recommen
 // infalte the item Layout
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.recommended_home_item, parent, false);
 // set the view's size, margins, paddings and layout parameters
-        Home_recommended_Adapter.MyViewHolder vh = new Home_recommended_Adapter.MyViewHolder(v); // pass the view to View Holder
+
+        Home_recommended_Adapter.MyViewHolder vh = new Home_recommended_Adapter.MyViewHolder(v);
+        // pass the view to View Holder
+
+
+        vh.book_name.setTextSize(textsize);
+        vh.author_name.setTextSize(textsize);
         return vh;
     }
 
     @Override
     public void onBindViewHolder(@NonNull Home_recommended_Adapter.MyViewHolder holder, final int position) {
+
         holder.main_container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

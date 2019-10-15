@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
@@ -55,7 +56,7 @@ public class NotepadFragment extends Fragment  implements  NotepadAdapter.Notepa
     private ProgressDialog dialog;
     private TextView textNonotepadList;
     private Dialog mdialog;
-
+      private int textSize;
     private OnFragmentInteractionListener mListener;
 
     public NotepadFragment() {
@@ -83,6 +84,7 @@ public class NotepadFragment extends Fragment  implements  NotepadAdapter.Notepa
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        fontsize();
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -185,7 +187,7 @@ public class NotepadFragment extends Fragment  implements  NotepadAdapter.Notepa
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            notepadAdapter = new NotepadAdapter(form.getData());
+                            notepadAdapter = new NotepadAdapter(form.getData(),textSize);
                             notepad_list.setVisibility(View.VISIBLE);
                             textNonotepadList.setVisibility(View.GONE);
                             notepad_list.setAdapter(notepadAdapter);
@@ -225,6 +227,27 @@ public class NotepadFragment extends Fragment  implements  NotepadAdapter.Notepa
             mdialog.cancel();
             mdialog = null;
         }
+    }
+    private void fontsize(){
+        SharedPreferences pref = getActivity().getSharedPreferences(getActivity().getPackageName() + "_preferences", Context.MODE_PRIVATE);
+        switch(pref.getString("font_size", "normal")) {
+            case "smallest":
+                textSize = 12;
+                break;
+            case "small":
+                textSize = 14;
+                break;
+            case "normal":
+                textSize = 16;
+                break;
+            case "large":
+                textSize = 18;
+                break;
+            case "largest":
+                textSize = 24;
+                break;
+        }
+
     }
 
 }

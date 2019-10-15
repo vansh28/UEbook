@@ -1,6 +1,5 @@
 package com.ue.uebook.HomeActivity.HomeFragment.Adapter;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,11 +25,14 @@ public class New_Book_Home_Adapter   extends RecyclerView.Adapter<New_Book_Home_
     private AppCompatActivity cmtx;
     private List<HomeListing>newBookList;
     private List<HomeListing> arraylist=null;
-    public New_Book_Home_Adapter(AppCompatActivity activity, List<HomeListing> newBookList) {
+    private int textsize;
+    public New_Book_Home_Adapter(AppCompatActivity activity, List<HomeListing> newBookList, int textSize) {
         this.cmtx=activity;
         this.newBookList = newBookList;
         this.arraylist = new ArrayList<HomeListing>();
         this.arraylist.addAll(newBookList);
+          this.textsize=textSize;
+
     }
     public interface NewBookItemClick {
         void onItemClick_NewBook(int position ,String book_id);
@@ -45,6 +47,8 @@ public class New_Book_Home_Adapter   extends RecyclerView.Adapter<New_Book_Home_
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.recommended_home_item, parent, false);
 // set the view's size, margins, paddings and layout parameters
         New_Book_Home_Adapter.MyViewHolder vh = new New_Book_Home_Adapter.MyViewHolder(v); // pass the view to View Holder
+        vh.book_name.setTextSize(textsize);
+        vh.author_name.setTextSize(textsize);
         return vh;
     }
     @Override

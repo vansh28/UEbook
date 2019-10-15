@@ -49,6 +49,7 @@
             android:layout_height="@dimen/size_60"
             android:paddingLeft="@dimen/size_10">
             <TextView
+                android:id="@+id/shareview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
@@ -79,6 +80,7 @@
             android:paddingLeft="@dimen/size_10">
 
             <TextView
+                android:id="@+id/helpview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
@@ -109,6 +111,7 @@
             android:paddingLeft="@dimen/size_10">
 
             <TextView
+                android:id="@+id/aboutview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
@@ -138,6 +141,7 @@
             android:paddingLeft="@dimen/size_10">
 
             <TextView
+                android:id="@+id/contactview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"

@@ -2,6 +2,7 @@ package com.ue.uebook.DeatailActivity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -47,16 +48,19 @@ public class Book_Assignment extends BaseActivity implements View.OnClickListene
     private List<String>answerlist;
     private int numberOfLines=1;
     private List<user_answer>user_answers;
+    private int textSize;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book__assignment);
         question_list = findViewById(R.id.question_list);
+        fontsize();
         question_container = findViewById(R.id.question_container);
         viewfornoBook = findViewById(R.id.viewfornoBook);
         submit_assignment = findViewById(R.id.submit_assignment);
         submit_assignment.setOnClickListener(this);
+        submit_assignment.setTextSize(textSize);
         questionList = new ArrayList<>();
         allEds = new ArrayList<>();
         answerlist=new ArrayList<>();
@@ -143,8 +147,10 @@ public class Book_Assignment extends BaseActivity implements View.OnClickListene
             questionEdit = newRowView.findViewById(R.id.answer_edit);
             TextView question = newRowView.findViewById(R.id.question);
             question.setText(questionList.get(i).getQuestion());
+            question.setTextSize(textSize);
             if (user_answers!=null){
                 questionEdit.setText(user_answers.get(i).getAnswer());
+                questionEdit.setTextSize(textSize);
             }
 
             allEds.add(questionEdit);
@@ -152,6 +158,27 @@ public class Book_Assignment extends BaseActivity implements View.OnClickListene
             question_container.addView(newRowView);
             numberOfLines++;
 
+        }
+
+    }
+    private void fontsize(){
+        SharedPreferences pref = getSharedPreferences(getPackageName() + "_preferences", Context.MODE_PRIVATE);
+        switch(pref.getString("font_size", "normal")) {
+            case "smallest":
+                textSize = 12;
+                break;
+            case "small":
+                textSize = 14;
+                break;
+            case "normal":
+                textSize = 16;
+                break;
+            case "large":
+                textSize = 18;
+                break;
+            case "largest":
+                textSize = 24;
+                break;
         }
 
     }

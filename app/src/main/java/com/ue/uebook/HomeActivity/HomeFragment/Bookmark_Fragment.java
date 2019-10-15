@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
@@ -55,6 +56,7 @@ public class Bookmark_Fragment extends Fragment implements Bookmark_List_Adapter
     private ProgressDialog dialog;
     private TextView textNobookmarkList;
     private Dialog mdialog;
+    private int textSize = 16;
 
     private OnFragmentInteractionListener mListener;
 
@@ -83,6 +85,7 @@ public class Bookmark_Fragment extends Fragment implements Bookmark_List_Adapter
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        fontsize();
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -176,7 +179,7 @@ public class Bookmark_Fragment extends Fragment implements Bookmark_List_Adapter
                  getActivity().runOnUiThread(new Runnable() {
                      @Override
                      public void run() {
-                         bookmark_list_adapter = new Bookmark_List_Adapter((AppCompatActivity) getContext(),form.getData());
+                         bookmark_list_adapter = new Bookmark_List_Adapter((AppCompatActivity) getContext(),form.getData(),textSize);
                          bookmark_Book_list.setVisibility(View.VISIBLE);
                          bookmark_Book_list.setAdapter(bookmark_list_adapter);
                          bookmark_list_adapter.setItemClickListener(Bookmark_Fragment.this);
@@ -217,4 +220,26 @@ public class Bookmark_Fragment extends Fragment implements Bookmark_List_Adapter
             mdialog = null;
         }
     }
+        private void fontsize(){
+        SharedPreferences pref = getActivity().getSharedPreferences(getActivity().getPackageName() + "_preferences", Context.MODE_PRIVATE);
+        switch(pref.getString("font_size", "normal")) {
+            case "smallest":
+                textSize = 12;
+                break;
+            case "small":
+                textSize = 14;
+                break;
+            case "normal":
+                textSize = 16;
+                break;
+            case "large":
+                textSize = 18;
+                break;
+            case "largest":
+                textSize = 24;
+                break;
+        }
+
+    }
+
 }

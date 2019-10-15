@@ -22,9 +22,11 @@ public class Adapter  extends RecyclerView.Adapter<Adapter.MyViewHolder>{
     private PopularBook_ItemClick popularBookItemClick;
     private List<HomeListing>data;
     private AppCompatActivity mctx;
-    public Adapter(AppCompatActivity mctx,List<HomeListing> data) {
+    private int textSize;
+    public Adapter(AppCompatActivity mctx, List<HomeListing> data, int textSize) {
         this.data=data;
         this.mctx=mctx;
+        this.textSize=textSize;
     }
     public interface PopularBook_ItemClick {
         void onItemClick_PopularBook(int position ,String book_id);
@@ -42,6 +44,9 @@ public class Adapter  extends RecyclerView.Adapter<Adapter.MyViewHolder>{
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.popularlist_home_item, parent, false);
 // set the view's size, margins, paddings and layout parameters
         Adapter.MyViewHolder vh = new Adapter.MyViewHolder(v); // pass the view to View Holder
+        vh.authorName.setTextSize(textSize);
+        vh.bookDesc.setTextSize(textSize);
+        vh.bookname.setTextSize(textSize);
         return vh;
     }
 
@@ -74,7 +79,6 @@ public class Adapter  extends RecyclerView.Adapter<Adapter.MyViewHolder>{
         ImageView bookimage;
         TextView bookname,authorName,bookDesc;
         RatingBar myRatingBar;
-
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             book_container=itemView.findViewById(R.id.container);

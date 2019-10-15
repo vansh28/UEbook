@@ -7,6 +7,7 @@ import android.content.ActivityNotFoundException;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.media.MediaPlayer;
@@ -44,6 +45,7 @@ import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 import androidx.loader.content.CursorLoader;
 
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.ue.uebook.BaseActivity;
@@ -103,7 +105,7 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
     private ImageView camera_btn, video_btn, audio_btn, documents_btn, cover_image_preview;
     private String uploadedFileName;
     private StringTokenizer tokens;
-    private TextView filname_view,upload_info,uploadcover_view,audioname_view;
+    private TextView filname_view,upload_info,uploadcover_view,audioname_view ,uploadMoreView ,assignmentView;
     private ProgressDialog progressdialog;
     private Button publishBtn ,addQuestion;
     private int categorytype;
@@ -126,19 +128,31 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
     public int numberOfLines = 3;
     private List<String>questionList;
     List<EditText> allEds;
-
+    private int textSize;
     private SpeechRecognizer speechRecognizer = null;
     // Tag for the instance state bundle.
     private static final String PLAYBACK_TIME = "play_time";
     private static final int ACTIVITY_CHOOSE_FILE = 33;
     private String speechString =" ";
-
+    private BottomSheetDialog mBottomSheetDialog;
+    String[] mimeTypes =
+            {"application/msword","application/vnd.openxmlformats-officedocument.wordprocessingml.document", // .doc & .docx
+                    "application/vnd.ms-powerpoint","application/vnd.openxmlformats-officedocument.presentationml.presentation", // .ppt & .pptx
+                    "application/vnd.ms-excel","application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", // .xls & .xlsx
+                    "text/plain",
+                    "application/pdf",
+                    "application/zip"};
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upload__book__screen);
         back_btn_uploadbook = findViewById(R.id.back_btn_uploadbook);
+        assignmentView=findViewById(R.id.asignmentView);
+        uploadMoreView=findViewById(R.id.uploadMoreView);
+        fontsize();
+        assignmentView.setTextSize(textSize);
+        uploadMoreView.setTextSize(textSize);
         questionList=new ArrayList<>();
         uploadcover_view=findViewById(R.id.uploadcover_view);
         videoview =  findViewById(R.id.videoview);
@@ -149,6 +163,7 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
         cover_image_layout = findViewById(R.id.cover_image_layout);
         upload_progress=findViewById(R.id.upload_progress);
         bookTitle = findViewById(R.id.bookTitle_edit_text);
+        bookTitle.setTextSize(textSize);
         bookDesc = findViewById(R.id.bookDesc_edit_text);
         recordbtn = findViewById(R.id.recordbtn);
         recordbtn.setOnClickListener(this);
@@ -177,9 +192,14 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
         back_btn_uploadbook.setOnClickListener(this);
         book_category.setPrompt("Select Book Category");
         book_category.setOnItemSelectedListener(this);
+
         CreateProgressDialog();
+        addQuestion.setTextSize(textSize);
+        bookDesc.setTextSize(textSize);
+        authorName.setTextSize(textSize);
         MediaController controller = new MediaController(this);
         controller.setMediaPlayer(videoview);
+        publishBtn.setTextSize(textSize);
         videoview.setMediaController(controller);
         if (savedInstanceState != null) {
             mCurrentPosition = savedInstanceState.getInt(PLAYBACK_TIME);
@@ -211,6 +231,8 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
     private void openFile(int  CODE) {
         Intent i = new Intent(Intent.ACTION_GET_CONTENT);
         i.setType("*/*");
+        String[] mimetypes = {"application/vnd.openxmlformats-officedocument.wordprocessingml.document", "application/msword","application/pdf","application/vnd.ms-powerpoint","text/csv"};
+        i.putExtra(Intent.EXTRA_MIME_TYPES, mimetypes);
         startActivityForResult(i, CODE);
     }
     @Override
@@ -324,6 +346,7 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View newRowView = inflater.inflate(R.layout.questionitem,null);
          questionEdit=newRowView.findViewById(R.id.question_edit_text);
+         questionEdit.setTextSize(textSize);
         allEds.add(questionEdit);
         questionEdit.setId(numberOfLines + 1);
         question_layout.addView(newRowView);
@@ -368,13 +391,7 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
   
     private void showFileChooser(){
 
-        String[] mimeTypes =
-                {"application/msword","application/vnd.openxmlformats-officedocument.wordprocessingml.document", // .doc & .docx
-                        "application/vnd.ms-powerpoint","application/vnd.openxmlformats-officedocument.presentationml.presentation", // .ppt & .pptx
-                        "application/vnd.ms-excel","application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", // .xls & .xlsx
-                        "text/plain",
-                        "application/pdf",
-                        "application/zip"};
+
 
         try {
             Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
@@ -1023,6 +1040,45 @@ public static String getPathFromUri(final Context context, final Uri uri) {
     public void onEvent(int eventType, Bundle params) {
 
     }
+
+
+    private void fontsize(){
+        SharedPreferences pref = getSharedPreferences(getPackageName() + "_preferences", Context.MODE_PRIVATE);
+//        String theme = pref.getString("theme", "light-sans");
+//        if(theme.contains("light"))
+//            viewL.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.window_background));
+//        recommemnded_view.setTextColor(Color.parseColor("#000000"));
+//        popular_view.setTextColor(Color.parseColor("#000000"));
+//        newBookview.setTextColor(Color.parseColor("#000000"));
+//        if(theme.contains("dark"))
+//            viewL.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.window_background_dark));
+//            recommemnded_view.setTextColor(Color.parseColor("#ffffff"));
+//            popular_view.setTextColor(Color.parseColor("#ffffff"));
+//            newBookview.setTextColor(Color.parseColor("#ffffff"));
+        switch(pref.getString("font_size", "normal")) {
+            case "smallest":
+                textSize = 12;
+                break;
+            case "small":
+                textSize = 14;
+                break;
+            case "normal":
+                textSize = 16;
+                break;
+            case "large":
+                textSize = 18;
+                break;
+            case "largest":
+                textSize = 24;
+                break;
+        }
+
+
+
+
+
+    }
+
 }
 
 

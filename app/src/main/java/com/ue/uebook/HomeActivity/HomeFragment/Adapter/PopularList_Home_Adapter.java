@@ -25,9 +25,11 @@ public class PopularList_Home_Adapter extends RecyclerView.Adapter<PopularList_H
     private PopularBookItemClick popularBookItemClick;
     private List<HomeListing> popularBook_list;
     private AppCompatActivity mctx;
-    public PopularList_Home_Adapter(AppCompatActivity mctx ,List<HomeListing> popularBook_list) {
+    private int textsize;
+    public PopularList_Home_Adapter(AppCompatActivity mctx, List<HomeListing> popularBook_list, int textSize) {
         this.popularBook_list=popularBook_list;
         this.mctx=mctx;
+        this.textsize=textSize;
     }
 
     public interface PopularBookItemClick {
@@ -42,7 +44,12 @@ public class PopularList_Home_Adapter extends RecyclerView.Adapter<PopularList_H
 // infalte the item Layout
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.popularlist_home_item, parent, false);
 // set the view's size, margins, paddings and layout parameters
-        PopularList_Home_Adapter.MyViewHolder vh = new PopularList_Home_Adapter.MyViewHolder(v); // pass the view to View Holder
+        PopularList_Home_Adapter.MyViewHolder vh = new PopularList_Home_Adapter.MyViewHolder(v);
+        vh.bookDesc.setTextSize(textsize);
+        vh.bookname.setTextSize(textsize);
+        vh.authorName.setTextSize(textsize);
+        vh.ratingBar.setStepSize(textsize);
+        // pass the view to View Holder
         return vh;
     }
 

@@ -43,7 +43,11 @@
         <item name="colorControlActivated">#FFC107</item>
     </style>
 
-
+    <style name="Theme.Notepad.Dialog" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimary</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
 
 
     <style name="ChatActivityTheme" parent="AppTheme">

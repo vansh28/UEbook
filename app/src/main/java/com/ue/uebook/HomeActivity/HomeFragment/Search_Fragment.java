@@ -3,6 +3,7 @@ package com.ue.uebook.HomeActivity.HomeFragment;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -72,6 +73,7 @@ public class Search_Fragment extends Fragment implements View.OnClickListener, S
     private User_Search_List user_search_list;
     private OnFragmentInteractionListener mListener;
     private List<String> list;
+    private int textSize;
     private final int REQ_CODE_SPEECH_INPUT = 100;
     public Search_Fragment() {
         // Required empty public constructor
@@ -99,6 +101,7 @@ public class Search_Fragment extends Fragment implements View.OnClickListener, S
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         data= new ArrayList<>();
+        fontsize();
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -276,7 +279,7 @@ public class Search_Fragment extends Fragment implements View.OnClickListener, S
                         @Override
                         public void run() {
                             data=form.getData();
-                            search_history_adapter = new Search_History_Adapter((AppCompatActivity) getActivity(),form.getData());
+                            search_history_adapter = new Search_History_Adapter((AppCompatActivity) getActivity(),form.getData(),textSize);
                             search_history_list.setAdapter(search_history_adapter);
                             search_history_adapter.setItemClickListener(Search_Fragment.this);
                             search_history_adapter.notifyDataSetChanged();
@@ -318,5 +321,27 @@ public class Search_Fragment extends Fragment implements View.OnClickListener, S
 
         }
     }
+    private void fontsize(){
+        SharedPreferences pref = getActivity().getSharedPreferences(getActivity().getPackageName() + "_preferences", Context.MODE_PRIVATE);
+        switch(pref.getString("font_size", "normal")) {
+            case "smallest":
+                textSize = 12;
+                break;
+            case "small":
+                textSize = 14;
+                break;
+            case "normal":
+                textSize = 16;
+                break;
+            case "large":
+                textSize = 18;
+                break;
+            case "largest":
+                textSize = 24;
+                break;
+        }
+
+    }
+
 
 }

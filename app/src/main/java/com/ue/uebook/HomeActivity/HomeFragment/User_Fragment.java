@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -72,7 +73,7 @@ public class User_Fragment extends Fragment implements View.OnClickListener, Use
     private Button newfrsag;
     private OnFragmentInteractionListener mListener;
     private ImageView profile_image_user;
-
+    private int textSize;
 
     private String encodedString;
     private String uriData, image;
@@ -110,7 +111,7 @@ public class User_Fragment extends Fragment implements View.OnClickListener, Use
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+     fontsize();
         imageUtils = new ImageUtils(getActivity().getParent());
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
@@ -331,6 +332,7 @@ public class User_Fragment extends Fragment implements View.OnClickListener, Use
         String address = new SessionManager(getApplicationContext()).getUserLocation();
         if (address.length() > 0) {
             address_user.setText(address);
+
         }
         if (!image.isEmpty()) {
             GlideUtils.loadImage((AppCompatActivity) getActivity(), "http://dnddemo.com/ebooks/api/v1/upload/" + image, profile_image_user, R.drawable.user_default, R.drawable.user_default);
@@ -385,6 +387,27 @@ public class User_Fragment extends Fragment implements View.OnClickListener, Use
             Log.v("", "Permission is granted");
             return true;
         }
+    }
+    private void fontsize(){
+        SharedPreferences pref = getActivity().getSharedPreferences(getActivity().getPackageName() + "_preferences", Context.MODE_PRIVATE);
+        switch(pref.getString("font_size", "normal")) {
+            case "smallest":
+                textSize = 12;
+                break;
+            case "small":
+                textSize = 14;
+                break;
+            case "normal":
+                textSize = 16;
+                break;
+            case "large":
+                textSize = 18;
+                break;
+            case "largest":
+                textSize = 24;
+                break;
+        }
+
     }
 
 

@@ -1,7 +1,9 @@
 package com.ue.uebook.DeatailActivity;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
@@ -76,6 +78,7 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
     private String ulpoadByUserId;
     private List<Assignment>assignmentList;
     private List<user_answer>user_answers;
+    private int textSize;
 
     String docbaseUrl="http://docs.google.com/gview?embedded=true&url=";
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -129,6 +132,37 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
         review_List.setNestedScrollingEnabled(false);
         getBookDetail(book_id);
         pullTorefreshswipe();
+      fontsize();
+    }
+
+
+    private void fontsize(){
+        SharedPreferences pref = getSharedPreferences(getPackageName() + "_preferences", Context.MODE_PRIVATE);
+        switch(pref.getString("font_size", "normal")) {
+            case "smallest":
+                textSize = 12;
+                break;
+            case "small":
+                textSize = 14;
+                break;
+            case "normal":
+                textSize = 16;
+                break;
+            case "large":
+                textSize = 18;
+                break;
+            case "largest":
+                textSize = 24;
+                break;
+        }
+        bookDesc.setTextSize(textSize);
+        bookTitle.setTextSize(textSize);
+        bookAuthor.setTextSize(textSize);
+        averageRating.setTextSize(textSize);
+        topreviewView.setTextSize(textSize);
+        book_uploadBy.setTextSize(textSize);
+        book_asignment.setTextSize(textSize);
+        readFull_Book_btn.setTextSize(textSize);
     }
     private Spannable highlight(int color, Spannable original, String word) {
         String normalized = Normalizer.normalize(original, Normalizer.Form.NFD)
