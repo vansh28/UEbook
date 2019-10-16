@@ -1055,7 +1055,7 @@ public static String getPathFromUri(final Context context, final Uri uri) {
 //            recommemnded_view.setTextColor(Color.parseColor("#ffffff"));
 //            popular_view.setTextColor(Color.parseColor("#ffffff"));
 //            newBookview.setTextColor(Color.parseColor("#ffffff"));
-        switch(pref.getString("font_size", "normal")) {
+        switch(new SessionManager(getApplicationContext()).getfontSize()) {
             case "smallest":
                 textSize = 12;
                 break;
@@ -1072,11 +1072,6 @@ public static String getPathFromUri(final Context context, final Uri uri) {
                 textSize = 24;
                 break;
         }
-
-
-
-
-
     }
 
 }

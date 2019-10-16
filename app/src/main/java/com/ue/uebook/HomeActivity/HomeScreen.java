@@ -1,8 +1,10 @@
 package com.ue.uebook.HomeActivity;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.net.Uri;
@@ -19,6 +21,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -229,6 +232,15 @@ public class HomeScreen extends BaseActivity implements Home_Fragment.OnFragment
         Configuration conf = res.getConfiguration();
         conf.locale = myLocale;
         res.updateConfiguration(conf, dm);
+
+    }
+    private void colorTheme() {
+        SharedPreferences pref = getSharedPreferences(getPackageName() + "_preferences", Context.MODE_PRIVATE);
+        String theme = pref.getString("theme", "light-sans");
+        if(theme.contains("light"))
+            container.setBackgroundColor(ContextCompat.getColor(this, R.color.window_background));
+        if(theme.contains("dark"))
+            container.setBackgroundColor(ContextCompat.getColor(this, R.color.window_background_dark));
 
     }
 }

@@ -230,7 +230,7 @@ public class NotepadFragment extends Fragment  implements  NotepadAdapter.Notepa
     }
     private void fontsize(){
         SharedPreferences pref = getActivity().getSharedPreferences(getActivity().getPackageName() + "_preferences", Context.MODE_PRIVATE);
-        switch(pref.getString("font_size", "normal")) {
+        switch(new SessionManager(getActivity().getApplicationContext()).getfontSize()) {
             case "smallest":
                 textSize = 12;
                 break;
@@ -247,6 +247,7 @@ public class NotepadFragment extends Fragment  implements  NotepadAdapter.Notepa
                 textSize = 24;
                 break;
         }
+
 
     }
 

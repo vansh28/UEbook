@@ -22,6 +22,7 @@ import com.ue.uebook.DeatailActivity.Book_Detail_Screen;
 import com.ue.uebook.HomeActivity.HomeFragment.Pojo.HomeListing;
 import com.ue.uebook.HomeActivity.HomeFragment.Pojo.HomeListingResponse;
 import com.ue.uebook.R;
+import com.ue.uebook.SessionManager;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -112,7 +113,7 @@ public class Popular_List_Screen extends BaseActivity implements View.OnClickLis
 //            recommemnded_view.setTextColor(Color.parseColor("#ffffff"));
 //            popular_view.setTextColor(Color.parseColor("#ffffff"));
 //            newBookview.setTextColor(Color.parseColor("#ffffff"));
-        switch(pref.getString("font_size", "normal")) {
+        switch(new SessionManager(getApplicationContext()).getfontSize()) {
             case "smallest":
                 textSize = 12;
                 break;
@@ -129,6 +130,7 @@ public class Popular_List_Screen extends BaseActivity implements View.OnClickLis
                 textSize = 24;
                 break;
         }
+
 
 
 

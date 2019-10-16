@@ -29,6 +29,14 @@
             android:textColor="@color/white"
             android:textSize="@dimen/size_18"></TextView>
     </RelativeLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Select Your Language"
+        android:textSize="@dimen/size_17"
+        android:layout_margin="@dimen/size_10"
+        android:textColor="@color/black"
+        android:textStyle="bold"></TextView>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/language_list"
@@ -42,14 +50,31 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
-        android:text="Font / Theme"
+        android:text="Select Font Size"
+        android:visibility="gone"
         android:textSize="@dimen/size_17"
         android:textAllCaps="false"
         android:layout_margin="@dimen/size_10"
         ></Button>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Select Font Size"
+        android:textSize="@dimen/size_17"
+        android:layout_margin="@dimen/size_10"
+        android:textColor="@color/black"
+        android:textStyle="bold"></TextView>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/size_1"
         android:layout_marginTop="@dimen/size_5"
         android:background="#d3d3d3"></View>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/font_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/size_10">
+    </androidx.recyclerview.widget.RecyclerView>
 </LinearLayout>

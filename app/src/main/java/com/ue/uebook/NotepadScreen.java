@@ -1,6 +1,8 @@
 package com.ue.uebook;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -27,12 +29,12 @@ public class NotepadScreen extends AppCompatActivity implements View.OnClickList
     private EditText notes_view;
     private String description,note_id;
     private Integer  id;
-
-
+    private int textSize;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notepad_screen);
+        fontsize();
         back_btn = findViewById(R.id.back_btn_notes);
         edit_btn=findViewById(R.id.edit_Post);
         delete_btn=findViewById(R.id.delete_Btn);
@@ -43,6 +45,7 @@ public class NotepadScreen extends AppCompatActivity implements View.OnClickList
         delete_btn.setOnClickListener(this);
         back_btn.setOnClickListener(this);
         intent = getIntent();
+        notes_view.setTextSize(textSize);
          id = intent.getIntExtra("id",0);
         description=intent.getStringExtra("description");
         note_id=intent.getStringExtra("note_id");
@@ -195,5 +198,35 @@ public class NotepadScreen extends AppCompatActivity implements View.OnClickList
             }
         });
     }
-
+    private void fontsize(){
+        SharedPreferences pref = getSharedPreferences(getPackageName() + "_preferences", Context.MODE_PRIVATE);
+//        String theme = pref.getString("theme", "light-sans");
+//        if(theme.contains("light"))
+//            viewL.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.window_background));
+//        recommemnded_view.setTextColor(Color.parseColor("#000000"));
+//        popular_view.setTextColor(Color.parseColor("#000000"));
+//        newBookview.setTextColor(Color.parseColor("#000000"));
+//        if(theme.contains("dark"))
+//            viewL.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.window_background_dark));
+//            recommemnded_view.setTextColor(Color.parseColor("#ffffff"));
+//            popular_view.setTextColor(Color.parseColor("#ffffff"));
+//            newBookview.setTextColor(Color.parseColor("#ffffff"));
+        switch(new SessionManager(getApplicationContext()).getfontSize()) {
+            case "smallest":
+                textSize = 12;
+                break;
+            case "small":
+                textSize = 14;
+                break;
+            case "normal":
+                textSize = 16;
+                break;
+            case "large":
+                textSize = 18;
+                break;
+            case "largest":
+                textSize = 24;
+                break;
+        }
+    }
 }

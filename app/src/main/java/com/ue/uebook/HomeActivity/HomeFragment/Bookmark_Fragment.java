@@ -222,24 +222,25 @@ public class Bookmark_Fragment extends Fragment implements Bookmark_List_Adapter
     }
         private void fontsize(){
         SharedPreferences pref = getActivity().getSharedPreferences(getActivity().getPackageName() + "_preferences", Context.MODE_PRIVATE);
-        switch(pref.getString("font_size", "normal")) {
-            case "smallest":
-                textSize = 12;
-                break;
-            case "small":
-                textSize = 14;
-                break;
-            case "normal":
-                textSize = 16;
-                break;
-            case "large":
-                textSize = 18;
-                break;
-            case "largest":
-                textSize = 24;
-                break;
-        }
+            switch(new SessionManager(getActivity().getApplicationContext()).getfontSize()) {
+                case "smallest":
+                    textSize = 12;
+                    break;
+                case "small":
+                    textSize = 14;
+                    break;
+                case "normal":
+                    textSize = 16;
+                    break;
+                case "large":
+                    textSize = 18;
+                    break;
+                case "largest":
+                    textSize = 24;
+                    break;
+            }
 
-    }
+
+        }
 
 }

@@ -40,6 +40,7 @@ import com.ue.uebook.HomeActivity.HomeFragment.Pojo.HomeListingResponse;
 import com.ue.uebook.HomeActivity.HomeScreen;
 import com.ue.uebook.PopularActivity.Popular_List_Screen;
 import com.ue.uebook.R;
+import com.ue.uebook.SessionManager;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -178,7 +179,7 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
 //            recommemnded_view.setTextColor(Color.parseColor("#ffffff"));
 //            popular_view.setTextColor(Color.parseColor("#ffffff"));
 //            newBookview.setTextColor(Color.parseColor("#ffffff"));
-        switch(pref.getString("font_size", "normal")) {
+        switch(new SessionManager(getActivity().getApplicationContext()).getfontSize()) {
             case "smallest":
                 textSize = 12;
                 break;

@@ -138,7 +138,7 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
 
     private void fontsize(){
         SharedPreferences pref = getSharedPreferences(getPackageName() + "_preferences", Context.MODE_PRIVATE);
-        switch(pref.getString("font_size", "normal")) {
+        switch(new SessionManager(getApplicationContext()).getfontSize()) {
             case "smallest":
                 textSize = 12;
                 break;

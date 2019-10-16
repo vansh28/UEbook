@@ -26,6 +26,7 @@
             android:layout_below="@id/language"
             android:layout_marginTop="@dimen/size_5"
             android:text="English"
+            android:visibility="gone"
             android:textColor="#ACACAC"
             android:textSize="@dimen/size_16"></TextView>
 
