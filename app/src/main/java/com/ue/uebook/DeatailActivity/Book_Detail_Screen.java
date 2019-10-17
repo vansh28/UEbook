@@ -1,9 +1,7 @@
 package com.ue.uebook.DeatailActivity;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
@@ -137,7 +135,6 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
 
 
     private void fontsize(){
-        SharedPreferences pref = getSharedPreferences(getPackageName() + "_preferences", Context.MODE_PRIVATE);
         switch(new SessionManager(getApplicationContext()).getfontSize()) {
             case "smallest":
                 textSize = 12;
@@ -539,38 +536,13 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
             }
         });
     }
-    public void onStart()
-    {
-        super.onStart();
 
-        Log.d("detailpage", "In the onStart() event");
-    }
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void onRestart()
     {
         super.onRestart();
         getBookDetail(book_id);
         Log.d("detailpage", "In the onRestart() event");
-    }
-    public void onResume()
-    {
-        super.onResume();
-        Log.d("detailpage", "In the onResume() event");
-    }
-    public void onPause()
-    {
-        super.onPause();
-        Log.d("detailpage", "In the onPause() event");
-    }
-    public void onStop()
-    {
-        super.onStop();
-        Log.d("detailpage", "In the onStop() event");
-    }
-    public void onDestroy()
-    {
-        super.onDestroy();
-        Log.d("detailpage", "In the onDestroy() event");
     }
 
 }

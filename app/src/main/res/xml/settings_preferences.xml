@@ -15,7 +15,6 @@
         android:negativeButtonText="@null"
         android:positiveButtonText="@null"
         android:entries="@array/font_size_list"
-
         android:entryValues="@array/font_size_list_values"
        />
 </PreferenceScreen>

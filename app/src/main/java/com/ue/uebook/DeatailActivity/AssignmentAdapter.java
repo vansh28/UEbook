@@ -25,7 +25,7 @@ public class AssignmentAdapter   extends RecyclerView.Adapter<AssignmentAdapter.
     private AppCompatActivity mtc;
     private boolean isshow=false;
     private List<Assignment> questionList;
-    private SubmitAnswerClick submitAnswerClick;
+    private SubmitAnswerClick submit_Answer_Click;
     List<EditText> allEds;
 
     public AssignmentAdapter(List<Assignment> questionList) {
@@ -36,7 +36,7 @@ public class AssignmentAdapter   extends RecyclerView.Adapter<AssignmentAdapter.
         void onItemClick(String id ,String answer );
     }
     public void setItemClickListener(SubmitAnswerClick clickListener) {
-        submitAnswerClick = clickListener;
+        submit_Answer_Click = clickListener;
     }
 
     @NonNull
@@ -81,12 +81,12 @@ public class AssignmentAdapter   extends RecyclerView.Adapter<AssignmentAdapter.
                    @Override
                    public void onClick(View v) {
                        if (!holder.answer.getText().toString().isEmpty()){
-                          if (submitAnswerClick!=null){
+                          if (submit_Answer_Click!=null){
                               holder.submit.setVisibility(View.GONE);
                               holder.answer_view.setVisibility(View.GONE);
                               holder.editanswer.setVisibility(View.VISIBLE);
                               holder.answer_btn.setText(holder.answer.getText().toString());
-                              submitAnswerClick.onItemClick(questionList.get(position).getId(),holder.answer.getText().toString());
+                              submit_Answer_Click.onItemClick(questionList.get(position).getId(),holder.answer.getText().toString());
 
                           }
                           else {

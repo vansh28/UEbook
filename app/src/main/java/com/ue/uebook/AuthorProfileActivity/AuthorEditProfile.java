@@ -75,11 +75,8 @@ public class AuthorEditProfile extends BaseActivity implements View.OnClickListe
         country__user = findViewById(country__userProfile);
         update__userProfile.setOnClickListener(this);
         image = new SessionManager(getApplicationContext()).getUserimage();
-
         usernameview = findViewById(R.id.username);
-
         address_user = findViewById(R.id.address_user);
-
         usernameview.setText(new SessionManager(getApplicationContext()).getUserName());
         String address = new SessionManager(getApplicationContext()).getUserLocation();
         if (address.length() > 0) {

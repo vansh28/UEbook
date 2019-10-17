@@ -73,20 +73,17 @@ public class HomeScreen extends BaseActivity implements Home_Fragment.OnFragment
         displayCurrentAddress();
         toolbar = getSupportActionBar();
         intent = getIntent();
-
         int loginid= intent.getIntExtra("login",0);
         int id = intent.getIntExtra("id",0);
         if (loginid==1){
             showmessage();
             showBottomSheet();
         }
-
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         loadFragment(new Home_Fragment());
 
     }
-
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
         @SuppressLint("RestrictedApi")
         @Override

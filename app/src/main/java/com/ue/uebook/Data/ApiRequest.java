@@ -1,7 +1,6 @@
 package com.ue.uebook.Data;
 
 import java.io.File;
-
 import okhttp3.Callback;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -24,9 +23,7 @@ public class ApiRequest {
                 .addFormDataPart("gender", gender)
                 .addFormDataPart("country", country)
                 .addFormDataPart("about_me", about_me)
-
                 .build();
-
         Request request = new Request.Builder()
                 .url(url)
                 .post(requestBody)
@@ -76,8 +73,6 @@ public class ApiRequest {
                 .addFormDataPart("publisher_type", publisher_type)
                 .addFormDataPart("country", country)
                 .addFormDataPart("about_me", about_me)
-
-
                 .build();
 
         Request request = new Request.Builder()

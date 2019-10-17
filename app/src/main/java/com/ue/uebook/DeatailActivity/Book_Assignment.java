@@ -55,7 +55,7 @@ public class Book_Assignment extends BaseActivity implements View.OnClickListene
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book__assignment);
         question_list = findViewById(R.id.question_list);
-        fontsize();
+        font_size();
         question_container = findViewById(R.id.question_container);
         viewfornoBook = findViewById(R.id.viewfornoBook);
         submit_assignment = findViewById(R.id.submit_assignment);
@@ -161,7 +161,7 @@ public class Book_Assignment extends BaseActivity implements View.OnClickListene
         }
 
     }
-    private void fontsize(){
+    private void font_size(){
         SharedPreferences pref = getSharedPreferences(getPackageName() + "_preferences", Context.MODE_PRIVATE);
         switch(new SessionManager(getApplicationContext()).getfontSize()) {
             case "smallest":

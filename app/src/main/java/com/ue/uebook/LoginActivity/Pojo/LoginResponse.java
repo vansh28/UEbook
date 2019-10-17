@@ -1,6 +1,5 @@
 package com.ue.uebook.LoginActivity.Pojo;
 
-import java.util.List;
 
 public class LoginResponse  {
     private   Boolean error;

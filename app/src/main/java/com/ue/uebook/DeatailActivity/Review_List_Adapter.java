@@ -28,10 +28,10 @@ public class Review_List_Adapter  extends RecyclerView.Adapter<Review_List_Adapt
     @NonNull
     @Override
     public Review_List_Adapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-// infalte the item Layout
+
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.detail_top_review_list_item, parent, false);
-// set the view's size, margins, paddings and layout parameters
-        Review_List_Adapter.MyViewHolder vh = new Review_List_Adapter.MyViewHolder(v); // pass the view to View Holder
+
+        Review_List_Adapter.MyViewHolder vh = new Review_List_Adapter.MyViewHolder(v);
         return vh;
     }
 
@@ -44,10 +44,7 @@ public class Review_List_Adapter  extends RecyclerView.Adapter<Review_List_Adapt
         holder.comment.setText(data.get(position).getComment());
         if (data.get(position).getRating()!=null){
             holder.ratingBar.setRating( Float.valueOf(data.get(position).getRating()));
-
         }
-
-
     }
 
     @Override
