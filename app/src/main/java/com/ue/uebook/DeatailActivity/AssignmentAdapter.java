@@ -23,7 +23,7 @@ import java.util.List;
 public class AssignmentAdapter   extends RecyclerView.Adapter<AssignmentAdapter.MyViewHolder>{
     private List<ReviewPojo> data;
     private AppCompatActivity mtc;
-    private boolean isshow=false;
+
     private List<Assignment> questionList;
     private SubmitAnswerClick submit_Answer_Click;
     List<EditText> allEds;

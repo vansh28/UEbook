@@ -1,9 +1,7 @@
 package com.ue.uebook.PopularActivity;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -101,18 +99,6 @@ public class Popular_List_Screen extends BaseActivity implements View.OnClickLis
         startActivity(intent);
     }
     private void fontsize(){
-        SharedPreferences pref = getSharedPreferences(getPackageName() + "_preferences", Context.MODE_PRIVATE);
-//        String theme = pref.getString("theme", "light-sans");
-//        if(theme.contains("light"))
-//            viewL.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.window_background));
-//        recommemnded_view.setTextColor(Color.parseColor("#000000"));
-//        popular_view.setTextColor(Color.parseColor("#000000"));
-//        newBookview.setTextColor(Color.parseColor("#000000"));
-//        if(theme.contains("dark"))
-//            viewL.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.window_background_dark));
-//            recommemnded_view.setTextColor(Color.parseColor("#ffffff"));
-//            popular_view.setTextColor(Color.parseColor("#ffffff"));
-//            newBookview.setTextColor(Color.parseColor("#ffffff"));
         switch(new SessionManager(getApplicationContext()).getfontSize()) {
             case "smallest":
                 textSize = 12;

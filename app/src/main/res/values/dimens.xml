@@ -112,5 +112,6 @@
     <dimen name="login_padding_left_right">16dp</dimen>
     <dimen name="login_padding_actionbar">24dp</dimen>
     <dimen name="login_padding_top">16dp</dimen>
+    <dimen name="size_24">24dp</dimen>
 
 </resources>

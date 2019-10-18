@@ -4,7 +4,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
@@ -174,12 +173,6 @@ public class UserMainFragment extends Fragment implements View.OnClickListener, 
 
                 loadFragment(new UserProfile_Fragment());
             }
-//            else if ((new SessionManager(getActivity().getApplicationContext()).getUserPublishType().equalsIgnoreCase("Writer"))){
-//
-//               loadFragment(new UserProfile_Fragment());
-//
-//
-//            }
             else {
                 Intent intent = new Intent(getContext(), AuthorProfileScreen.class);
                 intent.putExtra("id",1);
@@ -195,8 +188,6 @@ public class UserMainFragment extends Fragment implements View.OnClickListener, 
             getContext().startActivity(intent);
         } else if (view == logOut) {
             confirmLogoutDialog();
-//            Intent intent = new Intent(getContext(), SettingsActivity.class);
-//            startActivity(intent);
         }
         else if (view==chat_Container){
 
@@ -304,13 +295,10 @@ public class UserMainFragment extends Fragment implements View.OnClickListener, 
     }
 
     private void loginToChat(final QBUser user) {
-//        com.quickblox.sample.chat.java.ui.dialog.ProgressDialogFragment.show(getSupportFragmentManager(), R.string.dlg_restoring_chat_session);
-
         ChatHelper.getInstance().loginToChat(user, new QBEntityCallback<Void>() {
             @Override
             public void onSuccess(Void result, Bundle bundle) {
                    hideLoadingIndicator();
-//                com.quickblox.sample.chat.java.ui.dialog.ProgressDialogFragment.hide(getSupportFragmentManager());
                 Intent intent = new Intent(getContext(), DialogsActivity.class);
                 getContext().startActivity(intent);
 
@@ -323,8 +311,6 @@ public class UserMainFragment extends Fragment implements View.OnClickListener, 
                     loginToChat(user);
                 } else {
                     Toast.makeText(getContext(),"Network Error please try Again",Toast.LENGTH_SHORT).show();
-
-//                    com.quickblox.sample.chat.java.ui.dialog.ProgressDialogFragment.hide(getSupportFragmentManager());
                     loginToChat(user);
 
                 }
@@ -348,7 +334,6 @@ public class UserMainFragment extends Fragment implements View.OnClickListener, 
         }
     }
     private void fontsize(){
-        SharedPreferences pref = getActivity().getSharedPreferences(getActivity().getPackageName() + "_preferences", Context.MODE_PRIVATE);
         switch(new SessionManager(getActivity().getApplicationContext()).getfontSize()) {
             case "smallest":
                 textSize = 12;

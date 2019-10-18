@@ -79,14 +79,7 @@ public class Search_Fragment extends Fragment implements View.OnClickListener, S
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment Search_Fragment.
-     */
+
     // TODO: Rename and change types and number of parameters
     public static Search_Fragment newInstance(String param1, String param2) {
         Search_Fragment fragment = new Search_Fragment();
@@ -107,7 +100,6 @@ public class Search_Fragment extends Fragment implements View.OnClickListener, S
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
-
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -115,7 +107,6 @@ public class Search_Fragment extends Fragment implements View.OnClickListener, S
         View view = inflater.inflate(R.layout.fragment_search_, container, false);
         search_history_list=view.findViewById(R.id.search_history_list);
         search_list=view.findViewById(R.id.search_list);
-//        Log.d("size", String.valueOf(new SessionManager(getActivity().getApplicationContext()).getArrayList("list").size()));
         edittext_search=view.findViewById(R.id.edittext_search);
         audio_search_btn=view.findViewById(R.id.audio_search_btn);
         audio_search_btn.setOnClickListener(this);
@@ -136,8 +127,6 @@ public class Search_Fragment extends Fragment implements View.OnClickListener, S
             search_list.setAdapter(user_search_list);
         user_search_list.setItemClickListener(this);
         }
-
-
         edittext_search.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {

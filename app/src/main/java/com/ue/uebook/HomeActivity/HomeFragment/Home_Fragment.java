@@ -3,7 +3,6 @@ package com.ue.uebook.HomeActivity.HomeFragment;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
@@ -125,7 +124,6 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home_, container, false);
         recommended_list = view.findViewById(R.id.recommended_list);
         viewL=view.findViewById(R.id.view);
@@ -167,18 +165,6 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
     }
 
     private void fontsize(){
-        SharedPreferences pref = getActivity().getSharedPreferences(getActivity().getPackageName() + "_preferences", Context.MODE_PRIVATE);
-//        String theme = pref.getString("theme", "light-sans");
-//        if(theme.contains("light"))
-//            viewL.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.window_background));
-//        recommemnded_view.setTextColor(Color.parseColor("#000000"));
-//        popular_view.setTextColor(Color.parseColor("#000000"));
-//        newBookview.setTextColor(Color.parseColor("#000000"));
-//        if(theme.contains("dark"))
-//            viewL.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.window_background_dark));
-//            recommemnded_view.setTextColor(Color.parseColor("#ffffff"));
-//            popular_view.setTextColor(Color.parseColor("#ffffff"));
-//            newBookview.setTextColor(Color.parseColor("#ffffff"));
         switch(new SessionManager(getActivity().getApplicationContext()).getfontSize()) {
             case "smallest":
                 textSize = 12;

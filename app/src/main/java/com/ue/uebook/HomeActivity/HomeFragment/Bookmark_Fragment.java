@@ -4,7 +4,6 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
@@ -94,7 +93,6 @@ public class Bookmark_Fragment extends Fragment implements Bookmark_List_Adapter
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.fragment_bookmark_, container, false);
         bookmark_Book_list = view.findViewById(R.id.bookmark_Book_list);
          dialog = new ProgressDialog(getContext());
@@ -221,7 +219,6 @@ public class Bookmark_Fragment extends Fragment implements Bookmark_List_Adapter
         }
     }
         private void fontsize(){
-        SharedPreferences pref = getActivity().getSharedPreferences(getActivity().getPackageName() + "_preferences", Context.MODE_PRIVATE);
             switch(new SessionManager(getActivity().getApplicationContext()).getfontSize()) {
                 case "smallest":
                     textSize = 12;

@@ -388,9 +388,7 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
 
     private void showFilterPopup(View v) {
         PopupMenu popup = new PopupMenu(this, v);
-        // Inflate the menu from xml
         popup.inflate(R.menu.popup_filter);
-        // Setup menu item selection
         popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
@@ -431,8 +429,7 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
                 }
             }
         });
-        // Handle dismissal with: popup.setOnDismissListener(...);
-        // Show the menu
+
         popup.show();
     }
     public static void makeTextViewResizable(final TextView tv, final int maxLine, final String expandText, final boolean viewMore) {
@@ -478,9 +475,7 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
         });
 
     }
-
-    private static SpannableStringBuilder addClickablePartTextViewResizable(final Spanned strSpanned, final TextView tv,
-                                                                            final int maxLine, final String spanableText, final boolean viewMore) {
+    private static SpannableStringBuilder addClickablePartTextViewResizable(final Spanned strSpanned, final TextView tv, final int maxLine, final String spanableText, final boolean viewMore) {
         String str = strSpanned.toString();
         SpannableStringBuilder ssb = new SpannableStringBuilder(strSpanned);
 

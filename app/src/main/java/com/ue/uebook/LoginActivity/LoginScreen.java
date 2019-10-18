@@ -360,11 +360,6 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
         continueToLogin = dialog.findViewById(R.id.continueToLogin);
         txtEmail.setText(email);
         txtName.setText(first_name + " " + last_name);
-
-
-//        GlideUtils.loadImage(this,image,circleImageView,R.drawable.user,R.drawable.user);
-
-//      if (image.)
         if (image != null) {
             Glide.with(getApplicationContext()).load(image).into(circleImageView);
         } else {
@@ -376,7 +371,6 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onClick(View view) {
-//                new SessionManager(getApplicationContext()).storeUserImage(image);
                 registrationUser(first_name, " ", email, "Reader", "","");
 
                 dialog.dismiss();

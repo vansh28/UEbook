@@ -6,7 +6,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -121,7 +120,6 @@ public class User_Fragment extends Fragment implements View.OnClickListener, Use
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_user_, container, false);
         username = view.findViewById(R.id.username);
         dialog = new ProgressDialog(getActivity());
@@ -389,7 +387,6 @@ public class User_Fragment extends Fragment implements View.OnClickListener, Use
         }
     }
     private void fontsize(){
-        SharedPreferences pref = getActivity().getSharedPreferences(getActivity().getPackageName() + "_preferences", Context.MODE_PRIVATE);
         switch(new SessionManager(getActivity().getApplicationContext()).getfontSize()) {
             case "smallest":
                 textSize = 12;

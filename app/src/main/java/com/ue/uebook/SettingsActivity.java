@@ -1,13 +1,10 @@
 package com.ue.uebook;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
-
-import com.ue.uebook.HomeActivity.HomeScreen;
 
 public class SettingsActivity  extends PreferenceActivity implements Preference.OnPreferenceChangeListener{
 
@@ -51,9 +48,6 @@ public class SettingsActivity  extends PreferenceActivity implements Preference.
                 // the preference's 'entries' list.
                 ListPreference listPreference = (ListPreference) preference;
                 int index = listPreference.findIndexOfValue(stringValue);
-
-
-                // Set the summary to reflect the new value.
                 preference.setSummary(index >= 0 ? listPreference.getEntries()[index] : null);
             } else {
                 // For all other preferences, set the summary to the value's
@@ -101,13 +95,7 @@ public class SettingsActivity  extends PreferenceActivity implements Preference.
             case "markdown":
                 findPreference("direct_edit").setEnabled(!(Boolean) value);
                 break;
-
         }
-
         return true;
-    }
-    private void gotoh(){
-        Intent intent = new Intent(SettingsActivity.this, HomeScreen.class);
-        startActivity(intent);
     }
 }

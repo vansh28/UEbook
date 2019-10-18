@@ -1,30 +1,21 @@
 package com.ue.uebook;
 
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
-import android.webkit.ValueCallback;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageButton;
-import android.widget.PopupMenu;
-import android.widget.Toast;
+
+import androidx.annotation.RequiresApi;
 
 public class WebviewScreen extends BaseActivity implements View.OnClickListener {
     private WebView mWebView;
     private ImageButton backbtn;
     private Intent intent;
-    private ProgressDialog mProgress;
+
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override

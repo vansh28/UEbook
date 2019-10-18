@@ -6,7 +6,6 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.DisplayMetrics;
-import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -28,9 +27,6 @@ import java.util.Locale;
 public class SplashScreen extends AppCompatActivity {
     private Handler myHandler;
     private Runnable myRunnable;
-    private ImageView splashImageView;
-
-    // private int[] splashimages = {R.drawable.splash};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -106,13 +102,10 @@ public class SplashScreen extends AppCompatActivity {
     }
 
     private void loginToChat(final QBUser user) {
-//        com.quickblox.sample.chat.java.ui.dialog.ProgressDialogFragment.show(getSupportFragmentManager(), R.string.dlg_restoring_chat_session);
 
         ChatHelper.getInstance().loginToChat(user, new QBEntityCallback<Void>() {
             @Override
             public void onSuccess(Void result, Bundle bundle) {
-
-//                com.quickblox.sample.chat.java.ui.dialog.ProgressDialogFragment.hide(getSupportFragmentManager());
 
                 finish();
             }
@@ -122,7 +115,6 @@ public class SplashScreen extends AppCompatActivity {
                 if (e.getMessage().equals("You have already logged in chat")) {
                     loginToChat(user);
                 } else {
-//                    com.quickblox.sample.chat.java.ui.dialog.ProgressDialogFragment.hide(getSupportFragmentManager());
                     loginToChat(user);
 
                 }

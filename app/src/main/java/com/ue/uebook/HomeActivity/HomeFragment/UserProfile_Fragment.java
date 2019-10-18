@@ -96,7 +96,7 @@ public class UserProfile_Fragment extends Fragment implements View.OnClickListen
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         View view = inflater.inflate(R.layout.fragment_user_profile_, container, false);
         dialog = new ProgressDialog(getContext());
         actor_Spinner = view.findViewById(R.id.actor_Spinner);
@@ -110,9 +110,9 @@ public class UserProfile_Fragment extends Fragment implements View.OnClickListen
         UserInfo(new SessionManager(getContext()).getUserID());
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
                 R.array.planets_array, android.R.layout.simple_spinner_item);
-// Specify the layout to use when the list of choices appears
+
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-// Apply the adapter to the spinner
+
         actor_Spinner.setAdapter(adapter);
         actor_Spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
@@ -120,7 +120,7 @@ public class UserProfile_Fragment extends Fragment implements View.OnClickListen
             public void onItemSelected(AdapterView<?> parent, View arg1,
                                        int arg2, long arg3) {
                 String label = parent.getItemAtPosition(arg2).toString();
-                // Showing selected spinner item
+
                 actortype = label;
 
 
