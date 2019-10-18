@@ -142,5 +142,6 @@ public class Author_BookListAdapter extends RecyclerView.Adapter<Author_BookList
             ratingBar =itemView.findViewById(R.id.myRatingBar);
             button_menu=itemView.findViewById(R.id.button_menu);
         }
-    }}
+    }
+}
 
