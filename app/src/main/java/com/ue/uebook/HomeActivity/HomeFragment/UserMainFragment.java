@@ -87,7 +87,7 @@ public class UserMainFragment extends Fragment implements View.OnClickListener, 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        fontsize();
+
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -97,8 +97,9 @@ public class UserMainFragment extends Fragment implements View.OnClickListener, 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_user_main, container, false);
+        View view = inflater.inflate(R.layout.usermaincategory, container, false);
         userInfo_container = view.findViewById(R.id.userInfo_container);
+        fontsize();
         chat_Container=view.findViewById(R.id.chat_Container);
         userView=view.findViewById(R.id.user_info_view);
         companyView=view.findViewById(R.id.company_info_view);

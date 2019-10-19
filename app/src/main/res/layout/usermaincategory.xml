@@ -20,17 +20,25 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/size_60"
                 android:paddingLeft="@dimen/size_10">
-
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:layout_centerVertical="true"
+                    android:textColor="@color/black"
+                    android:drawableLeft="@drawable/userinfo"
+                    android:text="flkvlfv"></TextView>
                 <TextView
                     android:id="@+id/user_info_view"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:text="@string/user_info"
+                    android:visibility="visible"
                     android:drawableLeft="@drawable/userinfo"
                     android:textColor="@color/black"
                     android:drawablePadding="@dimen/size_20"
-                    android:textSize="@dimen/size_18"></TextView>
+                    android:textSize="18dp"></TextView>
                 <ImageView
                     android:layout_width="@dimen/size_30"
                     android:layout_height="30dp"

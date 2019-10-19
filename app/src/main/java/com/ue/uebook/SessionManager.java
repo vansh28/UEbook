@@ -114,6 +114,6 @@ public class SessionManager {
         editor.commit();
     }
     public String getfontSize(){
-        return sharedPreference.getString(font, "en");
+        return sharedPreference.getString(font, "normal");
     }
 }

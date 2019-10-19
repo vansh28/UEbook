@@ -29,8 +29,43 @@
             android:textColor="@color/white"></TextView>
     </RelativeLayout>
 
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/size_200"
+    android:orientation="vertical">
+    <ImageView
+        android:layout_width="@dimen/size_150"
+        android:src="@drawable/help"
+        android:layout_centerInParent="true"
+        android:layout_height="@dimen/size_150">
+    </ImageView>
+</RelativeLayout>
 
-
-
-
+<TextView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="Need Some Help"
+    android:textColor="@color/black"
+    android:textStyle="bold"
+    android:textSize="@dimen/size_18"
+    android:gravity="center_horizontal">
+</TextView>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Get lost ? Don't know how to use ? Feel free to get in touch with us"
+        android:textSize="@dimen/size_18"
+        android:layout_marginLeft="@dimen/size_15"
+        android:layout_marginRight="@dimen/size_15"
+        android:layout_marginTop="@dimen/size_10"
+        android:gravity="center_horizontal">
+    </TextView>
+<Button
+    android:id="@+id/contact_us"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorAccent"
+    android:textColor="@color/white"
+    android:layout_margin="@dimen/size_20"
+    android:text="Contact US"></Button>
 </LinearLayout>

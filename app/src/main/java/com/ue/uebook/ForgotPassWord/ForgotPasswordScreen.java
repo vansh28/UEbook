@@ -20,31 +20,31 @@ import java.io.IOException;
 
 public class ForgotPasswordScreen extends BaseActivity implements View.OnClickListener {
     private ImageButton back_btn;
-    private EditText email_user;
-    private Button sendPassword;
+    private EditText email_user_tv;
+    private Button sendPasswordbtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forgot_password_screen);
         back_btn=findViewById(R.id.back_forgot);
-        email_user=findViewById(R.id.email_forgot);
-        sendPassword=findViewById(R.id.sendpassword);
-        sendPassword.setOnClickListener(this);
+        email_user_tv=findViewById(R.id.email_forgot);
+        sendPasswordbtn=findViewById(R.id.sendpassword);
+        sendPasswordbtn.setOnClickListener(this);
         back_btn.setOnClickListener(this);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void onClick(View view) {
-        if (view==sendPassword){
-            if (!email_user.getText().toString().isEmpty()){
-                forgotPassword(email_user.getText().toString());
+        if (view==sendPasswordbtn){
+            if (!email_user_tv.getText().toString().isEmpty()){
+                forgotPassword(email_user_tv.getText().toString());
             }
             else {
-                email_user.setEnabled(true);
-                email_user.setError("Enter your Email");
-                email_user.requestFocus();
+                email_user_tv.setEnabled(true);
+                email_user_tv.setError("Enter your Email");
+                email_user_tv.requestFocus();
             }
         }
         else if (view==back_btn){

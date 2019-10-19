@@ -44,8 +44,6 @@ public class Author_BookListAdapter extends RecyclerView.Adapter<Author_BookList
         this.id=id;
         this.textSize=textSize;
     }
-
-
     @NonNull
     @Override
     public Author_BookListAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -57,7 +55,6 @@ public class Author_BookListAdapter extends RecyclerView.Adapter<Author_BookList
         vh.bookname.setTextSize(textSize);
         return vh;
     }
-
     @Override
     public void onBindViewHolder(@NonNull final Author_BookListAdapter.MyViewHolder holder, final int position) {
           holder.button_menu.setVisibility(View.VISIBLE);
@@ -68,7 +65,7 @@ public class Author_BookListAdapter extends RecyclerView.Adapter<Author_BookList
               holder.button_menu.setVisibility(View.GONE);
 
           }
-        holder.book_container.setOnClickListener(new View.OnClickListener() {
+        holder.book_container_tv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (bookItemClick != null) {
@@ -127,14 +124,14 @@ public class Author_BookListAdapter extends RecyclerView.Adapter<Author_BookList
         return Book_list.size();
     }
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        LinearLayout book_container;
+        LinearLayout book_container_tv;
         ImageView bookimage;
         TextView bookname,authorName,bookDesc;
         RatingBar ratingBar;
         ImageButton button_menu;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            book_container=itemView.findViewById(R.id.container);
+            book_container_tv=itemView.findViewById(R.id.container);
             bookimage=itemView.findViewById(R.id.item_image);
             bookname=itemView.findViewById(R.id.bookname);
             authorName=itemView.findViewById(R.id.auhorname);

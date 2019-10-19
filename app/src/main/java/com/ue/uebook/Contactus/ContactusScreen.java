@@ -21,21 +21,20 @@ import libs.mjn.prettydialog.PrettyDialogCallback;
 
 public class ContactusScreen extends BaseActivity implements View.OnClickListener {
     private ImageButton backbtn;
-    private EditText email,message,mobileNo;
+    private EditText email_tv,message,mobileNo;
     private Button send_Btn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contactus_screen);
         backbtn = findViewById(R.id.back_contactus);
-        email=findViewById(R.id.email_contact);
+        email_tv=findViewById(R.id.email_contact);
         message=findViewById(R.id.body_contact);
         mobileNo=findViewById(R.id.mobile_contact);
         send_Btn=findViewById(R.id.send_btn);
         send_Btn.setOnClickListener(this);
         backbtn.setOnClickListener(this);
     }
-
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void onClick(View view) {
@@ -46,13 +45,13 @@ public class ContactusScreen extends BaseActivity implements View.OnClickListene
 
             if (isvalidate()){
 
-                contactUs(new SessionManager(getApplicationContext()).getUserName(),email.getText().toString(),mobileNo.getText().toString(),message.getText().toString());
+                contactUs(new SessionManager(getApplicationContext()).getUserName(),email_tv.getText().toString(),mobileNo.getText().toString(),message.getText().toString());
 
             }
         }
     }
     private Boolean isvalidate(){
-        String eMail=email.getText().toString();
+        String eMail=email_tv.getText().toString();
         String msg=message.getText().toString();
         String mobile = mobileNo.getText().toString();
         if (!eMail.isEmpty()){
@@ -75,9 +74,9 @@ public class ContactusScreen extends BaseActivity implements View.OnClickListene
             }
         }
         else {
-            email.setError("Enter your Email");
-            email.requestFocus();
-            email.setEnabled(true);
+            email_tv.setError("Enter your Email");
+            email_tv.requestFocus();
+            email_tv.setEnabled(true);
             return  false;
         }
     }
@@ -107,7 +106,7 @@ public class ContactusScreen extends BaseActivity implements View.OnClickListene
               runOnUiThread(new Runnable() {
                   @Override
                   public void run() {
-                      email.setText("");
+                      email_tv.setText("");
                       message.setText("");
                       mobileNo.setText("");
                       showMessage();
