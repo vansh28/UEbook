@@ -392,7 +392,7 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
         popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
-                    case R.id.video:
+                    case R.id.videotv:
                         if (videourl!=null)
                         {
                             gotoWebview("http://"+videourl);
@@ -402,7 +402,7 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
                             Toast.makeText(Book_Detail_Screen.this, "No Video for this Book", Toast.LENGTH_SHORT).show();
                         }
                         return true;
-                    case R.id.audio:
+                    case R.id.audiotv:
                         if (audiourl!=null)
                         {
                             gotoWebview("http://"+audiourl);
@@ -411,7 +411,7 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
 
                             Toast.makeText(Book_Detail_Screen.this, "No Audio for this Book", Toast.LENGTH_SHORT).show();
                         }                         return true;
-                    case R.id.doc:
+                    case R.id.doctv:
 
 
                         if (docurl!=null)

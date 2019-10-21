@@ -2,10 +2,8 @@ package com.ue.uebook.DeatailActivity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -105,12 +103,13 @@ public class Book_Assignment extends BaseActivity implements View.OnClickListene
                     jo.put("assignment_id", questionList.get(i).getId());
                     jo.put("answer", allEds.get(i).getText().toString());
                     jo.put("answered_by", new SessionManager(getApplicationContext()).getUserID());
-                } catch (JSONException e) {
+                }
+                catch (JSONException e) {
                     e.printStackTrace();
                 }
                 ja.put(jo);
             }
-            Log.d("Value ", String.valueOf(ja));
+
             sendAnswer(String.valueOf(ja));
         }
     }
@@ -162,7 +161,6 @@ public class Book_Assignment extends BaseActivity implements View.OnClickListene
 
     }
     private void font_size(){
-        SharedPreferences pref = getSharedPreferences(getPackageName() + "_preferences", Context.MODE_PRIVATE);
         switch(new SessionManager(getApplicationContext()).getfontSize()) {
             case "smallest":
                 textSize = 12;

@@ -70,4 +70,7 @@
     <string name="your_notes">Tus notas</string>
     <string name="write_your_notes_here">Escriba sus notas aquí :</string>
     <string name="update_notes">Notas de actualización</string>
+
+    <string name="select_your_language">Elige tu idioma</string>
+    <string name="select_font_size">Seleccionar tamaño de fuente</string>
 </resources>

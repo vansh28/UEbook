@@ -243,5 +243,7 @@
     <string name="your_notes">Your Notes</string>
     <string name="write_your_notes_here">Write Your Notes here :</string>
     <string name="update_notes">Update Notes</string>
+    <string name="select_your_language">Select Your Language</string>
+    <string name="select_font_size">Select Font Size</string>
 
 </resources>

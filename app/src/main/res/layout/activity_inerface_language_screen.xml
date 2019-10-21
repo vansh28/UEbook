@@ -32,7 +32,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Select Your Language"
+        android:text="@string/select_your_language"
         android:textSize="@dimen/size_17"
         android:layout_margin="@dimen/size_10"
         android:textColor="@color/black"
@@ -59,7 +59,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Select Font Size"
+        android:text="@string/select_font_size"
         android:textSize="@dimen/size_17"
         android:layout_margin="@dimen/size_10"
         android:textColor="@color/black"

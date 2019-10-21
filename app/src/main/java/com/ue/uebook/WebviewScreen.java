@@ -15,8 +15,6 @@ public class WebviewScreen extends BaseActivity implements View.OnClickListener 
     private WebView mWebView;
     private ImageButton backbtn;
     private Intent intent;
-
-
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,24 +28,17 @@ public class WebviewScreen extends BaseActivity implements View.OnClickListener 
         mWebView.setWebViewClient(new AppWebViewClients());
         mWebView.getSettings().setJavaScriptEnabled(true);
         mWebView.loadUrl(url);
-
     }
-
     @Override
     public void onClick(View view) {
         if (view==backbtn){
             finish();
         }
     }
-
     public class AppWebViewClients extends WebViewClient {
-
-
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-
             view.loadUrl(url);
-
             return true;
         }
 
@@ -62,7 +53,6 @@ public class WebviewScreen extends BaseActivity implements View.OnClickListener 
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon)
         {
-
             showLoadingIndicator();
             super.onPageStarted(view, url, favicon);
         }
@@ -73,15 +63,12 @@ public class WebviewScreen extends BaseActivity implements View.OnClickListener 
         mWebView.pauseTimers();
         super.onPause();
     }
-
     @Override
     public void onResume() {
         super.onResume();
         mWebView.resumeTimers();
         mWebView.onResume();
     }
-
-
     @Override
     protected void onDestroy() {
         mWebView.destroy();

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/video"
+    <item android:id="@+id/videotv"
         android:title="Video" />
-    <item android:id="@+id/audio"
+    <item android:id="@+id/audiotv"
         android:title="Audio" />
-    <item android:id="@+id/doc"
+    <item android:id="@+id/doctv"
         android:title="Document File" />
 </menu>

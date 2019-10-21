@@ -33,11 +33,11 @@ public class SplashScreen extends AppCompatActivity {
         setContentView(R.layout.activity_splash_screen);
         showSplashimage();
         setLocale(new SessionManager(getApplicationContext()).getCurrentLanguage());
-        if (SharedPrefsHelper.getInstance().hasQbUser()) {
+        if (SharedPrefsHelper.getInstance().hasQbUser())
+        {
             restoreChatSession();
         }
     }
-
     private void showSplashimage() {
         myHandler = new Handler();
         myRunnable = new Runnable() {
@@ -100,23 +100,19 @@ public class SplashScreen extends AppCompatActivity {
             }
         }
     }
-
     private void loginToChat(final QBUser user) {
 
         ChatHelper.getInstance().loginToChat(user, new QBEntityCallback<Void>() {
             @Override
             public void onSuccess(Void result, Bundle bundle) {
-
                 finish();
             }
-
             @Override
             public void onError(QBResponseException e) {
                 if (e.getMessage().equals("You have already logged in chat")) {
                     loginToChat(user);
                 } else {
                     loginToChat(user);
-
                 }
             }
         });
@@ -128,6 +124,5 @@ public class SplashScreen extends AppCompatActivity {
         Configuration conf = res.getConfiguration();
         conf.locale = myLocale;
         res.updateConfiguration(conf, dm);
-
     }
 }

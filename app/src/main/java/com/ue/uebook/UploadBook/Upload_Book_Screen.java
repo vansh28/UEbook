@@ -1,10 +1,12 @@
 package com.ue.uebook.UploadBook;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.NotificationManager;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -125,6 +127,7 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
     public int numberOfLines = 3;
     private List<String> questionList;
     List<EditText> allEds;
+    EditText isbnTV;
     private int textSize;
     private SpeechRecognizer speechRecognizer = null;
     // Tag for the instance state bundle.
@@ -261,47 +264,13 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
 
         } else if (view == publishBtn) {
 
-            if (isvalidate()) {
-                for (int i = 0; i < allEds.size(); i++) {
-                    if (!allEds.get(i).getText().toString().isEmpty()) {
-                        Log.d("Value ", "Val " + allEds.get(i).getText());
-                        questionList.add(allEds.get(i).getText().toString());
-                    }
-                }
-                String json = new Gson().toJson(questionList);
+            if (new SessionManager(getApplicationContext()).getUserPublishType().equalsIgnoreCase("Publish House")){
+             show_Dialog();
 
-                if (audioUrl == null && videofile != null && docfile == null) {
-                    requestforUploadBook(3, new SessionManager(getApplicationContext()).getUserID(), String.valueOf(categorytype), bookTitle.getText().toString(), coverimage, bookDesc.getText().toString(), docfile, authorName.getText().toString(), json);
-                } else if (audioUrl != null && videofile == null && docfile == null) {
-                    requestforUploadBook(2, new SessionManager(getApplicationContext()).getUserID(), String.valueOf(categorytype), bookTitle.getText().toString(), coverimage, bookDesc.getText().toString(), docfile, authorName.getText().toString(), json);
+            } else {
 
-                } else if (audioUrl != null && videofile != null && docfile != null) {
-                    requestforUploadBook(1, new SessionManager(getApplicationContext()).getUserID(), String.valueOf(categorytype), bookTitle.getText().toString(), coverimage, bookDesc.getText().toString(), docfile, authorName.getText().toString(), json);
-                } else if (audioUrl == null && videofile == null && docfile == null) {
-
-                    requestforUploadBook(4, new SessionManager(getApplicationContext()).getUserID(), String.valueOf(categorytype), bookTitle.getText().toString(), coverimage, bookDesc.getText().toString(), docfile, authorName.getText().toString(), json);
-
-                } else if (audioUrl == null && videofile == null && docfile != null) {
-
-                    requestforUploadBook(5, new SessionManager(getApplicationContext()).getUserID(), String.valueOf(categorytype), bookTitle.getText().toString(), coverimage, bookDesc.getText().toString(), docfile, authorName.getText().toString(), json);
-
-                } else if (audioUrl != null && videofile == null && docfile != null) {
-
-                    requestforUploadBook(6, new SessionManager(getApplicationContext()).getUserID(), String.valueOf(categorytype), bookTitle.getText().toString(), coverimage, bookDesc.getText().toString(), docfile, authorName.getText().toString(), json);
-
-                } else if (audioUrl == null && videofile != null && docfile != null) {
-
-                    requestforUploadBook(7, new SessionManager(getApplicationContext()).getUserID(), String.valueOf(categorytype), bookTitle.getText().toString(), coverimage, bookDesc.getText().toString(), docfile, authorName.getText().toString(), json);
-
-                }
-
-//                if (docfile!=null){
-//                }
-//                else {
-//                    requestforUploadBook(new SessionManager(getApplicationContext()).getUserID(), String.valueOf(categorytype), bookTitle.getText().toString(), coverimage, bookDesc.getText().toString(),null,authorName.getText().toString());
-//                }
+                uploadBook();
             }
-
 
         } else if (view == cover_image_layout) {
             imagePreview(bitmap);
@@ -881,6 +850,81 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
                 textSize = 24;
                 break;
         }
+    }
+
+    private void uploadBook(){
+
+
+        if (isvalidate()) {
+            for (int i = 0; i < allEds.size(); i++) {
+                if (!allEds.get(i).getText().toString().isEmpty()) {
+
+                    questionList.add(allEds.get(i).getText().toString());
+                }
+            }
+            String json = new Gson().toJson(questionList);
+
+            if (audioUrl == null && videofile != null && docfile == null) {
+                requestforUploadBook(3, new SessionManager(getApplicationContext()).getUserID(), String.valueOf(categorytype), bookTitle.getText().toString(), coverimage, bookDesc.getText().toString(), docfile, authorName.getText().toString(), json);
+            } else if (audioUrl != null && videofile == null && docfile == null) {
+                requestforUploadBook(2, new SessionManager(getApplicationContext()).getUserID(), String.valueOf(categorytype), bookTitle.getText().toString(), coverimage, bookDesc.getText().toString(), docfile, authorName.getText().toString(), json);
+
+            } else if (audioUrl != null && videofile != null && docfile != null) {
+                requestforUploadBook(1, new SessionManager(getApplicationContext()).getUserID(), String.valueOf(categorytype), bookTitle.getText().toString(), coverimage, bookDesc.getText().toString(), docfile, authorName.getText().toString(), json);
+            } else if (audioUrl == null && videofile == null && docfile == null) {
+
+                requestforUploadBook(4, new SessionManager(getApplicationContext()).getUserID(), String.valueOf(categorytype), bookTitle.getText().toString(), coverimage, bookDesc.getText().toString(), docfile, authorName.getText().toString(), json);
+
+            } else if (audioUrl == null && videofile == null && docfile != null) {
+
+                requestforUploadBook(5, new SessionManager(getApplicationContext()).getUserID(), String.valueOf(categorytype), bookTitle.getText().toString(), coverimage, bookDesc.getText().toString(), docfile, authorName.getText().toString(), json);
+
+            } else if (audioUrl != null && videofile == null && docfile != null) {
+
+                requestforUploadBook(6, new SessionManager(getApplicationContext()).getUserID(), String.valueOf(categorytype), bookTitle.getText().toString(), coverimage, bookDesc.getText().toString(), docfile, authorName.getText().toString(), json);
+
+            } else if (audioUrl == null && videofile != null && docfile != null) {
+
+                requestforUploadBook(7, new SessionManager(getApplicationContext()).getUserID(), String.valueOf(categorytype), bookTitle.getText().toString(), coverimage, bookDesc.getText().toString(), docfile, authorName.getText().toString(), json);
+
+            }
+
+//                if (docfile!=null){
+//                }
+//                else {
+//                    requestforUploadBook(new SessionManager(getApplicationContext()).getUserID(), String.valueOf(categorytype), bookTitle.getText().toString(), coverimage, bookDesc.getText().toString(),null,authorName.getText().toString());
+//                }
+        }
+
+    }
+    private void show_Dialog(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View viewInflated = LayoutInflater.from(this).inflate(R.layout.booknumberitem,null , false);
+         isbnTV = viewInflated.findViewById(R.id.bookisbnTv);
+        builder.setView(viewInflated);
+        builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                     String val = isbnTV.getText().toString();
+                     if (val.isEmpty()){
+                              Toast.makeText(getApplicationContext(),"Enter ISBN Number to Upload Book",Toast.LENGTH_SHORT).show();
+                     }
+                     else {
+                         dialog.dismiss();
+                         uploadBook();
+
+                     }
+
+            }
+        });
+        builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builder.show();
     }
 
 }

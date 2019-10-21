@@ -78,7 +78,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 if (userFromRest.getFullName().equals(user.getFullName())) {
                     loginToChat(user);
                 } else {
-                    //Need to set password NULL, because server will update user only with NULL password
                     user.setPassword(null);
                     updateUser(user);
                 }
