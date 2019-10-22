@@ -59,11 +59,8 @@
     <string name="update_country">Mettre à jour le pays</string>
     <string name="update_password">Mettre à jour le mot de passe</string>
     <string name="update">MISE À JOUR</string>
-
     <string name="address_fetching">Récupération d\'adresse ...</string>
-
     <string name="email">Email</string>
-
     <string name="nobookmark">Pas de liste de signets</string>
     <string name="notepad">Aucune note trouvée</string>
     <string name="enter_your_word">Entrez votre mot</string>
@@ -73,12 +70,11 @@
     <string name="contact_number">Numéro de contact</string>
     <string name="write_your_message">Ecrivez votre message</string>
     <string name="send">ENVOYER</string>
-
     <string name="your_notes">Tes notes</string>
-
     <string name="write_your_notes_here">Écrivez vos notes ici :</string>
     <string name="update_notes">Notes de mise à jour</string>
-
     <string name="select_your_language">Choisissez votre langue</string>
     <string name="select_font_size">Choisir la taille de la police</string>
+
+    <string name="book_isbn_number">Numéro ISBN du livre</string>
 </resources>

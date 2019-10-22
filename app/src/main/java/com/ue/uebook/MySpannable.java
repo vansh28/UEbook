@@ -19,7 +19,7 @@ public class MySpannable  extends ClickableSpan {
     @Override
     public void updateDrawState(TextPaint ds) {
         ds.setUnderlineText(isUnderline);
-        ds.setColor(Color.parseColor("#1b76d3"));
+        ds.setColor(Color.parseColor("#D31145"));
     }
 
     @Override

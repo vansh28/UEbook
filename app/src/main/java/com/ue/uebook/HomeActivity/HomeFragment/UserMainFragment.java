@@ -55,7 +55,7 @@ public class UserMainFragment extends Fragment implements View.OnClickListener, 
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    private RelativeLayout userInfo_container, companyInfo_Container, uploadBook_Container, logOut,chat_Container,author_Container,pendingRequest_Container;
+    private RelativeLayout userInfo_container, companyInfo_Container, uploadBook_Container, logOut,chat_Container,author_Container,pendingbook_Container;
 
     private OnFragmentInteractionListener mListener;
     private View view_uploadBook,pendingRequest_view;
@@ -113,8 +113,8 @@ public class UserMainFragment extends Fragment implements View.OnClickListener, 
         chatView.setTextSize(textSize);
         dictionaryView.setTextSize(textSize);
         logoutView.setTextSize(textSize);
-        pendingRequest_Container=view.findViewById(R.id.pendingRequest_Container);
-        pendingRequest_Container.setOnClickListener(this);
+        pendingbook_Container=view.findViewById(R.id.pendingbook_Container);
+        pendingbook_Container.setOnClickListener(this);
         pendingRequest_view=view.findViewById(R.id.pending_view);
         chat_Container.setOnClickListener(this);
         uploadBook_Container = view.findViewById(R.id.uploadBook_Container);
@@ -124,13 +124,13 @@ public class UserMainFragment extends Fragment implements View.OnClickListener, 
         if (new SessionManager(getActivity().getApplicationContext()).getUserPublishType().equalsIgnoreCase("Reader")){
             uploadBook_Container.setVisibility(View.GONE);
             view_uploadBook.setVisibility(View.GONE);
-            pendingRequest_Container.setVisibility(View.GONE);
+
             pendingRequest_view.setVisibility(View.GONE);
         }
         else {
             uploadBook_Container.setVisibility(View.VISIBLE);
             view_uploadBook.setVisibility(View.VISIBLE);
-            pendingRequest_Container.setVisibility(View.GONE);
+
             pendingRequest_view.setVisibility(View.GONE);
         }
         logOut = view.findViewById(R.id.logOut);
@@ -203,9 +203,8 @@ public class UserMainFragment extends Fragment implements View.OnClickListener, 
             Intent intent = new Intent(getContext(), DictionaryScreen.class);
             getContext().startActivity(intent);
         }
-        else if (view==pendingRequest_Container){
-            Intent intent = new Intent(getContext(), PendingRequestScreen.class);
-            getContext().startActivity(intent);
+        else if (view==pendingbook_Container){
+
         }
     }
 

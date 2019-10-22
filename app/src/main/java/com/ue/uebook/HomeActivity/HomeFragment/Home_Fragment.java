@@ -60,7 +60,7 @@ import static com.ue.uebook.NetworkUtils.getInstance;
  * Use the {@link Home_Fragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Home_Fragment extends Fragment implements View.OnClickListener, Home_recommended_Adapter.RecommendedItemClick, New_Book_Home_Adapter.NewBookItemClick, PopularList_Home_Adapter.PopularBookItemClick, UserMainFragment.OnFragmentInteractionListener , Search_Fragment.OnFragmentInteractionListener {
+public class Home_Fragment extends Fragment implements View.OnClickListener, Home_recommended_Adapter.RecommendedItemClick, New_Book_Home_Adapter.NewBookItemClick, PopularList_Home_Adapter.PopularBookItemClick, UserMainFragment.OnFragmentInteractionListener, Search_Fragment.OnFragmentInteractionListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -75,15 +75,16 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
     private PopularList_Home_Adapter popularList_home_adapter;
     private New_Book_Home_Adapter new_book_home_adapter;
     private EditText edittext_search;
-    private List<HomeListing> recommendedList_book, newBookList,popularBook_List;
+    private List<HomeListing> recommendedList_book, newBookList, popularBook_List;
     private HomeScreen activity;
     private OnFragmentInteractionListener mListener;
-    private TextView recommemnded_view,newBookview,textNobookfound,popular_view;
+    private TextView recommemnded_view, newBookview, textNobookfound, popular_view;
     private RelativeLayout popularview;
     private Dialog mdialog;
     private LinearLayout viewL;
     private SwipeRefreshLayout pullTorfrsh;
-     private  int textSize=16;
+    private int textSize = 16;
+
     public Home_Fragment() {
         // Required empty public constructor
     }
@@ -126,20 +127,20 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home_, container, false);
         recommended_list = view.findViewById(R.id.recommended_list);
-        viewL=view.findViewById(R.id.view);
+        viewL = view.findViewById(R.id.view);
         edittext_search = view.findViewById(R.id.edittext_search);
         newBook_list = view.findViewById(R.id.newBook_list);
         popular_more_btn = view.findViewById(R.id.popular_more_btn);
         popular_list = view.findViewById(R.id.popular_list);
-        recommemnded_view=view.findViewById(R.id.recommended_view);
-        popular_view= view.findViewById(R.id.popular_view);
-        newBookview=view.findViewById(R.id.newBook_view);
-        popularview=view.findViewById(R.id.popularList_view);
-        textNobookfound=view.findViewById(R.id.textNobookfound);
+        recommemnded_view = view.findViewById(R.id.recommended_view);
+        popular_view = view.findViewById(R.id.popular_view);
+        newBookview = view.findViewById(R.id.newBook_view);
+        popularview = view.findViewById(R.id.popularList_view);
+        textNobookfound = view.findViewById(R.id.textNobookfound);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL); // set Horizontal Orientation
         recommended_list.setLayoutManager(linearLayoutManager);
-        pullTorfrsh=view.findViewById(R.id.swipe_refresh_layout);
+        pullTorfrsh = view.findViewById(R.id.swipe_refresh_layout);
         popular_more_btn.setOnClickListener(this);
         activity = (HomeScreen) getActivity();
         displayData();
@@ -164,8 +165,8 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
 
     }
 
-    private void fontsize(){
-        switch(new SessionManager(getActivity().getApplicationContext()).getfontSize()) {
+    private void fontsize() {
+        switch (new SessionManager(getActivity().getApplicationContext()).getfontSize()) {
             case "smallest":
                 textSize = 12;
                 break;
@@ -184,9 +185,6 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
         }
 
 
-
-
-
     }
 
 
@@ -196,6 +194,7 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
             mListener.onFragmentInteraction(uri);
         }
     }
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -216,16 +215,15 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void onStart() {
         super.onStart();
-        if (getInstance(getActivity()).isConnectingToInternet()){
+        if (getInstance(getActivity()).isConnectingToInternet()) {
             getRecommenedBookList("1");
             getnewBookList("2");
             getPopularList();
         }
-        else {
-
-            Toast.makeText(getContext(),"No Internet Connection",Toast.LENGTH_SHORT);
-        }
-
+        else
+            {
+            Toast.makeText(getContext(), "No Internet Connection", Toast.LENGTH_SHORT);
+             }
     }
 
     @Override
@@ -236,6 +234,7 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
 
         }
     }
+
     private void loadFragment(Fragment fragment) {
         // load fragment
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
@@ -244,12 +243,11 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
         transaction.commit();
     }
 
-
     @Override
     public void onFragmentInteraction(Uri uri) {
 
     }
-    private void pullTorefreshswipe(){
+    private void pullTorefreshswipe() {
         pullTorfrsh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
@@ -261,11 +259,12 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
             }
         });
     }
+
     @Override
     public void onItemClick(int position, String book_id) {
         Intent intent = new Intent(getActivity(), Book_Detail_Screen.class);
         intent.putExtra("book_id", book_id);
-        intent.putExtra("position",position);
+        intent.putExtra("position", position);
         getActivity().startActivity(intent);
     }
 
@@ -273,7 +272,7 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
     public void onItemClick_NewBook(int position, String book_id) {
         Intent intent = new Intent(getActivity(), Book_Detail_Screen.class);
         intent.putExtra("book_id", book_id);
-        intent.putExtra("position",position);
+        intent.putExtra("position", position);
         getActivity().startActivity(intent);
     }
 
@@ -282,7 +281,7 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
     public void onItemClick_PopularBook(int position, String book_id) {
         Intent intent = new Intent(getActivity(), Book_Detail_Screen.class);
         intent.putExtra("book_id", book_id);
-        intent.putExtra("position",position);
+        intent.putExtra("position", position);
         getActivity().startActivity(intent);
     }
 
@@ -304,23 +303,21 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-
     }
+
     private void displayData() {
         Thread t = new Thread() {
             @Override
             public void run() {
                 try {
                     while (!isInterrupted()) {
-                        if (recommendedList_book != null && !(recommendedList_book.isEmpty() && (newBook_list!=null) && (popularBook_List!=null))) {
+                        if (recommendedList_book != null && !(recommendedList_book.isEmpty() && (newBook_list != null) && (popularBook_List != null))) {
                             Thread.sleep(1000);
-                            if(getActivity()!=null){
+                            if (getActivity() != null) {
                                 getActivity().runOnUiThread(new Runnable() {
                                     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                                     @Override
                                     public void run() {
-
                                     }
                                 });
                             }
@@ -334,11 +331,12 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
         };
         t.start();
     }
+
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void getRecommenedBookList(String categoryId) {
         showLoadingIndicator();
         ApiRequest request = new ApiRequest();
-        if (recommendedList_book.size()>0)
+        if (recommendedList_book.size() > 0)
             recommendedList_book.clear();
 
         request.requestforgetBookList(categoryId, new okhttp3.Callback() {
@@ -346,31 +344,31 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
             public void onFailure(okhttp3.Call call, IOException e) {
                 Log.d("error", "error");
                 hideLoadingIndicator();
-
             }
+
             @Override
             public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
                 String myResponse = response.body().string();
                 hideLoadingIndicator();
                 Gson gson = new GsonBuilder().create();
                 final HomeListingResponse form = gson.fromJson(myResponse, HomeListingResponse.class);
-                if (form.getData() != null ) {
+                if (form.getData() != null) {
                     recommendedList_book.addAll(form.getData());
-                    if (getActivity()!=null){
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            home_recommended_adapter = new Home_recommended_Adapter((AppCompatActivity) getActivity(), recommendedList_book ,textSize);
-                            recommended_list.setAdapter(home_recommended_adapter);
-                            home_recommended_adapter.setItemClickListener(Home_Fragment.this);
-                            home_recommended_adapter.notifyDataSetChanged();
-                            recommended_list.setNestedScrollingEnabled(false);
-                            recommemnded_view.setVisibility(View.VISIBLE);
-                            recommemnded_view.setTextSize(textSize);
-                        }
-                    });
-                }}
-                else {
+                    if (getActivity() != null) {
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                home_recommended_adapter = new Home_recommended_Adapter((AppCompatActivity) getActivity(), recommendedList_book, textSize);
+                                recommended_list.setAdapter(home_recommended_adapter);
+                                home_recommended_adapter.setItemClickListener(Home_Fragment.this);
+                                home_recommended_adapter.notifyDataSetChanged();
+                                recommended_list.setNestedScrollingEnabled(false);
+                                recommemnded_view.setVisibility(View.VISIBLE);
+                                recommemnded_view.setTextSize(textSize);
+                            }
+                        });
+                    }
+                } else {
                     recommemnded_view.setVisibility(View.GONE);
                 }
 
@@ -378,13 +376,11 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
         });
     }
 
-
-
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void getnewBookList(String categoryId) {
 
         ApiRequest request = new ApiRequest();
-        if (newBookList.size()>0)
+        if (newBookList.size() > 0)
             newBookList.clear();
 
         request.requestforgetBookList(categoryId, new okhttp3.Callback() {
@@ -401,13 +397,13 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
 
                 Gson gson = new GsonBuilder().create();
                 final HomeListingResponse form = gson.fromJson(myResponse, HomeListingResponse.class);
-                if (form.getData() != null ) {
+                if (form.getData() != null) {
                     newBookList.addAll(form.getData());
-                    if(getActivity()!=null) {
+                    if (getActivity() != null) {
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                new_book_home_adapter = new New_Book_Home_Adapter((AppCompatActivity) getActivity(), newBookList,textSize);
+                                new_book_home_adapter = new New_Book_Home_Adapter((AppCompatActivity) getActivity(), newBookList, textSize);
                                 newBook_list.setAdapter(new_book_home_adapter);
                                 new_book_home_adapter.setItemClickListener(Home_Fragment.this);
                                 newBookview.setVisibility(View.VISIBLE);
@@ -415,8 +411,7 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
                             }
                         });
                     }
-                }
-                else {
+                } else {
                     newBookview.setVisibility(View.GONE);
                 }
             }
@@ -425,7 +420,7 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void getPopularList() {
-        if (popularBook_List.size()>0)
+        if (popularBook_List.size() > 0)
             popularBook_List.clear();
         ApiRequest request = new ApiRequest();
         request.requestforGetPopularBook(new Callback() {
@@ -442,12 +437,12 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
                 String myresponse = response.body().string();
                 Gson gson = new GsonBuilder().create();
                 final HomeListingResponse form = gson.fromJson(myresponse, HomeListingResponse.class);
-                if (form.getData() != null ) {
-                    if (getActivity()!=null){
+                if (form.getData() != null) {
+                    if (getActivity() != null) {
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                popularList_home_adapter = new PopularList_Home_Adapter((AppCompatActivity) getActivity(),popularBook_List ,textSize);
+                                popularList_home_adapter = new PopularList_Home_Adapter((AppCompatActivity) getActivity(), popularBook_List, textSize);
                                 popular_list.setAdapter(popularList_home_adapter);
                                 popularList_home_adapter.setItemClickListener(Home_Fragment.this);
                                 popularview.setVisibility(View.VISIBLE);
@@ -458,21 +453,20 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
 
 
                     }
-                    if (form.getData().size()>3){
+                    if (form.getData().size() > 3) {
                         popularBook_List.add(form.getData().get(0));
                         popularBook_List.add(form.getData().get(1));
                         popularBook_List.add(form.getData().get(2));
-                    }
-                    else {
+                    } else {
                         popularBook_List.addAll(form.getData());
                     }
-                }
-                else {
+                } else {
                     popularview.setVisibility(View.GONE);
                 }
             }
         });
-}
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void showLoadingIndicator() {
         mdialog = new Dialog(getContext());
@@ -484,6 +478,7 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
         mdialog.setCanceledOnTouchOutside(true);
         mdialog.show();
     }
+
     public void hideLoadingIndicator() {
         if (mdialog != null && mdialog.isShowing()) {
             mdialog.cancel();
