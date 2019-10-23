@@ -26,9 +26,9 @@ import com.quickblox.core.QBEntityCallback;
 import com.quickblox.core.exception.QBResponseException;
 import com.quickblox.users.model.QBUser;
 import com.ue.uebook.AuthorProfileActivity.AuthorProfileScreen;
-import com.ue.uebook.AuthorProfileActivity.PendingRequestScreen;
 import com.ue.uebook.Dictionary.DictionaryScreen;
 import com.ue.uebook.LoginActivity.LoginScreen;
+import com.ue.uebook.PendingBook.PendingBookScreen;
 import com.ue.uebook.Quickblox_Chat.utils.SharedPrefsHelper;
 import com.ue.uebook.Quickblox_Chat.utils.chat.ChatHelper;
 import com.ue.uebook.Quickblox_Chat.utils.ui.activity.DialogsActivity;
@@ -131,7 +131,7 @@ public class UserMainFragment extends Fragment implements View.OnClickListener, 
             uploadBook_Container.setVisibility(View.VISIBLE);
             view_uploadBook.setVisibility(View.VISIBLE);
 
-            pendingRequest_view.setVisibility(View.GONE);
+            pendingRequest_view.setVisibility(View.VISIBLE);
         }
         logOut = view.findViewById(R.id.logOut);
         logOut.setOnClickListener(this);
@@ -204,7 +204,8 @@ public class UserMainFragment extends Fragment implements View.OnClickListener, 
             getContext().startActivity(intent);
         }
         else if (view==pendingbook_Container){
-
+            Intent intent = new Intent(getContext(), PendingBookScreen.class);
+            getContext().startActivity(intent);
         }
     }
 

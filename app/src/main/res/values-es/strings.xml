@@ -74,4 +74,5 @@
     <string name="select_your_language">Elige tu idioma</string>
     <string name="select_font_size">Seleccionar tamaño de fuente</string>
     <string name="book_isbn_number">Número ISBN del libro</string>
+    <string name="pending_book">Libro pendiente</string>
 </resources>

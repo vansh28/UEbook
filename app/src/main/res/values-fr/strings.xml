@@ -75,6 +75,6 @@
     <string name="update_notes">Notes de mise à jour</string>
     <string name="select_your_language">Choisissez votre langue</string>
     <string name="select_font_size">Choisir la taille de la police</string>
-
     <string name="book_isbn_number">Numéro ISBN du livre</string>
+    <string name="pending_book">Libro pendiente</string>
 </resources>

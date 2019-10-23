@@ -29,23 +29,30 @@
         android:roundIcon="@drawable/applogo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".AuthorProfileActivity.AuthorEditProfile"
-            android:screenOrientation="portrait"></activity>
-        <activity android:name=".Dictionary.DictionaryScreen"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".DeatailActivity.Book_Assignment"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".AuthorProfileActivity.PendingRequestScreen"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".Quickblox_Chat.utils.ui.activity.FriendListScreen"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".AuthorProfileActivity.AuthorList"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".AuthorProfileActivity.AuthorProfileScreen"
-            android:screenOrientation="portrait"/>
+        <activity android:name=".PendingBook.PendingBookScreen"></activity>
+        <activity
+            android:name=".AuthorProfileActivity.AuthorEditProfile"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Dictionary.DictionaryScreen"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".DeatailActivity.Book_Assignment"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".AuthorProfileActivity.PendingRequestScreen"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Quickblox_Chat.utils.ui.activity.FriendListScreen"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".AuthorProfileActivity.AuthorList"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".AuthorProfileActivity.AuthorProfileScreen"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".HomeActivity.InerfaceLanguageScreen"
             android:screenOrientation="portrait" />

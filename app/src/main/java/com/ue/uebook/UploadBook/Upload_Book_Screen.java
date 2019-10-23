@@ -88,7 +88,7 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
     private static final String CHANNEL_ID = "channelID";
     private static final int VOICE_RECOGNITION_REQUEST_CODE = 122;
     private ImageButton back_btn_uploadbook;
-    private LinearLayout upload_cover_bookBtn, question_layout;
+    private LinearLayout upload_cover_bookBtn, question_layout,isbnlayout;
     private RelativeLayout cover_image_layout;
     private String filePath, selectedvideoPath;
     private String fileName;
@@ -128,12 +128,13 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
     private NotificationManager mNotifyManager;
     private NotificationCompat.Builder mBuilder;
     int id = 1;
-    public int numberOfLines = 3;
+    public int numberOfLines = 1;
     private List<String> questionList;
     List<EditText> allEds;
     EditText isbnTV;
     TextInputLayout bookIsbnLayout;
     private int textSize;
+    private String isbnverifyValue="";
     private SpeechRecognizer speechRecognizer = null;
     // Tag for the instance state bundle.
     private static final String PLAYBACK_TIME = "play_time";
@@ -161,6 +162,7 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
         verifyIsbnTv=findViewById(R.id.verifyIsbnTv);
         verifyIsbnTv.setOnClickListener(this);
         verifyImageview=findViewById(R.id.verifyImageview);
+        isbnlayout=findViewById(R.id.isbnlayout);
         fontsize();
         saveForLater=findViewById(R.id.saveForLater);
         saveForLater.setOnClickListener(this);
@@ -206,10 +208,11 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
         book_category.setPrompt("Select Book Category");
         book_category.setOnItemSelectedListener(this);
          if (new SessionManager(getApplicationContext()).getUserPublishType().equalsIgnoreCase("Publish House")){
-
+             isbnlayout.setVisibility(View.VISIBLE);
              bookIsbnLayout.setVisibility(View.VISIBLE);
          }
          else {
+             isbnlayout.setVisibility(View.GONE);
              bookIsbnLayout.setVisibility(View.GONE);
          }
         CreateProgressDialog();
@@ -255,7 +258,6 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
         i.putExtra(Intent.EXTRA_MIME_TYPES, mimetypes);
         startActivityForResult(i, CODE);
     }
-
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void onClick(View view) {
@@ -268,7 +270,8 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
                 Intent mediaChooser = new Intent(Intent.ACTION_PICK);
                 mediaChooser.setType("video/*");
                 startActivityForResult(mediaChooser, REQUEST_PICK_VIDEO);
-            } catch (ActivityNotFoundException e) {
+            } catch (ActivityNotFoundException e)
+            {
                 // Do nothing for now
             }
         } else if (view == audio_btn) {
@@ -294,8 +297,13 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
                     isbnTvview.requestFocus();
                     isbnTvview.setEnabled(true);
                 }
-                else {
+                else if(isbnverifyValue.equalsIgnoreCase("true")) {
                     uploadBook(isbnTvview.getText().toString());
+                }
+                else if (isbnverifyValue.equalsIgnoreCase("false")){
+                    isbnTvview.setError("ISBN Rejected");
+                    isbnTvview.requestFocus();
+                    isbnTvview.setEnabled(true);
                 }
 
              }
@@ -345,9 +353,13 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
                     public void run() {
                              if (form.getData().equalsIgnoreCase("true")){
                                  verifyImageview.setVisibility(View.VISIBLE);
+                                 verifyImageview.setImageResource(R.drawable.verify);
+                                 isbnverifyValue="true";
                              }
                              else {
-                                 verifyImageview.setVisibility(View.GONE);
+                                 verifyImageview.setVisibility(View.VISIBLE);
+                                 verifyImageview.setImageResource(R.drawable.reject);
+                                 isbnverifyValue="false";
                              }
                     }
                 });
@@ -371,6 +383,7 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
         questionEdit.setTextSize(textSize);
         allEds.add(questionEdit);
         questionEdit.setId(numberOfLines + 1);
+        questionEdit.setHint("Question "+"  "+ numberOfLines );
         question_layout.addView(newRowView);
         numberOfLines++;
 
@@ -498,7 +511,6 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
                         .addFormDataPart("questiondata", questiondata)
                         .addFormDataPart("pdf_url", docfile.getName(), RequestBody.create(MediaType.parse("text/csv"), docFile))
                         .addFormDataPart("isbn_number",isbn_number)
-
                         .build();
                 break;
             case 6:
@@ -513,7 +525,6 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
                         .addFormDataPart("pdf_url", docfile.getName(), RequestBody.create(MediaType.parse("text/csv"), docFile))
                         .addFormDataPart("audio_url", audioUrl.getName(), RequestBody.create(MediaType.parse("audio/*"), audioUrl))
                         .addFormDataPart("isbn_number",isbn_number)
-
                         .build();
                 break;
             case 7:
@@ -734,7 +745,8 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
             if (!bookdesc.isEmpty()) {
                 if (file != null) {
                     return true;
-                } else {
+                }
+                else {
                     Toast.makeText(this, "Please Upload Book Cover Image", Toast.LENGTH_SHORT).show();
                     return false;
                 }
