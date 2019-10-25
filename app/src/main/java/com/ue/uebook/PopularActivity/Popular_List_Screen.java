@@ -11,6 +11,7 @@ import android.widget.ImageButton;
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -31,28 +32,31 @@ import okhttp3.Callback;
 import okhttp3.Response;
 
 public class Popular_List_Screen extends BaseActivity implements View.OnClickListener ,Adapter.PopularBook_ItemClick {
-    private RecyclerView popularList;
+    private RecyclerView popularListtV;
     private Adapter popularList_adapter;
     private ImageButton backbtn;
     private List<HomeListing>popularListData;
     private ProgressDialog dialog;
     private int textSize;
+    private SwipeRefreshLayout swipe_refresh_layout;
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_popular__list__screen);
+        swipe_refresh_layout=findViewById(R.id.swipe_refresh_layout);
         fontsize();
-        popularList=findViewById(R.id.popularList);
+        popularListtV=findViewById(R.id.popularListTV);
         dialog= new ProgressDialog(this);
         popularListData= new ArrayList<>();
         LinearLayoutManager linearLayoutManagerPopularList = new LinearLayoutManager(this);
         linearLayoutManagerPopularList.setOrientation(LinearLayoutManager.VERTICAL);
-        popularList.setLayoutManager(linearLayoutManagerPopularList);
+        popularListtV.setLayoutManager(linearLayoutManagerPopularList);
         getPopularList();
         backbtn=findViewById(R.id.backbtn_popular);
         backbtn.setOnClickListener(this);
+        pullTorefreshswipe();
     }
     @Override
     public void onClick(View view) {
@@ -82,7 +86,7 @@ public class Popular_List_Screen extends BaseActivity implements View.OnClickLis
                     @Override
                     public void run() {
                         popularList_adapter = new Adapter(Popular_List_Screen.this,form.getData(),textSize);
-                        popularList.setAdapter(popularList_adapter);
+                        popularListtV.setAdapter(popularList_adapter);
                          popularList_adapter.setItemClickListener(Popular_List_Screen.this);
                         popularList_adapter.notifyDataSetChanged();
                     }
@@ -90,7 +94,16 @@ public class Popular_List_Screen extends BaseActivity implements View.OnClickLis
             }
         });
     }
-
+    private void pullTorefreshswipe(){
+        swipe_refresh_layout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void onRefresh() {
+                getPopularList();
+                swipe_refresh_layout.setRefreshing(false);
+            }
+        });
+    }
     @Override
     public void onItemClick_PopularBook(int position, String book_id) {
         Intent intent = new Intent(Popular_List_Screen.this, Book_Detail_Screen.class);
@@ -116,12 +129,6 @@ public class Popular_List_Screen extends BaseActivity implements View.OnClickLis
                 textSize = 24;
                 break;
         }
-
-
-
-
-
-
     }
 
 }

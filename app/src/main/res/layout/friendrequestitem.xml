@@ -56,7 +56,7 @@
                     android:layout_margin="@dimen/size_5"
                     android:background="@color/colorAccent"
                     android:textColor="@color/white"
-                    android:textAllCaps="false"></Button>
+                    android:textAllCaps="false"/>
                 <Button
                     android:id="@+id/deletebtn"
                     android:layout_width="0dp"
@@ -65,17 +65,14 @@
                     android:text="Delete"
                     android:background="#d3d3d3"
                     android:layout_margin="@dimen/size_5"
-                    android:textAllCaps="false"></Button>
-
+                    android:textAllCaps="false"/>
             </LinearLayout>
-
         </LinearLayout>
-
     </RelativeLayout>
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/size_1"
         android:layout_marginTop="@dimen/size_8"
-        android:background="#d3d3d3"></View>
+        android:background="#d3d3d3"/>
 
 </LinearLayout>

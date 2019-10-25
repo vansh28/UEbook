@@ -50,7 +50,7 @@
             android:layout_marginTop="@dimen/size_10"
             android:gravity="center_horizontal"
             android:textStyle="bold"
-            ></TextView>
+           />
         <TextView
             android:id="@+id/publisher_type"
             android:layout_width="match_parent"
@@ -61,7 +61,7 @@
             android:layout_marginTop="@dimen/size_5"
             android:gravity="center_horizontal"
             android:textStyle="bold"
-            ></TextView>
+            />
 
         <TextView
             android:id="@+id/author_desc"
@@ -76,7 +76,7 @@
             android:textAlignment="center"
             android:layout_centerHorizontal="true"
             android:drawablePadding="@dimen/size_10"
-            ></TextView>
+          />
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_margin="@dimen/size_10"
@@ -101,7 +101,7 @@
               android:textColor="@color/white"
               android:textSize="@dimen/size_15"
               android:gravity="center_horizontal"
-              ></TextView>
+            />
           <TextView
               android:id="@+id/author_postview"
               android:layout_width="wrap_content"
@@ -113,7 +113,7 @@
               android:textSize="@dimen/size_17"
               android:gravity="center_horizontal"
               android:textStyle="bold"
-              ></TextView>
+             />
 
       </LinearLayout>
             <LinearLayout
@@ -133,7 +133,7 @@
                     android:textSize="@dimen/size_17"
                     android:gravity="center_horizontal"
                     android:textStyle="bold"
-                    ></TextView>
+                    />
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -142,7 +142,7 @@
                     android:textColor="@color/white"
                     android:textSize="@dimen/size_15"
                     android:gravity="center_horizontal"
-                    ></TextView>
+                    />
             </LinearLayout>
             <LinearLayout
                 android:layout_width="0dp"
@@ -160,7 +160,7 @@
                     android:textSize="@dimen/size_17"
                     android:gravity="center_horizontal"
                     android:textStyle="bold"
-                    ></TextView>
+                  />
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -169,7 +169,7 @@
                     android:textColor="@color/white"
                     android:textSize="@dimen/size_15"
                     android:gravity="center_horizontal"
-                    ></TextView>
+                />
             </LinearLayout>
         </LinearLayout>
         <LinearLayout
@@ -189,7 +189,7 @@
                 android:textSize="@dimen/size_15"
                 android:visibility="gone"
                 android:textColor="@color/colorAccent"
-                android:text="Message"></Button>
+                android:text="Message"/>
             <Button
                 android:id="@+id/email_btn"
                 android:layout_width="0dp"
@@ -197,7 +197,7 @@
                 android:layout_weight="2"
                 android:textSize="@dimen/size_15"
                 android:textColor="@color/colorAccent"
-                android:text="@string/email"></Button>
+                android:text="@string/email"/>
         </LinearLayout>
         <LinearLayout
             android:id="@+id/editt_profile_view"
@@ -215,7 +215,7 @@
                 android:layout_weight="1"
                 android:textSize="@dimen/size_15"
                 android:textColor="@color/colorAccent"
-                android:text="@string/edit_profile"></Button>
+                android:text="@string/edit_profile"/>
         </LinearLayout>
 
     </RelativeLayout>
@@ -224,8 +224,7 @@
         android:id="@+id/author_post_list"
         android:layout_width="match_parent"
         android:layout_margin="@dimen/size_10"
-        android:layout_height="wrap_content">
-    </com.ue.uebook.NonScrollRecyclerView>
+        android:layout_height="wrap_content"/>
         </LinearLayout>
     </ScrollView>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

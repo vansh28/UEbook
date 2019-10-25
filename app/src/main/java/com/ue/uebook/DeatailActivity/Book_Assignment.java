@@ -15,6 +15,7 @@ import android.widget.TextView;
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.ue.uebook.BaseActivity;
 import com.ue.uebook.Data.ApiRequest;
@@ -47,11 +48,13 @@ public class Book_Assignment extends BaseActivity implements View.OnClickListene
     private int numberOfLines=1;
     private List<user_answer>user_answers;
     private int textSize;
+    private SwipeRefreshLayout swipe_refresh_layout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book__assignment);
+        swipe_refresh_layout=findViewById(R.id.swipe_refresh_layout);
         question_list = findViewById(R.id.question_list);
         font_size();
         question_container = findViewById(R.id.question_container);
@@ -86,6 +89,7 @@ public class Book_Assignment extends BaseActivity implements View.OnClickListene
         assignmentAdapter.setItemClickListener(Book_Assignment.this);
         back_btn = findViewById(R.id.back_asignment);
         back_btn.setOnClickListener(this);
+
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)

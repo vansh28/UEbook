@@ -29,19 +29,19 @@
             android:layout_centerVertical="true"
             android:textSize="@dimen/size_18"
             android:textColor="@color/colorPrimary"
-            ></TextView>
+           />
         <ImageView
             android:layout_width="@dimen/size_25"
             android:layout_height="@dimen/size_25"
             android:src="@drawable/sear"
             android:layout_alignParentRight="true"
             android:layout_marginRight="@dimen/size_10"
-            android:layout_centerVertical="true"></ImageView>
+            android:layout_centerVertical="true"/>
     </RelativeLayout>
 <View
     android:layout_width="match_parent"
     android:layout_height="1dp"
     android:layout_marginTop="@dimen/size_10"
     android:background="#8A8A8A"
-    ></View>
+    />
 </LinearLayout>

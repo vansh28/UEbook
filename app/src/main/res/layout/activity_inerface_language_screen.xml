@@ -19,7 +19,7 @@
             android:layout_centerVertical="true"
             android:layout_margin="@dimen/size_5"
             android:background="@android:color/transparent"
-            android:src="@drawable/backbtn"></ImageButton>
+            android:src="@drawable/backbtn"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -27,7 +27,7 @@
             android:layout_centerInParent="true"
             android:text="Interface language"
             android:textColor="@color/white"
-            android:textSize="@dimen/size_18"></TextView>
+            android:textSize="@dimen/size_18"/>
     </RelativeLayout>
     <TextView
         android:layout_width="match_parent"
@@ -36,14 +36,13 @@
         android:textSize="@dimen/size_17"
         android:layout_margin="@dimen/size_10"
         android:textColor="@color/black"
-        android:textStyle="bold"></TextView>
+        android:textStyle="bold"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/language_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/size_10">
-    </androidx.recyclerview.widget.RecyclerView>
+        android:layout_margin="@dimen/size_10"/>
 
     <Button
         android:id="@+id/fontview"
@@ -55,7 +54,7 @@
         android:textSize="@dimen/size_17"
         android:textAllCaps="false"
         android:layout_margin="@dimen/size_10"
-        ></Button>
+       />
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -63,18 +62,17 @@
         android:textSize="@dimen/size_17"
         android:layout_margin="@dimen/size_10"
         android:textColor="@color/black"
-        android:textStyle="bold"></TextView>
+        android:textStyle="bold"/>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/size_1"
         android:layout_marginTop="@dimen/size_5"
-        android:background="#d3d3d3"></View>
+        android:background="#d3d3d3"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/font_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/size_10">
-    </androidx.recyclerview.widget.RecyclerView>
+        android:layout_margin="@dimen/size_10"/>
 </LinearLayout>

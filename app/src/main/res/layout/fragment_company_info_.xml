@@ -27,7 +27,7 @@
                 android:drawableLeft="@drawable/languges"
                 android:textColor="@color/black"
                 android:drawablePadding="@dimen/size_20"
-                android:textSize="@dimen/size_18"></TextView>
+                android:textSize="@dimen/size_18"/>
             <TextView
                 android:id="@+id/language_name"
                 android:layout_width="wrap_content"
@@ -37,12 +37,12 @@
                 android:layout_marginLeft="@dimen/size_60"
                 android:layout_below="@id/language_interface"
                 android:paddingBottom="@dimen/size_10"
-                android:textSize="@dimen/size_18"></TextView>
+                android:textSize="@dimen/size_18"/>
         </RelativeLayout>
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/black"></View>
+            android:background="@color/black"/>
         <RelativeLayout
             android:id="@+id/share_container"
             android:layout_width="match_parent"
@@ -57,21 +57,21 @@
                 android:drawableLeft="@drawable/share"
                 android:textColor="@color/black"
                 android:drawablePadding="@dimen/size_20"
-                android:textSize="@dimen/size_18"></TextView>
+                android:textSize="@dimen/size_18"/>
             <ImageView
                 android:layout_width="@dimen/size_30"
                 android:layout_height="30dp"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:paddingRight="@dimen/size_10"
-                android:src="@drawable/rightarrow"></ImageView>
+                android:src="@drawable/rightarrow"/>
 
         </RelativeLayout>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/black"></View>
+            android:background="@color/black"/>
 
         <RelativeLayout
             android:id="@+id/help_container"
@@ -89,21 +89,21 @@
                 android:drawablePadding="@dimen/size_20"
                 android:text="@string/help_center"
                 android:textColor="@color/black"
-                android:textSize="@dimen/size_18"></TextView>
+                android:textSize="@dimen/size_18"/>
             <ImageView
                 android:layout_width="@dimen/size_30"
                 android:layout_height="30dp"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:paddingRight="@dimen/size_10"
-                android:src="@drawable/rightarrow"></ImageView>
+                android:src="@drawable/rightarrow"/>
 
         </RelativeLayout>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/black"></View>
+            android:background="@color/black"/>
         <RelativeLayout
             android:id="@+id/aboutUs_container"
             android:layout_width="match_parent"
@@ -119,21 +119,21 @@
                 android:textColor="@color/black"
                 android:drawableLeft="@drawable/about"
                 android:drawablePadding="@dimen/size_20"
-                android:textSize="@dimen/size_18"></TextView>
+                android:textSize="@dimen/size_18"/>
             <ImageView
                 android:layout_width="@dimen/size_30"
                 android:layout_height="30dp"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:paddingRight="@dimen/size_10"
-                android:src="@drawable/rightarrow"></ImageView>
+                android:src="@drawable/rightarrow"/>
 
         </RelativeLayout>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/black"></View>
+            android:background="@color/black"/>
         <RelativeLayout
             android:id="@+id/contactUs_container"
             android:layout_width="match_parent"
@@ -149,21 +149,21 @@
                 android:textColor="@color/black"
                 android:drawableLeft="@drawable/contactus"
                 android:drawablePadding="@dimen/size_20"
-                android:textSize="@dimen/size_18"></TextView>
+                android:textSize="@dimen/size_18"/>
             <ImageView
                 android:layout_width="@dimen/size_30"
                 android:layout_height="30dp"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:paddingRight="@dimen/size_10"
-                android:src="@drawable/rightarrow"></ImageView>
+                android:src="@drawable/rightarrow"/>
 
         </RelativeLayout>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/black"></View>
+            android:background="@color/black"/>
 
     </LinearLayout>
 

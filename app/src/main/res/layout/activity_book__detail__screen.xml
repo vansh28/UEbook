@@ -19,8 +19,7 @@
             android:background="@android:color/transparent"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/size_5"
-            android:paddingLeft="@dimen/size_5">
-        </ImageButton>
+            android:paddingLeft="@dimen/size_5"/>
         <ImageButton
             android:id="@+id/bookmark_btn"
             android:layout_width="@dimen/size_30"
@@ -28,7 +27,7 @@
             android:layout_alignParentRight="true"
             android:layout_marginRight="@dimen/size_12"
             android:layout_centerVertical="true"
-            android:background="@drawable/bookmark_unactive"></ImageButton>
+            android:background="@drawable/bookmark_unactive"/>
     </RelativeLayout>
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -101,7 +100,7 @@
      android:layout_width="match_parent"
      android:layout_height="1dp"
      android:layout_marginTop="@dimen/size_15"
-     android:background="#696868"></View>
+     android:background="#696868"/>
 
 <LinearLayout
     android:layout_width="match_parent"
@@ -139,8 +138,7 @@
         android:gravity="bottom"
         android:layout_marginLeft="@dimen/size_18"
         android:textAllCaps="false"
-        android:text="@string/read_full_book">
-    </TextView>
+        android:text="@string/read_full_book"/>
 
     <TextView
         android:id="@+id/book_asignment"
@@ -152,9 +150,7 @@
         android:textStyle="italic"
         android:clickable="true"
         android:textSize="@dimen/size_18"
-        android:layout_height="wrap_content">
-
-    </TextView>
+        android:layout_height="wrap_content"/>
 
 
 </LinearLayout>
@@ -185,16 +181,14 @@
                         android:layout_width="wrap_content"
                         android:src="@drawable/fblogo"
                         android:background="@android:color/transparent"
-                        android:layout_height="wrap_content">
-                    </ImageButton>
+                        android:layout_height="wrap_content"/>
                     <ImageButton
                         android:id="@+id/googleshare_btn"
                         android:layout_width="wrap_content"
                         android:src="@drawable/gplogo"
                         android:layout_marginLeft="@dimen/size_10"
                         android:background="@android:color/transparent"
-                        android:layout_height="wrap_content">
-                    </ImageButton>
+                        android:layout_height="wrap_content"/>
 
                     <ImageButton
                         android:id="@+id/twittershare_btn"
@@ -202,16 +196,14 @@
                         android:src="@drawable/twlogo"
                         android:background="@android:color/transparent"
                         android:layout_marginLeft="@dimen/size_10"
-                        android:layout_height="wrap_content">
-                    </ImageButton>
+                        android:layout_height="wrap_content"/>
                     <ImageButton
                         android:id="@+id/whatsappshare_btn"
                         android:layout_width="wrap_content"
                         android:src="@drawable/whatsapp"
                         android:background="@android:color/transparent"
                         android:layout_marginLeft="@dimen/size_10"
-                        android:layout_height="wrap_content">
-                    </ImageButton>
+                        android:layout_height="wrap_content"/>
 
 
                 </LinearLayout>
@@ -265,19 +257,19 @@
 
                             android:textColor="@color/colorPrimary"
                             android:textSize="@dimen/size_25"
-                            android:layout_height="wrap_content"></TextView>
+                            android:layout_height="wrap_content"/>
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:text="/"
                             android:textSize="@dimen/size_20"
-                            android:layout_height="wrap_content"></TextView>
+                            android:layout_height="wrap_content"/>
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:text="5"
                             android:textSize="@dimen/size_20"
-                            android:layout_height="wrap_content"></TextView>
+                            android:layout_height="wrap_content"/>
 
 
                     </LinearLayout>
@@ -319,9 +311,7 @@
                     android:background="@drawable/submitbg"
                     android:textSize="@dimen/size_15"
                     android:textColor="@color/white"
-                    android:layout_height="@dimen/size_40">
-
-                </Button>
+                    android:layout_height="@dimen/size_40"/>
 
                 <TextView
                     android:id="@+id/topreviewView"
@@ -339,9 +329,7 @@
               android:id="@+id/review_List"
               android:layout_width="match_parent"
               android:layout_margin="@dimen/size_10"
-              android:layout_height="match_parent">
-
-          </com.ue.uebook.NonScrollRecyclerView>
+              android:layout_height="match_parent"/>
 
 
 

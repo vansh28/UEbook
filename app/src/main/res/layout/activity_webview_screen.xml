@@ -16,12 +16,12 @@
         android:src="@drawable/back_black"
         android:background="@android:color/transparent"
         android:layout_centerVertical="true"
-        android:paddingLeft="@dimen/size_10"></ImageButton>
+        android:paddingLeft="@dimen/size_10"/>
     <ImageView
         android:layout_width="@dimen/size_200"
         android:layout_height="@dimen/size_40"
         android:layout_centerInParent="true"
-        android:src="@drawable/loginlogo"></ImageView>
+        android:src="@drawable/loginlogo"/>
 </RelativeLayout>
     <WebView
         android:id="@+id/mWebView"

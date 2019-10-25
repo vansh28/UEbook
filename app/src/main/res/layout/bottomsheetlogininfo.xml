@@ -10,8 +10,7 @@
         android:src="@drawable/check"
         android:layout_gravity="center"
         android:layout_marginTop="@dimen/size_10"
-        android:layout_height="@dimen/size_50">
-    </ImageView>
+        android:layout_height="@dimen/size_50"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -20,6 +19,5 @@
         android:textSize="@dimen/size_18"
         android:layout_marginTop="@dimen/size_10"
         android:layout_marginBottom="@dimen/size_10"
-        android:text="Login Successfully">
-    </TextView>
+        android:text="@string/login_successfully"/>
 </LinearLayout>

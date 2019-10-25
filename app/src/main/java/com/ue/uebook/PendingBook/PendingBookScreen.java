@@ -10,6 +10,7 @@ import android.widget.ImageButton;
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -30,6 +31,7 @@ public class PendingBookScreen extends BaseActivity implements View.OnClickListe
     private RecyclerView pending_bookTv;
     private PendingListAdapter pendingListAdapter;
     private int textSize = 16;
+    private SwipeRefreshLayout swipe_refresh_layout;
     private List<BookResponse>booklist;
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
@@ -38,6 +40,7 @@ public class PendingBookScreen extends BaseActivity implements View.OnClickListe
         setContentView(R.layout.activity_pending_book_screen);
         backbtn=findViewById(R.id.back_pending);
         fontsize();
+
         booklist= new ArrayList<>();
         pending_bookTv=findViewById(R.id.pending_bookTv);
         backbtn.setOnClickListener(this);
@@ -45,6 +48,7 @@ public class PendingBookScreen extends BaseActivity implements View.OnClickListe
         linearLayoutManagerBookmark.setOrientation(LinearLayoutManager.VERTICAL);
         pending_bookTv.setLayoutManager(linearLayoutManagerBookmark);
         getPendingBook(new SessionManager(getApplicationContext()).getUserID());
+
     }
     @Override
     public void onClick(View v) {
@@ -52,6 +56,7 @@ public class PendingBookScreen extends BaseActivity implements View.OnClickListe
             finish();
         }
     }
+
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void getPendingBook(String user_id) {
         ApiRequest request = new ApiRequest();
@@ -75,16 +80,15 @@ public class PendingBookScreen extends BaseActivity implements View.OnClickListe
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            pendingListAdapter = new PendingListAdapter(PendingBookScreen.this,form.getData(),textSize);
+                            pendingListAdapter = new PendingListAdapter(PendingBookScreen.this,booklist,textSize);
                             pending_bookTv.setAdapter(pendingListAdapter);
                             pendingListAdapter.setItemClickListener(PendingBookScreen.this);
+                            pending_bookTv.getRecycledViewPool().clear();
                             pendingListAdapter.notifyDataSetChanged();
                         }
                     });
                 }
             }
-
-
         });
     }
     private void fontsize(){
@@ -105,16 +109,11 @@ public class PendingBookScreen extends BaseActivity implements View.OnClickListe
                 textSize = 24;
                 break;
         }
-
-
     }
-
-
     @Override
     public void onItemClick(int position, String bookid) {
         Intent intent = new Intent(this, Upload_Book_Screen.class);
         intent.putExtra("screenid",2);
-
         intent.putExtra("bookid",bookid);
         startActivity(intent);
     }

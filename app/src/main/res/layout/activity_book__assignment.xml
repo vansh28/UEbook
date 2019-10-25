@@ -20,15 +20,14 @@
             android:layout_margin="@dimen/size_10"
             android:background="@android:color/transparent"
             android:padding="@dimen/size_10"
-            android:src="@drawable/backbtn"></ImageButton>
-
+            android:src="@drawable/backbtn"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="@string/book_assigment"
             android:textColor="@color/white"
-            android:textSize="@dimen/size_18"></TextView>
+            android:textSize="@dimen/size_18"/>
     </RelativeLayout>
 
     <androidx.recyclerview.widget.RecyclerView
@@ -36,7 +35,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="@dimen/size_5"
-        android:visibility="gone"></androidx.recyclerview.widget.RecyclerView>
+        android:visibility="gone"/>
 
     <TextView
         android:id="@+id/viewfornoBook"
@@ -46,7 +45,7 @@
         android:text="No Assignment for this Book"
         android:textColor="@color/colorAccent"
         android:textSize="18dp"
-        android:visibility="gone"></TextView>
+        android:visibility="gone"/>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -63,7 +62,7 @@
             android:layout_marginTop="11dp"
             android:layout_marginBottom="@dimen/size_5"
             android:orientation="vertical"
-            android:paddingBottom="@dimen/size_10"></LinearLayout>
+            android:paddingBottom="@dimen/size_10"/>
     </ScrollView>
 
     <Button
@@ -75,5 +74,5 @@
         android:text="@string/submit"
         android:textColor="@color/white"
 
-        ></Button>
+        />
 </RelativeLayout>

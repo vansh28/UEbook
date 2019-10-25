@@ -14,7 +14,7 @@
         android:text="Book ISBN Number"
         android:textColor="@color/black"
         android:textSize="@dimen/size_17"
-        android:textStyle="bold"></TextView>
+        android:textStyle="bold"/>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/email_text_input"
@@ -43,5 +43,5 @@
         android:background="@color/colorAccent"
         android:text="Submit"
         android:visibility="gone"
-        android:textColor="@color/white"></Button>
+        android:textColor="@color/white"/>
 </LinearLayout>

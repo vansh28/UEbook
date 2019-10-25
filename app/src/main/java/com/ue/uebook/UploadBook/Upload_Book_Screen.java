@@ -2,7 +2,6 @@ package com.ue.uebook.UploadBook;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.NotificationManager;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -44,7 +43,6 @@ import android.widget.VideoView;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
-import androidx.loader.content.CursorLoader;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.textfield.TextInputLayout;
@@ -67,10 +65,10 @@ import com.ue.uebook.UploadBook.Pojo.VerifyISBNPojo;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.StringTokenizer;
+
 
 import io.github.lizhangqu.coreprogress.ProgressHelper;
 import io.github.lizhangqu.coreprogress.ProgressUIListener;
@@ -84,33 +82,31 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class Upload_Book_Screen extends BaseActivity implements View.OnClickListener, ImageUtils.ImageAttachmentListener, AdapterView.OnItemSelectedListener, RecognitionListener {
-    private static final int MY_PERMISSIONS_REQUEST_CAMERA = 99;
-    private static final int PICK_FILE_REQUEST = 12;
+
     private static final int REQUEST_PICK_VIDEO = 4;
     private static final String CHANNEL_ID = "channelID";
     private static final int VOICE_RECOGNITION_REQUEST_CODE = 122;
     private ImageButton back_btn_uploadbook;
     private LinearLayout upload_cover_bookBtn, question_layout, isbnlayout;
     private RelativeLayout cover_image_layout;
-    private String filePath, selectedvideoPath;
+    private String filePath;
     private String fileName;
     private String encodedString;
     private String coverimageurl="";
-    private String uriData;
+
     private Bitmap bitmap;
     ImageUtils imageUtils;
-    private Uri video;
-    private String videoPath;
-    String decodableString;
+
+
     private Spinner book_category;
     ArrayList<String> categoryName;
-    private File destination = null;
-    private InputStream inputStreamImg;
-    private String imgPath = null;
-    private final int PICK_IMAGE_CAMERA = 1, PICK_IMAGE_GALLERY = 2;
+
+
+
+
     private ImageView camera_btn, video_btn, audio_btn, documents_btn, cover_image_preview;
-    private String uploadedFileName;
-    private StringTokenizer tokens;
+
+
     private TextView filname_view, verifyIsbnTv, upload_info, uploadcover_view, audioname_view, uploadMoreView, assignmentView;
     private ProgressDialog progressdialog;
     private Button publishBtn, addQuestion, saveForLater;
@@ -120,7 +116,7 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
     private File docfile, audioUrl;
     private SpeechRecognizer speech = null;
     private Intent recognizerIntent;
-    static final int REQUEST_PERMISSION_KEY = 9;
+
     private ImageButton recordbtn;
     private ImageView profile_image_user_upload, verifyImageview;
     private VideoView videoview;
@@ -128,7 +124,7 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
     private ProgressBar upload_progress;
     Handler handler = new Handler();
     int status = 0;
-    private NotificationManager mNotifyManager;
+
     private NotificationCompat.Builder mBuilder;
     int id = 1;
     public int numberOfLines = 1;
@@ -151,13 +147,6 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
     private   int pendingbookID,pendingbookPosition;
     private String uploadurl=" http://dnddemo.com/ebooks/api/v1/addNewBook";
     private String savelaterUrl;
-    String[] mimeTypes =
-            {"application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", // .doc & .docx
-                    "application/vnd.ms-powerpoint", "application/vnd.openxmlformats-officedocument.presentationml.presentation", // .ppt & .pptx
-                    "application/vnd.ms-excel", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", // .xls & .xlsx
-                    "text/plain",
-                    "application/pdf",
-                    "application/zip"};
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
@@ -200,10 +189,8 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
         authorName = findViewById(R.id.authorName_edit_text);
         categoryName = new ArrayList<>();
         cover_image_preview = findViewById(R.id.cover_image_preview);
-
         allEds = new ArrayList<EditText>();
         profile_image_user_upload = findViewById(R.id.profile_image_user_upload);
-
         book_category = findViewById(R.id.book_category);
         cover_image_layout.setOnClickListener(this);
         publishBtn = findViewById(R.id.publish_book);
@@ -301,11 +288,8 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
             intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
             intent.setAction(Intent.ACTION_GET_CONTENT);
             startActivityForResult(Intent.createChooser(intent, "Select Picture"), 1);
-
         } else if (view == documents_btn) {
-
             openFile(111);
-
         } else if
         (view == publishBtn) {
             if (isvalidate()) {
@@ -321,11 +305,9 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
                         isbnTvview.requestFocus();
                         isbnTvview.setEnabled(true);
                     }
-
                 } else {
                     uploadBook("", "1",bookid);
                 }
-
             }
         } else if (view == cover_image_layout) {
             if (pendingbookID==2){
@@ -334,7 +316,6 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
             else {
                 imagePreview(bitmap,1,coverimageurl);
             }
-
         } else if (view == filname_view) {
 
 
@@ -350,7 +331,6 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
             verifyISBN(isbnTvview.getText().toString());
         }
     }
-
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void verifyISBN(String isbn) {
         ApiRequest request = new ApiRequest();
@@ -384,7 +364,6 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
             }
         });
     }
-
     public void startVoiceRecognitionActivity() {
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
@@ -393,7 +372,6 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
                 "Speech recognition demo");
         startActivityForResult(intent, VOICE_RECOGNITION_REQUEST_CODE);
     }
-
     public void Add_Line() {
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View newRowView = inflater.inflate(R.layout.questionitem, null);
@@ -406,7 +384,6 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
         numberOfLines++;
 
     }
-
     private void imagePreview(Bitmap file ,int id ,String coverimageurl) {
         final Dialog previewDialog = new Dialog(this);
         previewDialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
@@ -432,7 +409,6 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
         previewDialog.show();
     }
 
-
     private void getAudioFile() {
         try {
             Intent audioIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI);
@@ -440,10 +416,7 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
         } catch (ActivityNotFoundException e) {
             // Do nothing for now
         }
-
-
     }
-
     @Override
     public void image_attachment(int from, String filename, Bitmap file, Uri uri) {
         this.bitmap = file;
@@ -460,7 +433,6 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
             cover_image_layout.setVisibility(View.GONE);
         }
     }
-
     public void requestforUploadBook(String url,final int type, final String userid, final String category_id, final String booktitle, final File profile_image, final String book_description, File docFile, final String author_name, String questiondata, String isbn_number, String statusbook ,String book_id) {
         OkHttpClient client = new OkHttpClient();
         final MediaType MEDIA_TYPE_PNG = MediaType.parse("image/png");
@@ -481,8 +453,6 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
                         .addFormDataPart("isbn_number", isbn_number)
                         .addFormDataPart("status", statusbook)
                         .addFormDataPart("book_id", book_id)
-
-
                         .build();
                 break;
             case 2:
@@ -498,8 +468,6 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
                         .addFormDataPart("isbn_number", isbn_number)
                         .addFormDataPart("status", statusbook)
                         .addFormDataPart("book_id", book_id)
-
-
                         .build();
                 break;
             case 3:
@@ -515,7 +483,6 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
                         .addFormDataPart("isbn_number", isbn_number)
                         .addFormDataPart("status", statusbook)
                         .addFormDataPart("book_id", book_id)
-
                         .build();
                 break;
             case 4:
@@ -530,7 +497,6 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
                         .addFormDataPart("isbn_number", isbn_number)
                         .addFormDataPart("status", statusbook)
                         .addFormDataPart("book_id", book_id)
-
                         .build();
                 break;
             case 5:
@@ -546,7 +512,6 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
                         .addFormDataPart("isbn_number", isbn_number)
                         .addFormDataPart("status", statusbook)
                         .addFormDataPart("book_id", book_id)
-
                         .build();
                 break;
             case 6:
@@ -563,7 +528,6 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
                         .addFormDataPart("isbn_number", isbn_number)
                         .addFormDataPart("status", statusbook)
                         .addFormDataPart("book_id", book_id)
-
                         .build();
                 break;
             case 7:
@@ -580,7 +544,6 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
                         .addFormDataPart("isbn_number", isbn_number)
                         .addFormDataPart("status", statusbook)
                         .addFormDataPart("book_id", book_id)
-
                         .build();
                 break;
             case 8:
@@ -594,26 +557,20 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
                         .addFormDataPart("isbn_number", isbn_number)
                         .addFormDataPart("status", statusbook)
                         .addFormDataPart("book_id", book_id)
-
                         .build();
                 break;
-
             default:
                 throw new IllegalStateException("Unexpected value: " + 1);
         }
 
-
         RequestBody requestBodys = ProgressHelper.withProgress(requestBody, new ProgressUIListener() {
-
             //if you don't need this method, don't override this methd. It isn't an abstract method, just an empty method.
             @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
             @Override
             public void onUIProgressStart(long totalBytes) {
                 super.onUIProgressStart(totalBytes);
                 Toast.makeText(getApplicationContext(), "Uploading Start", Toast.LENGTH_SHORT).show();
-
             }
-
             @Override
             public void onUIProgressChanged(long numBytes, long totalBytes, float percent, float speed) {
                 progressdialog.show();
@@ -727,16 +684,7 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
         imageUtils.request_permission_result(requestCode, permissions, grantResults);
     }
 
-    private String getRealPathFromURI(Uri contentUri) {
-        String[] proj = {MediaStore.Images.Media.DATA};
-        CursorLoader loader = new CursorLoader(this, contentUri, proj, null, null, null);
-        Cursor cursor = loader.loadInBackground();
-        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-        cursor.moveToFirst();
-        String result = cursor.getString(column_index);
-        cursor.close();
-        return result;
-    }
+
 
     private void getBookCategory() {
         ApiRequest request = new ApiRequest();

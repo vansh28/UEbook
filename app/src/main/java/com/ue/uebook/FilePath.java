@@ -101,7 +101,6 @@ public class FilePath {
      */
     public static String getDataColumn(Context context, Uri uri,
                                        String selection, String[] selectionArgs) {
-
         Cursor cursor = null;
         final String column = "_data";
         final String[] projection = {column};
@@ -119,7 +118,6 @@ public class FilePath {
         }
         return null;
     }
-
     /**
      * @param uri The Uri to check.
      * @return Whether the Uri authority is ExternalStorageProvider.
@@ -128,7 +126,6 @@ public class FilePath {
         return "com.android.externalstorage.documents".equals(uri
                 .getAuthority());
     }
-
     /**
      * @param uri The Uri to check.
      * @return Whether the Uri authority is DownloadsProvider.
@@ -137,7 +134,6 @@ public class FilePath {
         return "com.android.providers.downloads.documents".equals(uri
                 .getAuthority());
     }
-
     /**
      * @param uri The Uri to check.
      * @return Whether the Uri authority is MediaProvider.
@@ -146,7 +142,6 @@ public class FilePath {
         return "com.android.providers.media.documents".equals(uri
                 .getAuthority());
     }
-
     /**
      * @param uri The Uri to check.
      * @return Whether the Uri authority is Google Photos.

@@ -18,7 +18,7 @@
                 android:textSize="@dimen/size_18"
                 android:textStyle="bold"
                 android:layout_margin="@dimen/size_10"
-                android:gravity="center"></TextView>
+                android:gravity="center"/>
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/TextInputLayout"
                 android:layout_width="match_parent"
@@ -57,7 +57,6 @@
                 android:visibility="gone"
                 android:layout_marginRight="@dimen/size_8"
                 android:background="@drawable/createacount_bg"
-                android:textColor="@color/white">
-            </Button>
+                android:textColor="@color/white"/>
         </LinearLayout>
 </LinearLayout>

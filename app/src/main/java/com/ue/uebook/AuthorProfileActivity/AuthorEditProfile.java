@@ -54,7 +54,6 @@ public class AuthorEditProfile extends BaseActivity implements View.OnClickListe
     private Button update__userProfile;
     private String actortype;
     private TextView usernameview, address_user;
-
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,10 +84,8 @@ public class AuthorEditProfile extends BaseActivity implements View.OnClickListe
         if (!image.isEmpty()) {
             GlideUtils.loadImage(AuthorEditProfile.this, "http://dnddemo.com/ebooks/api/v1/upload/" + image, profile_image_user, R.drawable.user_default, R.drawable.user_default);
         } else {
-
             profile_image_user.setImageResource(R.drawable.user_default);
         }
-
         UserInfo(new SessionManager(getApplicationContext()).getUserID());
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.planets_array, android.R.layout.simple_spinner_item);
@@ -97,25 +94,18 @@ public class AuthorEditProfile extends BaseActivity implements View.OnClickListe
 // Apply the adapter to the spinner
         actor_Spinner.setAdapter(adapter);
         actor_Spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-
             @Override
             public void onItemSelected(AdapterView<?> parent, View arg1,
                                        int arg2, long arg3) {
                 String label = parent.getItemAtPosition(arg2).toString();
                 // Showing selected spinner item
                 actortype = label;
-
-
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-
             }
         });
-
     }
-
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void onClick(View v) {
@@ -126,7 +116,6 @@ public class AuthorEditProfile extends BaseActivity implements View.OnClickListe
         }
         else if (v==update__userProfile){
             UpdateUser(userpassword.getText().toString(), useremail.getText().toString(), actortype, country__user.getText().toString(), about_me.getText().toString());
-
         }
     }
 
@@ -256,9 +245,7 @@ public class AuthorEditProfile extends BaseActivity implements View.OnClickListe
                    runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-
                             UserInfo(new SessionManager(getApplicationContext()).getUserID());
-
                         }
                     });
 

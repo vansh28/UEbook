@@ -19,7 +19,7 @@
             android:layout_centerVertical="true"
             android:layout_margin="@dimen/size_5"
             android:background="@android:color/transparent"
-            android:src="@drawable/backbtn"></ImageButton>
+            android:src="@drawable/backbtn"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -27,7 +27,7 @@
             android:layout_centerInParent="true"
             android:text="@string/upload_book"
             android:textColor="@color/white"
-            android:textSize="@dimen/size_18"></TextView>
+            android:textSize="@dimen/size_18"/>
 
         <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/profile_image_user_upload"
@@ -108,9 +108,7 @@
                         android:layout_weight=".5"
                         android:background="@android:color/transparent"
                         android:src="@drawable/audio"
-                        android:visibility="visible">
-
-                    </ImageButton>
+                        android:visibility="visible"/>
 
                 </LinearLayout>
 
@@ -143,9 +141,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:paddingLeft="@dimen/size_5"
-                        android:spinnerMode="dropdown">
-
-                    </Spinner>
+                        android:spinnerMode="dropdown"/>
 
                 </LinearLayout>
 
@@ -163,7 +159,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="@dimen/size_20"></ImageView>
+                        android:layout_marginLeft="@dimen/size_20"/>
 
                     <TextView
                         android:id="@+id/uploadcover_view"
@@ -173,9 +169,7 @@
                         android:layout_marginLeft="@dimen/size_15"
                         android:text="@string/upload_cover_image"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/size_16">
-
-                    </TextView>
+                        android:textSize="@dimen/size_16"/>
 
                 </LinearLayout>
 
@@ -191,9 +185,7 @@
                         android:id="@+id/cover_image_preview"
                         android:layout_width="80dp"
                         android:layout_height="match_parent"
-                        android:layout_margin="@dimen/size_10">
-
-                    </ImageView>
+                        android:layout_margin="@dimen/size_10"/>
 
                 </RelativeLayout>
 
@@ -212,7 +204,7 @@
                         android:layout_marginLeft="@dimen/size_20"
                         android:text="@string/book_assigment"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/size_16"></TextView>
+                        android:textSize="@dimen/size_16"/>
 
                     <Button
                         android:id="@+id/add_question"
@@ -221,7 +213,7 @@
                         android:layout_alignParentRight="true"
                         android:layout_gravity="end"
                         android:background="@android:color/transparent"
-                        android:text="@string/add"></Button>
+                        android:text="@string/add"/>
 
                 </RelativeLayout>
 
@@ -230,7 +222,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/size_10"
-                    android:orientation="vertical"></LinearLayout>
+                    android:orientation="vertical"/>
                 <com.google.android.material.textfield.TextInputLayout
                     style="@style/TextInputLayout"
                     android:visibility="gone"
@@ -260,14 +252,14 @@
                        android:clickable="true"
                        android:textSize="@dimen/size_15"
                        android:layout_marginLeft="@dimen/size_20"
-                       android:text="Verify ISBN"></TextView>
+                       android:text="Verify ISBN"/>
                      <ImageView
                          android:id="@+id/verifyImageview"
                          android:layout_width="wrap_content"
                          android:layout_marginLeft="@dimen/size_15"
                           android:src="@drawable/tick"
                          android:visibility="gone"
-                         android:layout_height="wrap_content"></ImageView>
+                         android:layout_height="wrap_content"/>
                </LinearLayout>
                 <TextView
                     android:id="@+id/uploadMoreView"
@@ -299,7 +291,7 @@
                         android:layout_gravity="center_vertical"
                         android:layout_weight="1"
                         android:src="@drawable/bcamera"
-                        android:visibility="gone"></ImageView>
+                        android:visibility="gone"/>
 
                     <ImageView
                         android:id="@+id/video_Btn"
@@ -307,7 +299,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_weight="1"
-                        android:src="@drawable/video"></ImageView>
+                        android:src="@drawable/video"/>
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -317,7 +309,7 @@
                         <View
                             android:layout_width="1dp"
                             android:layout_height="match_parent"
-                            android:background="@color/black"></View>
+                            android:background="@color/black"/>
                     </LinearLayout>
 
                     <ImageView
@@ -326,7 +318,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_weight=".8"
-                        android:src="@drawable/audio"></ImageView>
+                        android:src="@drawable/audio"/>
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -336,7 +328,7 @@
                         <View
                             android:layout_width="1dp"
                             android:layout_height="match_parent"
-                            android:background="@color/black"></View>
+                            android:background="@color/black"/>
                     </LinearLayout>
 
                     <ImageView
@@ -345,7 +337,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_weight=".8"
-                        android:src="@drawable/document"></ImageView>
+                        android:src="@drawable/document"/>
 
                 </LinearLayout>
 
@@ -372,7 +364,7 @@
                     android:clickable="true"
                     android:textColor="@color/colorPrimary"
                     android:textSize="@dimen/size_17"
-                    android:visibility="gone"></TextView>
+                    android:visibility="gone"/>
                     <TextView
                         android:id="@+id/audioname_view"
                         android:layout_width="wrap_content"
@@ -383,7 +375,7 @@
                         android:layout_below="@+id/filname_view"
                         android:textColor="@color/colorPrimary"
                         android:textSize="@dimen/size_17"
-                        android:visibility="gone"></TextView>
+                        android:visibility="gone"/>
 
                 </RelativeLayout>
 
@@ -412,7 +404,7 @@
                            android:background="@drawable/createacount_bg"
                            android:text="@string/publish_book"
                            android:textAllCaps="true"
-                           android:textColor="@color/white"></Button>
+                           android:textColor="@color/white"/>
                        <Button
                            android:id="@+id/saveForLater"
                            android:layout_width="0dp"
@@ -425,7 +417,7 @@
                            android:background="@drawable/createacount_bg"
                            android:text="Save For Later"
                            android:textAllCaps="true"
-                           android:textColor="@color/white"></Button>
+                           android:textColor="@color/white"/>
 
                    </LinearLayout>
             </LinearLayout>

@@ -21,7 +21,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"></LinearLayout>
+                android:orientation="vertical"/>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/email_text_input"

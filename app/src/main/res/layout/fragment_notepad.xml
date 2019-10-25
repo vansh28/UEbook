@@ -21,7 +21,7 @@
             android:textColor="@color/white"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/size_100"
-            android:textSize="@dimen/size_20"></TextView>
+            android:textSize="@dimen/size_20"/>
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -30,17 +30,19 @@
             android:layout_centerVertical="true"
             android:visibility="gone"
             android:layout_marginRight="@dimen/size_100"
-            app:srcCompat="@drawable/ic_delete_black_32dp"></ImageButton>
-
+            app:srcCompat="@drawable/ic_delete_black_32dp"/>
     </RelativeLayout>
-
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/swipe_refresh_layout"
+        android:layout_width="match_parent"
+        android:layout_below="@+id/header"
+        android:layout_height="match_parent">
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/notepad_list"
             android:layout_width="match_parent"
             android:layout_margin="@dimen/size_10"
-            android:layout_below="@id/header"
-            android:layout_height="match_parent">
-        </androidx.recyclerview.widget.RecyclerView>
+            android:layout_height="match_parent"/>
 
     <TextView
         android:id="@+id/textNonotepadList"
@@ -52,6 +54,6 @@
         android:textColor="@color/colorPrimary"
         android:textSize="@dimen/size_20" />
 
-
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 </RelativeLayout>

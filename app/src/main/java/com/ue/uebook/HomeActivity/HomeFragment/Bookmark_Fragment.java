@@ -20,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -53,6 +54,7 @@ public class Bookmark_Fragment extends Fragment implements Bookmark_List_Adapter
     private TextView textNobookmarkList;
     private Dialog mdialog;
     private int textSize = 16;
+    private SwipeRefreshLayout swipe_refresh_layout;
 
     private OnFragmentInteractionListener mListener;
 
@@ -84,7 +86,7 @@ public class Bookmark_Fragment extends Fragment implements Bookmark_List_Adapter
         View view= inflater.inflate(R.layout.fragment_bookmark_, container, false);
         bookmark_Book_list = view.findViewById(R.id.bookmark_Book_list);
          dialog = new ProgressDialog(getContext());
-
+        swipe_refresh_layout=view.findViewById(R.id.swipe_refresh_layout);
         LinearLayoutManager linearLayoutManagerBookmark = new LinearLayoutManager(getContext());
         linearLayoutManagerBookmark.setOrientation(LinearLayoutManager.VERTICAL);
         bookmark_Book_list.setLayoutManager(linearLayoutManagerBookmark);
@@ -114,12 +116,22 @@ public class Bookmark_Fragment extends Fragment implements Bookmark_List_Adapter
         super.onDetach();
         mListener = null;
     }
-
+    private void pullTorefreshswipe(){
+        swipe_refresh_layout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void onRefresh() {
+                getBookmarkList(new SessionManager(getActivity().getApplicationContext()).getUserID());
+                swipe_refresh_layout.setRefreshing(false);
+            }
+        });
+    }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public  void onStart(){
         super.onStart();
         getBookmarkList(new SessionManager(getActivity().getApplicationContext()).getUserID());
+        pullTorefreshswipe();
 
     }
     @Override

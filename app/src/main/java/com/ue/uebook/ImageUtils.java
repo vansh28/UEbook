@@ -23,14 +23,14 @@ import android.util.Base64;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-
-import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
 @SuppressLint("SdCardPath")
 public class ImageUtils {
@@ -559,17 +559,6 @@ AlertDialog.Builder alertdialog = new AlertDialog.Builder(current_activity);
      * @param width
      * @return
      */
-    public Bitmap getImage_FromUri(Uri uri, float height, float width) {
-        Bitmap bitmap = null;
-
-        try {
-            bitmap = compressImage(uri.toString(), height, width);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return bitmap;
-    }
 
     /**
      * Get filename from URI

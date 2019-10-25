@@ -30,21 +30,21 @@
                     android:drawableLeft="@drawable/userinfo"
                     android:textColor="@color/black"
                     android:drawablePadding="@dimen/size_20"
-                    android:textSize="@dimen/size_18"></TextView>
+                    android:textSize="@dimen/size_18"/>
                 <ImageView
                     android:layout_width="@dimen/size_30"
                     android:layout_height="30dp"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:paddingRight="@dimen/size_10"
-                    android:src="@drawable/rightarrow"></ImageView>
+                    android:src="@drawable/rightarrow"/>
 
             </RelativeLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/black"></View>
+                android:background="@color/black"/>
 
             <RelativeLayout
                 android:id="@+id/companyInfo_Container"
@@ -61,7 +61,7 @@
                     android:text="@string/company_info"
                     android:layout_centerVertical="true"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/size_18"></TextView>
+                    android:textSize="@dimen/size_18"/>
 
                 <ImageView
                     android:layout_width="@dimen/size_30"
@@ -69,14 +69,14 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:paddingRight="@dimen/size_10"
-                    android:src="@drawable/rightarrow"></ImageView>
+                    android:src="@drawable/rightarrow"/>
 
             </RelativeLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/black"></View>
+                android:background="@color/black"/>
 
 
             <RelativeLayout
@@ -94,7 +94,7 @@
                     android:textColor="@color/black"
                     android:drawableLeft="@drawable/addbook"
                     android:drawablePadding="@dimen/size_20"
-                    android:textSize="@dimen/size_18"></TextView>
+                    android:textSize="@dimen/size_18"/>
 
                 <ImageView
                     android:layout_width="@dimen/size_30"
@@ -102,14 +102,14 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:paddingRight="@dimen/size_10"
-                    android:src="@drawable/rightarrow"></ImageView>
+                    android:src="@drawable/rightarrow"/>
             </RelativeLayout>
 
             <View
                 android:id="@+id/uploadBook_view"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/black"></View>
+                android:background="@color/black"/>
             <RelativeLayout
                 android:id="@+id/chat_Container"
                 android:layout_width="match_parent"
@@ -124,20 +124,20 @@
                     android:textColor="@color/black"
                     android:drawableLeft="@drawable/chat_icon"
                     android:drawablePadding="@dimen/size_20"
-                    android:textSize="@dimen/size_18"></TextView>
+                    android:textSize="@dimen/size_18"/>
                 <ImageView
                     android:layout_width="@dimen/size_30"
                     android:layout_height="30dp"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:paddingRight="@dimen/size_10"
-                    android:src="@drawable/rightarrow"></ImageView>
+                    android:src="@drawable/rightarrow"/>
             </RelativeLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/black"></View>
+                android:background="@color/black"/>
             <RelativeLayout
                 android:id="@+id/pendingRequest_Container"
                 android:layout_width="match_parent"
@@ -152,14 +152,14 @@
                     android:textColor="@color/black"
                     android:drawableLeft="@drawable/addbook"
                     android:drawablePadding="@dimen/size_20"
-                    android:textSize="@dimen/size_18"></TextView>
+                    android:textSize="@dimen/size_18"/>
                 <ImageView
                     android:layout_width="@dimen/size_30"
                     android:layout_height="30dp"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:paddingRight="@dimen/size_10"
-                    android:src="@drawable/rightarrow"></ImageView>
+                    android:src="@drawable/rightarrow"/>
             </RelativeLayout>
 
             <View
@@ -167,7 +167,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:visibility="gone"
-                android:background="@color/black"></View>
+                android:background="@color/black"/>
             <RelativeLayout
                 android:id="@+id/author_Container"
                 android:layout_width="match_parent"
@@ -183,21 +183,21 @@
                     android:textColor="@color/black"
                     android:drawableLeft="@drawable/dict"
                     android:drawablePadding="@dimen/size_20"
-                    android:textSize="@dimen/size_18"></TextView>
+                    android:textSize="@dimen/size_18"/>
                 <ImageView
                     android:layout_width="@dimen/size_30"
                     android:layout_height="30dp"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:paddingRight="@dimen/size_10"
-                    android:src="@drawable/rightarrow"></ImageView>
+                    android:src="@drawable/rightarrow"/>
             </RelativeLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:visibility="visible"
-                android:background="@color/black"></View>
+                android:background="@color/black"/>
             <RelativeLayout
                 android:id="@+id/logOut"
                 android:layout_width="match_parent"
@@ -213,12 +213,12 @@
                     android:textColor="@color/black"
                     android:drawableLeft="@drawable/logout"
                     android:drawablePadding="@dimen/size_20"
-                    android:textSize="@dimen/size_18"></TextView>
+                    android:textSize="@dimen/size_18"/>
             </RelativeLayout>
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/black"></View>
+                android:background="@color/black"/>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

@@ -247,5 +247,6 @@
     <string name="select_font_size">Select Font Size</string>
     <string name="book_isbn_number">Book ISBN Number</string>
     <string name="pending_book">Pending Book</string>
+    <string name="login_successfully">Login Successfully</string>
 
 </resources>

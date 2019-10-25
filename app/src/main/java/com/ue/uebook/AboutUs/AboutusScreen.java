@@ -18,7 +18,6 @@ public class AboutusScreen extends AppCompatActivity implements View.OnClickList
         backbtn = findViewById(R.id.back_abouttus);
         backbtn.setOnClickListener(this);
     }
-
     @Override
     public void onClick(View view) {
         if (view==backbtn){

@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:text="English"
             android:textColor="@color/black"
-            android:textSize="@dimen/size_18"></TextView>
+            android:textSize="@dimen/size_18"/>
 
         <TextView
             android:id="@+id/language_name"
@@ -28,8 +28,7 @@
             android:text="English"
             android:visibility="gone"
             android:textColor="#ACACAC"
-            android:textSize="@dimen/size_16"></TextView>
-
+            android:textSize="@dimen/size_16"/>
         <CheckBox
             android:id="@+id/selected_language"
             android:layout_width="@dimen/size_40"
@@ -38,13 +37,13 @@
             android:layout_centerVertical="true"
             android:visibility="visible"
             android:clickable="false"
-            android:layout_marginRight="@dimen/size_10"></CheckBox>
+            android:layout_marginRight="@dimen/size_10"/>
     </RelativeLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/size_1"
         android:layout_marginTop="@dimen/size_5"
-        android:background="#d3d3d3"></View>
+        android:background="#d3d3d3"/>
 
 </LinearLayout>

@@ -20,6 +20,7 @@ import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -56,7 +57,8 @@ public class NotepadFragment extends Fragment  implements  NotepadAdapter.Notepa
     private ProgressDialog dialog;
     private TextView textNonotepadList;
     private Dialog mdialog;
-      private int textSize;
+    private int textSize;
+    private SwipeRefreshLayout swipe_refresh_layout;
     private OnFragmentInteractionListener mListener;
 
     public NotepadFragment() {
@@ -90,11 +92,13 @@ public class NotepadFragment extends Fragment  implements  NotepadAdapter.Notepa
         View view= inflater.inflate(R.layout.fragment_notepad, container, false);
         notepad_list=view.findViewById(R.id.notepad_list);
         dialog = new ProgressDialog(getContext());
+        swipe_refresh_layout=view.findViewById(R.id.swipe_refresh_layout);
+
         textNonotepadList=view.findViewById(R.id.textNonotepadList);
         LinearLayoutManager linearLayoutManagerPopularList = new LinearLayoutManager(getContext());
         linearLayoutManagerPopularList.setOrientation(LinearLayoutManager.VERTICAL);
         notepad_list.setLayoutManager(linearLayoutManagerPopularList);
-
+        pullTorefreshswipe();
         return  view;
     }
 
@@ -115,7 +119,16 @@ public class NotepadFragment extends Fragment  implements  NotepadAdapter.Notepa
                     + " must implement OnFragmentInteractionListener");
         }
     }
-
+    private void pullTorefreshswipe(){
+        swipe_refresh_layout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void onRefresh() {
+                getnotePadList(new SessionManager(getActivity().getApplicationContext()).getUserID());
+                swipe_refresh_layout.setRefreshing(false);
+            }
+        });
+    }
     @Override
     public void onDetach() {
         super.onDetach();
@@ -126,6 +139,8 @@ public class NotepadFragment extends Fragment  implements  NotepadAdapter.Notepa
     public void onStart(){
         super.onStart();
         getnotePadList(new SessionManager(getActivity().getApplicationContext()).getUserID());
+
+
     }
 
     @Override
