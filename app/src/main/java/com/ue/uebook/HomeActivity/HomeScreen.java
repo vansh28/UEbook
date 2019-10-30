@@ -64,8 +64,8 @@ public class HomeScreen extends BaseActivity implements Home_Fragment.OnFragment
         addnotes_fab.setVisibility(View.GONE);
         container=findViewById(R.id.container);
         addnotes_fab.setOnClickListener(this);
-         recommendedList_book= new ArrayList<>();
-         newBookList = new ArrayList<>();
+        recommendedList_book= new ArrayList<>();
+        newBookList = new ArrayList<>();
         popularBook_List = new ArrayList<>();
         displayCurrentAddress();
         toolbar = getSupportActionBar();
@@ -124,12 +124,10 @@ public class HomeScreen extends BaseActivity implements Home_Fragment.OnFragment
         fragmentTransaction.commitNowAllowingStateLoss();;
 
     }
-
     @Override
     public void onFragmentInteraction(Uri uri) {
 
     }
-
     private void displayCurrentAddress() {
         Thread t = new Thread() {
             @Override
@@ -226,7 +224,6 @@ public class HomeScreen extends BaseActivity implements Home_Fragment.OnFragment
         Configuration conf = res.getConfiguration();
         conf.locale = myLocale;
         res.updateConfiguration(conf, dm);
-
     }
 }
 

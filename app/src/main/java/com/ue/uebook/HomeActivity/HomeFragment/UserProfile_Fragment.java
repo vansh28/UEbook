@@ -110,9 +110,7 @@ public class UserProfile_Fragment extends Fragment implements View.OnClickListen
         UserInfo(new SessionManager(getContext()).getUserID());
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
                 R.array.planets_array, android.R.layout.simple_spinner_item);
-
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
         actor_Spinner.setAdapter(adapter);
         actor_Spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 

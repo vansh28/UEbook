@@ -31,7 +31,10 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".PendingBook.PendingBookScreen"></activity>
+        <activity android:name=".ChatSdk.MessageScreen"></activity>
+        <activity android:name=".ChatSdk.FriendListScreen" />
+        <activity android:name=".ChatSdk.ChatListScreen" />
+        <activity android:name=".PendingBook.PendingBookScreen" />
         <activity
             android:name=".AuthorProfileActivity.AuthorEditProfile"
             android:screenOrientation="portrait" />

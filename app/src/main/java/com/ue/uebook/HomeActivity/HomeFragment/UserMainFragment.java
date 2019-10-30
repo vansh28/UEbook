@@ -26,6 +26,7 @@ import com.quickblox.core.QBEntityCallback;
 import com.quickblox.core.exception.QBResponseException;
 import com.quickblox.users.model.QBUser;
 import com.ue.uebook.AuthorProfileActivity.AuthorProfileScreen;
+import com.ue.uebook.ChatSdk.ChatListScreen;
 import com.ue.uebook.Dictionary.DictionaryScreen;
 import com.ue.uebook.LoginActivity.LoginScreen;
 import com.ue.uebook.PendingBook.PendingBookScreen;
@@ -190,12 +191,14 @@ public class UserMainFragment extends Fragment implements View.OnClickListener, 
         }
         else if (view==chat_Container){
 
-            showLoadingIndicator();
+//            showLoadingIndicator();
+//
+//            if (SharedPrefsHelper.getInstance().hasQbUser()) {
+//                restoreChatSession();
+//            }
 
-            if (SharedPrefsHelper.getInstance().hasQbUser()) {
-                restoreChatSession();
-            }
-
+            Intent intent = new Intent(getContext(), ChatListScreen.class);
+            getContext().startActivity(intent);
         }
         else if (view==author_Container){
             Intent intent = new Intent(getContext(), DictionaryScreen.class);

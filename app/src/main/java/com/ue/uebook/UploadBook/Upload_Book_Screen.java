@@ -82,7 +82,6 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class Upload_Book_Screen extends BaseActivity implements View.OnClickListener, ImageUtils.ImageAttachmentListener, AdapterView.OnItemSelectedListener, RecognitionListener {
-
     private static final int REQUEST_PICK_VIDEO = 4;
     private static final String CHANNEL_ID = "channelID";
     private static final int VOICE_RECOGNITION_REQUEST_CODE = 122;
@@ -93,20 +92,11 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
     private String fileName;
     private String encodedString;
     private String coverimageurl="";
-
     private Bitmap bitmap;
     ImageUtils imageUtils;
-
-
     private Spinner book_category;
     ArrayList<String> categoryName;
-
-
-
-
     private ImageView camera_btn, video_btn, audio_btn, documents_btn, cover_image_preview;
-
-
     private TextView filname_view, verifyIsbnTv, upload_info, uploadcover_view, audioname_view, uploadMoreView, assignmentView;
     private ProgressDialog progressdialog;
     private Button publishBtn, addQuestion, saveForLater;
@@ -135,7 +125,7 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
     private int textSize;
     private String isbnverifyValue = "";
     private SpeechRecognizer speechRecognizer = null;
-    // Tag for the instance state bundle.
+
     private static final String PLAYBACK_TIME = "play_time";
     private static final int ACTIVITY_CHOOSE_FILE = 33;
     private String speechString = " ";
@@ -155,9 +145,8 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
         setContentView(R.layout.activity_upload__book__screen);
         pendigbookIntent= getIntent();
         pendingBookdata= new ArrayList<>();
-         pendingbookID = pendigbookIntent.getIntExtra("screenid",0);
+        pendingbookID = pendigbookIntent.getIntExtra("screenid",0);
         bookid_pending = pendigbookIntent.getStringExtra("bookid");
-
         back_btn_uploadbook = findViewById(R.id.back_btn_uploadbook);
         assignmentView = findViewById(R.id.asignmentView);
         uploadMoreView = findViewById(R.id.uploadMoreView);
@@ -256,7 +245,6 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
             }
         }
     }
-
     private void openFile(int CODE) {
         Intent i = new Intent(Intent.ACTION_GET_CONTENT);
         i.setType("*/*");
@@ -264,7 +252,6 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
         i.putExtra(Intent.EXTRA_MIME_TYPES, mimetypes);
         startActivityForResult(i, CODE);
     }
-
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void onClick(View view) {
@@ -319,8 +306,8 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
         } else if (view == filname_view) {
 
 
-        } else if (view == addQuestion) {
-
+        }
+        else if (view == addQuestion) {
             Add_Line();
 
         } else if (view == recordbtn) {
@@ -562,7 +549,6 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
             default:
                 throw new IllegalStateException("Unexpected value: " + 1);
         }
-
         RequestBody requestBodys = ProgressHelper.withProgress(requestBody, new ProgressUIListener() {
             //if you don't need this method, don't override this methd. It isn't an abstract method, just an empty method.
             @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
@@ -575,10 +561,7 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
             public void onUIProgressChanged(long numBytes, long totalBytes, float percent, float speed) {
                 progressdialog.show();
                 progressdialog.setProgress((int) (100 * percent));
-
-
             }
-
             //if you don't need this method, don't override this methd. It isn't an abstract method, just an empty method.
             @Override
             public void onUIProgressFinish() {
@@ -590,7 +573,6 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
                 finish();
             }
         });
-
         Request request = new Request.Builder()
                 .url(url)
                 .post(requestBodys)
@@ -600,7 +582,6 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
             public void onFailure(Call call, IOException e) {
                 call.cancel();
             }
-
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 String res = response.body().string();
@@ -609,7 +590,6 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
             }
         });
     }
-
     private String getRealPathFromURI(String contentURI) {
         Uri contentUri = Uri.parse(contentURI);
         Cursor cursor = this.getApplicationContext().getContentResolver().query(contentUri, null, null, null, null);
@@ -692,9 +672,7 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
             @Override
             public void onFailure(Call call, IOException e) {
                 Log.e("error", e.getLocalizedMessage());
-
             }
-
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 String myresponse = response.body().string();
@@ -706,18 +684,12 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
                         categoryName.add(form.getResponse().get(i).getCategory_name());
                 }
                 runOnUiThread(new Runnable() {
-
                     @Override
                     public void run() {
-
                         book_category.setAdapter(new ArrayAdapter<String>(Upload_Book_Screen.this, android.R.layout.simple_spinner_dropdown_item, categoryName));
-
                     }
                 });
-
             }
-
-
         });
 
 
@@ -745,7 +717,6 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
         String bookdesc = bookDesc.getText().toString();
         Bitmap file = bitmap;
         if (!booktitle.isEmpty()) {
-
             if (!bookdesc.isEmpty()) {
                 if (file != null) {
                     return true;
@@ -759,17 +730,13 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
                 bookDesc.setEnabled(true);
                 return false;
             }
-
         } else {
             bookTitle.setError("Enter Book Title");
             bookTitle.requestFocus();
             bookTitle.setEnabled(true);
             return false;
         }
-
     }
-
-
     public String getPath(Uri uri) {
         String[] projection = {MediaStore.Video.Media.DATA};
         Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
@@ -871,8 +838,7 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
     public void onPartialResults(Bundle arg0) {
 
 
-        ArrayList<String> matches = arg0
-                .getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
+        ArrayList<String> matches = arg0.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
 
 
     }
@@ -939,14 +905,11 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
                 requestforUploadBook(uploadurl,6, new SessionManager(getApplicationContext()).getUserID(), String.valueOf(categorytype), bookTitle.getText().toString(), coverimage, bookDesc.getText().toString(), docfile, authorName.getText().toString(), json, isbnNumber, status,book_id);
 
             } else if (audioUrl == null && videofile != null && docfile != null) {
-
                 requestforUploadBook(uploadurl,7, new SessionManager(getApplicationContext()).getUserID(), String.valueOf(categorytype), bookTitle.getText().toString(), coverimage, bookDesc.getText().toString(), docfile, authorName.getText().toString(), json, isbnNumber, status,book_id);
-
             }
         }
 
     }
-
     private void saveForlater(String isbnNumber, String status,String book_id) {
         if (pendingbookID==2){
             savelaterUrl=" http://dnddemo.com/ebooks/api/v1/updateBookByid";
