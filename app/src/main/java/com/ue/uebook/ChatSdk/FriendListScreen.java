@@ -58,7 +58,6 @@ public class FriendListScreen extends AppCompatActivity implements View.OnClickL
         ok_Btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 previewDialog.dismiss();
 
             }

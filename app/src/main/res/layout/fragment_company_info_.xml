@@ -65,20 +65,16 @@
                 android:layout_centerVertical="true"
                 android:paddingRight="@dimen/size_10"
                 android:src="@drawable/rightarrow"/>
-
         </RelativeLayout>
-
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/black"/>
-
         <RelativeLayout
             android:id="@+id/help_container"
             android:layout_width="match_parent"
             android:layout_height="@dimen/size_60"
             android:paddingLeft="@dimen/size_10">
-
             <TextView
                 android:id="@+id/helpview"
                 android:layout_width="wrap_content"
@@ -97,9 +93,7 @@
                 android:layout_centerVertical="true"
                 android:paddingRight="@dimen/size_10"
                 android:src="@drawable/rightarrow"/>
-
         </RelativeLayout>
-
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
@@ -109,7 +103,6 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/size_60"
             android:paddingLeft="@dimen/size_10">
-
             <TextView
                 android:id="@+id/aboutview"
                 android:layout_width="wrap_content"
@@ -127,9 +120,7 @@
                 android:layout_centerVertical="true"
                 android:paddingRight="@dimen/size_10"
                 android:src="@drawable/rightarrow"/>
-
         </RelativeLayout>
-
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
@@ -139,7 +130,6 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/size_60"
             android:paddingLeft="@dimen/size_10">
-
             <TextView
                 android:id="@+id/contactview"
                 android:layout_width="wrap_content"
@@ -157,16 +147,12 @@
                 android:layout_centerVertical="true"
                 android:paddingRight="@dimen/size_10"
                 android:src="@drawable/rightarrow"/>
-
         </RelativeLayout>
-
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/black"/>
-
     </LinearLayout>
-
 </ScrollView>
 
 </LinearLayout>

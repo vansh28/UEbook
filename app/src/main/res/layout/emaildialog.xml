@@ -25,7 +25,6 @@
                 android:layout_height="wrap_content"
                 android:hint="Subject"
                 app:errorEnabled="true">
-
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/subjectemail"
                     android:layout_width="match_parent"

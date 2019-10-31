@@ -4,9 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.view.View;
-
-import com.google.android.material.snackbar.Snackbar;
 
 import static android.content.Context.CONNECTIVITY_SERVICE;
 
@@ -37,7 +34,6 @@ public class NetworkUtils {
             ConnectivityManager connectivityManager = (ConnectivityManager) mCtx
                     .getSystemService(CONNECTIVITY_SERVICE);
             NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-
             return networkInfo != null && networkInfo.isConnected();
         }
 

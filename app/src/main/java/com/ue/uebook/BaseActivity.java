@@ -204,17 +204,13 @@ public abstract class BaseActivity extends AppCompatActivity {
             lat = mCurrentLocation.getLatitude();
 
         }
-
         return lat;
     }
-
     public Double locationlongitude() {
         Double longi = 0.0;
         if (mCurrentLocation != null) {
             longi = mCurrentLocation.getLongitude();
-
         }
-
         return longi;
     }
 

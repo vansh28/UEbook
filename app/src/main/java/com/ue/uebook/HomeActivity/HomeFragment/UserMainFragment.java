@@ -92,7 +92,6 @@ public class UserMainFragment extends Fragment implements View.OnClickListener, 
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -123,13 +122,11 @@ public class UserMainFragment extends Fragment implements View.OnClickListener, 
         if (new SessionManager(getActivity().getApplicationContext()).getUserPublishType().equalsIgnoreCase("Reader")){
             uploadBook_Container.setVisibility(View.GONE);
             view_uploadBook.setVisibility(View.GONE);
-
             pendingRequest_view.setVisibility(View.GONE);
         }
         else {
             uploadBook_Container.setVisibility(View.VISIBLE);
             view_uploadBook.setVisibility(View.VISIBLE);
-
             pendingRequest_view.setVisibility(View.VISIBLE);
         }
         logOut = view.findViewById(R.id.logOut);
@@ -140,14 +137,12 @@ public class UserMainFragment extends Fragment implements View.OnClickListener, 
         companyInfo_Container.setOnClickListener(this);
         return view;
     }
-
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
         }
     }
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -158,7 +153,6 @@ public class UserMainFragment extends Fragment implements View.OnClickListener, 
                     + " must implement OnFragmentInteractionListener");
         }
     }
-
     @Override
     public void onDetach() {
         super.onDetach();
@@ -196,9 +190,9 @@ public class UserMainFragment extends Fragment implements View.OnClickListener, 
 //            if (SharedPrefsHelper.getInstance().hasQbUser()) {
 //                restoreChatSession();
 //            }
-
             Intent intent = new Intent(getContext(), ChatListScreen.class);
             getContext().startActivity(intent);
+
         }
         else if (view==author_Container){
             Intent intent = new Intent(getContext(), DictionaryScreen.class);
@@ -209,7 +203,6 @@ public class UserMainFragment extends Fragment implements View.OnClickListener, 
             getContext().startActivity(intent);
         }
     }
-
     private void loadFragment(Fragment fragment) {
         // load fragment
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
@@ -217,12 +210,10 @@ public class UserMainFragment extends Fragment implements View.OnClickListener, 
         transaction.addToBackStack(null);
         transaction.commit();
     }
-
     @Override
     public void onFragmentInteraction(Uri uri) {
 
     }
-
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -237,7 +228,6 @@ public class UserMainFragment extends Fragment implements View.OnClickListener, 
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
-
     private void confirmLogoutDialog(){
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setMessage("You sure, that you want to logout?")
@@ -271,7 +261,6 @@ public class UserMainFragment extends Fragment implements View.OnClickListener, 
         user.setId(userId);
         return user;
     }
-
     private void restoreChatSession() {
         if (ChatHelper.getInstance().isLogged()) {
             hideLoadingIndicator();
@@ -295,7 +284,6 @@ public class UserMainFragment extends Fragment implements View.OnClickListener, 
             }
         }
     }
-
     private void loginToChat(final QBUser user) {
         ChatHelper.getInstance().loginToChat(user, new QBEntityCallback<Void>() {
             @Override

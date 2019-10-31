@@ -1,36 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".PopularActivity.Popular_List_Screen">
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:background="@color/colorPrimary">
+
         <ImageButton
             android:id="@+id/backbtn_popular"
             android:layout_width="wrap_content"
-            android:src="@drawable/backbtn"
+            android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/size_10"
             android:background="@android:color/transparent"
-            android:layout_height="wrap_content"/>
+            android:src="@drawable/backbtn" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Popular List"
-            android:textSize="@dimen/size_20"
             android:layout_centerInParent="true"
-            android:textColor="@color/white"/>
+            android:text="Popular List"
+            android:textColor="@color/white"
+            android:textSize="@dimen/size_20" />
     </RelativeLayout>
+
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/swipe_refresh_layout"
         android:layout_width="match_parent"
-        android:layout_below="@+id/header"
         android:layout_height="match_parent">
 <androidx.recyclerview.widget.RecyclerView
     android:id="@+id/popularListTV"

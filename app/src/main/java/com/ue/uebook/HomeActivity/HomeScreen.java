@@ -71,7 +71,7 @@ public class HomeScreen extends BaseActivity implements Home_Fragment.OnFragment
         toolbar = getSupportActionBar();
         intent = getIntent();
         int loginid= intent.getIntExtra("login",0);
-        int id = intent.getIntExtra("id",0);
+        
         if (loginid==1){
             showmessage();
             showBottomSheet();

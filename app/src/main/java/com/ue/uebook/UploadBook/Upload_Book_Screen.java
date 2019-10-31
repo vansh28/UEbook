@@ -366,7 +366,6 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
         questionEdit.setTextSize(textSize);
         allEds.add(questionEdit);
         questionEdit.setId(numberOfLines + 1);
-//        questionEdit.setHint("Question " + "  " + numberOfLines);
         question_layout.addView(newRowView);
         numberOfLines++;
 
@@ -401,7 +400,7 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
             Intent audioIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI);
             startActivityForResult(audioIntent, 12);
         } catch (ActivityNotFoundException e) {
-            // Do nothing for now
+
         }
     }
     @Override
@@ -562,7 +561,7 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
                 progressdialog.show();
                 progressdialog.setProgress((int) (100 * percent));
             }
-            //if you don't need this method, don't override this methd. It isn't an abstract method, just an empty method.
+            //if you don't need this method, don't override this method. It isn't an abstract method, just an empty method.
             @Override
             public void onUIProgressFinish() {
                 super.onUIProgressFinish();

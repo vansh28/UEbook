@@ -269,7 +269,7 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
                 return true;
             }
             else {
-                Toast.makeText(this, "Please Ratw the Book", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Please Rate the Book", Toast.LENGTH_LONG).show();
 
                 return false;
             }
@@ -363,7 +363,6 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
         request.requestforaddBookmark(book_id, bookStatus,new SessionManager(getApplicationContext()).getUserID(),new okhttp3.Callback() {
             @Override
             public void onFailure(okhttp3.Call call, IOException e) {
-                Log.d("error", "error");
                 hideLoadingIndicator();
 
             }
@@ -537,7 +536,6 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
     {
         super.onRestart();
         getBookDetail(book_id);
-        Log.d("detailpage", "In the onRestart() event");
     }
 
 }

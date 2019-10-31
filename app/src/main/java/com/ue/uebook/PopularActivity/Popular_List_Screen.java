@@ -71,7 +71,7 @@ public class Popular_List_Screen extends BaseActivity implements View.OnClickLis
         request.requestforGetPopularBook(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                Log.e("error", e.getLocalizedMessage());
+
                 hideLoadingIndicator();
 
             }

@@ -80,12 +80,11 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
     private LinearLayout google_login_btn, facebook_login_btn, login_screen;
     private CallbackManager callbackManager;
     private GoogleApiClient mGoogleApiClient;
-    private TextView have_Account_btn, forgotpasswordBtn;
+    private TextView have_Account_btnTv, forgotpasswordBtn;
     private Boolean issignup = true;
     private NetworkAPI networkAPI;
     private ProgressDialog pdialog;
     private static final int UNAUTHORIZED = 401;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,7 +96,7 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
         google_login_btn = findViewById(R.id.google_login_btn);
         facebook_login_btn = findViewById(R.id.facebook_login_btn);
         login_screen = findViewById(R.id.login_screen);
-        have_Account_btn = findViewById(R.id.have_Account_btn);
+        have_Account_btnTv = findViewById(R.id.have_Account_btn);
         forgotpasswordBtn = findViewById(R.id.forgotpasswordBtn);
         forgotpasswordBtn.setOnClickListener(this);
         facebook_login_btn.setOnClickListener(this);
@@ -107,11 +106,8 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
         replaceFragment(new SignUp_Fragment());
         callbackManager = CallbackManager.Factory.create();
         initializeGPlusSettings();
-        have_Account_btn.setOnClickListener(this);
+        have_Account_btnTv.setOnClickListener(this);
         hideLoadingIndicator();
-
-
-
     }
 
     private void initializeGPlusSettings() {
@@ -124,7 +120,6 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
                 .build();
 
     }
-
     private void signIn() {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, RC_SIGN_IN);
@@ -149,7 +144,7 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
     @Override
     public void onClick(View view) {
         if (view == signUp_btn) {
-            have_Account_btn.setText("I have an Account, Login Now");
+            have_Account_btnTv.setText("I have an Account, Login Now");
             forgotpasswordBtn.setVisibility(View.GONE);
             replaceFragment(new SignUp_Fragment());
             signUp_btn.setBackgroundResource(R.drawable.active_signin_border);
@@ -158,7 +153,7 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
             signIn_btn.setTextColor(Color.parseColor("#000000"));
             issignup = true;
         } else if (view == signIn_btn) {
-            have_Account_btn.setText("Create an Account");
+            have_Account_btnTv.setText("Create an Account");
             forgotpasswordBtn.setVisibility(View.VISIBLE);
             replaceFragment(new SignIn_Fragment());
             signIn_btn.setBackgroundResource(R.drawable.active_signin_border);
@@ -166,7 +161,8 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
             signIn_btn.setTextColor(Color.parseColor("#D31145"));
             signUp_btn.setTextColor(Color.parseColor("#000000"));
             issignup = false;
-        } else if (view == facebook_login_btn) {
+        }
+        else if (view == facebook_login_btn) {
             if (getInstance(this).isConnectingToInternet()) {
                 Fblogin();
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
@@ -187,9 +183,9 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
             } else {
                 showSnackBar(login_screen, getString(R.string.no_internet));
             }
-        } else if (view == have_Account_btn) {
+        } else if (view == have_Account_btnTv) {
             if (issignup) {
-                have_Account_btn.setText("Create an Account");
+                have_Account_btnTv.setText("Create an Account");
                 forgotpasswordBtn.setVisibility(View.VISIBLE);
                 replaceFragment(new SignIn_Fragment());
                 signIn_btn.setBackgroundResource(R.drawable.active_signin_border);
@@ -198,7 +194,7 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
                 signUp_btn.setTextColor(Color.parseColor("#000000"));
                 issignup = false;
             } else {
-                have_Account_btn.setText("I have an Account, Login Now");
+                have_Account_btnTv.setText("I have an Account, Login Now");
                 forgotpasswordBtn.setVisibility(View.GONE);
                 replaceFragment(new SignUp_Fragment());
                 signUp_btn.setBackgroundResource(R.drawable.active_signin_border);
@@ -242,7 +238,6 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
                         hideLoadingIndicator();
 
                     }
-
                     @Override
                     public void onError(FacebookException error) {
                         Log.d("error", error.toString());
@@ -251,7 +246,6 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
                     }
                 });
     }
-
     private void loadUserProfile(AccessToken newAccessToken) {
         GraphRequest request = GraphRequest.newMeRequest(newAccessToken, new GraphRequest.GraphJSONObjectCallback() {
             @Override
@@ -263,7 +257,6 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
                         final String email = object.getString("email");
                         String id = object.getString("id");
                         final String image_url = "https://graph.facebook.com/" + id + "/picture?type=normal";
-
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -271,22 +264,18 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
                             }
                         });
 
-
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-
 
                 }
 
             }
         });
-
         Bundle parameters = new Bundle();
         parameters.putString("fields", "first_name,last_name,email,gender,id,taggable_friends");
         request.setParameters(parameters);
         request.executeAsync();
-
     }
 
     @Override
@@ -303,14 +292,12 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
         }
     }
 
-
     public void showDialog(final String first_name, final String last_name, final String email, final String image) {
         hideLoadingIndicator();
         final Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(false);
         dialog.setContentView(R.layout.logindialog);
-
 
         TextView txtName = dialog.findViewById(R.id.profile_name);
         TextView txtEmail = dialog.findViewById(R.id.profile_email);
@@ -351,8 +338,6 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(false);
         dialog.setContentView(R.layout.logindialog);
-
-
         TextView txtName = dialog.findViewById(R.id.profile_name);
         TextView txtEmail = dialog.findViewById(R.id.profile_email);
         ImageView circleImageView = dialog.findViewById(R.id.profile_pic);
@@ -435,20 +420,19 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
             @Override
             public void onResponse(@NonNull Call<RegistrationResponse> call, @NonNull Response<RegistrationResponse> response) {
                 RegistrationResponse registrationResponse = response.body();
-                if (registrationResponse != null) {
-
-                    Log.d("pub", registrationResponse.getUser_data().getPublisher_type());
+                if (registrationResponse != null)
+                {
                     new SessionManager(getApplicationContext()).storeUserPublishtype(registrationResponse.getUser_data().getPublisher_type());
-
-
-                } else {
+                }
+                else
+                    {
 
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<RegistrationResponse> call, @NonNull Throwable t) {
-                Log.d("error", "error");
+
             }
         });
     }
@@ -467,12 +451,9 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
                 hideLoadingIndicator();
 
             }
-
             @Override
             public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
-
                 String myResponse = response.body().string();
-
                 Gson gson = new GsonBuilder().create();
                 final RegistrationResponse form = gson.fromJson(myResponse, RegistrationResponse.class);
                 new SessionManager(getApplicationContext()).storeUseruserID(form.getUser_data().getId());
@@ -487,8 +468,6 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
                         @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                         @Override
                         public void run() {
-//                            Toast.makeText(LoginScreen.this, "Succesfully Login", Toast.LENGTH_SHORT).show();
-                           Log.d("user_id",form.getUser_data().getId());
                             String arr[] = form.getUser_data().getUser_name().split(" ", 2);
                             String firstWord = arr[0];   //the
                             QBUser qbUser = new QBUser();
@@ -503,8 +482,6 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
             }
         });
     }
-
-
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void signIn(final QBUser user) {
         showLoadingIndicator();
@@ -519,7 +496,6 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
                     updateUser(user);
                 }
             }
-
             @Override
             public void onError(QBResponseException e) {
                 if (e.getHttpStatusCode() == UNAUTHORIZED) {
@@ -536,7 +512,6 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
             }
         });
     }
-
     private void updateUser(final QBUser user) {
         ChatHelper.getInstance().updateUser(user, new QBEntityCallback<QBUser>() {
             @Override
@@ -566,7 +541,6 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
                 finish();
 
             }
-
             @Override
             public void onError(QBResponseException e) {
                 hideLoadingIndicator();
@@ -574,7 +548,6 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
             }
         });
     }
-
     private void signUp(final QBUser newUser) {
         SharedPrefsHelper.getInstance().removeQbUser();
         QBUsers.signUp(newUser).performAsync(new QBEntityCallback<QBUser>() {
@@ -583,7 +556,6 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
             public void onSuccess(QBUser user, Bundle bundle) {
                 signIn(newUser);
             }
-
             @Override
             public void onError(QBResponseException e) {
                 hideLoadingIndicator();
@@ -591,7 +563,6 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
             }
         });
     }
-
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void updateUserChatId(String chatID ) {
         ApiRequest request = new ApiRequest();
@@ -604,8 +575,6 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
             @Override
             public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
                 hideLoadingIndicator();
-                String myResponse = response.body().string();
-
 
             }
         });

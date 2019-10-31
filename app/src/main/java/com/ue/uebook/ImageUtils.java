@@ -51,19 +51,16 @@ public class ImageUtils {
         this.current_activity = act;
         imageAttachment_callBack = (ImageAttachmentListener) context;
     }
-
     /**
      * Get file name from path
      *
      * @param path
      * @return
      */
-
     public String getfilename_from_path(String path) {
         return path.substring(path.lastIndexOf('/') + 1, path.length());
 
     }
-
     /**
      * Get Image URI from Bitmap
      *
@@ -71,21 +68,18 @@ public class ImageUtils {
      * @param photo
      * @return
      */
-
     public Uri getImageUri(Context context, Bitmap photo) {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         photo.compress(Bitmap.CompressFormat.PNG, 80, bytes);
         String path = MediaStore.Images.Media.insertImage(context.getContentResolver(), photo, "Title", null);
         return Uri.parse(path);
     }
-
     /**
      * Get Path from Image URI
      *
      * @param uri
      * @return
      */
-
     public String getPath(Uri uri) {
         String[] projection = {MediaStore.Images.Media.DATA};
         Cursor cursor = this.context.getContentResolver().query(uri, projection, null, null, null);

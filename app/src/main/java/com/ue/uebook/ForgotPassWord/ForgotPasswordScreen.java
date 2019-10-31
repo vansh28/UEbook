@@ -73,7 +73,7 @@ public class ForgotPasswordScreen extends BaseActivity implements View.OnClickLi
                     @Override
                     public void run() {
                         if (form.getError().equals("false")){
-                            Toast.makeText(getApplicationContext(),"Successfuly password send",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(),"Successfully password send",Toast.LENGTH_SHORT).show();
                         }
                         else {
                             Toast.makeText(getApplicationContext(),"Please Enter valid Email",Toast.LENGTH_SHORT).show();

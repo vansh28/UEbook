@@ -100,7 +100,6 @@ public class ApiRequest {
         client.newCall(request).enqueue(callback);
 
     }
-
     public void requestforUploadBook(final String user_id, File video, String category_id, String book_title, Callback callback) {
         String url = null;
         url = BaseUrl + "addNewBook";
@@ -118,9 +117,7 @@ public class ApiRequest {
                 .post(requestBody)
                 .build();
         client.newCall(request).enqueue(callback);
-
     }
-
     public void requestforGetbookCategory(Callback callback) {
         String url = null;
         url = BaseUrl + "getAllCategory";
@@ -132,9 +129,7 @@ public class ApiRequest {
                 .post(body)
                 .build();
         client.newCall(request).enqueue(callback);
-
     }
-
     public void requestforgetBookList(final String category_id, Callback callback) {
         String url = null;
         url = BaseUrl + "getBooksByTypes";
@@ -151,7 +146,6 @@ public class ApiRequest {
         client.newCall(request).enqueue(callback);
 
     }
-
     public void requestforgetBookDetail(final String book_id, final String user_id, Callback callback) {
         String url = null;
         url = BaseUrl + "getBookDetail";
@@ -169,7 +163,6 @@ public class ApiRequest {
         client.newCall(request).enqueue(callback);
 
     }
-
     public void requestforaddBookmark(final String book_id, final String bookmark_status, final String userId, Callback callback) {
         String url = null;
         url = BaseUrl + "bookMark";
@@ -185,7 +178,6 @@ public class ApiRequest {
                 .build();
         client.newCall(request).enqueue(callback);
     }
-
     public void requestforgetBookmarkList(final String userId, Callback callback) {
         String url = null;
         url = BaseUrl + "getAllbookMarkByUser";
