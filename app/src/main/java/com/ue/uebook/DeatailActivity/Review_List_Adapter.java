@@ -24,21 +24,16 @@ public class Review_List_Adapter  extends RecyclerView.Adapter<Review_List_Adapt
         this.data=review;
         this.mtc=mtx;
     }
-
     @NonNull
     @Override
     public Review_List_Adapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.detail_top_review_list_item, parent, false);
-
         Review_List_Adapter.MyViewHolder vh = new Review_List_Adapter.MyViewHolder(v);
         return vh;
     }
-
     @Override
     public void onBindViewHolder(@NonNull Review_List_Adapter.MyViewHolder holder, int position) {
         GlideUtils.loadImage(mtc,"http://"+data.get(position).getUrl(),holder.profile,R.drawable.user_default,R.drawable.user_default);
-
         holder.username.setText(data.get(position).getUser_name());
         holder.dateandtime.setText(data.get(position).getCreated_at());
         holder.comment.setText(data.get(position).getComment());
@@ -46,12 +41,10 @@ public class Review_List_Adapter  extends RecyclerView.Adapter<Review_List_Adapt
             holder.ratingBar.setRating( Float.valueOf(data.get(position).getRating()));
         }
     }
-
     @Override
     public int getItemCount() {
         return data.size();
     }
-
     public class MyViewHolder extends RecyclerView.ViewHolder {
         private ImageView profile;
         private TextView username,dateandtime,comment;
@@ -63,6 +56,7 @@ public class Review_List_Adapter  extends RecyclerView.Adapter<Review_List_Adapt
             dateandtime=itemView.findViewById(R.id.review_comment_time);
             comment=itemView.findViewById(R.id.review_comment);
             ratingBar=itemView.findViewById(R.id.review_RatingBar);
+
         }
     }
 }

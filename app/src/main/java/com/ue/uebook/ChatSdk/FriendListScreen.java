@@ -42,6 +42,7 @@ public class FriendListScreen extends AppCompatActivity implements View.OnClickL
     public void onContactListItemClick() {
         Intent intent = new Intent(this,MessageScreen.class);
         startActivity(intent);
+        finish();
     }
     @Override
     public void onProfileClick() {

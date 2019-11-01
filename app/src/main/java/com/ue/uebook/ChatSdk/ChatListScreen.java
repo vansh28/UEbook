@@ -8,6 +8,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -23,6 +24,7 @@ public class ChatListScreen extends AppCompatActivity implements View.OnClickLis
     private ChatListAdapter chatAdapter;
     private ImageButton backbtn;
     private FloatingActionButton newChatbtn;
+    private TextView noUserFound;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +34,7 @@ public class ChatListScreen extends AppCompatActivity implements View.OnClickLis
         backbtn=findViewById(R.id.backbtnChat);
         newChatbtn=findViewById(R.id.newChatbtn);
         newChatbtn.setOnClickListener(this);
+        noUserFound=findViewById(R.id.noUserFound);
         LinearLayoutManager linearLayoutManagerPopularList = new LinearLayoutManager(this);
         linearLayoutManagerPopularList.setOrientation(LinearLayoutManager.VERTICAL);
         chatList.setLayoutManager(linearLayoutManagerPopularList);

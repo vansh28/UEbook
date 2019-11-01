@@ -26,8 +26,6 @@ public class AssignmentAdapter   extends RecyclerView.Adapter<AssignmentAdapter.
 
     private List<Assignment> questionList;
     private SubmitAnswerClick submit_Answer_Click;
-    List<EditText> allEds;
-
     public AssignmentAdapter(List<Assignment> questionList) {
         this.questionList=questionList;
     }
@@ -87,7 +85,6 @@ public class AssignmentAdapter   extends RecyclerView.Adapter<AssignmentAdapter.
                               holder.editanswer.setVisibility(View.VISIBLE);
                               holder.answer_btn.setText(holder.answer.getText().toString());
                               submit_Answer_Click.onItemClick(questionList.get(position).getId(),holder.answer.getText().toString());
-
                           }
                           else {
                               holder.answer.setError("Enter the Answer");

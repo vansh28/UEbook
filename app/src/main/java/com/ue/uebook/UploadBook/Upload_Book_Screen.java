@@ -33,7 +33,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.MediaController;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -65,10 +64,8 @@ import com.ue.uebook.UploadBook.Pojo.VerifyISBNPojo;
 
 import java.io.File;
 import java.io.IOException;
-
 import java.util.ArrayList;
 import java.util.List;
-
 
 import io.github.lizhangqu.coreprogress.ProgressHelper;
 import io.github.lizhangqu.coreprogress.ProgressUIListener;
@@ -90,7 +87,6 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
     private RelativeLayout cover_image_layout;
     private String filePath;
     private String fileName;
-    private String encodedString;
     private String coverimageurl="";
     private Bitmap bitmap;
     ImageUtils imageUtils;
@@ -111,7 +107,6 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
     private ImageView profile_image_user_upload, verifyImageview;
     private VideoView videoview;
     private int mCurrentPosition = 0;
-    private ProgressBar upload_progress;
     Handler handler = new Handler();
     int status = 0;
 
@@ -169,7 +164,7 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
         audioname_view = findViewById(R.id.audioname_view);
         addQuestion.setOnClickListener(this);
         cover_image_layout = findViewById(R.id.cover_image_layout);
-        upload_progress = findViewById(R.id.upload_progress);
+
         bookTitle = findViewById(R.id.bookTitle_edit_text);
         bookTitle.setTextSize(textSize);
         bookDesc = findViewById(R.id.bookDesc_edit_text);

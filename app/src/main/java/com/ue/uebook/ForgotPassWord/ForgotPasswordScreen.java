@@ -33,7 +33,6 @@ public class ForgotPasswordScreen extends BaseActivity implements View.OnClickLi
         sendPasswordbtn.setOnClickListener(this);
         back_btn.setOnClickListener(this);
     }
-
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void onClick(View view) {
@@ -50,9 +49,7 @@ public class ForgotPasswordScreen extends BaseActivity implements View.OnClickLi
         else if (view==back_btn){
             finish();
         }
-
     }
-
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void forgotPassword( String email) {
         ApiRequest request = new ApiRequest();

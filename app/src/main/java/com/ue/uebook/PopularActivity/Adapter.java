@@ -31,12 +31,9 @@ public class Adapter  extends RecyclerView.Adapter<Adapter.MyViewHolder>{
     public interface PopularBook_ItemClick {
         void onItemClick_PopularBook(int position ,String book_id);
     }
-
     public void setItemClickListener(PopularBook_ItemClick clickListener) {
         popularBookItemClick = clickListener;
     }
-
-
     @NonNull
     @Override
     public Adapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -66,7 +63,6 @@ public class Adapter  extends RecyclerView.Adapter<Adapter.MyViewHolder>{
 
         }
     }
-
     @Override
     public int getItemCount() {
         return data.size();

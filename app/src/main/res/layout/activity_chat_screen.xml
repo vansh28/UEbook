@@ -49,4 +49,12 @@ tools:context=".ChatSdk.ChatListScreen">
     android:layout_marginBottom="@dimen/size_30"
     android:layout_marginRight="@dimen/size_20"
     android:layout_height="wrap_content"/>
+    <TextView
+        android:id="@+id/noUserFound"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="No chat found"
+        android:gravity="center"
+        android:visibility="gone"
+        android:textSize="@dimen/size_18"/>
 </RelativeLayout>

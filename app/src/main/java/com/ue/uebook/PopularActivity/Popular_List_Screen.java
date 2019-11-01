@@ -4,7 +4,6 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 
@@ -36,10 +35,9 @@ public class Popular_List_Screen extends BaseActivity implements View.OnClickLis
     private Adapter popularList_adapter;
     private ImageButton backbtn;
     private List<HomeListing>popularListData;
-    private ProgressDialog dialog;
+    private ProgressDialog pdialog;
     private int textSize;
     private SwipeRefreshLayout swipe_refresh_layout;
-
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +46,7 @@ public class Popular_List_Screen extends BaseActivity implements View.OnClickLis
         swipe_refresh_layout=findViewById(R.id.swipe_refresh_layout);
         fontsize();
         popularListtV=findViewById(R.id.popularListTV);
-        dialog= new ProgressDialog(this);
+        pdialog= new ProgressDialog(this);
         popularListData= new ArrayList<>();
         LinearLayoutManager linearLayoutManagerPopularList = new LinearLayoutManager(this);
         linearLayoutManagerPopularList.setOrientation(LinearLayoutManager.VERTICAL);
