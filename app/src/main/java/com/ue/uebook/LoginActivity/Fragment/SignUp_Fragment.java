@@ -70,7 +70,7 @@ public class SignUp_Fragment extends Fragment implements View.OnClickListener {
     private String mParam1;
     private String mParam2;
     private NetworkAPI networkAPI;
-    private EditText username, userEmail, userPassword ,country_edit_text,brief_desc;
+    private EditText username, userEmail, userPassword, country_edit_text, brief_desc;
     private RadioButton male, female;
     private CheckBox reader, writer, publisher;
     private RadioGroup radioGroup;
@@ -82,6 +82,7 @@ public class SignUp_Fragment extends Fragment implements View.OnClickListener {
     private ProgressDialog dialog;
     private LinearLayout viewLinear;
     private static final int UNAUTHORIZED = 401;
+
     public SignUp_Fragment() {
         // Required empty public constructor
     }
@@ -133,10 +134,10 @@ public class SignUp_Fragment extends Fragment implements View.OnClickListener {
         reader = view.findViewById(R.id.reader_checkbox);
         writer = view.findViewById(R.id.writer_checkbox);
         publisher = view.findViewById(R.id.publish_checkbox);
-        country_edit_text=view.findViewById(R.id.country_edit_text);
-        brief_desc=view.findViewById(R.id.brief_desc);
-        male=view.findViewById(R.id.radioM);
-        female=view.findViewById(R.id.radioF);
+        country_edit_text = view.findViewById(R.id.country_edit_text);
+        brief_desc = view.findViewById(R.id.brief_desc);
+        male = view.findViewById(R.id.radioM);
+        female = view.findViewById(R.id.radioF);
         reader.setOnClickListener(this);
         writer.setOnClickListener(this);
         publisher.setOnClickListener(this);
@@ -213,7 +214,7 @@ public class SignUp_Fragment extends Fragment implements View.OnClickListener {
 
             case R.id.create_USerAccount:
                 if (isvalidate()) {
-                    registrationUser(username.getText().toString(), userPassword.getText().toString(), userEmail.getText().toString(), checkboxlist, gender ,country_edit_text.getText().toString(),brief_desc.getText().toString());
+                    registrationUser(username.getText().toString(), userPassword.getText().toString(), userEmail.getText().toString(), checkboxlist, gender, country_edit_text.getText().toString(), brief_desc.getText().toString());
                 }
                 break;
 
@@ -289,10 +290,10 @@ public class SignUp_Fragment extends Fragment implements View.OnClickListener {
 
     private Boolean isvalidate() {
         String userNAme = username.getText().toString();
-        String brief_des=brief_desc.getText().toString();
+        String brief_des = brief_desc.getText().toString();
         String user_Email = userEmail.getText().toString();
         String userpass = userPassword.getText().toString();
-        String country=country_edit_text.getText().toString();
+        String country = country_edit_text.getText().toString();
         if (!userNAme.isEmpty()) {
             if (!brief_des.isEmpty()) {
                 if (!user_Email.isEmpty()) {
@@ -326,7 +327,7 @@ public class SignUp_Fragment extends Fragment implements View.OnClickListener {
                     userEmail.setEnabled(true);
                     return false;
                 }
-            }else {
+            } else {
                 brief_desc.setError("Enter your Brief Description");
                 brief_desc.requestFocus();
                 brief_desc.setEnabled(true);
@@ -340,46 +341,43 @@ public class SignUp_Fragment extends Fragment implements View.OnClickListener {
             return false;
         }
     }
+
     public void gotoHome() {
         Intent intent = new Intent(getActivity(), HomeScreen.class);
-        intent.putExtra("login",1);
+        intent.putExtra("login", 1);
         getActivity().startActivity(intent);
         getActivity().finish();
     }
 
 
-    private void registrationUser(String full_name, String password, String email, String publisher_type, String gender,String country,String about_me) {
+    private void registrationUser(String full_name, String password, String email, String publisher_type, String gender, String country, String about_me) {
         ApiRequest request = new ApiRequest();
         dialog.setMessage("please wait");
         dialog.show();
-        request.requestforRegistration(full_name, password, email, publisher_type, gender,country, about_me,new okhttp3.Callback() {
+        request.requestforRegistration(full_name, password, email, publisher_type, gender, country, about_me, new okhttp3.Callback() {
             @Override
             public void onFailure(okhttp3.Call call, IOException e) {
-                Log.e("error",e.getLocalizedMessage());
+                Log.e("error", e.getLocalizedMessage());
                 dialog.dismiss();
-
             }
 
             @Override
             public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
-
                 String myResponse = response.body().string();
-
                 Gson gson = new GsonBuilder().create();
                 final RegistrationResponse form = gson.fromJson(myResponse, RegistrationResponse.class);
                 new SessionManager(getContext().getApplicationContext()).storeUseruserID(form.getUser_data().getId());
                 new SessionManager(getContext().getApplicationContext()).storeUserName(form.getUser_data().getUser_name());
                 new SessionManager(getApplicationContext()).storeUserImage(form.getUser_data().getUrl());
-
                 if (form.getError().equalsIgnoreCase("false")) {
-                    Log.d("user_id",form.getUser_data().getId());
+                    Log.d("user_id", form.getUser_data().getId());
                     new SessionManager(getContext().getApplicationContext()).storeUserPublishtype(form.getUser_data().getPublisher_type());
                     new SessionManager(getContext().getApplicationContext()).storeUserLoginStatus(1);
                     getActivity().runOnUiThread(new Runnable() {
                         @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                         @Override
                         public void run() {
-                            String arr[] = form.getUser_data().getUser_name().split(" ", 2);
+                            String[] arr = form.getUser_data().getUser_name().split(" ", 2);
                             String firstWord = arr[0];   //the
                             QBUser qbUser = new QBUser();
                             qbUser.setLogin(firstWord.trim());
@@ -389,7 +387,6 @@ public class SignUp_Fragment extends Fragment implements View.OnClickListener {
 //                            Toast.makeText(getContext(), "Succesfully Login", Toast.LENGTH_SHORT).show();
                         }
                     });
-
                 }
 
             }
@@ -416,8 +413,8 @@ public class SignUp_Fragment extends Fragment implements View.OnClickListener {
                     signUp(user);
                 } else {
 
-                            signIn(user);
-                        }
+                    signIn(user);
+                }
 
 
             }
@@ -476,13 +473,14 @@ public class SignUp_Fragment extends Fragment implements View.OnClickListener {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    private void updateUserChatId(String chatID ) {
+    private void updateUserChatId(String chatID) {
         ApiRequest request = new ApiRequest();
-        request.requestforPostChatId(new SessionManager(getApplicationContext()).getUserID(),chatID, new okhttp3.Callback() {
+        request.requestforPostChatId(new SessionManager(getApplicationContext()).getUserID(), chatID, new okhttp3.Callback() {
             @Override
             public void onFailure(okhttp3.Call call, IOException e) {
 
             }
+
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {

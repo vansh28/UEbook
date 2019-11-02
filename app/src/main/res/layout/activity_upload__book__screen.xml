@@ -29,7 +29,8 @@
             android:textColor="@color/white"
             android:textSize="@dimen/size_18"/>
 
-        <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+        <de.hdodenhof.circleimageview.CircleImageView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/profile_image_user_upload"
             android:layout_width="@dimen/size_60"
             android:layout_height="@dimen/size_60"
@@ -50,8 +51,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -59,7 +58,6 @@
                 android:layout_marginTop="@dimen/size_10"
                 android:layout_marginRight="@dimen/size_5"
                 android:orientation="vertical">
-
                 <com.google.android.material.textfield.TextInputLayout
                     style="@style/TextInputLayout"
                     android:layout_width="match_parent"
@@ -78,19 +76,16 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:weightSum="5">
-
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="4.5">
-
                         <com.google.android.material.textfield.TextInputLayout
                             style="@style/TextInputLayout"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/book_description"
                             app:errorEnabled="true">
-
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/bookDesc_edit_text"
                                 android:layout_width="match_parent"
@@ -99,9 +94,8 @@
                                 android:minHeight="@dimen/size_100" />
                         </com.google.android.material.textfield.TextInputLayout>
                     </LinearLayout>
-
                     <ImageButton
-                        android:id="@+id/recordbtn"
+                        android:id="@+id/recordbtnTv"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/size_15"
@@ -111,21 +105,17 @@
                         android:visibility="visible"/>
 
                 </LinearLayout>
-
                 <com.google.android.material.textfield.TextInputLayout
                     style="@style/TextInputLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/book_author"
                     app:errorEnabled="true">
-
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/authorName_edit_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
                 </com.google.android.material.textfield.TextInputLayout>
-
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
@@ -134,7 +124,6 @@
                     android:layout_marginRight="@dimen/size_5"
                     android:background="@drawable/spinnerbg"
                     android:orientation="horizontal">
-
                     <Spinner
                         android:id="@+id/book_category"
                         android:layout_width="match_parent"
@@ -142,10 +131,7 @@
                         android:layout_gravity="center_vertical"
                         android:paddingLeft="@dimen/size_5"
                         android:spinnerMode="dropdown"/>
-
                 </LinearLayout>
-
-
                 <LinearLayout
                     android:id="@+id/upload_cover_bookBtn"
                     android:layout_width="match_parent"
@@ -154,13 +140,11 @@
                     android:layout_marginTop="@dimen/size_15"
                     android:layout_marginRight="@dimen/size_5"
                     android:background="@drawable/buttonbg">
-
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="@dimen/size_20"/>
-
                     <TextView
                         android:id="@+id/uploadcover_view"
                         android:layout_width="wrap_content"
@@ -170,9 +154,7 @@
                         android:text="@string/upload_cover_image"
                         android:textColor="@color/black"
                         android:textSize="@dimen/size_16"/>
-
                 </LinearLayout>
-
                 <RelativeLayout
                     android:id="@+id/cover_image_layout"
                     android:layout_width="match_parent"
@@ -180,15 +162,12 @@
                     android:layout_marginTop="@dimen/size_10"
                     android:paddingRight="@dimen/size_10"
                     android:visibility="gone">
-
                     <ImageView
                         android:id="@+id/cover_image_preview"
                         android:layout_width="80dp"
                         android:layout_height="match_parent"
                         android:layout_margin="@dimen/size_10"/>
-
                 </RelativeLayout>
-
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -205,7 +184,6 @@
                         android:text="@string/book_assigment"
                         android:textColor="@color/black"
                         android:textSize="@dimen/size_16"/>
-
                     <Button
                         android:id="@+id/add_question"
                         android:layout_width="wrap_content"
@@ -214,9 +192,7 @@
                         android:layout_gravity="end"
                         android:background="@android:color/transparent"
                         android:text="@string/add"/>
-
                 </RelativeLayout>
-
                 <LinearLayout
                     android:id="@+id/question_layout"
                     android:layout_width="match_parent"
@@ -231,7 +207,6 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/book_isbn_number"
                     app:errorEnabled="true">
-
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/isbn_numberTv"
                         android:layout_width="match_parent"

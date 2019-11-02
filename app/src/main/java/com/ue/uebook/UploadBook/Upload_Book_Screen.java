@@ -102,14 +102,12 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
     private File docfile, audioUrl;
     private SpeechRecognizer speech = null;
     private Intent recognizerIntent;
-
     private ImageButton recordbtn;
     private ImageView profile_image_user_upload, verifyImageview;
     private VideoView videoview;
     private int mCurrentPosition = 0;
     Handler handler = new Handler();
     int status = 0;
-
     private NotificationCompat.Builder mBuilder;
     int id = 1;
     public int numberOfLines = 1;
@@ -120,7 +118,6 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
     private int textSize;
     private String isbnverifyValue = "";
     private SpeechRecognizer speechRecognizer = null;
-
     private static final String PLAYBACK_TIME = "play_time";
     private static final int ACTIVITY_CHOOSE_FILE = 33;
     private String speechString = " ";
@@ -132,7 +129,6 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
     private   int pendingbookID,pendingbookPosition;
     private String uploadurl=" http://dnddemo.com/ebooks/api/v1/addNewBook";
     private String savelaterUrl;
-
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -168,7 +164,7 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
         bookTitle = findViewById(R.id.bookTitle_edit_text);
         bookTitle.setTextSize(textSize);
         bookDesc = findViewById(R.id.bookDesc_edit_text);
-        recordbtn = findViewById(R.id.recordbtn);
+        recordbtn = findViewById(R.id.recordbtnTv);
         recordbtn.setOnClickListener(this);
         authorName = findViewById(R.id.authorName_edit_text);
         categoryName = new ArrayList<>();

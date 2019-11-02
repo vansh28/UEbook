@@ -437,9 +437,6 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
         });
     }
 
-
-
-
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void registrationUser(final String full_name, String password, String email, String publisher_type, String gender, String country) {
         ApiRequest request = new ApiRequest();

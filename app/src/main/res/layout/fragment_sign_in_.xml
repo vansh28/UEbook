@@ -6,12 +6,9 @@
     android:id="@+id/fragment"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".LoginActivity.Fragment.SignIn_Fragment">
-
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -19,7 +16,6 @@
             android:layout_marginLeft="@dimen/size_5"
             android:layout_marginRight="@dimen/size_5"
             android:orientation="vertical">
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -31,14 +27,12 @@
                 android:layout_height="wrap_content"
                 android:hint="Username"
                 app:errorEnabled="true">
-
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/user_login"
                     android:layout_width="match_parent"
                     android:maxLines="1"
                     android:layout_height="wrap_content" />
             </com.google.android.material.textfield.TextInputLayout>
-
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/password_text_input"
                 style="@style/TextInputLayout"
@@ -46,7 +40,6 @@
                 android:layout_height="wrap_content"
                 android:hint="Password"
                 app:errorEnabled="true">
-
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/password_login"
                     android:layout_width="match_parent"
@@ -108,9 +101,6 @@
                     android:gravity="center"
                     android:layout_height="wrap_content"/>
             </LinearLayout>
-
         </LinearLayout>
     </ScrollView>
-
-
 </LinearLayout>

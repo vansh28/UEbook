@@ -31,26 +31,26 @@ import okhttp3.Callback;
 import okhttp3.Response;
 
 public class Popular_List_Screen extends BaseActivity implements View.OnClickListener ,Adapter.PopularBook_ItemClick {
-    private RecyclerView popularListtV;
+    private RecyclerView popularListTV;
     private Adapter popularList_adapter;
     private ImageButton backbtn;
     private List<HomeListing>popularListData;
     private ProgressDialog pdialog;
     private int textSize;
-    private SwipeRefreshLayout swipe_refresh_layout;
+    private SwipeRefreshLayout swipe_Refresh_Layout;
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_popular__list__screen);
-        swipe_refresh_layout=findViewById(R.id.swipe_refresh_layout);
+        swipe_Refresh_Layout=findViewById(R.id.swipe_refresh_layout);
         fontsize();
-        popularListtV=findViewById(R.id.popularListTV);
+        popularListTV=findViewById(R.id.popularListTV);
         pdialog= new ProgressDialog(this);
         popularListData= new ArrayList<>();
         LinearLayoutManager linearLayoutManagerPopularList = new LinearLayoutManager(this);
         linearLayoutManagerPopularList.setOrientation(LinearLayoutManager.VERTICAL);
-        popularListtV.setLayoutManager(linearLayoutManagerPopularList);
+        popularListTV.setLayoutManager(linearLayoutManagerPopularList);
         getPopularList();
         backbtn=findViewById(R.id.backbtn_popular);
         backbtn.setOnClickListener(this);
@@ -84,7 +84,7 @@ public class Popular_List_Screen extends BaseActivity implements View.OnClickLis
                     @Override
                     public void run() {
                         popularList_adapter = new Adapter(Popular_List_Screen.this,form.getData(),textSize);
-                        popularListtV.setAdapter(popularList_adapter);
+                        popularListTV.setAdapter(popularList_adapter);
                          popularList_adapter.setItemClickListener(Popular_List_Screen.this);
                         popularList_adapter.notifyDataSetChanged();
                     }
@@ -93,12 +93,12 @@ public class Popular_List_Screen extends BaseActivity implements View.OnClickLis
         });
     }
     private void pullTorefreshswipe(){
-        swipe_refresh_layout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        swipe_Refresh_Layout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onRefresh() {
                 getPopularList();
-                swipe_refresh_layout.setRefreshing(false);
+                swipe_Refresh_Layout.setRefreshing(false);
             }
         });
     }

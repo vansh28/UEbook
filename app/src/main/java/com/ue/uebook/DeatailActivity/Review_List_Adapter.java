@@ -33,10 +33,10 @@ public class Review_List_Adapter  extends RecyclerView.Adapter<Review_List_Adapt
     }
     @Override
     public void onBindViewHolder(@NonNull Review_List_Adapter.MyViewHolder holder, int position) {
-        GlideUtils.loadImage(mtc,"http://"+data.get(position).getUrl(),holder.profile,R.drawable.user_default,R.drawable.user_default);
-        holder.username.setText(data.get(position).getUser_name());
-        holder.dateandtime.setText(data.get(position).getCreated_at());
-        holder.comment.setText(data.get(position).getComment());
+        GlideUtils.loadImage(mtc,"http://"+data.get(position).getUrl(),holder.profileTv,R.drawable.user_default,R.drawable.user_default);
+        holder.usernameTv.setText(data.get(position).getUser_name());
+        holder.dateandtimeTv.setText(data.get(position).getCreated_at());
+        holder.commentTv.setText(data.get(position).getComment());
         if (data.get(position).getRating()!=null){
             holder.ratingBar.setRating( Float.valueOf(data.get(position).getRating()));
         }
@@ -46,15 +46,15 @@ public class Review_List_Adapter  extends RecyclerView.Adapter<Review_List_Adapt
         return data.size();
     }
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        private ImageView profile;
-        private TextView username,dateandtime,comment;
+        private ImageView profileTv;
+        private TextView usernameTv,dateandtimeTv,commentTv;
         private RatingBar ratingBar;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            profile=itemView.findViewById(R.id.profile_image_review);
-            username=itemView.findViewById(R.id.reviewUsername);
-            dateandtime=itemView.findViewById(R.id.review_comment_time);
-            comment=itemView.findViewById(R.id.review_comment);
+            profileTv=itemView.findViewById(R.id.profile_image_review);
+            usernameTv=itemView.findViewById(R.id.reviewUsername);
+            dateandtimeTv=itemView.findViewById(R.id.review_comment_time);
+            commentTv=itemView.findViewById(R.id.review_comment);
             ratingBar=itemView.findViewById(R.id.review_RatingBar);
 
         }

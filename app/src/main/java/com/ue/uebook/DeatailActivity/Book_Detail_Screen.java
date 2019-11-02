@@ -64,10 +64,10 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
     private Button  comment_Submit;
     private List<BookDetails>bookDetail;
     private ProgressDialog dialog;
-    private ImageView book_cover;
+    private ImageView book_coverTv;
     private TextView bookTitle,bookDesc,bookAuthor,averageRating,topreviewView,book_uploadBy ,book_asignment ,readFull_Book_btn;
     private Intent intent;
-    private String book_id,videourl,docurl,audiourl;
+    private String book_Id,videourl,docurl,audiourl;
     private int position;
     private String bookdesc;
     private RatingBar commnetRating;
@@ -98,7 +98,7 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
         user_answers=new ArrayList<>();
         dialog = new ProgressDialog(this);
         intent = getIntent();
-         book_id = intent.getStringExtra("book_id");
+        book_Id = intent.getStringExtra("book_id");
         position =intent.getIntExtra("position",0);
         back_btn_Deatils = findViewById(R.id.back_btn_Deatils);
         readFull_Book_btn = findViewById(R.id.readFull_Book_btn);
@@ -112,7 +112,7 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
         bookDesc=findViewById(R.id.book_desc);
         bookAuthor=findViewById(R.id.bookauthor);
         book_uploadBy.setOnClickListener(this);
-        book_cover=findViewById(R.id.bookcoverImage);
+        book_coverTv=findViewById(R.id.bookcoverImage);
         comment_Submit.setOnClickListener(this);
         facebook_btn.setOnClickListener(this);
         google_btn.setOnClickListener(this);
@@ -128,7 +128,7 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
         linearLayoutManagerList.setOrientation(LinearLayoutManager.VERTICAL);
         review_List.setLayoutManager(linearLayoutManagerList);
         review_List.setNestedScrollingEnabled(false);
-        getBookDetail(book_id);
+        getBookDetail(book_Id);
         pullTorefreshswipe();
       fontsize();
     }
@@ -187,7 +187,7 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onRefresh() {
-                getBookDetail(book_id);
+                getBookDetail(book_Id);
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
@@ -203,11 +203,11 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
 
                 bookmark_btn.setBackgroundResource(R.drawable.bookmark_active);
                 isBookmark_book = true;
-                addBookToBookmark(book_id,"1");
+                addBookToBookmark(book_Id,"1");
             } else {
                 bookmark_btn.setBackgroundResource(R.drawable.bookmark_unactive);
                 isBookmark_book = false;
-                addBookToBookmark(book_id,"0");
+                addBookToBookmark(book_Id,"0");
             }
         } else if (view == facebook_btn) {
 
@@ -254,7 +254,7 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
             Intent intent = new Intent(this, Book_Assignment.class);
             intent.putExtra("QuestionListExtra", (Serializable) assignmentList);
             intent.putExtra("answer", (Serializable) user_answers);
-            intent.putExtra("book_id",book_id);
+            intent.putExtra("book_id",book_Id);
             startActivity(intent);
 
         }
@@ -340,7 +340,7 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
                         if (form.getData().getBook_description().length()>=50){
                             makeTextViewResizable(bookDesc, 5, "See More", true);
                         }
-                        GlideUtils.loadImage(Book_Detail_Screen.this,"http://"+form.getData().getThubm_image(),book_cover,R.drawable.noimage,R.drawable.noimage);
+                        GlideUtils.loadImage(Book_Detail_Screen.this,"http://"+form.getData().getThubm_image(),book_coverTv,R.drawable.noimage,R.drawable.noimage);
                         if (form.getReview()!=null){
                             review_list_adapter = new Review_List_Adapter(Book_Detail_Screen.this,form.getReview());
                             review_List.setAdapter(review_list_adapter);
@@ -384,7 +384,6 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
             }
         });
     }
-
     private void showFilterPopup(View v) {
         PopupMenu popup = new PopupMenu(this, v);
         popup.inflate(R.menu.popup_filter);
@@ -428,11 +427,9 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
                 }
             }
         });
-
         popup.show();
     }
     public static void makeTextViewResizable(final TextView tv, final int maxLine, final String expandText, final boolean viewMore) {
-
         if (tv.getTag() == null) {
             tv.setTag(tv.getText());
         }
@@ -442,7 +439,6 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
             @SuppressWarnings("deprecation")
             @Override
             public void onGlobalLayout() {
-
                 ViewTreeObserver obs = tv.getViewTreeObserver();
                 obs.removeGlobalOnLayoutListener(this);
                 if (maxLine == 0) {
@@ -472,15 +468,11 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
                 }
             }
         });
-
     }
     private static SpannableStringBuilder addClickablePartTextViewResizable(final Spanned strSpanned, final TextView tv, final int maxLine, final String spanableText, final boolean viewMore) {
         String str = strSpanned.toString();
         SpannableStringBuilder ssb = new SpannableStringBuilder(strSpanned);
-
         if (str.contains(spanableText)) {
-
-
             ssb.setSpan(new MySpannable(false){
                 @Override
                 public void onClick(View widget) {
@@ -497,16 +489,14 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
                     }
                 }
             }, str.indexOf(spanableText), str.indexOf(spanableText) + spanableText.length(), 0);
-
         }
         return ssb;
-
     }
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void addCommentToBook(String comment , String rating) {
         showLoadingIndicator();
         ApiRequest request = new ApiRequest();
-        request.requestforAddComment(new SessionManager(getApplicationContext()).getUserID(),book_id,comment,rating, new okhttp3.Callback() {
+        request.requestforAddComment(new SessionManager(getApplicationContext()).getUserID(),book_Id,comment,rating, new okhttp3.Callback() {
             @Override
             public void onFailure(okhttp3.Call call, IOException e) {
                 Log.d("error", "error");
@@ -523,19 +513,17 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
                     public void run() {
                         user_comment.setText("");
                         commnetRating.setRating(0);
-                        getBookDetail(book_id);
+                        getBookDetail(book_Id);
                     }
                 });
-
             }
         });
     }
-
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void onRestart()
     {
         super.onRestart();
-        getBookDetail(book_id);
+        getBookDetail(book_Id);
     }
 
 }

@@ -1,8 +1,6 @@
 package com.ue.uebook;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -56,7 +54,6 @@ public class NotepadScreen extends AppCompatActivity implements View.OnClickList
             notes_view.setText(description);
         }
         else {
-
             edit_btn.setVisibility(View.GONE);
             delete_btn.setVisibility(View.GONE);
             notes_view.setEnabled(true);
