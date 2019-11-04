@@ -64,7 +64,7 @@ public class ChatListScreen extends AppCompatActivity implements View.OnClickLis
 
     @Override
     public void onUserProfileClick() {
-        imagePreview("jdj");
+        imagePreview("xxxxvccvsd");
     }
     private void imagePreview(String file) {
         final Dialog previewDialog = new Dialog(this);

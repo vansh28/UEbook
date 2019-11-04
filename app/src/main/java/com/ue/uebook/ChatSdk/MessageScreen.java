@@ -21,7 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ue.uebook.GlideUtils;
 import com.ue.uebook.R;
 public class MessageScreen extends AppCompatActivity implements View.OnClickListener {
-    private ImageButton backbtn, button_chat_attachment, morebtn, button_chat_send;
+    private ImageButton back_btn, button_chat_attachment, morebtn, button_chat_send;
     private ImageView userProfile;
     private RecyclerView messageList;
     private EditText chat_message;
@@ -30,7 +30,7 @@ public class MessageScreen extends AppCompatActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message_screen);
-        backbtn = findViewById(R.id.backbtnMessage);
+        back_btn = findViewById(R.id.backbtnMessage);
         userProfile = findViewById(R.id.image_user_chat);
         chat_message = findViewById(R.id.edit_chat_message);
         messageList = findViewById(R.id.messageList);
@@ -40,12 +40,12 @@ public class MessageScreen extends AppCompatActivity implements View.OnClickList
         button_chat_send = findViewById(R.id.button_chat_send);
         morebtn.setOnClickListener(this);
         button_chat_attachment.setOnClickListener(this);
-        backbtn.setOnClickListener(this);
+        back_btn.setOnClickListener(this);
         userProfile.setOnClickListener(this);
     }
     @Override
     public void onClick(View v) {
-        if (v == backbtn) {
+        if (v == back_btn) {
             finish();
         } else if (v == userProfile) {
             imagePreview("djjddj");

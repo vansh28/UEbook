@@ -20,13 +20,9 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
         void onContactListItemClick();
         void onProfileClick();
     }
-
     public void setItemClickListener(ItemClick clickListener) {
         itemClick = clickListener;
     }
-
-
-
     @NonNull
     @Override
     public ContactListAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -35,7 +31,6 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
         ContactListAdapter.MyViewHolder vh = new ContactListAdapter.MyViewHolder(v); // pass the view to View Holder
         return vh;
     }
-
     @Override
     public void onBindViewHolder(@NonNull ContactListAdapter.MyViewHolder holder, final int position) {
           holder.userchat.setText("Reader");
@@ -56,7 +51,6 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
             }
         });
     }
-
     @Override
     public int getItemCount() {
         return 30;
@@ -64,16 +58,12 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
     public class MyViewHolder extends RecyclerView.ViewHolder {
         ImageView profile;
         TextView name,userchat;
-
         RelativeLayout chatContainer;
-
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-
             profile=itemView.findViewById(R.id.image_user);
             name=itemView.findViewById(R.id.name);
             userchat=itemView.findViewById(R.id.userchat);
             chatContainer =itemView.findViewById(R.id.chatContainer);
-
         }
     }}

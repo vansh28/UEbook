@@ -77,7 +77,6 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
     private List<Assignment>assignmentList;
     private List<user_answer>user_answers;
     private int textSize;
-
     String docbaseUrl="http://docs.google.com/gview?embedded=true&url=";
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
@@ -457,7 +456,8 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
                     tv.setText(
                             addClickablePartTextViewResizable(fromHtml(tv.getText().toString()), tv, maxLine, expandText,
                                     viewMore), TextView.BufferType.SPANNABLE);
-                } else {
+                }
+                else {
                     int lineEndIndex = tv.getLayout().getLineEnd(tv.getLayout().getLineCount() - 1);
                     String text = tv.getText().subSequence(0, lineEndIndex) + " " + expandText;
                     tv.setText(text);

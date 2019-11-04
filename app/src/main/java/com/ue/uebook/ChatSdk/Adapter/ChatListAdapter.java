@@ -25,8 +25,6 @@ public class ChatListAdapter  extends RecyclerView.Adapter<ChatListAdapter.MyVie
         itemClick = clickListener;
     }
 
-
-
     @NonNull
     @Override
     public ChatListAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {

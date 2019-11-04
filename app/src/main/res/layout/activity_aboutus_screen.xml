@@ -82,5 +82,7 @@
                 android:paddingBottom="@dimen/size_50"
                 android:textSize="@dimen/size_15"/>
         </LinearLayout>
+
     </ScrollView>
+
 </LinearLayout>

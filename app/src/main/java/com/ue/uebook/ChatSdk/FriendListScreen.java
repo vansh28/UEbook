@@ -15,16 +15,16 @@ import com.ue.uebook.ChatSdk.Adapter.ContactListAdapter;
 import com.ue.uebook.GlideUtils;
 import com.ue.uebook.R;
 public class FriendListScreen extends AppCompatActivity implements View.OnClickListener  ,ContactListAdapter.ItemClick{
-    private ImageButton backbtn;
+    private ImageButton back_btn;
     private ContactListAdapter contactListAdapter;
    private  RecyclerView contactList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friend_list_screen2);
-        backbtn=findViewById(R.id.backbtnContact);
+        back_btn =findViewById(R.id.backbtnContact);
         contactList=findViewById(R.id.contactList);
-        backbtn.setOnClickListener(this);
+        back_btn.setOnClickListener(this);
         LinearLayoutManager linearLayoutManagerPopularList = new LinearLayoutManager(this);
         linearLayoutManagerPopularList.setOrientation(LinearLayoutManager.VERTICAL);
         contactList.setLayoutManager(linearLayoutManagerPopularList);
@@ -34,7 +34,7 @@ public class FriendListScreen extends AppCompatActivity implements View.OnClickL
     }
     @Override
     public void onClick(View v) {
-        if (v==backbtn){
+        if (v== back_btn){
             finish();
         }
     }
@@ -48,11 +48,12 @@ public class FriendListScreen extends AppCompatActivity implements View.OnClickL
     public void onProfileClick() {
          imagePreview("dshdjd");
     }
+
+
     private void imagePreview(String file) {
         final Dialog previewDialog = new Dialog(this);
         previewDialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-        previewDialog.setContentView(getLayoutInflater().inflate(R.layout.image_layout
-                , null));
+        previewDialog.setContentView(getLayoutInflater().inflate(R.layout.image_layout ,null));
         ImageView imageView = previewDialog.findViewById(R.id.image_view);
         GlideUtils.loadImage(FriendListScreen.this, "http://dnddemo.com/ebooks/api/v1/upload/" + file, imageView, R.drawable.user_default, R.drawable.user_default);
         Button ok_Btn = previewDialog.findViewById(R.id.buton_ok);

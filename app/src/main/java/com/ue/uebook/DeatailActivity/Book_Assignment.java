@@ -49,7 +49,6 @@ public class Book_Assignment extends BaseActivity implements View.OnClickListene
     private List<user_answer>user_answers;
     private int textSize;
     private SwipeRefreshLayout swipe_refresh_layout;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,7 +78,6 @@ public class Book_Assignment extends BaseActivity implements View.OnClickListene
             question_list.setVisibility(View.GONE);
             submit_assignment.setVisibility(View.INVISIBLE);
         }
-
         LinearLayoutManager linearLayoutManagerList = new LinearLayoutManager(this);
         linearLayoutManagerList.setOrientation(LinearLayoutManager.VERTICAL);
         question_list.setLayoutManager(linearLayoutManagerList);
@@ -89,9 +87,7 @@ public class Book_Assignment extends BaseActivity implements View.OnClickListene
         assignmentAdapter.setItemClickListener(Book_Assignment.this);
         back_btn = findViewById(R.id.back_asignment);
         back_btn.setOnClickListener(this);
-
     }
-
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void onClick(View view) {
@@ -113,17 +109,13 @@ public class Book_Assignment extends BaseActivity implements View.OnClickListene
                 }
                 ja.put(jo);
             }
-
             sendAnswer(String.valueOf(ja));
         }
     }
-
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void onItemClick(String id, String answer) {
-
     }
-
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void sendAnswer(String answer) {
         ApiRequest request = new ApiRequest();
@@ -141,9 +133,7 @@ public class Book_Assignment extends BaseActivity implements View.OnClickListene
             }
         });
     }
-
     public void Add_Line() {
-
         for (int i = 0; i < questionList.size(); i++) {
             LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View newRowView = inflater.inflate(R.layout.assignment_item, question_container, false);
@@ -155,14 +145,11 @@ public class Book_Assignment extends BaseActivity implements View.OnClickListene
                 questionEdit.setText(user_answers.get(i).getAnswer());
                 questionEdit.setTextSize(textSize);
             }
-
             allEds.add(questionEdit);
             questionEdit.setId(numberOfLines + 1);
             question_container.addView(newRowView);
             numberOfLines++;
-
         }
-
     }
     private void font_size(){
         switch(new SessionManager(getApplicationContext()).getfontSize()) {
@@ -183,6 +170,4 @@ public class Book_Assignment extends BaseActivity implements View.OnClickListene
                 break;
         }
     }
-
-
 }

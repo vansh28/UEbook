@@ -48,7 +48,8 @@ public class ApiRequest {
 
     }
 
-    public void requestforforgotPassword(final String email, Callback callback) {
+    public void requestforforgotPassword(final String email, Callback callback)
+    {
         String url = null;
         url = BaseUrl + "forgetPassword";
         OkHttpClient client = new OkHttpClient();
@@ -100,6 +101,7 @@ public class ApiRequest {
         client.newCall(request).enqueue(callback);
 
     }
+
     public void requestforUploadBook(final String user_id, File video, String category_id, String book_title, Callback callback) {
         String url = null;
         url = BaseUrl + "addNewBook";
@@ -118,6 +120,7 @@ public class ApiRequest {
                 .build();
         client.newCall(request).enqueue(callback);
     }
+
     public void requestforGetbookCategory(Callback callback) {
         String url = null;
         url = BaseUrl + "getAllCategory";
@@ -252,7 +255,6 @@ public class ApiRequest {
         client.newCall(request).enqueue(callback);
     }
 
-
     public void requestforGetPopularBook(Callback callback) {
         String url = null;
         url = BaseUrl + "getAllpopularBook";
@@ -264,7 +266,6 @@ public class ApiRequest {
                 .build();
         client.newCall(request).enqueue(callback);
     }
-
 
     public void requestforGetAllBook(Callback callback) {
         String url = null;

@@ -56,7 +56,6 @@ public class Review_List_Adapter  extends RecyclerView.Adapter<Review_List_Adapt
             dateandtimeTv=itemView.findViewById(R.id.review_comment_time);
             commentTv=itemView.findViewById(R.id.review_comment);
             ratingBar=itemView.findViewById(R.id.review_RatingBar);
-
         }
     }
 }
