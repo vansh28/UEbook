@@ -70,7 +70,6 @@ public class MessageScreen extends AppCompatActivity implements View.OnClickList
         ok_Btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 previewDialog.dismiss();
 
             }
@@ -83,7 +82,6 @@ public class MessageScreen extends AppCompatActivity implements View.OnClickList
                 .inflate(R.menu.chatmoremenu, popup.getMenu());
         popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem item) {
-
                 return true;
             }
         });
@@ -93,10 +91,9 @@ public class MessageScreen extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         if (resultCode == RESULT_OK) {
-
-            if (requestCode == 1) {
+            if (requestCode == 1)
+            {
 
             }
         }

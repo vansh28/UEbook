@@ -115,6 +115,7 @@ public class Book_Assignment extends BaseActivity implements View.OnClickListene
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void onItemClick(String id, String answer) {
+
     }
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void sendAnswer(String answer) {

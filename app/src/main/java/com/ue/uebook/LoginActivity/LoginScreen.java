@@ -40,6 +40,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.quickblox.core.QBEntityCallback;
@@ -108,6 +109,13 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
         initializeGPlusSettings();
         have_Account_btnTv.setOnClickListener(this);
         hideLoadingIndicator();
+
+        try {
+            String refreshedToken = FirebaseInstanceId.getInstance().getToken();
+            Log.d("Firbase id login", "Refreshed token: " + refreshedToken);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void initializeGPlusSettings() {
@@ -220,7 +228,6 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
 
     private void Fblogin() {
         callbackManager = CallbackManager.Factory.create();
-
         // Set permissions
         LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("email", "public_profile"));
 
@@ -312,7 +319,7 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
             @Override
             public void onClick(View view) {
 
-                registrationUser(first_name, " ", email, "Reader", "","");
+                registrationUser(first_name, " ", email, "Reader", "","","");
                 dialog.dismiss();
             }
         });
@@ -356,7 +363,7 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onClick(View view) {
-                registrationUser(first_name, " ", email, "Reader", "","");
+                registrationUser(first_name, " ", email, "Reader", "","","");
 
                 dialog.dismiss();
 
@@ -436,12 +443,11 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
             }
         });
     }
-
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    private void registrationUser(final String full_name, String password, String email, String publisher_type, String gender, String country) {
+    private void registrationUser(final String full_name, String password, String email, String publisher_type, String gender, String country,String device_token) {
         ApiRequest request = new ApiRequest();
        showLoadingIndicator();
-        request.requestforRegistration(full_name, password, email, publisher_type, gender,country,"" ,new okhttp3.Callback() {
+        request.requestforRegistration(full_name, password, email, publisher_type, gender,country,"" ,device_token,new okhttp3.Callback() {
             @Override
             public void onFailure(okhttp3.Call call, IOException e) {
                 Log.e("error",e.getLocalizedMessage());

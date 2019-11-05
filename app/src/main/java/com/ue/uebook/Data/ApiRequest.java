@@ -11,7 +11,7 @@ import okhttp3.RequestBody;
 public class ApiRequest {
     private static final String BaseUrl = "http://dnddemo.com/ebooks/api/v1/";
 
-    public void requestforRegistration(final String full_name, final String password, final String email, final String publisher_type, final String gender, final String country, final String about_me, Callback callback) {
+    public void requestforRegistration(final String full_name, final String password, final String email, final String publisher_type, final String gender, final String country, final String about_me,final  String device_token, Callback callback) {
         String url = null;
         url = BaseUrl + "createUser";
         OkHttpClient client = new OkHttpClient();
@@ -23,6 +23,9 @@ public class ApiRequest {
                 .addFormDataPart("gender", gender)
                 .addFormDataPart("country", country)
                 .addFormDataPart("about_me", about_me)
+                .addFormDataPart("device_token",device_token)
+                .addFormDataPart("device_type","android")
+
                 .build();
         Request request = new Request.Builder()
                 .url(url)
@@ -101,7 +104,6 @@ public class ApiRequest {
         client.newCall(request).enqueue(callback);
 
     }
-
     public void requestforUploadBook(final String user_id, File video, String category_id, String book_title, Callback callback) {
         String url = null;
         url = BaseUrl + "addNewBook";
@@ -120,7 +122,6 @@ public class ApiRequest {
                 .build();
         client.newCall(request).enqueue(callback);
     }
-
     public void requestforGetbookCategory(Callback callback) {
         String url = null;
         url = BaseUrl + "getAllCategory";
@@ -195,7 +196,6 @@ public class ApiRequest {
                 .build();
         client.newCall(request).enqueue(callback);
     }
-
     public void requestforAddNotes(final String userId, final String description, Callback callback) {
         String url = null;
         url = BaseUrl + "addNote";
@@ -210,7 +210,6 @@ public class ApiRequest {
                 .build();
         client.newCall(request).enqueue(callback);
     }
-
     public void requestforgetNotesList(final String userId, Callback callback) {
         String url = null;
         url = BaseUrl + "getAllNotebyUser";
@@ -225,7 +224,6 @@ public class ApiRequest {
                 .build();
         client.newCall(request).enqueue(callback);
     }
-
     public void requestforupdateNote(final String note_id, final String description, Callback callback) {
         String url = null;
         url = BaseUrl + "UpdateNoteBook";

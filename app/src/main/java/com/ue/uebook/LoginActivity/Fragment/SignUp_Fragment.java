@@ -1,5 +1,6 @@
 package com.ue.uebook.LoginActivity.Fragment;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -26,6 +27,7 @@ import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.google.firebase.FirebaseApp;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.quickblox.core.QBEntityCallback;
@@ -82,7 +84,7 @@ public class SignUp_Fragment extends Fragment implements View.OnClickListener {
     private ProgressDialog dialog;
     private LinearLayout viewLinear;
     private static final int UNAUTHORIZED = 401;
-
+    private String androidID;
     public SignUp_Fragment() {
         // Required empty public constructor
     }
@@ -105,22 +107,31 @@ public class SignUp_Fragment extends Fragment implements View.OnClickListener {
         return fragment;
     }
 
+    @SuppressLint("MissingPermission")
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
+        FirebaseApp.initializeApp(getContext());
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_sign_up_, container, false);
+
+
+
+        /*
+         * getDeviceId() returns the unique device ID.
+         * For example,the IMEI for GSM and the MEID or ESN for CDMA phones.
+         */
+
         networkAPI = NetworkService.getAPI().create(NetworkAPI.class);
         dialog = new ProgressDialog(getContext());
         dialog.setCanceledOnTouchOutside(false);
@@ -163,24 +174,18 @@ public class SignUp_Fragment extends Fragment implements View.OnClickListener {
             }
         });
         actorType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-
             @Override
             public void onItemSelected(AdapterView<?> parent, View arg1,
                                        int arg2, long arg3) {
                 String label = parent.getItemAtPosition(arg2).toString();
                 // Showing selected spinner item
                 checkboxlist = label;
-
-
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
 
             }
         });
-
-
         return view;
     }
 
@@ -214,7 +219,7 @@ public class SignUp_Fragment extends Fragment implements View.OnClickListener {
 
             case R.id.create_USerAccount:
                 if (isvalidate()) {
-                    registrationUser(username.getText().toString(), userPassword.getText().toString(), userEmail.getText().toString(), checkboxlist, gender, country_edit_text.getText().toString(), brief_desc.getText().toString());
+                    registrationUser(username.getText().toString(), userPassword.getText().toString(), userEmail.getText().toString(), checkboxlist, gender, country_edit_text.getText().toString(), brief_desc.getText().toString(),androidID);
                 }
                 break;
 
@@ -350,11 +355,11 @@ public class SignUp_Fragment extends Fragment implements View.OnClickListener {
     }
 
 
-    private void registrationUser(String full_name, String password, String email, String publisher_type, String gender, String country, String about_me) {
+    private void registrationUser(String full_name, String password, String email, String publisher_type, String gender, String country, String about_me ,String device_token) {
         ApiRequest request = new ApiRequest();
         dialog.setMessage("please wait");
         dialog.show();
-        request.requestforRegistration(full_name, password, email, publisher_type, gender, country, about_me, new okhttp3.Callback() {
+        request.requestforRegistration(full_name, password, email, publisher_type, gender, country, about_me, device_token,new okhttp3.Callback() {
             @Override
             public void onFailure(okhttp3.Call call, IOException e) {
                 Log.e("error", e.getLocalizedMessage());
@@ -490,7 +495,6 @@ public class SignUp_Fragment extends Fragment implements View.OnClickListener {
             }
         });
     }
-
 
 }
 

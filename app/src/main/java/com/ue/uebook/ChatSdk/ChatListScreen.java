@@ -25,7 +25,6 @@ public class ChatListScreen extends AppCompatActivity implements View.OnClickLis
     private ImageButton backbtn;
     private FloatingActionButton newChatbtn;
     private TextView noUserFound;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
