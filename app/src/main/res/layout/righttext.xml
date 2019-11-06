@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/userMessage"
+        android:text="cvckjvckvckvfugifug fgfiguo fg fguifgufg"
+        android:textSize="@dimen/size_18"
+        android:textColor="@color/white"
+        android:layout_gravity="right"
+        android:background="@color/colorPrimary"
+        android:padding="@dimen/size_5"
+        android:layout_marginLeft="@dimen/size_150"
+        android:layout_marginRight="@dimen/size_15"
+        android:layout_marginTop="@dimen/size_8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+    </TextView>
+
+</LinearLayout>

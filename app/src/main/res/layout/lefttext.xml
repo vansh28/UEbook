@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:background="@drawable/left_bubble"
+
+        android:layout_marginRight="@dimen/size_150"
+        android:layout_marginLeft="@dimen/size_15"
+        android:layout_marginTop="@dimen/size_8"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/oPonentMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hello"
+            android:layout_margin="@dimen/size_5"
+            android:textColor="@color/black"/>
+
+        <TextView
+            android:id="@+id/oponentMessageTime"
+            android:layout_width="@dimen/size_50"
+            android:layout_height="wrap_content"
+            android:text="2:03 am"
+            android:visibility="gone"
+            android:layout_below="@+id/oPonentMessage"
+            android:layout_alignParentRight="true"
+            android:textColor="@color/black"
+            android:layout_marginBottom="@dimen/size_5"
+            android:textSize="@dimen/size_10" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:background="@drawable/right_bubble"
+        android:layout_gravity="end"
+        android:layout_marginRight="@dimen/size_15"
+        android:layout_marginLeft="@dimen/size_150"
+        android:layout_marginTop="@dimen/size_8"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/userMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hello . how are you? "
+            android:layout_margin="@dimen/size_5"
+            android:textColor="@color/white"/>
+        <TextView
+            android:id="@+id/userMessageTime"
+            android:layout_width="@dimen/size_50"
+            android:layout_height="wrap_content"
+            android:text="2:03 am"
+            android:visibility="gone"
+            android:layout_below="@+id/userMessage"
+            android:layout_alignParentRight="true"
+            android:textColor="@color/black"
+            android:layout_marginBottom="@dimen/size_5"
+            android:textSize="@dimen/size_10" />
+
+    </RelativeLayout>
+
+
+</LinearLayout>

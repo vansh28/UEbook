@@ -8,17 +8,30 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.ue.uebook.ChatSdk.Pojo.OponentData;
+import com.ue.uebook.ChatSdk.Pojo.UserData;
+import com.ue.uebook.GlideUtils;
 import com.ue.uebook.R;
 
-public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.MyViewHolder>{
+import java.util.List;
 
+public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.MyViewHolder>{
     private ItemClick itemClick;
+    private List<OponentData>oponentListdata;
+    private UserData userData;
+   private AppCompatActivity mctx;
+    public ContactListAdapter(AppCompatActivity mctx,List<OponentData> userList, UserData data) {
+        this.oponentListdata=userList;
+        this.userData=data;
+        this.mctx=mctx;
+    }
 
     public interface ItemClick {
-        void onContactListItemClick();
-        void onProfileClick();
+        void onContactListItemClick(OponentData oponentData,UserData userData);
+        void onProfileClick(String url);
     }
     public void setItemClickListener(ItemClick clickListener) {
         itemClick = clickListener;
@@ -33,12 +46,15 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
     }
     @Override
     public void onBindViewHolder(@NonNull ContactListAdapter.MyViewHolder holder, final int position) {
-          holder.userchat.setText("Reader");
-        holder.chatContainer.setOnClickListener(new View.OnClickListener() {
+          holder.name.setText(oponentListdata.get(position).getName());
+          holder.userchat.setText(oponentListdata.get(position).publisher_type);
+          GlideUtils.loadImage(mctx, "http://dnddemo.com/ebooks/api/v1/upload/" + oponentListdata.get(position).getUrl(), holder.profile, R.drawable.user_default, R.drawable.user_default);
+
+          holder.chatContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (itemClick!=null){
-                    itemClick.onContactListItemClick();
+                    itemClick.onContactListItemClick(oponentListdata.get(position),userData);
                 }
             }
         });
@@ -46,14 +62,14 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
             @Override
             public void onClick(View v) {
                 if (itemClick!=null){
-                    itemClick.onProfileClick();
+                    itemClick.onProfileClick(oponentListdata.get(position).url);
                 }
             }
         });
     }
     @Override
     public int getItemCount() {
-        return 30;
+        return oponentListdata.size();
     }
     public class MyViewHolder extends RecyclerView.ViewHolder {
         ImageView profile;

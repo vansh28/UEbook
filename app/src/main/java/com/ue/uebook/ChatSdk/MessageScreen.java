@@ -16,25 +16,41 @@ import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.ue.uebook.ChatSdk.Adapter.MessageAdapter;
+import com.ue.uebook.ChatSdk.Pojo.OponentData;
+import com.ue.uebook.ChatSdk.Pojo.UserData;
 import com.ue.uebook.GlideUtils;
 import com.ue.uebook.R;
 public class MessageScreen extends AppCompatActivity implements View.OnClickListener {
+    private Intent intent;
     private ImageButton back_btn, button_chat_attachment, morebtn, button_chat_send;
     private ImageView userProfile;
     private RecyclerView messageList;
     private EditText chat_message;
     private TextView oponent_name;
+    private int screenID;
+    private OponentData oponentData;
+    private UserData userData;
+    private MessageAdapter messageAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message_screen);
         back_btn = findViewById(R.id.backbtnMessage);
+        oponent_name=findViewById(R.id.oponent_name);
+        intent = getIntent();
+        screenID=intent.getIntExtra("id",0);
         userProfile = findViewById(R.id.image_user_chat);
         chat_message = findViewById(R.id.edit_chat_message);
         messageList = findViewById(R.id.messageList);
-        oponent_name=findViewById(R.id.oponent_name);
+        LinearLayoutManager linearLayoutManagerPopularList = new LinearLayoutManager(this);
+        linearLayoutManagerPopularList.setOrientation(LinearLayoutManager.VERTICAL);
+        messageList.setLayoutManager(linearLayoutManagerPopularList);
+        messageAdapter = new MessageAdapter();
+        messageList.setAdapter(messageAdapter);
         button_chat_attachment = findViewById(R.id.button_chat_attachment);
         morebtn = findViewById(R.id.morebtn);
         button_chat_send = findViewById(R.id.button_chat_send);
@@ -42,13 +58,21 @@ public class MessageScreen extends AppCompatActivity implements View.OnClickList
         button_chat_attachment.setOnClickListener(this);
         back_btn.setOnClickListener(this);
         userProfile.setOnClickListener(this);
+        if (screenID==2){
+            oponentData= (OponentData) intent.getSerializableExtra("oponentdata");
+            userData= (UserData) intent.getSerializableExtra("userData");
+            if (oponentData!=null){
+                oponent_name.setText(oponentData.getName());
+                GlideUtils.loadImage(MessageScreen.this, "http://dnddemo.com/ebooks/api/v1/upload/" + oponentData.getUrl(), userProfile, R.drawable.user_default, R.drawable.user_default);
+            }
+        }
     }
     @Override
     public void onClick(View v) {
         if (v == back_btn) {
             finish();
         } else if (v == userProfile) {
-            imagePreview("djjddj");
+            imagePreview(oponentData.getUrl());
         } else if (v == button_chat_attachment) {
             Intent intent = new Intent();
             intent.setAction(Intent.ACTION_GET_CONTENT);
