@@ -518,6 +518,40 @@ public class ApiRequest {
                 .build();
         client.newCall(request).enqueue(callback);
     }
+    public void requestforChat(String  user_id,String tokenKey,String sendTO,String type,String channelId,String message,Callback callback) {
+        String url = null;
+        url = BaseUrl + "user_chat";
+        OkHttpClient client = new OkHttpClient();
+        RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
+                .addFormDataPart(" tokenKey",  tokenKey)
+                .addFormDataPart(" user_id",  user_id)
+                .addFormDataPart(" sendTO",  sendTO)
+                .addFormDataPart(" type",  type)
+                .addFormDataPart(" channelId",  channelId)
+                .addFormDataPart(" message",  message)
+                .build();
+        Request request = new Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .build();
+        client.newCall(request).enqueue(callback);
+    }
+    public void requestforgetChathistory(String  user_id,String sendTO,String channelId,String type,Callback callback) {
+        String url = null;
+        url = BaseUrl + "user_chat";
+        OkHttpClient client = new OkHttpClient();
+        RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
+                .addFormDataPart(" user_id",  user_id)
+                .addFormDataPart(" sendTO",  sendTO)
+                .addFormDataPart(" channelId",  channelId)
+                .addFormDataPart("type",type)
+                .build();
+        Request request = new Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .build();
+        client.newCall(request).enqueue(callback);
+    }
 }
 
 

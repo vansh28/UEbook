@@ -359,7 +359,7 @@ public class SignUp_Fragment extends Fragment implements View.OnClickListener {
         ApiRequest request = new ApiRequest();
         dialog.setMessage("please wait");
         dialog.show();
-        request.requestforRegistration(full_name, password, email, publisher_type, gender, country, about_me, device_token,new okhttp3.Callback() {
+        request.requestforRegistration(full_name, password, email, publisher_type, gender, country, about_me, "SDHDHDD",new okhttp3.Callback() {
             @Override
             public void onFailure(okhttp3.Call call, IOException e) {
                 Log.e("error", e.getLocalizedMessage());

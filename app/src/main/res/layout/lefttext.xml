@@ -3,9 +3,10 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content">
     <RelativeLayout
+        android:id="@+id/oponentlayout"
         android:layout_width="wrap_content"
         android:background="@drawable/left_bubble"
-
+       android:visibility="gone"
         android:layout_marginRight="@dimen/size_150"
         android:layout_marginLeft="@dimen/size_15"
         android:layout_marginTop="@dimen/size_8"
@@ -34,10 +35,12 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/senderlayout"
         android:layout_width="wrap_content"
         android:background="@drawable/right_bubble"
         android:layout_gravity="end"
         android:layout_marginRight="@dimen/size_15"
+        android:visibility="gone"
         android:layout_marginLeft="@dimen/size_150"
         android:layout_marginTop="@dimen/size_8"
         android:layout_height="wrap_content">

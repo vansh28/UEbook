@@ -28,7 +28,6 @@ import com.ue.uebook.R;
 import com.ue.uebook.SessionManager;
 
 import java.io.IOException;
-
 public class FriendListScreen extends BaseActivity implements View.OnClickListener  ,ContactListAdapter.ItemClick{
     private ImageButton back_btn;
     private ContactListAdapter contactListAdapter;
