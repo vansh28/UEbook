@@ -129,6 +129,7 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
     private   int pendingbookID,pendingbookPosition;
     private String uploadurl=" http://dnddemo.com/ebooks/api/v1/addNewBook";
     private String savelaterUrl;
+    private int typevalue=0;  //
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     protected void onCreate(Bundle savedInstanceState) {

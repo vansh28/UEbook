@@ -56,8 +56,8 @@ public class ChatListScreen extends AppCompatActivity implements View.OnClickLis
 
     @Override
     public void onUserChatClick() {
-             Intent intent = new Intent(this,MessageScreen.class);
-              startActivity(intent);
+//             Intent intent = new Intent(this,MessageScreen.class);
+//              startActivity(intent);
 
        }
 
