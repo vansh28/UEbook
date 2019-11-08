@@ -296,6 +296,7 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener 
             }
         });
     }
+
     private void showBottomSheet() {
         final View bottomSheetLayout = getLayoutInflater().inflate(R.layout.bottomlayoutchat, null);
 
