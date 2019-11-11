@@ -21,11 +21,19 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyviewHo
    private List<Chathistory>chatData;
    private String userId;
    private AppCompatActivity mtx;
+   private ChatImageFileClick chatImageFileClick;
 
     public MessageAdapter(AppCompatActivity mtx, List<Chathistory> chat_list, String userID) {
         this.chatData=chat_list;
         this.userId=userID;
         this.mtx=mtx;
+    }
+    public interface ChatImageFileClick {
+        void onImageClick(String url);
+
+    }
+    public void setItemClickListener(ChatImageFileClick clickListener) {
+        chatImageFileClick = clickListener;
     }
     @NonNull
     @Override
@@ -35,10 +43,10 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyviewHo
         return vh;
     }
     @Override
-    public void onBindViewHolder(@NonNull MyviewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MyviewHolder holder, final int position) {
         Log.d("sender",chatData.get(position).getSender());
         if (chatData.get(position).getSender().equalsIgnoreCase(userId)) {
-            if (chatData.get(position).getType().equalsIgnoreCase("file")){
+            if (chatData.get(position).getType().equalsIgnoreCase("image")){
                 holder.senderlayoutimage.setVisibility(View.VISIBLE);
                 GlideUtils.loadImage(mtx, "http://dnddemo.com/ebooks/api/v1/" + chatData.get(position).getMessage(), holder.senderimage, R.drawable.noimage, R.drawable.noimage);
 
@@ -51,7 +59,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyviewHo
             }
         }
         else  {
-            if (chatData.get(position).getType().equalsIgnoreCase("file")){
+            if (chatData.get(position).getType().equalsIgnoreCase("image")){
                 holder.senderlayoutimage.setVisibility(View.GONE);
                 holder.oponentlayoutimage.setVisibility(View.VISIBLE);
                 GlideUtils.loadImage(mtx, "http://dnddemo.com/ebooks/api/v1/" + chatData.get(position).getMessage(), holder.oponentimage, R.drawable.noimage, R.drawable.noimage);
@@ -65,7 +73,18 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyviewHo
             }
 
         }
-
+        holder.senderimage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               chatImageFileClick.onImageClick("http://dnddemo.com/ebooks/api/v1/" + chatData.get(position).getMessage());
+            }
+        });
+        holder.oponentimage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                chatImageFileClick.onImageClick("http://dnddemo.com/ebooks/api/v1/" + chatData.get(position).getMessage());
+            }
+        });
 
     }
     @Override

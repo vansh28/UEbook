@@ -54,7 +54,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 
-public class MessageScreen extends BaseActivity implements View.OnClickListener ,ImageUtils.ImageAttachmentListener{
+public class MessageScreen extends BaseActivity implements View.OnClickListener ,ImageUtils.ImageAttachmentListener,MessageAdapter.ChatImageFileClick{
     private static final int REQUEST_PICK_VIDEO =1 ;
     private Intent intent;
     private ImageButton back_btn, button_chat_attachment, morebtn, button_chat_send ,gallerybtn,videobtn,audiobtn,filebtn;
@@ -109,7 +109,7 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener 
             }
             if (oponentData.channelId!=null){
                 chanelID=oponentData.channelId;
-                getChatHistory(new SessionManager(getApplication()).getUserID(),oponentData.userId,chanelID,"");
+                getChatHistory(new SessionManager(getApplication()).getUserID(),oponentData.userId,chanelID,"text");
 
             }
 
@@ -137,6 +137,7 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener 
                 sendMesaage(new SessionManager(getApplication()).getUserID(),"",oponentData.userId,"video",chanelID,chat_message.getText().toString(),2);
             }
             else  if (typevalue==3){
+
                 sendMesaage(new SessionManager(getApplication()).getUserID(),"",oponentData.userId,"audio",chanelID,chat_message.getText().toString(),3);
             }
             else  if (typevalue==4){
@@ -290,6 +291,7 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener 
                             messageList.setAdapter(messageAdapter);
                             messageList.scrollToPosition(form.getChat_list().size() - 1);
                             messageAdapter.notifyDataSetChanged();
+                            messageAdapter.setItemClickListener(MessageScreen.this);
                         }
                     }
                 });
@@ -464,5 +466,27 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener 
     }
 
 
+    @Override
+    public void onImageClick(String url) {
+        Log.d("shdjsjhd",url);
+        showfullImage(url);
+    }
+
+    private void showfullImage(String url) {
+        final Dialog nagDialog = new Dialog(MessageScreen.this,android.R.style.Theme_Translucent_NoTitleBar_Fullscreen);
+        nagDialog.setCancelable(false);
+        nagDialog.setContentView(R.layout.fullimageitem);
+        ImageView ivPreview = (ImageView)nagDialog.findViewById(R.id.image);
+        ImageView cancel_btn=nagDialog.findViewById(R.id.cancel_btn);
+        cancel_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                nagDialog.dismiss();
+            }
+        });
+        GlideUtils.loadImage(MessageScreen.this, url, ivPreview, R.drawable.noimage, R.drawable.noimage);
+
+        nagDialog.show();
+    }
 }
 
