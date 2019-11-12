@@ -1,12 +1,16 @@
 package com.ue.uebook.SplashActivity;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.DisplayMetrics;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.quickblox.auth.session.QBSessionManager;
@@ -27,11 +31,15 @@ import java.util.Locale;
 public class SplashScreen extends AppCompatActivity {
     private Handler myHandler;
     private Runnable myRunnable;
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
         showSplashimage();
+        NotificationChannel notificationChannel = new NotificationChannel("mynoti","mynoti", NotificationManager.IMPORTANCE_DEFAULT);
+        NotificationManager notificationManager = getSystemService(NotificationManager.class);
+        notificationManager.createNotificationChannel(notificationChannel);
         setLocale(new SessionManager(getApplicationContext()).getCurrentLanguage());
         if (SharedPrefsHelper.getInstance().hasQbUser())
         {

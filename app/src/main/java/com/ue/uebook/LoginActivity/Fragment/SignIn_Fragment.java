@@ -21,6 +21,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.quickblox.core.QBEntityCallback;
@@ -264,8 +265,9 @@ public class SignIn_Fragment extends Fragment implements View.OnClickListener {
         RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
                 .addFormDataPart("user_name", user_name)
                 .addFormDataPart("password", password)
+                .addFormDataPart("device_type","android")
+                .addFormDataPart("device_token", FirebaseInstanceId.getInstance().getToken())
                 .build();
-
         Request request = new Request.Builder()
                 .url(url)
                 .post(requestBody)

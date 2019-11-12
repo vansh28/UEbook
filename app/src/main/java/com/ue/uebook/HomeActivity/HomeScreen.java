@@ -53,7 +53,7 @@ public class HomeScreen extends BaseActivity implements Home_Fragment.OnFragment
     private Intent intent;
     Fragment fragment;
     private BottomSheetDialog mBottomSheetDialog;
-    @SuppressLint("RestrictedApi")
+    @SuppressLint({"RestrictedApi", "NewApi"})
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +71,7 @@ public class HomeScreen extends BaseActivity implements Home_Fragment.OnFragment
         toolbar = getSupportActionBar();
         intent = getIntent();
         int loginid= intent.getIntExtra("login",0);
-        
+
         if (loginid==1){
             showmessage();
             showBottomSheet();

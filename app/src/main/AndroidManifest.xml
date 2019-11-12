@@ -2,7 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.ue.uebook">
+
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
     <uses-feature
         android:glEsVersion="0x00020000"
         android:required="true" />
@@ -19,6 +21,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
     <application
         android:name=".Quickblox_Chat.App"
         android:allowBackup="true"
@@ -31,7 +34,8 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".ChatSdk.MessageScreen"></activity>
+        <activity android:name=".demo"></activity>
+        <activity android:name=".ChatSdk.MessageScreen" />
         <activity android:name=".ChatSdk.FriendListScreen" />
         <activity android:name=".ChatSdk.ChatListScreen" />
         <activity android:name=".PendingBook.PendingBookScreen" />
@@ -101,6 +105,7 @@
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -133,9 +138,11 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths" />
         </provider>
+
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="4b96a3f33893a42103eae91d2166d0c517b833d3" />
+
         <activity
             android:name=".Quickblox_Chat.utils.ui.activity.LoginActivity"
             android:label="@string/login_title"
@@ -185,13 +192,17 @@
         <meta-data
             android:name="com.quickblox.messages.QB_ENVIRONMENT"
             android:value="DEVELOPMENT" />
-        <service
-            android:name=".Firebase.MyFirebaseMessagingService"
-            android:stopWithTask="false">
+
+        <service android:name=".Firebase.MyFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+        <receiver android:name=".MyBroadcastReceiver">
+        <intent-filter>
+            <action android:name="android.intent.action.ACTION_POWER_CONNECTED"/>
+        </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

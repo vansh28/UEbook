@@ -1,5 +1,7 @@
 package com.ue.uebook.Data;
 
+import com.google.firebase.iid.FirebaseInstanceId;
+
 import java.io.File;
 import okhttp3.Callback;
 import okhttp3.MediaType;
@@ -25,7 +27,7 @@ public class ApiRequest {
                 .addFormDataPart("about_me", about_me)
                 .addFormDataPart("device_token",device_token)
                 .addFormDataPart("device_type","android")
-
+                .addFormDataPart("device_token",FirebaseInstanceId.getInstance().getToken())
                 .build();
         Request request = new Request.Builder()
                 .url(url)
@@ -552,6 +554,20 @@ public class ApiRequest {
                 .build();
         client.newCall(request).enqueue(callback);
     }
+    public void requestforgetAllchatHistory(String  user_id,Callback callback) {
+        String url = null;
+        url = BaseUrl + "user_chat_list";
+        OkHttpClient client = new OkHttpClient();
+        RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
+                .addFormDataPart(" user_id",  user_id)
+                .build();
+        Request request = new Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .build();
+        client.newCall(request).enqueue(callback);
+    }
+
 }
 
 

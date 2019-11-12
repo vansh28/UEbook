@@ -6,13 +6,29 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.ue.uebook.ChatSdk.Pojo.UserchatList;
+import com.ue.uebook.GlideUtils;
 import com.ue.uebook.R;
+
+import java.util.List;
+
 public class ChatListAdapter  extends RecyclerView.Adapter<ChatListAdapter.MyViewHolder>{
     private ItemClick itemClick;
+    private AppCompatActivity mtx;
+    private List<UserchatList>userchatLists;
+
+    public ChatListAdapter(List<UserchatList> userList, AppCompatActivity mtx) {
+        this.mtx=mtx;
+        this.userchatLists=userList;
+    }
+
     public interface ItemClick {
-        void onUserChatClick();
+        void onUserChatClick(String channelID,String sendTo ,String name);
         void  onUserProfileClick();
     }
     public void setItemClickListener(ItemClick clickListener) {
@@ -32,7 +48,7 @@ public class ChatListAdapter  extends RecyclerView.Adapter<ChatListAdapter.MyVie
            @Override
            public void onClick(View v) {
                if (itemClick!=null){
-                   itemClick.onUserChatClick();
+                   itemClick.onUserChatClick(userchatLists.get(position).getChannel_id(),userchatLists.get(position).getId(),userchatLists.get(position).getUser_name());
                }
            }
        });
@@ -44,12 +60,14 @@ public class ChatListAdapter  extends RecyclerView.Adapter<ChatListAdapter.MyVie
                 }
             }
         });
-       holder.name.setText("Vansh Chaudhary");
-       holder.userchat.setText("how are you . hj hjhd khd hdjf ....");
+       holder.name.setText(userchatLists.get(position).getUser_name());
+       holder.userchat.setText(userchatLists.get(position).getMessage());
+        GlideUtils.loadImage(mtx, "http://dnddemo.com/ebooks/api/v1/upload/" + userchatLists.get(position).getUser_pic(), holder.profile, R.drawable.user_default, R.drawable.user_default);
+
     }
     @Override
     public int getItemCount() {
-        return 30;
+        return userchatLists.size();
     }
     public class MyViewHolder extends RecyclerView.ViewHolder {
         ImageView profile;
