@@ -27,6 +27,13 @@ tools:context=".ChatSdk.ChatListScreen">
         android:textSize="@dimen/size_18"
         android:layout_centerInParent="true"/>
 </RelativeLayout>
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/swipe_refresh_layout"
+        android:layout_width="match_parent"
+        android:layout_below="@+id/header"
+
+        android:layout_height="match_parent">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/chatList"
@@ -40,6 +47,7 @@ tools:context=".ChatSdk.ChatListScreen">
         android:layout_marginEnd="@dimen/size_10"
         android:layout_marginRight="@dimen/size_10"
         android:layout_marginBottom="9dp"/>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 <com.google.android.material.floatingactionbutton.FloatingActionButton
     android:layout_width="wrap_content"
     android:id="@+id/newChatbtn"

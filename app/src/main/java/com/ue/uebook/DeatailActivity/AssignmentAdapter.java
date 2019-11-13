@@ -53,8 +53,6 @@ public class AssignmentAdapter   extends RecyclerView.Adapter<AssignmentAdapter.
                      holder.answer_view.setVisibility(View.GONE);
                      holder.editanswer.setVisibility(View.VISIBLE);
                  }
-
-
                holder.answer_btn.setOnClickListener(new View.OnClickListener() {
                    @Override
                    public void onClick(View view) {
@@ -72,7 +70,6 @@ public class AssignmentAdapter   extends RecyclerView.Adapter<AssignmentAdapter.
                        holder.answer.setVisibility(View.VISIBLE);
                        holder.answer_btn.setText("Answer");
                        holder.answer.setText(questionList.get(position).getAnswer());
-
                    }
                });
                holder.submit.setOnClickListener(new View.OnClickListener() {
@@ -126,7 +123,6 @@ public class AssignmentAdapter   extends RecyclerView.Adapter<AssignmentAdapter.
             submit=itemView.findViewById(R.id.submit_answer);
             answer=itemView.findViewById(R.id.answer_edit);
             editanswer=itemView.findViewById(R.id.editanswer);
-
             answer_text_input=itemView.findViewById(R.id.answer_text_input);
         }
     }

@@ -15,6 +15,7 @@ import android.widget.TextView;
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
@@ -35,11 +36,14 @@ public class ChatListScreen extends BaseActivity implements View.OnClickListener
     private ImageButton backbtn;
     private FloatingActionButton newChatbtn;
     private TextView noUserFound;
+    private SwipeRefreshLayout swipe_refresh_layout;
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_screen);
+        swipe_refresh_layout=findViewById(R.id.swipe_refresh_layout);
         chatList=findViewById(R.id.chatList);
         backbtn=findViewById(R.id.backbtnChat);
         newChatbtn=findViewById(R.id.newChatbtn);
@@ -52,6 +56,7 @@ public class ChatListScreen extends BaseActivity implements View.OnClickListener
         backbtn.setOnClickListener(this);
         chatList.setNestedScrollingEnabled(false);
         getChatHistory(new SessionManager(getApplication()).getUserID());
+        pullTorefreshswipe();
     }
     @Override
     public void onClick(View v) {
@@ -61,25 +66,28 @@ public class ChatListScreen extends BaseActivity implements View.OnClickListener
         else if (v==newChatbtn){
             Intent intent = new Intent(this,FriendListScreen.class);
             startActivity(intent);
+            finish();
         }
     }
 
     @Override
-    public void onUserChatClick(String channelID,String sendTo ,String name) {
+    public void onUserChatClick(String channelID,String sendTo ,String name ,String image) {
 //             Intent intent = new Intent(this,MessageScreen.class);
 //              startActivity(intent);
         Intent intent = new Intent(this,MessageScreen.class);
         intent.putExtra("sendTo",sendTo);
         intent.putExtra("channelID",channelID);
         intent.putExtra("name",name);
+        intent.putExtra("imageUrl",image);
         intent.putExtra("id",1);
         startActivity(intent);
+        finish();
 
        }
 
     @Override
-    public void onUserProfileClick() {
-        imagePreview("xxxxvccvsd");
+    public void onUserProfileClick(String imageurl) {
+        imagePreview(imageurl);
     }
     private void imagePreview(String file) {
         final Dialog previewDialog = new Dialog(this);
@@ -118,14 +126,25 @@ public class ChatListScreen extends BaseActivity implements View.OnClickListener
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        if (form.getUserList() != null) {
-                            chatAdapter = new ChatListAdapter(form.getUserList(),ChatListScreen.this);
+                        if (form.getUserList()!= null) {
+                            chatAdapter = new ChatListAdapter(form.getData(),form.getUserList(),ChatListScreen.this,new SessionManager(getApplicationContext()).getUserID());
                             chatList.setAdapter(chatAdapter);
                             chatAdapter.setItemClickListener(ChatListScreen.this);
 
                         }
+
                     }
                 });
+            }
+        });
+    }
+    private void pullTorefreshswipe(){
+        swipe_refresh_layout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void onRefresh() {
+                getChatHistory(new SessionManager(getApplication()).getUserID());
+                swipe_refresh_layout.setRefreshing(false);
             }
         });
     }

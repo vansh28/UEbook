@@ -11,25 +11,29 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.ue.uebook.ChatSdk.Pojo.UserchatList;
+import com.ue.uebook.ChatSdk.Pojo.Data;
+import com.ue.uebook.ChatSdk.Pojo.UserList;
 import com.ue.uebook.GlideUtils;
 import com.ue.uebook.R;
 
 import java.util.List;
-
 public class ChatListAdapter  extends RecyclerView.Adapter<ChatListAdapter.MyViewHolder>{
     private ItemClick itemClick;
     private AppCompatActivity mtx;
-    private List<UserchatList>userchatLists;
+    private Data data;
+    private List<UserList> userList;
+    private String reciverName;
+    private String userID;
 
-    public ChatListAdapter(List<UserchatList> userList, AppCompatActivity mtx) {
+    public ChatListAdapter(Data data, List<UserList> userList, AppCompatActivity mtx ,String userID) {
         this.mtx=mtx;
-        this.userchatLists=userList;
+        this.userList=userList;
+        this.data=data;
+        this.userID=userID;
     }
-
     public interface ItemClick {
-        void onUserChatClick(String channelID,String sendTo ,String name);
-        void  onUserProfileClick();
+        void onUserChatClick(String channelID,String sendTo ,String name ,String imageUrl);
+        void  onUserProfileClick(String imageURl);
     }
     public void setItemClickListener(ItemClick clickListener) {
         itemClick = clickListener;
@@ -44,11 +48,31 @@ public class ChatListAdapter  extends RecyclerView.Adapter<ChatListAdapter.MyVie
 
     @Override
     public void onBindViewHolder(@NonNull ChatListAdapter.MyViewHolder holder, final int position) {
+        if (userID.equalsIgnoreCase(userList.get(position).getSend_detail().getId())){
+            reciverName=userList.get(position).getRec_detail().getUser_name();
+            holder.name.setText(userList.get(position).getRec_detail().getUser_name());
+            GlideUtils.loadImage(mtx, "http://dnddemo.com/ebooks/api/v1/upload/" + userList.get(position).getRec_detail().getUrl(), holder.profile, R.drawable.user_default, R.drawable.user_default);
+
+        }
+        else {
+            reciverName=userList.get(position).getSend_detail().getUser_name();
+            holder.name.setText(userList.get(position).getSend_detail().getUser_name());
+            GlideUtils.loadImage(mtx, "http://dnddemo.com/ebooks/api/v1/upload/" + userList.get(position).getSend_detail().getUrl(), holder.profile, R.drawable.user_default, R.drawable.user_default);
+
+        }
+
        holder.chatContainer.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View v) {
                if (itemClick!=null){
-                   itemClick.onUserChatClick(userchatLists.get(position).getChannel_id(),userchatLists.get(position).getId(),userchatLists.get(position).getUser_name());
+                   if (userID.equalsIgnoreCase(userList.get(position).getSend_detail().getId())){
+                       itemClick.onUserChatClick(userList.get(position).getChannel_id(),userList.get(position).getRec_detail().getId(),userList.get(position).getRec_detail().getUser_name(),userList.get(position).getRec_detail().getUrl());
+
+                   }
+                   else {
+                       itemClick.onUserChatClick(userList.get(position).getChannel_id(),userList.get(position).getSend_detail().getId(),userList.get(position).getSend_detail().getUser_name(),userList.get(position).getSend_detail().getUrl());
+
+                   }
                }
            }
        });
@@ -56,18 +80,30 @@ public class ChatListAdapter  extends RecyclerView.Adapter<ChatListAdapter.MyVie
             @Override
             public void onClick(View v) {
                 if (itemClick!=null){
-                    itemClick.onUserProfileClick();
+
+                    if (userID.equalsIgnoreCase(userList.get(position).getSend_detail().getId())){
+                        itemClick.onUserProfileClick(userList.get(position).getRec_detail().getUrl());
+                    }
+                    else {
+                        itemClick.onUserProfileClick(userList.get(position).getSend_detail().getUrl());
+                    }
+
                 }
             }
         });
-       holder.name.setText(userchatLists.get(position).getUser_name());
-       holder.userchat.setText(userchatLists.get(position).getMessage());
-        GlideUtils.loadImage(mtx, "http://dnddemo.com/ebooks/api/v1/upload/" + userchatLists.get(position).getUser_pic(), holder.profile, R.drawable.user_default, R.drawable.user_default);
+
+        if (userList.get(position).getType().equalsIgnoreCase("text")){
+            holder.userchat.setText(userList.get(position).getMessage());
+        }
+        else if (userList.get(position).getType().equalsIgnoreCase("image")){
+            holder.userchat.setText("image");
+        }
+
 
     }
     @Override
     public int getItemCount() {
-        return userchatLists.size();
+        return userList.size();
     }
     public class MyViewHolder extends RecyclerView.ViewHolder {
         ImageView profile;

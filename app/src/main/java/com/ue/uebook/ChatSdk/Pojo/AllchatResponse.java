@@ -3,13 +3,22 @@ package com.ue.uebook.ChatSdk.Pojo;
 import java.util.List;
 
 public class AllchatResponse {
-    private List<UserchatList>userList;
+    private Data data;
+    private List<UserList> userList;
 
-    public List<UserchatList> getUserList() {
+    public Data getData() {
+        return data;
+    }
+
+    public void setData(Data data) {
+        this.data = data;
+    }
+
+    public List<UserList> getUserList() {
         return userList;
     }
 
-    public void setUserList(List<UserchatList> userList) {
+    public void setUserList(List<UserList> userList) {
         this.userList = userList;
     }
 }
