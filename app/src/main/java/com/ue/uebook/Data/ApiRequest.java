@@ -546,7 +546,6 @@ public class ApiRequest {
                 .addFormDataPart(" user_id",  user_id)
                 .addFormDataPart(" sendTO",  sendTO)
                 .addFormDataPart(" channelId",  channelId)
-                .addFormDataPart("type",type)
                 .build();
         Request request = new Request.Builder()
                 .url(url)

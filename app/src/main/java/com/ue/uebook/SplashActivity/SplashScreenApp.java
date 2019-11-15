@@ -9,6 +9,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.DisplayMetrics;
+import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,6 +18,7 @@ import com.quickblox.auth.session.QBSessionManager;
 import com.quickblox.core.QBEntityCallback;
 import com.quickblox.core.exception.QBResponseException;
 import com.quickblox.users.model.QBUser;
+import com.ue.uebook.ChatSdk.MessageScreen;
 import com.ue.uebook.HomeActivity.HomeScreen;
 import com.ue.uebook.LoginActivity.LoginScreen;
 import com.ue.uebook.Quickblox_Chat.utils.SharedPrefsHelper;
@@ -28,15 +30,42 @@ import com.ue.uebook.SessionManager;
 
 import java.util.Locale;
 
-public class SplashScreen extends AppCompatActivity {
+public class SplashScreenApp extends AppCompatActivity {
     private Handler myHandler;
     private Runnable myRunnable;
+    private Intent intent;
+    private String senderId,channelID,senderName,senderimage;
+    private Integer screenid;
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
-        showSplashimage();
+
+        intent = getIntent();
+        senderId=intent.getStringExtra("sendTo");
+        channelID=intent.getStringExtra("channel_id");
+        senderName=intent.getStringExtra("name");
+        senderimage=intent.getStringExtra("imageUrl");
+        screenid=intent.getIntExtra("id",0);
+
+
+        if (screenid==1){
+            Log.d("splashchnn",channelID);
+            Intent intent = new Intent(this, MessageScreen.class);
+            intent.putExtra("sendTo",senderId);
+            intent.putExtra("channelID","373625");
+            intent.putExtra("name",senderName);
+            intent.putExtra("imageUrl",senderimage);
+            intent.putExtra("id",1);
+            startActivity(intent);
+            finish();
+        }
+        else {
+            showSplashimage();
+        }
+
         NotificationChannel notificationChannel = new NotificationChannel("mynoti","mynoti", NotificationManager.IMPORTANCE_DEFAULT);
         NotificationManager notificationManager = getSystemService(NotificationManager.class);
         notificationManager.createNotificationChannel(notificationChannel);
@@ -68,18 +97,18 @@ public class SplashScreen extends AppCompatActivity {
     private void showSplash() {
         final int status = new SessionManager(getApplicationContext()).getLoginStatus();
 
-        Intent mainIntent = mainIntent = new Intent(SplashScreen.this, LoginScreen.class);
+        Intent mainIntent = mainIntent = new Intent(SplashScreenApp.this, LoginScreen.class);
 
         switch (status) {
             case 0:
-                mainIntent = new Intent(SplashScreen.this, LoginScreen.class);
+                mainIntent = new Intent(SplashScreenApp.this, LoginScreen.class);
                 break;
             case 1:
-                mainIntent = new Intent(SplashScreen.this, HomeScreen.class);
+                mainIntent = new Intent(SplashScreenApp.this, HomeScreen.class);
                 break;
         }
-        SplashScreen.this.startActivity(mainIntent);
-        SplashScreen.this.finish();
+        SplashScreenApp.this.startActivity(mainIntent);
+        SplashScreenApp.this.finish();
     }
 
     private QBUser getUserFromSession() {

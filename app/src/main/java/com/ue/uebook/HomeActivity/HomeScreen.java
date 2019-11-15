@@ -26,6 +26,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.ue.uebook.BaseActivity;
 import com.ue.uebook.HomeActivity.HomeFragment.Bookmark_Fragment;
 import com.ue.uebook.HomeActivity.HomeFragment.CompanyInfo_Fragment;
@@ -43,6 +44,8 @@ import com.ue.uebook.SessionManager;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+
+import static com.ue.uebook.NetworkUtils.getInstance;
 
 
 public class HomeScreen extends BaseActivity implements Home_Fragment.OnFragmentInteractionListener, Bookmark_Fragment.OnFragmentInteractionListener, User_Fragment.OnFragmentInteractionListener, Search_Fragment.OnFragmentInteractionListener, UserProfile_Fragment.OnFragmentInteractionListener, UserMainFragment.OnFragmentInteractionListener, CompanyInfo_Fragment.OnFragmentInteractionListener, NotepadFragment.OnFragmentInteractionListener, View.OnClickListener {
@@ -156,6 +159,15 @@ public class HomeScreen extends BaseActivity implements Home_Fragment.OnFragment
     @Override
     protected void onStart() {
         super.onStart();
+
+        if (getInstance(this).isConnectingToInternet()) {
+
+
+        }
+        else {
+            Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content),"No Internet Connection",Snackbar.LENGTH_SHORT);
+            snackbar.show();
+        }
         if (!checkPermissions())
             PermissionRequest(34);
         else{
@@ -225,5 +237,7 @@ public class HomeScreen extends BaseActivity implements Home_Fragment.OnFragment
         conf.locale = myLocale;
         res.updateConfiguration(conf, dm);
     }
+
+
 }
 

@@ -36,7 +36,7 @@ public class SplashActivity extends BaseActivity {
                 if (SharedPrefsHelper.getInstance().hasQbUser()) {
                     restoreChatSession();
                 } else {
-                    LoginActivity.start(SplashActivity.this);
+//                    LoginActivity.start(SplashActivity.this);
                     finish();
                 }
             }

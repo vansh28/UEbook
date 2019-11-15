@@ -35,7 +35,7 @@ public class ChatListScreen extends BaseActivity implements View.OnClickListener
     private ChatListAdapter chatAdapter;
     private ImageButton backbtn;
     private FloatingActionButton newChatbtn;
-    private TextView noUserFound;
+    private TextView noUserFound ,noHistoryView;
     private SwipeRefreshLayout swipe_refresh_layout;
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
 
@@ -44,6 +44,7 @@ public class ChatListScreen extends BaseActivity implements View.OnClickListener
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_screen);
         swipe_refresh_layout=findViewById(R.id.swipe_refresh_layout);
+        noHistoryView=findViewById(R.id.noHistoryView);
         chatList=findViewById(R.id.chatList);
         backbtn=findViewById(R.id.backbtnChat);
         newChatbtn=findViewById(R.id.newChatbtn);
@@ -122,7 +123,6 @@ public class ChatListScreen extends BaseActivity implements View.OnClickListener
                 final String myResponse = response.body().string();
                 Gson gson = new GsonBuilder().create();
                 final AllchatResponse form = gson.fromJson(myResponse, AllchatResponse.class);
-
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -130,7 +130,11 @@ public class ChatListScreen extends BaseActivity implements View.OnClickListener
                             chatAdapter = new ChatListAdapter(form.getData(),form.getUserList(),ChatListScreen.this,new SessionManager(getApplicationContext()).getUserID());
                             chatList.setAdapter(chatAdapter);
                             chatAdapter.setItemClickListener(ChatListScreen.this);
+                            noHistoryView.setVisibility(View.GONE);
 
+                        }
+                        else {
+                            noHistoryView.setVisibility(View.VISIBLE);
                         }
 
                     }

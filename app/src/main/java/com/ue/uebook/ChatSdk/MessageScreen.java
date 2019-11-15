@@ -79,7 +79,7 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
     private File imageurl;
     private Bitmap bitmap;
     ImageUtils imageUtils;
-    private String chanelID = "";
+    public String chanelID = "";
     private int typevalue = 0;
     IntentFilter filter;
     private String sendToID;
@@ -89,6 +89,11 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
     private String imageUrl="df";
     public String imageProfile="c";
     private ProgressDialog progressDialog;
+    private BroadcastReceiver mReceiver;
+    private String channelID="";
+
+
+
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,7 +138,7 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
         }
         else if (screenID==1){
             String sendTo=intent.getStringExtra("sendTo");
-            String channelID=intent.getStringExtra("channelID");
+             channelID=intent.getStringExtra("channelID");
             String name=intent.getStringExtra("name");
             oponent_name.setText(name);
             sendToID=sendTo;
@@ -166,6 +171,7 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
                        chat_message.requestFocus();
                 } else {
                     sendMesaage(new SessionManager(getApplication()).getUserID(), "", sendToID, "text", chanelID, chat_message.getText().toString(), 0);
+
                 }
             } else if (typevalue == 1) {
                 previewImage.setVisibility(View.GONE);
@@ -174,8 +180,10 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
                 sendMesaage(new SessionManager(getApplication()).getUserID(), "", sendToID, "video", chanelID, chat_message.getText().toString(), 2);
             } else if (typevalue == 3) {
 
+
                 sendMesaage(new SessionManager(getApplication()).getUserID(), "", sendToID, "audio", chanelID, chat_message.getText().toString(), 3);
             } else if (typevalue == 4) {
+
                 sendMesaage(new SessionManager(getApplication()).getUserID(), "", sendToID, "docfile", chanelID, chat_message.getText().toString(), 4);
             }
         } else if (v == audiobtn) {
@@ -309,14 +317,13 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void getChatHistory(String user_id, String sendTO, String channelId, String type) {
         ApiRequest request = new ApiRequest();
-        showLoadingIndicator();
+        hideLoadingIndicator();
         request.requestforgetChathistory(user_id, sendTO, channelId, type, new okhttp3.Callback() {
             @Override
             public void onFailure(okhttp3.Call call, IOException e) {
                 Log.d("error", "error");
                 hideLoadingIndicator();
             }
-
             @Override
             public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
                 hideLoadingIndicator();
@@ -412,10 +419,12 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
             return null;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void sendMesaage(String user_id, String tokenKey, String sendTO, String type, final String channelId, String message, int typeval) {
         OkHttpClient client = new OkHttpClient();
         String url = "http://dnddemo.com/ebooks/api/v1/user_chat";
         final MediaType MEDIA_TYPE_PNG = MediaType.parse("image/png");
+        showLoadingIndicator();
         RequestBody requestBody;
         switch (typeval) {
             case 0:
@@ -482,6 +491,7 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
                 .post(requestBody)
                 .build();
         client.newCall(request).enqueue(new Callback() {
+
             @Override
             public void onFailure(Call call, IOException e) {
                 call.cancel();
@@ -498,6 +508,7 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
                     @Override
                     public void run() {
                         chat_message.setText("");
+                        typevalue=0;
                         chanelID = form.getChat_list().get(0).getChannelId();
                         getChatHistory(new SessionManager(getApplication()).getUserID(), sendToID, chanelID, "text");
                     }
@@ -540,24 +551,36 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
     @Override
     public void onResume() {
         super.onResume();
+        IntentFilter intentFilter = new IntentFilter(
+                "android.intent.action.MAIN");
 
-        receiver = new BroadcastReceiver() {
+        mReceiver = new BroadcastReceiver() {
+
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onReceive(Context context, Intent intent) {
-                Toast.makeText(context, "Broadcast Received in Activity called ", Toast.LENGTH_SHORT).show();
+                //extract our message from intent
+                String msg_for_me = intent.getStringExtra("some_msg");
+                //log our message value
+                Log.i("InchooTutorial", msg_for_me);
+                getChatHistory(new SessionManager(getApplication()).getUserID(), sendToID, channelID, "text");
             }
         };
-        filter = new IntentFilter();
-        // specify the action to which receiver will listen
-        filter.addAction("com.local.receiver");
-        registerReceiver(receiver, filter);
+        //registering our receiver
+        this.registerReceiver(mReceiver, intentFilter);
     }
-
+    @Override
+    protected void onPause() {
+        // TODO Auto-generated method stub
+        super.onPause();
+        //unregister our receiver
+        this.unregisterReceiver(this.mReceiver);
+    }
     @Override
     protected void onDestroy() {
         super.onDestroy();
         if (receiver != null) {
-            unregisterReceiver(receiver);
+            this.unregisterReceiver(this.mReceiver);
         }
     }
     @Override
@@ -593,5 +616,7 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
             }
         }
     }
-}
 
+
+
+}

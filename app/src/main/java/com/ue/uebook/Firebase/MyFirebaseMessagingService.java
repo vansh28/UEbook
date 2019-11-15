@@ -1,10 +1,14 @@
 package com.ue.uebook.Firebase;
 
+import android.app.ActivityManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
@@ -14,13 +18,23 @@ import androidx.core.app.NotificationCompat;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
-import com.ue.uebook.ChatSdk.MessageScreen;
 import com.ue.uebook.R;
+import com.ue.uebook.SplashActivity.SplashScreenApp;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.List;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     private static final String TAG = "MyFirebaseMsgService";
-
+    private String name,noti_msz,user_id,Avtar,channel_id;
+    Bitmap bmp = null;
     /**
      * Called when message is received.
      *
@@ -29,6 +43,39 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     // [START receive_message]
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
+        ActivityManager am = (ActivityManager) this.getSystemService(ACTIVITY_SERVICE);
+        List<ActivityManager.RunningTaskInfo> taskInfo = am.getRunningTasks(1);
+        Log.d("topActivity", "CURRENT Activity ::" + taskInfo.get(0).topActivity.getClassName());
+        ComponentName componentInfo = taskInfo.get(0).topActivity;
+        componentInfo.getPackageName();
+
+        if (remoteMessage.getData().size() > 0) {
+            //Log.d(TAG, "Message data payload: " + remoteMessage.getData().get("my_custom_key"));
+            Log.d("RedListed", "Message data payload: " + remoteMessage.getData());
+            Intent i = new Intent("android.intent.action.MAIN").putExtra("some_msg", "I will be sent!");
+            this.sendBroadcast(i);
+
+            try {
+                JSONObject jsonObject = new JSONObject(remoteMessage.getData().get("message"));
+                name=jsonObject.getString("UserName");
+                noti_msz =jsonObject.getString("noti_msg");
+                user_id=jsonObject.getString("user_id");
+                Avtar =jsonObject.getString("Avtar");
+                channel_id =jsonObject.getString("channel_id");
+                Log.d("channel_id",channel_id);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
+        try {
+            InputStream in = new URL("http://dnddemo.com/ebooks/api/v1/upload/"+"book_1571040310.jpg").openStream();
+            bmp = BitmapFactory.decodeStream(in);
+        } catch (
+                IOException e) {
+            e.printStackTrace();
+        }
         // [START_EXCLUDE]
         // There are two types of messages data messages and notification messages. Data messages
         // are handled
@@ -52,7 +99,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         // Check if message contains a data payload.
         if (remoteMessage.getData().size() > 0) {
             Log.d(TAG, "Message data payload: " + remoteMessage.getData());
-
+            try {
+                JSONObject jsonObject = new JSONObject(remoteMessage.getData().get("message"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
             if (/* Check if data needs to be processed by long running job */ true) {
                 // For long-running tasks (10 seconds or more) use WorkManager.
 
@@ -67,8 +118,15 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         if (remoteMessage.getNotification() != null) {
             Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
         }
+        if (taskInfo.get(0).topActivity.getClassName().equalsIgnoreCase("com.ue.uebook.ChatSdk.MessageScreen"))
+        {
 
-        sendNotification(remoteMessage.getNotification().getBody());
+        }
+        else {
+
+            sendNotification(noti_msz,getBitmapfromUrl("dnddemo.com\\/ebooks\\/api\\/v1\\/upload\\/books\\/book_1571738214.jpg"));
+        }
+
         // Also if you intend on generating your own notifications as a result of a received FCM
         // message, here is where that should be initiated. See sendNotification method below.
     }
@@ -109,18 +167,21 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
      *
      * @param token The new token.
      */
+
     private void sendRegistrationToServer(String token) {
         // TODO: Implement this method to send token to your app server.
 
     }
-
     /**
      * Create and show a simple notification containing the received FCM message.
      *
-     * @param messageBody FCM message body received.
      */
-    private void sendNotification(String messageBody) {
-        Intent intent = new Intent(this, MessageScreen.class);
+    private void sendNotification(String msg ,Bitmap imageurl) {
+        Intent intent = new Intent(this, SplashScreenApp.class);
+        intent.putExtra("sendTo",user_id);
+        intent.putExtra("channelID",channel_id);
+        intent.putExtra("name",name);
+        intent.putExtra("imageUrl",Avtar);
         intent.putExtra("id",1);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
@@ -129,10 +190,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder =
                 new NotificationCompat.Builder(this, channelId)
-                        .setSmallIcon(R.mipmap.ic_launcher)
-                        .setContentTitle(getString(R.string.app_name))
-                        .setContentText(messageBody)
+                        .setSmallIcon(R.drawable.applogo)
+                        .setContentTitle(name)
+                        .setContentText(msg)
                         .setAutoCancel(true)
+                        .setLargeIcon(imageurl)
                         .setSound(defaultSoundUri)
                         .setContentIntent(pendingIntent);
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
@@ -144,5 +206,21 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             notificationManager.createNotificationChannel(channel);
         }
         notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+    }
+    public Bitmap getBitmapfromUrl(String imageUrl) {
+        try {
+            URL url = new URL(imageUrl);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setDoInput(true);
+            connection.connect();
+            InputStream input = connection.getInputStream();
+            Bitmap bitmap = BitmapFactory.decodeStream(input);
+            return bitmap;
+
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            return null;
+        }
     }
 }
