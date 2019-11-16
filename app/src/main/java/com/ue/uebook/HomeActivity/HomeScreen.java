@@ -1,8 +1,11 @@
 package com.ue.uebook.HomeActivity;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.net.Uri;
@@ -10,6 +13,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,6 +23,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -48,6 +53,7 @@ import java.util.Locale;
 import static com.ue.uebook.NetworkUtils.getInstance;
 
 
+
 public class HomeScreen extends BaseActivity implements Home_Fragment.OnFragmentInteractionListener, Bookmark_Fragment.OnFragmentInteractionListener, User_Fragment.OnFragmentInteractionListener, Search_Fragment.OnFragmentInteractionListener, UserProfile_Fragment.OnFragmentInteractionListener, UserMainFragment.OnFragmentInteractionListener, CompanyInfo_Fragment.OnFragmentInteractionListener, NotepadFragment.OnFragmentInteractionListener, View.OnClickListener {
     private ActionBar toolbar;
     private List<HomeListing> recommendedList_book,newBookList,popularBook_List;
@@ -55,6 +61,7 @@ public class HomeScreen extends BaseActivity implements Home_Fragment.OnFragment
     private CoordinatorLayout container;
     private Intent intent;
     Fragment fragment;
+    public  static final int PERMISSIONS_MULTIPLE_REQUEST = 123;
     private BottomSheetDialog mBottomSheetDialog;
     @SuppressLint({"RestrictedApi", "NewApi"})
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -159,7 +166,7 @@ public class HomeScreen extends BaseActivity implements Home_Fragment.OnFragment
     @Override
     protected void onStart() {
         super.onStart();
-
+     readPermission();
         if (getInstance(this).isConnectingToInternet()) {
 
 
@@ -168,12 +175,24 @@ public class HomeScreen extends BaseActivity implements Home_Fragment.OnFragment
             Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content),"No Internet Connection",Snackbar.LENGTH_SHORT);
             snackbar.show();
         }
-        if (!checkPermissions())
+        if (!checkPermissions()){
             PermissionRequest(34);
+
+        }
+
+
         else{
 
         }
+
+       // write your logic here
+
+
+
+
             getCurrentLocation();
+
+
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -238,6 +257,36 @@ public class HomeScreen extends BaseActivity implements Home_Fragment.OnFragment
         res.updateConfiguration(conf, dm);
     }
 
+    public boolean isStoragePermissionGranted() {
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (this.checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    == PackageManager.PERMISSION_GRANTED) {
+                Log.v("", "Permission is granted");
+                return true;
+            } else {
+
+                Log.v("", "Permission is revoked");
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+                return false;
+            }
+        } else {
+            Log.v("", "Permission is granted");
+            return true;
+        }
+    }
+    public void readPermission()
+    {
+        try {
+            PackageInfo info = getPackageManager().getPackageInfo(getPackageName(), PackageManager.GET_PERMISSIONS);
+            if (info.requestedPermissions != null) {
+                for (String p : info.requestedPermissions) {
+                    Log.d("perr", "Permission : " + p);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 }
 

@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:background="#706B6B"
+    android:background="#A3A0A0"
     android:layout_height="match_parent">
     <ImageView
         android:id="@+id/cancel_btn"
@@ -13,7 +13,10 @@
     <ImageView
         android:id="@+id/image"
         android:layout_width="match_parent"
-        android:layout_margin="@dimen/size_10"
+        android:layout_marginTop="@dimen/size_60"
+        android:layout_marginLeft="@dimen/size_15"
+        android:layout_marginRight="@dimen/size_15"
+        android:layout_marginBottom="@dimen/size_60"
         android:layout_height="match_parent"
         />
 </RelativeLayout>

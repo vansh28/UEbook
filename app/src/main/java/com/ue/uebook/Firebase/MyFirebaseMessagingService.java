@@ -63,6 +63,14 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 Avtar =jsonObject.getString("Avtar");
                 channel_id =jsonObject.getString("channel_id");
                 Log.d("channel_id",channel_id);
+                if (taskInfo.get(0).topActivity.getClassName().equalsIgnoreCase("com.ue.uebook.ChatSdk.MessageScreen"))
+                {
+
+                }
+                else {
+
+                    sendNotification(noti_msz,getBitmapfromUrl("dnddemo.com\\/ebooks\\/api\\/v1\\/upload\\/books\\/book_1571738214.jpg"));
+                }
 
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -118,14 +126,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         if (remoteMessage.getNotification() != null) {
             Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
         }
-        if (taskInfo.get(0).topActivity.getClassName().equalsIgnoreCase("com.ue.uebook.ChatSdk.MessageScreen"))
-        {
 
-        }
-        else {
-
-            sendNotification(noti_msz,getBitmapfromUrl("dnddemo.com\\/ebooks\\/api\\/v1\\/upload\\/books\\/book_1571738214.jpg"));
-        }
 
         // Also if you intend on generating your own notifications as a result of a received FCM
         // message, here is where that should be initiated. See sendNotification method below.
@@ -179,7 +180,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private void sendNotification(String msg ,Bitmap imageurl) {
         Intent intent = new Intent(this, SplashScreenApp.class);
         intent.putExtra("sendTo",user_id);
-        intent.putExtra("channelID",channel_id);
+        intent.putExtra("channel_id",channel_id);
         intent.putExtra("name",name);
         intent.putExtra("imageUrl",Avtar);
         intent.putExtra("id",1);

@@ -14,25 +14,17 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.quickblox.auth.session.QBSessionManager;
-import com.quickblox.core.QBEntityCallback;
-import com.quickblox.core.exception.QBResponseException;
-import com.quickblox.users.model.QBUser;
 import com.ue.uebook.AuthorProfileActivity.AuthorProfileScreen;
 import com.ue.uebook.ChatSdk.ChatListScreen;
 import com.ue.uebook.Dictionary.DictionaryScreen;
 import com.ue.uebook.LoginActivity.LoginScreen;
 import com.ue.uebook.PendingBook.PendingBookScreen;
-import com.ue.uebook.Quickblox_Chat.utils.SharedPrefsHelper;
-import com.ue.uebook.Quickblox_Chat.utils.chat.ChatHelper;
-import com.ue.uebook.Quickblox_Chat.utils.ui.activity.DialogsActivity;
 import com.ue.uebook.R;
 import com.ue.uebook.SessionManager;
 import com.ue.uebook.UploadBook.Upload_Book_Screen;
@@ -238,7 +230,6 @@ public class UserMainFragment extends Fragment implements View.OnClickListener, 
                         Intent intent = new Intent(getContext(), LoginScreen.class);
                         getContext().startActivity(intent);
                         new SessionManager(getActivity().getApplicationContext()).setCurrentLanguage("en");
-                        SharedPrefsHelper.getInstance().clearAllData();
                         getActivity().finish();
                     }
                 })
@@ -250,63 +241,7 @@ public class UserMainFragment extends Fragment implements View.OnClickListener, 
         AlertDialog alert = builder.create();
         alert.show();
     }
-    private QBUser getUserFromSession() {
-        QBUser user = SharedPrefsHelper.getInstance().getQbUser();
-        QBSessionManager qbSessionManager = QBSessionManager.getInstance();
-        if (qbSessionManager.getSessionParameters() == null) {
-            ChatHelper.getInstance().destroy();
-            return null;
-        }
-        Integer userId = qbSessionManager.getSessionParameters().getUserId();
-        user.setId(userId);
-        return user;
-    }
-    private void restoreChatSession() {
-        if (ChatHelper.getInstance().isLogged()) {
-            hideLoadingIndicator();
-            Intent intent = new Intent(getContext(), DialogsActivity.class);
-            getContext().startActivity(intent);
-
-        } else {
-            QBUser currentUser = getUserFromSession();
-
-            if (currentUser == null) {
-                hideLoadingIndicator();
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(getContext(),"Network Error please try Again",Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-            } else {
-                loginToChat(currentUser);
-            }
-        }
-    }
-    private void loginToChat(final QBUser user) {
-        ChatHelper.getInstance().loginToChat(user, new QBEntityCallback<Void>() {
-            @Override
-            public void onSuccess(Void result, Bundle bundle) {
-                   hideLoadingIndicator();
-                Intent intent = new Intent(getContext(), DialogsActivity.class);
-                getContext().startActivity(intent);
-
-            }
-
-            @Override
-            public void onError(QBResponseException e) {
-                hideLoadingIndicator();
-                if (e.getMessage().equals("You have already logged in chat")) {
-                    loginToChat(user);
-                } else {
-                    Toast.makeText(getContext(),"Network Error please try Again",Toast.LENGTH_SHORT).show();
-                    loginToChat(user);
-
-                }
-            }
-        });
-    }  @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+   @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void showLoadingIndicator() {
         mdialog = new Dialog(getContext());
         mdialog.requestWindowFeature(Window.FEATURE_NO_TITLE);

@@ -43,10 +43,6 @@ import com.google.android.gms.common.api.Status;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.quickblox.core.QBEntityCallback;
-import com.quickblox.core.exception.QBResponseException;
-import com.quickblox.users.QBUsers;
-import com.quickblox.users.model.QBUser;
 import com.ue.uebook.BaseActivity;
 import com.ue.uebook.Data.ApiRequest;
 import com.ue.uebook.Data.NetworkAPI;
@@ -57,9 +53,6 @@ import com.ue.uebook.LoginActivity.Fragment.SignIn_Fragment;
 import com.ue.uebook.LoginActivity.Fragment.SignUp_Fragment;
 import com.ue.uebook.LoginActivity.Pojo.RegistrationBody;
 import com.ue.uebook.LoginActivity.Pojo.RegistrationResponse;
-import com.ue.uebook.Quickblox_Chat.App;
-import com.ue.uebook.Quickblox_Chat.utils.SharedPrefsHelper;
-import com.ue.uebook.Quickblox_Chat.utils.chat.ChatHelper;
 import com.ue.uebook.R;
 import com.ue.uebook.SessionManager;
 
@@ -470,13 +463,14 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
                         @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                         @Override
                         public void run() {
-                            String arr[] = form.getUser_data().getUser_name().split(" ", 2);
-                            String firstWord = arr[0];   //the
-                            QBUser qbUser = new QBUser();
-                            qbUser.setLogin(firstWord.trim());
-                            qbUser.setFullName(form.user_data.getUser_name());
-                            qbUser.setPassword(App.USER_DEFAULT_PASSWORD);
-                            signIn(qbUser);
+//                            String arr[] = form.getUser_data().getUser_name().split(" ", 2);
+//                            String firstWord = arr[0];   //the
+//                            QBUser qbUser = new QBUser();
+//                            qbUser.setLogin(firstWord.trim());
+//                            qbUser.setFullName(form.user_data.getUser_name());
+//                            qbUser.setPassword(App.USER_DEFAULT_PASSWORD);
+//                            signIn(qbUser);
+                            gotoHome();
                         }
                     });
 
@@ -484,87 +478,7 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
             }
         });
     }
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    private void signIn(final QBUser user) {
-        showLoadingIndicator();
-        ChatHelper.getInstance().login(user, new QBEntityCallback<QBUser>() {
-            @Override
-            public void onSuccess(QBUser userFromRest, Bundle bundle) {
-                if (userFromRest.getFullName().equals(user.getFullName())) {
-                    loginToChat(user);
-                } else {
-                    //Need to set password NULL, because server will update user only with NULL password
-                    user.setPassword(null);
-                    updateUser(user);
-                }
-            }
-            @Override
-            public void onError(QBResponseException e) {
-                if (e.getHttpStatusCode() == UNAUTHORIZED) {
-                    signUp(user);
-                } else {
-                    hideLoadingIndicator();
-                    showErrorSnackbar(R.string.login_chat_login_error, e, new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            signIn(user);
-                        }
-                    });
-                }
-            }
-        });
-    }
-    private void updateUser(final QBUser user) {
-        ChatHelper.getInstance().updateUser(user, new QBEntityCallback<QBUser>() {
-            @Override
-            public void onSuccess(QBUser user, Bundle bundle) {
-                loginToChat(user);
-            }
 
-            @Override
-            public void onError(QBResponseException e) {
-                hideLoadingIndicator();
-                showErrorSnackbar(R.string.login_chat_login_error, e, null);
-            }
-        });
-    }
-
-    private void loginToChat(final QBUser user) {
-        //Need to set password, because the server will not register to chat without password
-        user.setPassword(App.USER_DEFAULT_PASSWORD);
-        ChatHelper.getInstance().loginToChat(user, new QBEntityCallback<Void>() {
-            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-            @Override
-            public void onSuccess(Void aVoid, Bundle bundle) {
-                SharedPrefsHelper.getInstance().saveQbUser(user);
-                hideLoadingIndicator();
-                updateUserChatId(String.valueOf(user.getId()));
-                gotoHome();
-                finish();
-
-            }
-            @Override
-            public void onError(QBResponseException e) {
-                hideLoadingIndicator();
-                showErrorSnackbar(R.string.login_chat_login_error, e, null);
-            }
-        });
-    }
-    private void signUp(final QBUser newUser) {
-        SharedPrefsHelper.getInstance().removeQbUser();
-        QBUsers.signUp(newUser).performAsync(new QBEntityCallback<QBUser>() {
-            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-            @Override
-            public void onSuccess(QBUser user, Bundle bundle) {
-                signIn(newUser);
-            }
-            @Override
-            public void onError(QBResponseException e) {
-                hideLoadingIndicator();
-                showErrorSnackbar(R.string.login_sign_up_error, e, null);
-            }
-        });
-    }
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void updateUserChatId(String chatID ) {
         ApiRequest request = new ApiRequest();

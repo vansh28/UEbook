@@ -14,17 +14,9 @@ import android.util.Log;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.quickblox.auth.session.QBSessionManager;
-import com.quickblox.core.QBEntityCallback;
-import com.quickblox.core.exception.QBResponseException;
-import com.quickblox.users.model.QBUser;
 import com.ue.uebook.ChatSdk.MessageScreen;
 import com.ue.uebook.HomeActivity.HomeScreen;
 import com.ue.uebook.LoginActivity.LoginScreen;
-import com.ue.uebook.Quickblox_Chat.utils.SharedPrefsHelper;
-import com.ue.uebook.Quickblox_Chat.utils.chat.ChatHelper;
-import com.ue.uebook.Quickblox_Chat.utils.ui.activity.DialogsActivity;
-import com.ue.uebook.Quickblox_Chat.utils.ui.activity.LoginActivity;
 import com.ue.uebook.R;
 import com.ue.uebook.SessionManager;
 
@@ -55,7 +47,7 @@ public class SplashScreenApp extends AppCompatActivity {
             Log.d("splashchnn",channelID);
             Intent intent = new Intent(this, MessageScreen.class);
             intent.putExtra("sendTo",senderId);
-            intent.putExtra("channelID","373625");
+            intent.putExtra("channelID",channelID);
             intent.putExtra("name",senderName);
             intent.putExtra("imageUrl",senderimage);
             intent.putExtra("id",1);
@@ -70,10 +62,7 @@ public class SplashScreenApp extends AppCompatActivity {
         NotificationManager notificationManager = getSystemService(NotificationManager.class);
         notificationManager.createNotificationChannel(notificationChannel);
         setLocale(new SessionManager(getApplicationContext()).getCurrentLanguage());
-        if (SharedPrefsHelper.getInstance().hasQbUser())
-        {
-            restoreChatSession();
-        }
+
     }
     private void showSplashimage() {
         myHandler = new Handler();
@@ -111,49 +100,7 @@ public class SplashScreenApp extends AppCompatActivity {
         SplashScreenApp.this.finish();
     }
 
-    private QBUser getUserFromSession() {
-        QBUser user = SharedPrefsHelper.getInstance().getQbUser();
-        QBSessionManager qbSessionManager = QBSessionManager.getInstance();
-        if (qbSessionManager.getSessionParameters() == null) {
-            ChatHelper.getInstance().destroy();
-            return null;
-        }
-        Integer userId = qbSessionManager.getSessionParameters().getUserId();
-        user.setId(userId);
-        return user;
-    }
 
-    private void restoreChatSession() {
-        if (ChatHelper.getInstance().isLogged()) {
-            DialogsActivity.start(this);
-            finish();
-        } else {
-            QBUser currentUser = getUserFromSession();
-            if (currentUser == null) {
-                LoginActivity.start(this);
-                finish();
-            } else {
-                loginToChat(currentUser);
-            }
-        }
-    }
-    private void loginToChat(final QBUser user) {
-
-        ChatHelper.getInstance().loginToChat(user, new QBEntityCallback<Void>() {
-            @Override
-            public void onSuccess(Void result, Bundle bundle) {
-                finish();
-            }
-            @Override
-            public void onError(QBResponseException e) {
-                if (e.getMessage().equals("You have already logged in chat")) {
-                    loginToChat(user);
-                } else {
-                    loginToChat(user);
-                }
-            }
-        });
-    }
     public void setLocale(String lang) {
         Locale myLocale = new Locale(lang);
         Resources res = getResources();

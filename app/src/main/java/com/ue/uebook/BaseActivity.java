@@ -22,7 +22,6 @@ import android.view.inputmethod.InputMethodManager;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
-import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
@@ -38,7 +37,6 @@ import com.google.android.gms.location.SettingsClient;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.snackbar.Snackbar;
-import com.ue.uebook.Quickblox_Chat.utils.ErrorUtils;
 
 import java.util.Objects;
 
@@ -318,13 +316,13 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
-    protected void showErrorSnackbar(@StringRes int resId, Exception e, View.OnClickListener clickListener) {
-        View rootView = getWindow().getDecorView().findViewById(android.R.id.content);
-        if (rootView != null) {
-            ErrorUtils.showSnackbar(rootView, resId, e,
-                    R.string.dialog_retry, clickListener).show();
-        }
-    }
+//    protected void showErrorSnackbar(@StringRes int resId, Exception e, View.OnClickListener clickListener) {
+//        View rootView = getWindow().getDecorView().findViewById(android.R.id.content);
+//        if (rootView != null) {
+//            ErrorUtils.showSnackbar(rootView, resId, e,
+//                    R.string.dialog_retry, clickListener).show();
+//        }
+//    }
 
 
 }

@@ -1,5 +1,6 @@
 package com.ue.uebook.ChatSdk;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
@@ -7,9 +8,12 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -24,12 +28,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.MediaController;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.VideoView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -62,7 +69,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 
 public class MessageScreen extends BaseActivity implements View.OnClickListener, ImageUtils.ImageAttachmentListener, MessageAdapter.ChatImageFileClick {
-    private static final int REQUEST_PICK_VIDEO = 1;
+    private static final int REQUEST_PICK_VIDEO = 12;
     private Intent intent;
     private ImageButton back_btn, button_chat_attachment, morebtn, button_chat_send, gallerybtn, videobtn, audiobtn, filebtn;
     private ImageView userProfile,previewImage;
@@ -70,6 +77,7 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
     private EditText chat_message;
     private TextView oponent_name;
     private int screenID;
+    private int mCurrentPosition = 0;
     private OponentData oponentData;
     private UserData userData;
     private File videofile, audioUrl, docfile;
@@ -91,18 +99,28 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
     private ProgressDialog progressDialog;
     private BroadcastReceiver mReceiver;
     private String channelID="";
-
-
-
+    private VideoView videoview;
+    private ProgressDialog mProgressDialog;
+    private static final int MY_PERMISSIONS_REQUEST_CAMERA = 99;
+    private AsyncTask mMyTask;
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message_screen);
+        mProgressDialog = new ProgressDialog(this);
+        mProgressDialog.setIndeterminate(true);
+        // Progress dialog horizontal style
+        mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        // Progress dialog title
+        mProgressDialog.setTitle("Downloading");
+        // Progress dialog message
+        mProgressDialog.setMessage("Please wait, we are downloading your image file...");
         back_btn = findViewById(R.id.backbtnMessage);
         oponent_name = findViewById(R.id.oponent_name);
         previewImage=findViewById(R.id.previewImage);
         intent = getIntent();
+        videoview = findViewById(R.id.videoview);
         imageUtils = new ImageUtils(this);
         screenID = intent.getIntExtra("id", 0);
         imageUrl=intent.getStringExtra("imageUrl");
@@ -120,6 +138,9 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
         button_chat_attachment.setOnClickListener(this);
         back_btn.setOnClickListener(this);
         userProfile.setOnClickListener(this);
+        MediaController controller = new MediaController(this);
+        controller.setMediaPlayer(videoview);
+        videoview.setMediaController(controller);
         if (screenID == 2) {
             oponentData = (OponentData) intent.getSerializableExtra("oponentdata");
             userData = (UserData) intent.getSerializableExtra("userData");
@@ -157,6 +178,8 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
             startActivity(intent);
             finish();
         } else if (v == userProfile) {
+
+
             imagePreview(imageUrl);
         } else if (v == button_chat_attachment) {
             showBottomSheet();
@@ -177,7 +200,14 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
                 previewImage.setVisibility(View.GONE);
                 sendMesaage(new SessionManager(getApplication()).getUserID(), "", sendToID, "image", chanelID, chat_message.getText().toString(), 1);
             } else if (typevalue == 2) {
-                sendMesaage(new SessionManager(getApplication()).getUserID(), "", sendToID, "video", chanelID, chat_message.getText().toString(), 2);
+                if (videofile!=null){
+
+                    videoview.setVisibility(View.GONE);
+                    sendMesaage(new SessionManager(getApplication()).getUserID(), "", sendToID, "video", chanelID, chat_message.getText().toString(), 2);
+                }
+                else {
+                    Toast.makeText(this, "Please Select Again", Toast.LENGTH_SHORT).show();
+                }
             } else if (typevalue == 3) {
 
 
@@ -191,9 +221,19 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
             getAudioFile();
             mBottomSheetDialog.dismiss();
         } else if (v == gallerybtn) {
-            typevalue = 1;
-            mBottomSheetDialog.dismiss();
-            imageUtils.imagepicker(1);
+            PackageManager pm = this.getPackageManager();
+            int hasPerm = pm.checkPermission(Manifest.permission.CAMERA, this.getPackageName());
+            if (hasPerm == PackageManager.PERMISSION_GRANTED) {
+                typevalue = 1;
+                mBottomSheetDialog.dismiss();
+                imageUtils.imagepicker(1);
+            }
+            else {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.CAMERA},
+                        MY_PERMISSIONS_REQUEST_CAMERA);
+            }
+
         } else if (v == videobtn) {
             typevalue = 2;
             mBottomSheetDialog.dismiss();
@@ -317,16 +357,16 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void getChatHistory(String user_id, String sendTO, String channelId, String type) {
         ApiRequest request = new ApiRequest();
-        hideLoadingIndicator();
+
         request.requestforgetChathistory(user_id, sendTO, channelId, type, new okhttp3.Callback() {
             @Override
             public void onFailure(okhttp3.Call call, IOException e) {
                 Log.d("error", "error");
-                hideLoadingIndicator();
+
             }
             @Override
             public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
-                hideLoadingIndicator();
+
                 final String myResponse = response.body().string();
                 Gson gson = new GsonBuilder().create();
                 final ChatResponse form = gson.fromJson(myResponse, ChatResponse.class);
@@ -376,6 +416,8 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
                 try {
                     String videoPathStr = getPath(selectedVideo);
                     videofile = new File(videoPathStr);
+                    initializePlayer(selectedVideo);
+                    videoview.setVisibility(View.VISIBLE);
                 } catch (Exception e) {
                     e.printStackTrace();
                     Toast.makeText(this, "Please Select Again", Toast.LENGTH_SHORT).show();
@@ -519,10 +561,23 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
 
 
     @Override
-    public void onImageClick(String url) {
+    public void onImageClick(String url ,String type) {
 //        Log.d("shdjsjhd", url);
-
+    if (type.equalsIgnoreCase("image"))
+    {
         showfullImage(url);
+//        mMyTask = new DownloadTask()
+
+    }
+
+
+    else {
+
+        Intent intent = new Intent(this,VideoScreen.class);
+        intent.putExtra("url",url);
+        startActivity(intent);
+    }
+
 //        Intent intent = new Intent(this, DownloadService.class);
 //        intent.putExtra("url", "https://images5.alphacoders.com/609/609173.jpg");
 //        intent.putExtra("receiver", new DownloadReceiver(new Handler()));
@@ -616,7 +671,28 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
             }
         }
     }
+    private void initializePlayer(Uri uri) {
+        if (uri != null) {
+            videoview.setVideoURI(uri);
+        }
+        videoview.setOnPreparedListener(
+                new MediaPlayer.OnPreparedListener() {
+                    @Override
+                    public void onPrepared(MediaPlayer mediaPlayer) {
+                        if (mCurrentPosition > 0) {
+                            videoview.seekTo(mCurrentPosition);
+                        }
+                        else {
+                            videoview.seekTo(1);
+                        }
+                        // Start playing!
+                        videoview.start();
+                    }
+                });
+    }
 
-
+    private void releasePlayer() {
+        videoview.stopPlayback();
+    }
 
 }

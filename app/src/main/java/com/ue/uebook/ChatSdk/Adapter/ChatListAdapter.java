@@ -98,7 +98,9 @@ public class ChatListAdapter  extends RecyclerView.Adapter<ChatListAdapter.MyVie
         else if (userList.get(position).getType().equalsIgnoreCase("image")){
             holder.userchat.setText("image");
         }
-
+        else if (userList.get(position).getType().equalsIgnoreCase("video")){
+            holder.userchat.setText("video");
+        }
 
     }
     @Override
