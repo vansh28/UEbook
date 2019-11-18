@@ -1,7 +1,5 @@
 package com.ue.uebook.SplashActivity;
 
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -58,10 +56,6 @@ public class SplashScreenApp extends AppCompatActivity {
             showSplashimage();
         }
 
-        NotificationChannel notificationChannel = new NotificationChannel("mynoti","mynoti", NotificationManager.IMPORTANCE_DEFAULT);
-        NotificationManager notificationManager = getSystemService(NotificationManager.class);
-        notificationManager.createNotificationChannel(notificationChannel);
-        setLocale(new SessionManager(getApplicationContext()).getCurrentLanguage());
 
     }
     private void showSplashimage() {

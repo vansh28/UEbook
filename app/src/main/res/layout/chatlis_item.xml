@@ -30,7 +30,6 @@
                 android:id="@+id/name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="USername"
                 android:textSize="@dimen/size_17"
                 android:layout_marginLeft="@dimen/size_5"
                 android:textColor="@color/black"
@@ -39,7 +38,6 @@
                 android:id="@+id/userchat"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Ffrtt rtr rt rtrt rt ...."
                 android:textSize="@dimen/size_16"
                 android:layout_marginLeft="@dimen/size_5"
                 android:textColor="@color/black"/>

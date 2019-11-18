@@ -21,6 +21,7 @@ import com.ue.uebook.R;
 
 import java.util.HashMap;
 import java.util.List;
+
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyviewHolder> {
    private List<Chathistory>chatData;
    private String userId;
@@ -34,6 +35,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyviewHo
     }
     public interface ChatImageFileClick {
         void onImageClick(String url ,String type);
+        void onDownloadClick(String url ,String type ,String name);
 
     }
     public void setItemClickListener(ChatImageFileClick clickListener) {
@@ -74,6 +76,14 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyviewHo
                 Bitmap bmFrame = mediaMetadataRetriever.getFrameAtTime(1000); //unit in microsecond
                 holder.senderimage.setImageBitmap(bmFrame);
             }
+            else if (chatData.get(position).getType().equalsIgnoreCase("docfile")) {
+                     holder.fileviewSender.setVisibility(View.VISIBLE);
+                     holder.fileviewoponent.setVisibility(View.GONE);
+            }
+            else if (chatData.get(position).getType().equalsIgnoreCase("audio")) {
+                holder.audioviewSender.setVisibility(View.VISIBLE);
+                holder.audioviewoponent.setVisibility(View.GONE);
+            }
 
         }
         else  {
@@ -102,6 +112,14 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyviewHo
                 mediaMetadataRetriever .setDataSource("http://dnddemo.com/ebooks/api/v1/" + chatData.get(position).getMessage(), new HashMap<String, String>());
                 Bitmap bmFrame = mediaMetadataRetriever.getFrameAtTime(1000); //unit in microsecond
                 holder.oponentimage.setImageBitmap(bmFrame);
+            }
+            else if (chatData.get(position).getType().equalsIgnoreCase("docfile")) {
+                holder.fileviewoponent.setVisibility(View.VISIBLE);
+                holder.fileviewSender.setVisibility(View.GONE);
+            }
+            else if (chatData.get(position).getType().equalsIgnoreCase("audio")) {
+                holder.audioviewoponent.setVisibility(View.VISIBLE);
+                holder.audioviewSender.setVisibility(View.GONE);
             }
 
         }
@@ -153,7 +171,54 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyviewHo
                 }
             }
         });
+        holder.fileviewoponent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                chatImageFileClick.onImageClick("http://dnddemo.com/ebooks/api/v1/" + chatData.get(position).getMessage(),"file");
 
+            }
+        });
+        holder.fileviewSender.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                chatImageFileClick.onImageClick("http://dnddemo.com/ebooks/api/v1/" + chatData.get(position).getMessage(),"file");
+
+            }
+        });
+        holder.audioviewoponent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                chatImageFileClick.onImageClick("http://dnddemo.com/ebooks/api/v1/" + chatData.get(position).getMessage(),"audio");
+
+            }
+        });
+        holder.audioviewoponent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                chatImageFileClick.onImageClick("http://dnddemo.com/ebooks/api/v1/" + chatData.get(position).getMessage(),"audio");
+            }
+        });
+
+        holder.downloadfileoponent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                chatImageFileClick.onDownloadClick("http://dnddemo.com/ebooks/api/v1/" + chatData.get(position).getMessage(),"file",chatData.get(position).getMessage());
+
+            }
+        });
+        holder.downloadimageoponent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                chatImageFileClick.onDownloadClick("http://dnddemo.com/ebooks/api/v1/" + chatData.get(position).getMessage(),"image",chatData.get(position).getMessage());
+            }
+        });
+        holder.downloadimageoponent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                chatImageFileClick.onDownloadClick("http://dnddemo.com/ebooks/api/v1/" + chatData.get(position).getMessage(),"audio",chatData.get(position).getMessage());
+
+            }
+        });
 
     }
     @Override
@@ -164,9 +229,9 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyviewHo
         TextView sendermsz,oponentmsz;
         ImageView senderimage,oponentimage ,videoviewSender,VideoViewOponent;
 
-        RelativeLayout videoConainersender,videoConainerOpopnent;
+        RelativeLayout videoConainersender,videoConainerOpopnent ,fileviewSender,fileviewoponent ,audioviewoponent,audioviewSender;
         RelativeLayout senderlayout,oponentlayout,senderlayoutimage,oponentlayoutimage;
-        ImageButton playbtnOponent,playbtnSender;
+        ImageButton playbtnOponent,playbtnSender,downloadimageoponent,downloadfileoponent,downloadaudio;
         public MyviewHolder(@NonNull View itemView) {
             super(itemView);
             sendermsz=itemView.findViewById(R.id.userMessage);
@@ -183,7 +248,15 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyviewHo
             playbtnOponent=itemView.findViewById(R.id.playbtnOponent);
             playbtnSender=itemView.findViewById(R.id.playbtnsender);
             oponentlayoutimage=itemView.findViewById(R.id.oponentlayoutimage);
+            fileviewSender=itemView.findViewById(R.id.fileviewSender);
+            fileviewoponent=itemView.findViewById(R.id.fileviewoponent);
+            audioviewoponent=itemView.findViewById(R.id.audioviewoponent);
+            audioviewSender=itemView.findViewById(R.id.audioviewSender);
+            downloadimageoponent=itemView.findViewById(R.id.downloadimageoponent);
+            downloadfileoponent=itemView.findViewById(R.id.downloadfile);
+            downloadaudio=itemView.findViewById(R.id.downloadaudio);
 
         }
     }
+
 }

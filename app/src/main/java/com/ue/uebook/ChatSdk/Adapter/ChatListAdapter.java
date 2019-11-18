@@ -91,18 +91,22 @@ public class ChatListAdapter  extends RecyclerView.Adapter<ChatListAdapter.MyVie
                 }
             }
         });
-
         if (userList.get(position).getType().equalsIgnoreCase("text")){
             holder.userchat.setText(userList.get(position).getMessage());
         }
         else if (userList.get(position).getType().equalsIgnoreCase("image")){
-            holder.userchat.setText("image");
+            holder.userchat.setText("Image");
         }
         else if (userList.get(position).getType().equalsIgnoreCase("video")){
-            holder.userchat.setText("video");
+            holder.userchat.setText("Video");
         }
-
-    }
+        else if (userList.get(position).getType().equalsIgnoreCase("docfile")){
+            holder.userchat.setText("File");
+        }
+        else if (userList.get(position).getType().equalsIgnoreCase("audio")){
+            holder.userchat.setText("Audio");
+        }
+        }
     @Override
     public int getItemCount() {
         return userList.size();
