@@ -197,16 +197,18 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         .setAutoCancel(true)
                         .setLargeIcon(imageurl)
                         .setSound(defaultSoundUri)
-                        .setContentIntent(pendingIntent);
+                        .setContentIntent(pendingIntent)
+                        .setPriority(NotificationManager.IMPORTANCE_HIGH);
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         // Since android Oreo notification channel is needed.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel(channelId,
-                    "Channel human readable title",
-                    NotificationManager.IMPORTANCE_DEFAULT);
-            notificationManager.createNotificationChannel(channel);
-        }
-        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//            @SuppressLint("WrongConstant") NotificationChannel channel = new NotificationChannel(channelId,
+//                    "Channel human readable title",
+//                    Notification.DEFAULT_ALL);
+//            notificationManager.createNotificationChannel(channel);
+//        }
+        createNotificationChannel();
+        notificationManager.notify(333 /* ID of notification */, notificationBuilder.build());
     }
     public Bitmap getBitmapfromUrl(String imageUrl) {
         try {
@@ -222,6 +224,23 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             // TODO Auto-generated catch block
             e.printStackTrace();
             return null;
+        }
+    }
+
+    private void createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        String channelId = getString(R.string.app_name);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = getString(R.string.channel_name);
+            String description = getString(R.string.channel_description);
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(channelId, name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
         }
     }
 }

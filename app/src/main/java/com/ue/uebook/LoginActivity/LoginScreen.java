@@ -410,7 +410,6 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
             String familyName = acct.getFamilyName();
             Uri uri = acct.getPhotoUrl();
             showDialogGP(personName, "", email, acct.getPhotoUrl());
-
         }
     }
 

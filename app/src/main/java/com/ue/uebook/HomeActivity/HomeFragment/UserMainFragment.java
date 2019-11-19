@@ -47,12 +47,13 @@ public class UserMainFragment extends Fragment implements View.OnClickListener, 
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    private RelativeLayout userInfo_container, companyInfo_Container, uploadBook_Container, logOut,chat_Container,author_Container,pendingbook_Container;
+    private RelativeLayout userInfo_container, companyInfo_Container, uploadBook_Container, logOut, chat_Container, author_Container, pendingbook_Container;
     private OnFragmentInteractionListener mListener;
-    private View view_uploadBook,pendingRequest_view;
+    private View view_uploadBook, pendingRequest_view;
     private Dialog mdialog;
     private int textSize;
-    private TextView userView,companyView,uploadView,chatView,dictionaryView,logoutView;
+    private TextView userView, companyView, uploadView, chatView, dictionaryView, logoutView;
+
     public UserMainFragment() {
         // Required empty public constructor
     }
@@ -84,42 +85,44 @@ public class UserMainFragment extends Fragment implements View.OnClickListener, 
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.usermaincategory, container, false);
         userInfo_container = view.findViewById(R.id.userInfo_container);
         fontsize();
-        chat_Container=view.findViewById(R.id.chat_Container);
-        userView=view.findViewById(R.id.user_info_view);
-        companyView=view.findViewById(R.id.company_info_view);
-        uploadView=view.findViewById(R.id.upload_view);
-        chatView=view.findViewById(R.id.chatWithOther_view);
-        dictionaryView=view.findViewById(R.id.dictionary_view);
-        logoutView=view.findViewById(R.id.logout_view);
+        chat_Container = view.findViewById(R.id.chat_Container);
+        userView = view.findViewById(R.id.user_info_view);
+        companyView = view.findViewById(R.id.company_info_view);
+        uploadView = view.findViewById(R.id.upload_view);
+        chatView = view.findViewById(R.id.chatWithOther_view);
+        dictionaryView = view.findViewById(R.id.dictionary_view);
+        logoutView = view.findViewById(R.id.logout_view);
         userView.setTextSize(textSize);
         companyView.setTextSize(textSize);
         uploadView.setTextSize(textSize);
         chatView.setTextSize(textSize);
         dictionaryView.setTextSize(textSize);
         logoutView.setTextSize(textSize);
-        pendingbook_Container=view.findViewById(R.id.pendingbook_Container);
+        pendingbook_Container = view.findViewById(R.id.pendingbook_Container);
         pendingbook_Container.setOnClickListener(this);
-        pendingRequest_view=view.findViewById(R.id.pending_view);
+        pendingRequest_view = view.findViewById(R.id.pending_view);
         chat_Container.setOnClickListener(this);
         uploadBook_Container = view.findViewById(R.id.uploadBook_Container);
-        view_uploadBook=view.findViewById(R.id.uploadBook_view);
-        author_Container=view.findViewById(R.id.author_Container);
+        view_uploadBook = view.findViewById(R.id.uploadBook_view);
+        author_Container = view.findViewById(R.id.author_Container);
         author_Container.setOnClickListener(this);
-        if (new SessionManager(getActivity().getApplicationContext()).getUserPublishType().equalsIgnoreCase("Reader")){
+        if (new SessionManager(getActivity().getApplicationContext()).getUserPublishType().equalsIgnoreCase("Reader")) {
             uploadBook_Container.setVisibility(View.GONE);
             view_uploadBook.setVisibility(View.GONE);
             pendingRequest_view.setVisibility(View.GONE);
-        }
-        else {
+            pendingbook_Container.setVisibility(View.GONE);
+        } else {
             uploadBook_Container.setVisibility(View.VISIBLE);
             view_uploadBook.setVisibility(View.VISIBLE);
             pendingRequest_view.setVisibility(View.VISIBLE);
+            pendingbook_Container.setVisibility(View.VISIBLE);
         }
         logOut = view.findViewById(R.id.logOut);
         logOut.setOnClickListener(this);
@@ -129,12 +132,14 @@ public class UserMainFragment extends Fragment implements View.OnClickListener, 
         companyInfo_Container.setOnClickListener(this);
         return view;
     }
+
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
         }
     }
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -145,6 +150,7 @@ public class UserMainFragment extends Fragment implements View.OnClickListener, 
                     + " must implement OnFragmentInteractionListener");
         }
     }
+
     @Override
     public void onDetach() {
         super.onDetach();
@@ -155,14 +161,13 @@ public class UserMainFragment extends Fragment implements View.OnClickListener, 
     @Override
     public void onClick(View view) {
         if (view == userInfo_container) {
-            if ((new SessionManager(getActivity().getApplicationContext()).getUserPublishType().equalsIgnoreCase("Reader"))){
+            if ((new SessionManager(getActivity().getApplicationContext()).getUserPublishType().equalsIgnoreCase("Reader"))) {
 
                 loadFragment(new UserProfile_Fragment());
-            }
-            else {
+            } else {
                 Intent intent = new Intent(getContext(), AuthorProfileScreen.class);
-                intent.putExtra("id",1);
-                intent.putExtra("userID",new SessionManager(getActivity().getApplicationContext()).getUserID());
+                intent.putExtra("id", 1);
+                intent.putExtra("userID", new SessionManager(getActivity().getApplicationContext()).getUserID());
                 getContext().startActivity(intent);
             }
 
@@ -174,8 +179,7 @@ public class UserMainFragment extends Fragment implements View.OnClickListener, 
             getContext().startActivity(intent);
         } else if (view == logOut) {
             confirmLogoutDialog();
-        }
-        else if (view==chat_Container){
+        } else if (view == chat_Container) {
 
 //            showLoadingIndicator();
 //
@@ -185,16 +189,15 @@ public class UserMainFragment extends Fragment implements View.OnClickListener, 
             Intent intent = new Intent(getContext(), ChatListScreen.class);
             getContext().startActivity(intent);
 
-        }
-        else if (view==author_Container){
+        } else if (view == author_Container) {
             Intent intent = new Intent(getContext(), DictionaryScreen.class);
             getContext().startActivity(intent);
-        }
-        else if (view==pendingbook_Container){
+        } else if (view == pendingbook_Container) {
             Intent intent = new Intent(getContext(), PendingBookScreen.class);
             getContext().startActivity(intent);
         }
     }
+
     private void loadFragment(Fragment fragment) {
         // load fragment
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
@@ -202,10 +205,12 @@ public class UserMainFragment extends Fragment implements View.OnClickListener, 
         transaction.addToBackStack(null);
         transaction.commit();
     }
+
     @Override
     public void onFragmentInteraction(Uri uri) {
 
     }
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -220,7 +225,8 @@ public class UserMainFragment extends Fragment implements View.OnClickListener, 
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
-    private void confirmLogoutDialog(){
+
+    private void confirmLogoutDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setMessage("You sure, that you want to logout?")
                 .setCancelable(false)
@@ -241,7 +247,8 @@ public class UserMainFragment extends Fragment implements View.OnClickListener, 
         AlertDialog alert = builder.create();
         alert.show();
     }
-   @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void showLoadingIndicator() {
         mdialog = new Dialog(getContext());
         mdialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -252,14 +259,16 @@ public class UserMainFragment extends Fragment implements View.OnClickListener, 
         mdialog.setCanceledOnTouchOutside(true);
         mdialog.show();
     }
+
     public void hideLoadingIndicator() {
         if (mdialog != null && mdialog.isShowing()) {
             mdialog.cancel();
             mdialog = null;
         }
     }
-    private void fontsize(){
-        switch(new SessionManager(getActivity().getApplicationContext()).getfontSize()) {
+
+    private void fontsize() {
+        switch (new SessionManager(getActivity().getApplicationContext()).getfontSize()) {
             case "smallest":
                 textSize = 12;
                 break;

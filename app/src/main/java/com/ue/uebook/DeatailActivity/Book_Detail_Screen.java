@@ -313,9 +313,11 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
                         bookTitle.setText(form.getData().getBook_title());
                         bookAuthor.setText(form.getData().getAuthor_name());
                         ulpoadByUserId=form.getData().getUser_id();
-                        SpannableString content = new SpannableString(form.getData().getUser_name());
-                        content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
-                        book_uploadBy.setText(getResources().getString(R.string.uploadby)+ content);
+                        if (form.getData().getUser_name()!=null){
+                            SpannableString content = new SpannableString(form.getData().getUser_name());
+                            content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
+                            book_uploadBy.setText(getResources().getString(R.string.uploadby)+ content);
+                        }
                         bookDesc.setText(form.getData().getBook_description());
                         videourl=form.getData().getVideo_url();
                         docurl=form.getData().getPdf_url();
