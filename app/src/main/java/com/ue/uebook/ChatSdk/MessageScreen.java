@@ -611,15 +611,12 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
 //
 //
         showProgress(url);
-
         new Thread(new Runnable() {
             public void run() {
-                downloadFiles(url , "downloaded_file.png");
+                downloadFiles(url , name);
             }
         }).start();
     }
-
-
 
     private void showfullImage(String url) {
         final Dialog nagDialog = new Dialog(MessageScreen.this, android.R.style.Theme_Translucent_NoTitleBar_Fullscreen);
@@ -634,7 +631,6 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
             }
         });
         GlideUtils.loadImage(MessageScreen.this, url, ivPreview, R.drawable.noimage, R.drawable.noimage);
-
         nagDialog.show();
     }
 
@@ -735,7 +731,7 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
 
 
-          public   void downloadFiles(String dwnload_file_path ,String name){
+          public  void downloadFiles(String dwnload_file_path ,String name){
 
         try {
             URL url = new URL(dwnload_file_path);
@@ -779,6 +775,7 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
                         pb.setProgress(downloadedSize);
                         float per = ((float)downloadedSize/totalSize) * 100;
                         cur_val.setText("Downloaded " + downloadedSize + "KB / " + totalSize + "KB (" + (int)per + "%)" );
+
                     }
                 });
             }
@@ -786,7 +783,8 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
             fileOutput.close();
             runOnUiThread(new Runnable() {
                 public void run() {
-
+                    Toast.makeText(MessageScreen.this,"Download Successfully",Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
                       // if you want close it..
                 }
             });
@@ -816,16 +814,14 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.myprogressdialog);
         dialog.setTitle("Download Progress");
-
         TextView text = (TextView) dialog.findViewById(R.id.tv1);
         text.setText("Downloading file from ... " + file_path);
         cur_val = (TextView) dialog.findViewById(R.id.cur_pg_tv);
         cur_val.setText("Starting download...");
         dialog.show();
-
         pb = (ProgressBar)dialog.findViewById(R.id.progress_bar);
-        pb.setProgress(0);
-        pb.setProgressDrawable(getResources().getDrawable(R.drawable.green_progress));
+        pb.setIndeterminate(true);
+//        pb.setProgressDrawable(getResources().getDrawable(R.drawable.green_progress));
     }
 
 }

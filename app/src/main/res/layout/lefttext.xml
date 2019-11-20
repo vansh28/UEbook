@@ -101,28 +101,29 @@
         android:layout_marginTop="@dimen/size_8"
         android:layout_height="@dimen/size_150">
         <ImageButton
+            android:id="@+id/playbtnOponent"
+            android:layout_width="@dimen/size_30"
+            android:layout_height="@dimen/size_30"
+            android:visibility="gone"
+                android:layout_centerInParent="true"
+            android:layout_marginBottom="@dimen/size_10"
+            android:layout_marginLeft="@dimen/size_10"
+            android:src="@drawable/play"/>
+        <ImageView
+            android:id="@+id/imageoponent"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size_150"/>
+        <ImageButton
             android:id="@+id/downloadimageoponent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:visibility="gone"
-            android:layout_marginBottom="@dimen/size_10"
-            android:layout_marginLeft="@dimen/size_10"
-            android:src="@drawable/download"/>
-        <ImageView
-            android:id="@+id/imageoponent"
-            android:layout_width="@dimen/size_150"
-            android:layout_margin="@dimen/size_5"
-            android:layout_height="@dimen/size_150"/>
-        <ImageButton
-            android:id="@+id/playbtnOponent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
+            android:visibility="visible"
             android:background="@android:color/transparent"
             android:alpha="1"
-            android:src="@drawable/play"
-            android:layout_centerInParent="true"/>
+            android:layout_alignParentBottom="true"
+            android:src="@drawable/download"
+            android:layout_margin="@dimen/size_5"
+           />
 
     </RelativeLayout>
     <RelativeLayout
@@ -178,7 +179,7 @@
             android:background="@color/colorPrimary"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-         android:visibility="gone"
+         android:visibility="visible"
             android:src="@android:drawable/stat_sys_download"/>
             <ImageView
                 android:id="@+id/fimage"

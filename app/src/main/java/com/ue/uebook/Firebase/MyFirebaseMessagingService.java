@@ -35,6 +35,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private static final String TAG = "MyFirebaseMsgService";
     private String name,noti_msz,user_id,Avtar,channel_id;
     Bitmap bmp = null;
+    private static  int value=0;
+
     /**
      * Called when message is received.
      *
@@ -43,17 +45,20 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     // [START receive_message]
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
+
         ActivityManager am = (ActivityManager) this.getSystemService(ACTIVITY_SERVICE);
         List<ActivityManager.RunningTaskInfo> taskInfo = am.getRunningTasks(1);
         Log.d("topActivity", "CURRENT Activity ::" + taskInfo.get(0).topActivity.getClassName());
         ComponentName componentInfo = taskInfo.get(0).topActivity;
         componentInfo.getPackageName();
 
+
         if (remoteMessage.getData().size() > 0) {
             //Log.d(TAG, "Message data payload: " + remoteMessage.getData().get("my_custom_key"));
             Log.d("RedListed", "Message data payload: " + remoteMessage.getData());
             Intent i = new Intent("android.intent.action.MAIN").putExtra("some_msg", "I will be sent!");
             this.sendBroadcast(i);
+
 
             try {
                 JSONObject jsonObject = new JSONObject(remoteMessage.getData().get("message"));
@@ -178,6 +183,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
      *
      */
     private void sendNotification(String msg ,Bitmap imageurl) {
+        value++;
         Intent intent = new Intent(this, SplashScreenApp.class);
         intent.putExtra("sendTo",user_id);
         intent.putExtra("channel_id",channel_id);
@@ -208,7 +214,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 //            notificationManager.createNotificationChannel(channel);
 //        }
         createNotificationChannel();
-        notificationManager.notify(333 /* ID of notification */, notificationBuilder.build());
+        notificationManager.notify(value /* ID of notification */, notificationBuilder.build());
     }
     public Bitmap getBitmapfromUrl(String imageUrl) {
         try {
@@ -234,11 +240,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             CharSequence name = getString(R.string.channel_name);
             String description = getString(R.string.channel_description);
-            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            int importance = NotificationManager.IMPORTANCE_HIGH;
             NotificationChannel channel = new NotificationChannel(channelId, name, importance);
             channel.setDescription(description);
             // Register the channel with the system; you can't change the importance
-            // or other notification behaviors after this
+                    // or other notification behaviors after this
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
         }

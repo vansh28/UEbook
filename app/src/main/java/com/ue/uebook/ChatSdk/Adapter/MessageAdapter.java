@@ -69,7 +69,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyviewHo
             else if (chatData.get(position).getType().equalsIgnoreCase("video")){
                 MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
                 holder.senderlayoutimage.setVisibility(View.VISIBLE);
-                holder.playbtnOponent.setVisibility(View.GONE);
+                holder.playbtnOponent.setVisibility(View.VISIBLE);
                 holder.oponentlayoutimage.setVisibility(View.GONE);
                 holder.playbtnSender.setVisibility(View.VISIBLE);
                 mediaMetadataRetriever .setDataSource("http://dnddemo.com/ebooks/api/v1/" + chatData.get(position).getMessage(), new HashMap<String, String>());
@@ -90,7 +90,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyviewHo
             if (chatData.get(position).getType().equalsIgnoreCase("image")){
                 holder.senderlayoutimage.setVisibility(View.GONE);
                 holder.oponentlayoutimage.setVisibility(View.VISIBLE);
-                holder.playbtnOponent.setVisibility(View.GONE);
+                holder.playbtnOponent.setVisibility(View.VISIBLE);
                 holder.playbtnSender.setVisibility(View.GONE);
                 GlideUtils.loadImage(mtx, "http://dnddemo.com/ebooks/api/v1/" + chatData.get(position).getMessage(), holder.oponentimage, R.drawable.noimage, R.drawable.noimage);
 
@@ -202,17 +202,23 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyviewHo
         holder.downloadfileoponent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                chatImageFileClick.onDownloadClick("http://dnddemo.com/ebooks/api/v1/" + chatData.get(position).getMessage(),"file",chatData.get(position).getMessage());
+                String str= chatData.get(position).getMessage();
+                String[] arrOfStr = str.split("/");
+                Log.d("finsl",arrOfStr[3]);
+                chatImageFileClick.onDownloadClick("http://dnddemo.com/ebooks/api/v1/" + chatData.get(position).getMessage(),"file",arrOfStr[3]);
 
             }
         });
         holder.downloadimageoponent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                chatImageFileClick.onDownloadClick("http://dnddemo.com/ebooks/api/v1/" + chatData.get(position).getMessage(),"image",chatData.get(position).getMessage());
+                  String str= chatData.get(position).getMessage();
+                String[] arrOfStr = str.split("/");
+                Log.d("finsl",arrOfStr[3]);
+                chatImageFileClick.onDownloadClick("http://dnddemo.com/ebooks/api/v1/" + chatData.get(position).getMessage(),"image",arrOfStr[3]);
             }
         });
-        holder.downloadimageoponent.setOnClickListener(new View.OnClickListener() {
+        holder.downloadaudio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 chatImageFileClick.onDownloadClick("http://dnddemo.com/ebooks/api/v1/" + chatData.get(position).getMessage(),"audio",chatData.get(position).getMessage());
