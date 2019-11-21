@@ -1,285 +1,318 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
     <RelativeLayout
         android:id="@+id/oponentlayout"
         android:layout_width="wrap_content"
-        android:background="@drawable/left_bubble"
-       android:visibility="gone"
-        android:layout_marginRight="@dimen/size_150"
+        android:layout_height="@dimen/size_50"
         android:layout_marginLeft="@dimen/size_15"
         android:layout_marginTop="@dimen/size_8"
-        android:layout_height="wrap_content">
+        android:layout_marginRight="@dimen/size_150"
+        android:background="@drawable/rounded_rect"
+        android:padding="@dimen/size_10"
+        android:visibility="gone">
 
         <TextView
             android:id="@+id/oPonentMessage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Hello"
             android:layout_margin="@dimen/size_5"
-            android:textColor="@color/black"/>
+            android:minHeight="@dimen/size_40"
+            android:minWidth="@dimen/size_70"
+            android:text="Hello"
+            android:gravity="start"
+            android:textColor="@color/black" />
 
         <TextView
             android:id="@+id/oponentMessageTime"
             android:layout_width="@dimen/size_50"
             android:layout_height="wrap_content"
-            android:text="2:03 am"
-            android:visibility="gone"
             android:layout_below="@+id/oPonentMessage"
             android:layout_alignParentRight="true"
-            android:textColor="@color/black"
             android:layout_marginBottom="@dimen/size_5"
-            android:textSize="@dimen/size_10" />
+            android:text="2:03 am"
+            android:textColor="@color/black"
+            android:textSize="@dimen/size_10"
+            android:visibility="gone" />
 
     </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/senderlayout"
         android:layout_width="wrap_content"
-        android:background="@drawable/right_bubble"
+        android:layout_height="wrap_content"
         android:layout_gravity="end"
-        android:layout_marginRight="@dimen/size_15"
-        android:visibility="gone"
         android:layout_marginLeft="@dimen/size_150"
         android:layout_marginTop="@dimen/size_8"
-        android:layout_height="wrap_content">
+        android:layout_marginRight="@dimen/size_15"
+        android:background="@drawable/senderbg"
+        android:visibility="gone">
 
         <TextView
             android:id="@+id/userMessage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Hello . how are you? "
             android:layout_margin="@dimen/size_5"
-            android:textColor="@color/white"/>
+            android:text="Hello "
+            android:paddingLeft="@dimen/size_5"
+            android:gravity="center_vertical"
+            android:minHeight="@dimen/size_40"
+            android:minWidth="@dimen/size_70"
+            android:textColor="@color/black" />
+
         <TextView
             android:id="@+id/userMessageTime"
             android:layout_width="@dimen/size_50"
             android:layout_height="wrap_content"
-            android:text="2:03 am"
-            android:visibility="gone"
             android:layout_below="@+id/userMessage"
             android:layout_alignParentRight="true"
-            android:textColor="@color/black"
             android:layout_marginBottom="@dimen/size_5"
-            android:textSize="@dimen/size_10" />
+            android:text="2:03 am"
+            android:textColor="@color/black"
+            android:textSize="@dimen/size_10"
+            android:visibility="gone" />
 
     </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/senderlayoutimage"
         android:layout_width="@dimen/size_150"
+        android:layout_height="@dimen/size_150"
         android:layout_gravity="end"
-        android:visibility="gone"
-        android:background="@drawable/border"
-        android:layout_marginRight="@dimen/size_15"
         android:layout_marginLeft="@dimen/size_150"
         android:layout_marginTop="@dimen/size_8"
-        android:layout_height="@dimen/size_150">
+        android:layout_marginRight="@dimen/size_15"
+        android:background="@drawable/senderbg"
+        android:baselineAligned="false"
+        android:visibility="gone">
 
 
-      <ImageView
-          android:id="@+id/imageSender"
-          android:layout_width="@dimen/size_150"
-          android:layout_margin="@dimen/size_5"
-          android:layout_height="@dimen/size_150"/>
+        <ImageView
+            android:id="@+id/imageSender"
+            android:layout_width="@dimen/size_150"
+            android:layout_height="@dimen/size_150"
+            android:layout_margin="@dimen/size_5" />
+
         <ImageButton
             android:id="@+id/playbtnsender"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="gone"
+            android:layout_centerInParent="true"
             android:alpha=".6"
             android:src="@drawable/play"
-            android:layout_centerInParent="true"/>
+            android:visibility="gone" />
     </RelativeLayout>
+
     <RelativeLayout
         android:id="@+id/oponentlayoutimage"
         android:layout_width="@dimen/size_150"
-        android:visibility="gone"
-        android:background="@drawable/border"
-        android:layout_marginRight="@dimen/size_200"
+        android:layout_height="@dimen/size_150"
         android:layout_marginTop="@dimen/size_8"
-        android:layout_height="@dimen/size_150">
+        android:layout_marginRight="@dimen/size_200"
+        android:alpha=".4"
+        android:background="@drawable/rounded_rect"
+        android:visibility="gone">
+
         <ImageButton
             android:id="@+id/playbtnOponent"
             android:layout_width="@dimen/size_30"
             android:layout_height="@dimen/size_30"
-            android:visibility="gone"
-                android:layout_centerInParent="true"
-            android:layout_marginBottom="@dimen/size_10"
+            android:layout_centerInParent="true"
             android:layout_marginLeft="@dimen/size_10"
-            android:src="@drawable/play"/>
+            android:layout_marginBottom="@dimen/size_10"
+            android:src="@drawable/play"
+            android:visibility="gone" />
+
         <ImageView
             android:id="@+id/imageoponent"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/size_150"/>
+            android:layout_height="@dimen/size_150" />
+
         <ImageButton
             android:id="@+id/downloadimageoponent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="visible"
-            android:background="@android:color/transparent"
-            android:alpha="1"
             android:layout_alignParentBottom="true"
-            android:src="@drawable/download"
             android:layout_margin="@dimen/size_5"
-           />
+            android:alpha="1"
+            android:background="@android:color/transparent"
+            android:src="@drawable/download"
+            android:visibility="visible" />
 
     </RelativeLayout>
+
     <RelativeLayout
         android:id="@+id/videoConainerOponet"
         android:layout_width="wrap_content"
-        android:visibility="gone"
-        android:layout_marginRight="@dimen/size_100"
+        android:layout_height="match_parent"
         android:layout_marginLeft="@dimen/size_10"
-        android:layout_height="match_parent">
+        android:layout_marginRight="@dimen/size_100"
+        android:visibility="gone">
 
         <ImageView
             android:id="@+id/videoviewOpoenent"
             android:layout_width="@dimen/size_200"
-            android:layout_height="@dimen/size_200"/>
+            android:layout_height="@dimen/size_200" />
+
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@android:drawable/ic_menu_upload_you_tube"
-            android:layout_centerInParent="true"/>
+            android:layout_centerInParent="true"
+            android:src="@android:drawable/ic_menu_upload_you_tube" />
     </RelativeLayout>
+
     <RelativeLayout
         android:id="@+id/videoConainersender"
         android:layout_width="@dimen/size_200"
+        android:layout_height="match_parent"
         android:layout_gravity="right"
-        android:visibility="gone"
-        android:layout_height="match_parent">
+        android:visibility="gone">
 
         <ImageView
             android:id="@+id/videoviewsender"
-            android:layout_alignParentRight="true"
             android:layout_width="@dimen/size_200"
-            android:layout_marginRight="@dimen/size_10"
-            android:layout_height="@dimen/size_200"/>
+            android:layout_height="@dimen/size_200"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/size_10" />
+
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="visible"
+            android:layout_centerInParent="true"
             android:src="@android:drawable/ic_menu_upload_you_tube"
-            android:layout_centerInParent="true"/>
+            android:visibility="visible" />
 
     </RelativeLayout>
+
     <RelativeLayout
-        android:layout_width="@dimen/size_200"
-        android:background="@drawable/left_bubble"
         android:id="@+id/fileviewoponent"
-        android:visibility="gone"
+        android:layout_width="@dimen/size_200"
+        android:layout_height="@dimen/size_80"
         android:layout_marginTop="@dimen/size_10"
-        android:layout_height="@dimen/size_80">
+        android:background="@drawable/left_bubble"
+        android:visibility="gone">
+
         <ImageButton
             android:id="@+id/downloadfile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-         android:visibility="visible"
-            android:src="@android:drawable/stat_sys_download"/>
-            <ImageView
-                android:id="@+id/fimage"
-                android:layout_width="@dimen/size_30"
-                android:layout_height="@dimen/size_30"
-                android:src="@drawable/filechat"
-                android:layout_toLeftOf="@+id/file"
-                android:layout_centerInParent="true"
-                android:layout_marginRight="@dimen/size_10"/>
-            <TextView
-                android:id="@+id/file"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="File"
-                android:layout_centerInParent="true"
-                android:textSize="@dimen/size_18"
-                android:textColor="@color/black"/>
+            android:background="@color/colorPrimary"
+            android:src="@android:drawable/stat_sys_download"
+            android:visibility="visible" />
 
+        <ImageView
+            android:id="@+id/fimage"
+            android:layout_width="@dimen/size_30"
+            android:layout_height="@dimen/size_30"
+            android:layout_centerInParent="true"
+            android:layout_marginRight="@dimen/size_10"
+            android:layout_toLeftOf="@+id/file"
+            android:src="@drawable/filechat" />
+
+        <TextView
+            android:id="@+id/file"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="File"
+            android:textColor="@color/black"
+            android:textSize="@dimen/size_18" />
 
 
     </RelativeLayout>
+
     <RelativeLayout
-        android:layout_width="@dimen/size_200"
-        android:background="@drawable/right_bubble"
-        android:layout_margin="@dimen/size_10"
         android:id="@+id/fileviewSender"
+        android:layout_width="@dimen/size_200"
+        android:layout_height="@dimen/size_80"
         android:layout_gravity="right"
-        android:visibility="gone"
-        android:layout_height="@dimen/size_80">
+        android:layout_margin="@dimen/size_10"
+        android:background="@drawable/right_bubble"
+        android:visibility="gone">
+
         <ImageView
             android:layout_width="@dimen/size_30"
             android:layout_height="@dimen/size_30"
-            android:src="@drawable/filechat"
-            android:layout_toLeftOf="@+id/filesender"
             android:layout_centerInParent="true"
-            android:layout_marginRight="@dimen/size_10"/>
+            android:layout_marginRight="@dimen/size_10"
+            android:layout_toLeftOf="@+id/filesender"
+            android:src="@drawable/filechat" />
+
         <TextView
             android:id="@+id/filesender"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="File"
             android:layout_centerInParent="true"
-            android:textSize="@dimen/size_20"
-            android:textColor="@color/white"/>
+            android:text="File"
+            android:textColor="@color/white"
+            android:textSize="@dimen/size_20" />
     </RelativeLayout>
+
     <RelativeLayout
-        android:layout_width="@dimen/size_200"
-        android:background="@drawable/left_bubble"
         android:id="@+id/audioviewoponent"
-        android:visibility="gone"
+        android:layout_width="@dimen/size_200"
+        android:layout_height="@dimen/size_80"
         android:layout_marginTop="@dimen/size_10"
-        android:layout_height="@dimen/size_80">
+        android:background="@drawable/left_bubble"
+        android:visibility="gone">
+
         <ImageButton
             android:id="@+id/downloadaudio"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:visibility="gone"
-            android:src="@android:drawable/stat_sys_download"/>
+            android:background="@color/colorPrimary"
+            android:src="@android:drawable/stat_sys_download"
+            android:visibility="gone" />
 
         <ImageView
             android:layout_width="@dimen/size_30"
             android:layout_height="@dimen/size_30"
-            android:src="@drawable/audiochat"
-            android:layout_toLeftOf="@+id/audio"
             android:layout_centerInParent="true"
-            android:layout_marginRight="@dimen/size_10"/>
+            android:layout_marginRight="@dimen/size_10"
+            android:layout_toLeftOf="@+id/audio"
+            android:src="@drawable/audiochat" />
+
         <TextView
             android:id="@+id/audio"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Audio"
             android:layout_centerInParent="true"
-            android:textSize="@dimen/size_18"
-            android:textColor="@color/black"/>
+            android:text="Audio"
+            android:textColor="@color/black"
+            android:textSize="@dimen/size_18" />
     </RelativeLayout>
+
     <RelativeLayout
-        android:layout_width="@dimen/size_200"
-        android:background="@drawable/right_bubble"
-        android:layout_margin="@dimen/size_10"
         android:id="@+id/audioviewSender"
+        android:layout_width="@dimen/size_200"
+        android:layout_height="@dimen/size_80"
         android:layout_gravity="right"
-        android:visibility="gone"
-        android:layout_height="@dimen/size_80">
+        android:layout_margin="@dimen/size_10"
+        android:background="@drawable/right_bubble"
+        android:visibility="gone">
+
         <ImageView
             android:layout_width="@dimen/size_30"
             android:layout_height="@dimen/size_30"
-            android:src="@drawable/audiochat"
-            android:layout_toLeftOf="@+id/audiosender"
             android:layout_centerInParent="true"
-            android:layout_marginRight="@dimen/size_10"/>
+            android:layout_marginRight="@dimen/size_10"
+            android:layout_toLeftOf="@+id/audiosender"
+            android:src="@drawable/audiochat" />
+
         <TextView
             android:id="@+id/audiosender"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Audio"
             android:layout_centerInParent="true"
-            android:textSize="@dimen/size_20"
-            android:textColor="@color/white"/>
+            android:text="Audio"
+            android:textColor="@color/white"
+            android:textSize="@dimen/size_20" />
     </RelativeLayout>
 </LinearLayout>

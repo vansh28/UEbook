@@ -4,10 +4,13 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -23,12 +26,16 @@ import com.google.gson.GsonBuilder;
 import com.ue.uebook.BaseActivity;
 import com.ue.uebook.ChatSdk.Adapter.ChatListAdapter;
 import com.ue.uebook.ChatSdk.Pojo.AllchatResponse;
+import com.ue.uebook.ChatSdk.Pojo.Data;
+import com.ue.uebook.ChatSdk.Pojo.UserList;
 import com.ue.uebook.Data.ApiRequest;
 import com.ue.uebook.GlideUtils;
 import com.ue.uebook.R;
 import com.ue.uebook.SessionManager;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ChatListScreen extends BaseActivity implements View.OnClickListener ,ChatListAdapter.ItemClick {
     private RecyclerView chatList;
@@ -37,12 +44,17 @@ public class ChatListScreen extends BaseActivity implements View.OnClickListener
     private FloatingActionButton newChatbtn;
     private TextView noUserFound ,noHistoryView;
     private SwipeRefreshLayout swipe_refresh_layout;
+    private EditText edittext_search;
+    private Data data;
+    private List<UserList>userListList;
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_screen);
+        userListList= new ArrayList<>();
+        edittext_search=findViewById(R.id.edittext_search);
         swipe_refresh_layout=findViewById(R.id.swipe_refresh_layout);
         noHistoryView=findViewById(R.id.noHistoryView);
         chatList=findViewById(R.id.chatList);
@@ -58,6 +70,31 @@ public class ChatListScreen extends BaseActivity implements View.OnClickListener
         chatList.setNestedScrollingEnabled(false);
         getChatHistory(new SessionManager(getApplication()).getUserID());
         pullTorefreshswipe();
+        edittext_search.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
+                 if (charSequence.length()>0){
+                     chatAdapter.filter(charSequence.toString());
+                 }
+                 else {
+                     chatAdapter = new ChatListAdapter(data,userListList,ChatListScreen.this,new SessionManager(getApplicationContext()).getUserID());
+                     chatList.setAdapter(chatAdapter);
+                     chatAdapter.setItemClickListener(ChatListScreen.this);
+                     noHistoryView.setVisibility(View.GONE);
+                 }
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
     }
     @Override
     public void onClick(View v) {
@@ -110,6 +147,8 @@ public class ChatListScreen extends BaseActivity implements View.OnClickListener
     private void getChatHistory(String user_id) {
         ApiRequest request = new ApiRequest();
         showLoadingIndicator();
+        if (userListList.size()>0)
+            userListList.clear();
         request.requestforgetAllchatHistory(user_id, new okhttp3.Callback() {
             @Override
             public void onFailure(okhttp3.Call call, IOException e) {
@@ -127,7 +166,9 @@ public class ChatListScreen extends BaseActivity implements View.OnClickListener
                     @Override
                     public void run() {
                         if (form.getUserList()!= null) {
-                            chatAdapter = new ChatListAdapter(form.getData(),form.getUserList(),ChatListScreen.this,new SessionManager(getApplicationContext()).getUserID());
+                            userListList=form.getUserList();
+                            data=form.getData();
+                            chatAdapter = new ChatListAdapter(data,userListList,ChatListScreen.this,new SessionManager(getApplicationContext()).getUserID());
                             chatList.setAdapter(chatAdapter);
                             chatAdapter.setItemClickListener(ChatListScreen.this);
                             noHistoryView.setVisibility(View.GONE);

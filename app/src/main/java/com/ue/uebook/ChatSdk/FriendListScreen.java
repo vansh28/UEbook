@@ -103,10 +103,12 @@ public class FriendListScreen extends BaseActivity implements View.OnClickListen
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        contactListAdapter = new ContactListAdapter(FriendListScreen.this,form.getUserList(),form.getData());
-                        contactList.setAdapter(contactListAdapter);
-                        contactListAdapter.setItemClickListener(FriendListScreen.this);
-                        contactListAdapter.notifyDataSetChanged();
+                        if (form.error==false){
+                            contactListAdapter = new ContactListAdapter(FriendListScreen.this,form.getUserList(),form.getData());
+                            contactList.setAdapter(contactListAdapter);
+                            contactListAdapter.setItemClickListener(FriendListScreen.this);
+                            contactListAdapter.notifyDataSetChanged();
+                        }
                     }
                 });
             }

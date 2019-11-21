@@ -66,14 +66,17 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
                 }
             }
         });
+        holder.unreadMszCounterTv.setVisibility(View.GONE);
+        holder.timeTv.setVisibility(View.GONE);
+        holder.activeUnactiveTv.setVisibility(View.GONE);
     }
     @Override
     public int getItemCount() {
         return oponentListdata.size();
     }
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        ImageView profile;
-        TextView name,userchat;
+        ImageView profile,activeUnactiveTv;
+        TextView name,userchat,unreadMszCounterTv,timeTv;
         RelativeLayout chatContainer;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -81,5 +84,8 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
             name=itemView.findViewById(R.id.name);
             userchat=itemView.findViewById(R.id.userchat);
             chatContainer =itemView.findViewById(R.id.chatContainer);
+            unreadMszCounterTv=itemView.findViewById(R.id.unreadMszCounterTv);
+            timeTv=itemView.findViewById(R.id.timeTv);
+            activeUnactiveTv=itemView.findViewById(R.id.activeUnactiveTv);
         }
     }}

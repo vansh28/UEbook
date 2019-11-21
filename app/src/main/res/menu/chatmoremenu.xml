@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/edit_menu"
+        android:id="@+id/videoCall"
         android:icon="@drawable/ic_home_black_24dp"
 
         android:title="Video Call" />
 
     <item
-        android:id="@+id/delete_menu"
+        android:id="@+id/clearChat"
         android:title="Clear Chat" />
     <item
         android:icon="@drawable/ic_dashboard_black_24dp"

@@ -4,51 +4,72 @@ xmlns:tools="http://schemas.android.com/tools"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
 android:orientation="vertical"
+    android:background="#F7F6F9"
 tools:context=".ChatSdk.ChatListScreen">
 <RelativeLayout
     android:layout_width="match_parent"
     android:background="@color/colorAccent"
     android:id="@+id/header"
-    android:layout_height="@dimen/size_50">
+    android:layout_height="@dimen/size_100">
     <ImageButton
         android:id="@+id/backbtnChat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/backbtn"
         android:background="@android:color/transparent"
-        android:layout_centerVertical="true"
+         android:layout_marginTop="@dimen/size_10"
         android:layout_marginStart="@dimen/size_10"
         android:layout_marginLeft="@dimen/size_10" />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Chat"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/size_10"
+        android:text="UEbook Chat"
+        android:textStyle="bold"
         android:textColor="@color/white"
-        android:textSize="@dimen/size_18"
-        android:layout_centerInParent="true"/>
+        android:textSize="@dimen/size_20"
+       />
 </RelativeLayout>
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/swipe_refresh_layout"
+    <EditText
+        android:id="@+id/edittext_search"
         android:layout_width="match_parent"
-        android:layout_below="@+id/header"
+        android:layout_height="@dimen/size_50"
+        android:layout_marginLeft="22dp"
+        android:layout_marginTop="@dimen/size_75"
+        android:layout_marginRight="@dimen/size_25"
+        android:background="@drawable/chatsearch"
+        android:drawableLeft="@drawable/search"
+        android:drawablePadding="@dimen/size_15"
+        android:hint="Search here"
+        android:maxLines="1"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/size_10"
+        android:textColor="@color/black"
+        android:textSize="@dimen/size_15"
+        android:textColorHint="#818080" />
 
-        android:layout_height="match_parent">
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/chatList"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/header"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="@dimen/size_10"
-        android:layout_marginLeft="@dimen/size_10"
-        android:layout_marginTop="@dimen/size_10"
-        android:layout_marginEnd="@dimen/size_10"
-        android:layout_marginRight="@dimen/size_10"
-        android:layout_marginBottom="9dp"/>
+        android:layout_marginTop="35dp">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/chatList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/size_10"
+
+            android:layout_marginLeft="@dimen/size_10"
+            android:layout_marginTop="@dimen/size_10"
+            android:layout_marginEnd="@dimen/size_10"
+            android:layout_marginRight="@dimen/size_10"
+            android:layout_marginBottom="9dp" />
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-<com.google.android.material.floatingactionbutton.FloatingActionButton
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
     android:layout_width="wrap_content"
     android:id="@+id/newChatbtn"
     android:src="@drawable/chat"

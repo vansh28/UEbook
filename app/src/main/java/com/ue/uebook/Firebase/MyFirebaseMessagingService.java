@@ -205,14 +205,13 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         .setSound(defaultSoundUri)
                         .setContentIntent(pendingIntent)
                         .setPriority(NotificationManager.IMPORTANCE_HIGH);
-        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        // Since android Oreo notification channel is needed.
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);// Since android Oreo notification channel is needed.
+//           if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 //            @SuppressLint("WrongConstant") NotificationChannel channel = new NotificationChannel(channelId,
 //                    "Channel human readable title",
 //                    Notification.DEFAULT_ALL);
 //            notificationManager.createNotificationChannel(channel);
-//        }
+//             }
         createNotificationChannel();
         notificationManager.notify(value /* ID of notification */, notificationBuilder.build());
     }
@@ -232,7 +231,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             return null;
         }
     }
-
     private void createNotificationChannel() {
         // Create the NotificationChannel, but only on API 26+ because
         // the NotificationChannel class is new and not in the support library

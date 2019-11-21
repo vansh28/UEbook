@@ -334,8 +334,19 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
         popup.getMenuInflater()
                 .inflate(R.menu.chatmoremenu, popup.getMenu());
         popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             public boolean onMenuItemClick(MenuItem item) {
-                return true;
+                switch (item.getItemId()) {
+                    case R.id.videoCall:
+
+                       return true;
+                    case R.id.clearChat:
+                         clearChatHistory(new SessionManager(getApplicationContext()).getUserID(),sendToID);
+                        return true;
+
+                    default:
+                        return false;
+                }
             }
         });
         popup.show();
@@ -823,5 +834,32 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
         pb.setIndeterminate(true);
 //        pb.setProgressDrawable(getResources().getDrawable(R.drawable.green_progress));
     }
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private void clearChatHistory(String user_id ,String receiver) {
+        ApiRequest request = new ApiRequest();
+        showLoadingIndicator();
+        request.requestforgetClearChatHistory(user_id, receiver,new okhttp3.Callback() {
+            @Override
+            public void onFailure(okhttp3.Call call, IOException e) {
+                Log.d("error", "error");
+                hideLoadingIndicator();
+            }
 
+            @Override
+            public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
+                hideLoadingIndicator();
+                final String myResponse = response.body().string();
+                Gson gson = new GsonBuilder().create();
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        getChatHistory(new SessionManager(getApplication()).getUserID(), sendToID, channelID, "text");
+
+                    }
+                });
+//                final AllchatResponse form = gson.fromJson(myResponse, AllchatResponse.class);
+            }
+        });
+    }
 }

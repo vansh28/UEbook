@@ -16,18 +16,26 @@ import com.ue.uebook.ChatSdk.Pojo.UserList;
 import com.ue.uebook.GlideUtils;
 import com.ue.uebook.R;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class ChatListAdapter  extends RecyclerView.Adapter<ChatListAdapter.MyViewHolder>{
     private ItemClick itemClick;
     private AppCompatActivity mtx;
     private Data data;
-    private List<UserList> userList;
+    private List<UserList> userList=null;
     private String reciverName;
     private String userID;
+    private List<UserList>dataList;
 
     public ChatListAdapter(Data data, List<UserList> userList, AppCompatActivity mtx ,String userID) {
+        this.dataList=userList;
         this.mtx=mtx;
-        this.userList=userList;
+        this.userList = new ArrayList<UserList>();
+        this.userList.addAll(userList);
         this.data=data;
         this.userID=userID;
     }
@@ -48,16 +56,16 @@ public class ChatListAdapter  extends RecyclerView.Adapter<ChatListAdapter.MyVie
 
     @Override
     public void onBindViewHolder(@NonNull ChatListAdapter.MyViewHolder holder, final int position) {
-        if (userID.equalsIgnoreCase(userList.get(position).getSend_detail().getId())){
-            reciverName=userList.get(position).getRec_detail().getUser_name();
-            holder.name.setText(userList.get(position).getRec_detail().getUser_name());
-            GlideUtils.loadImage(mtx, "http://dnddemo.com/ebooks/api/v1/upload/" + userList.get(position).getRec_detail().getUrl(), holder.profile, R.drawable.user_default, R.drawable.user_default);
+        if (userID.equalsIgnoreCase(dataList.get(position).getSend_detail().getId())){
+            reciverName=dataList.get(position).getRec_detail().getUser_name();
+            holder.name.setText(dataList.get(position).getRec_detail().getUser_name());
+            GlideUtils.loadImage(mtx, "http://dnddemo.com/ebooks/api/v1/upload/" + dataList.get(position).getRec_detail().getUrl(), holder.profile, R.drawable.user_default, R.drawable.user_default);
 
         }
         else {
-            reciverName=userList.get(position).getSend_detail().getUser_name();
-            holder.name.setText(userList.get(position).getSend_detail().getUser_name());
-            GlideUtils.loadImage(mtx, "http://dnddemo.com/ebooks/api/v1/upload/" + userList.get(position).getSend_detail().getUrl(), holder.profile, R.drawable.user_default, R.drawable.user_default);
+            reciverName=dataList.get(position).getSend_detail().getUser_name();
+            holder.name.setText(dataList.get(position).getSend_detail().getUser_name());
+            GlideUtils.loadImage(mtx, "http://dnddemo.com/ebooks/api/v1/upload/" + dataList.get(position).getSend_detail().getUrl(), holder.profile, R.drawable.user_default, R.drawable.user_default);
 
         }
 
@@ -65,12 +73,12 @@ public class ChatListAdapter  extends RecyclerView.Adapter<ChatListAdapter.MyVie
            @Override
            public void onClick(View v) {
                if (itemClick!=null){
-                   if (userID.equalsIgnoreCase(userList.get(position).getSend_detail().getId())){
-                       itemClick.onUserChatClick(userList.get(position).getChannel_id(),userList.get(position).getRec_detail().getId(),userList.get(position).getRec_detail().getUser_name(),userList.get(position).getRec_detail().getUrl());
+                   if (userID.equalsIgnoreCase(dataList.get(position).getSend_detail().getId())){
+                       itemClick.onUserChatClick(dataList.get(position).getChannel_id(),dataList.get(position).getRec_detail().getId(),userList.get(position).getRec_detail().getUser_name(),userList.get(position).getRec_detail().getUrl());
 
                    }
                    else {
-                       itemClick.onUserChatClick(userList.get(position).getChannel_id(),userList.get(position).getSend_detail().getId(),userList.get(position).getSend_detail().getUser_name(),userList.get(position).getSend_detail().getUrl());
+                       itemClick.onUserChatClick(dataList.get(position).getChannel_id(),dataList.get(position).getSend_detail().getId(),userList.get(position).getSend_detail().getUser_name(),userList.get(position).getSend_detail().getUrl());
 
                    }
                }
@@ -81,35 +89,36 @@ public class ChatListAdapter  extends RecyclerView.Adapter<ChatListAdapter.MyVie
             public void onClick(View v) {
                 if (itemClick!=null){
 
-                    if (userID.equalsIgnoreCase(userList.get(position).getSend_detail().getId())){
-                        itemClick.onUserProfileClick(userList.get(position).getRec_detail().getUrl());
+                    if (userID.equalsIgnoreCase(dataList.get(position).getSend_detail().getId())){
+                        itemClick.onUserProfileClick(dataList.get(position).getRec_detail().getUrl());
                     }
                     else {
-                        itemClick.onUserProfileClick(userList.get(position).getSend_detail().getUrl());
+                        itemClick.onUserProfileClick(dataList.get(position).getSend_detail().getUrl());
                     }
 
                 }
             }
         });
-        if (userList.get(position).getType().equalsIgnoreCase("text")){
-            holder.userchat.setText(userList.get(position).getMessage());
+        if (dataList.get(position).getType().equalsIgnoreCase("text")){
+
+            holder.userchat.setText(getFirst4Words(dataList.get(position).getMessage()+".."));
         }
-        else if (userList.get(position).getType().equalsIgnoreCase("image")){
+        else if (dataList.get(position).getType().equalsIgnoreCase("image")){
             holder.userchat.setText("Image");
         }
-        else if (userList.get(position).getType().equalsIgnoreCase("video")){
+        else if (dataList.get(position).getType().equalsIgnoreCase("video")){
             holder.userchat.setText("Video");
         }
-        else if (userList.get(position).getType().equalsIgnoreCase("docfile")){
+        else if (dataList.get(position).getType().equalsIgnoreCase("docfile")){
             holder.userchat.setText("File");
         }
-        else if (userList.get(position).getType().equalsIgnoreCase("audio")){
+        else if (dataList.get(position).getType().equalsIgnoreCase("audio")){
             holder.userchat.setText("Audio");
         }
         }
     @Override
     public int getItemCount() {
-        return userList.size();
+        return dataList.size();
     }
     public class MyViewHolder extends RecyclerView.ViewHolder {
         ImageView profile;
@@ -122,5 +131,29 @@ public class ChatListAdapter  extends RecyclerView.Adapter<ChatListAdapter.MyVie
             userchat=itemView.findViewById(R.id.userchat);
             chatContainer =itemView.findViewById(R.id.chatContainer);
         }
-    }}
+    }
+    public String getFirst4Words(String arg) {
+        Pattern pattern = Pattern.compile("([\\S]+\\s*){1,3}");
+        Matcher matcher = pattern.matcher(arg);
+        matcher.find();
+        return matcher.group();
+    }
+    public void filter(String charText) {
+        charText = charText.toLowerCase(Locale.getDefault());
+        dataList.clear();
+        if (charText.length() == 0) {
+              dataList.addAll(userList);
+        }
+        else
+        {
+            for (UserList wp : userList) {
+                if (wp.getRec_detail().getUser_name().toLowerCase(Locale.getDefault()).contains(charText)) {
+                    dataList.add(wp);
+                }
+            }
+        }
+        notifyDataSetChanged();
+    }
+
+}
 
