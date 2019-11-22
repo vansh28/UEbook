@@ -394,7 +394,6 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
                 final String myResponse = response.body().string();
                 Gson gson = new GsonBuilder().create();
                 final ChatResponse form = gson.fromJson(myResponse, ChatResponse.class);
-
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -672,13 +671,6 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
         super.onPause();
         //unregister our receiver
         this.unregisterReceiver(this.mReceiver);
-    }
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (receiver != null) {
-            this.unregisterReceiver(this.mReceiver);
-        }
     }
     @Override
     public void onBackPressed() {

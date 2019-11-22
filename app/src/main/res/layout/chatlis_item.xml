@@ -23,6 +23,7 @@
             android:layout_width="@dimen/size_10"
             android:background="@drawable/redcircle"
             android:layout_marginTop="@dimen/size_8"
+            android:visibility="gone"
             android:layout_marginLeft="@dimen/size_50"
             android:layout_height="@dimen/size_10"
             />
@@ -63,6 +64,7 @@
             android:layout_width="@dimen/size_25"
             android:layout_height="@dimen/size_25"
             android:text="2"
+            android:visibility="gone"
             android:layout_below="@id/timeTv"
             android:background="@drawable/chatcircle"
             android:layout_alignParentRight="true"

@@ -6,15 +6,16 @@
         android:icon="@drawable/home"
         android:title="@string/home" />
 
+
     <item
         android:id="@+id/bookmark_bottom"
         android:icon="@drawable/bookmark"
         android:title="@string/bookmark" />
     <item
-        android:id="@+id/search_bottom"
+        android:id="@+id/book_catTv"
         android:icon="@drawable/search"
-        android:visible="false"
-        android:title="@string/search" />
+
+        android:title="@string/category" />
 
     <item
         android:id="@+id/notepad_bottom"

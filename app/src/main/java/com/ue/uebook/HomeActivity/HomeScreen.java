@@ -33,6 +33,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.ue.uebook.BaseActivity;
+import com.ue.uebook.HomeActivity.HomeFragment.BookCategoryFragment;
 import com.ue.uebook.HomeActivity.HomeFragment.Bookmark_Fragment;
 import com.ue.uebook.HomeActivity.HomeFragment.CompanyInfo_Fragment;
 import com.ue.uebook.HomeActivity.HomeFragment.Home_Fragment;
@@ -54,7 +55,7 @@ import static com.ue.uebook.NetworkUtils.getInstance;
 
 
 
-public class HomeScreen extends BaseActivity implements Home_Fragment.OnFragmentInteractionListener, Bookmark_Fragment.OnFragmentInteractionListener, User_Fragment.OnFragmentInteractionListener, Search_Fragment.OnFragmentInteractionListener, UserProfile_Fragment.OnFragmentInteractionListener, UserMainFragment.OnFragmentInteractionListener, CompanyInfo_Fragment.OnFragmentInteractionListener, NotepadFragment.OnFragmentInteractionListener, View.OnClickListener {
+public class HomeScreen extends BaseActivity implements Home_Fragment.OnFragmentInteractionListener, Bookmark_Fragment.OnFragmentInteractionListener, User_Fragment.OnFragmentInteractionListener, Search_Fragment.OnFragmentInteractionListener, UserProfile_Fragment.OnFragmentInteractionListener, UserMainFragment.OnFragmentInteractionListener, CompanyInfo_Fragment.OnFragmentInteractionListener, NotepadFragment.OnFragmentInteractionListener, View.OnClickListener , BookCategoryFragment.OnFragmentInteractionListener {
     private ActionBar toolbar;
     private List<HomeListing> recommendedList_book,newBookList,popularBook_List;
     private FloatingActionButton addnotes_fab;
@@ -102,9 +103,9 @@ public class HomeScreen extends BaseActivity implements Home_Fragment.OnFragment
                     loadFragment(fragment);
                     addnotes_fab.setVisibility(View.GONE);
                     return true;
-                case R.id.search_bottom:
+                case R.id.book_catTv:
                     addnotes_fab.setVisibility(View.GONE);
-                    fragment = new Search_Fragment();
+                    fragment = new BookCategoryFragment();
                     loadFragment(fragment);
 
                     return true;
@@ -123,6 +124,7 @@ public class HomeScreen extends BaseActivity implements Home_Fragment.OnFragment
                     fragment = new NotepadFragment();
                     loadFragment(fragment);
                     return true;
+
             }
             return false;
         }

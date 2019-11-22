@@ -1,7 +1,10 @@
 package com.ue.uebook.ChatSdk;
 
 import android.app.Dialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
@@ -47,6 +50,7 @@ public class ChatListScreen extends BaseActivity implements View.OnClickListener
     private EditText edittext_search;
     private Data data;
     private List<UserList>userListList;
+    private BroadcastReceiver mReceiver;
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
 
     @Override
@@ -65,7 +69,6 @@ public class ChatListScreen extends BaseActivity implements View.OnClickListener
         LinearLayoutManager linearLayoutManagerPopularList = new LinearLayoutManager(this);
         linearLayoutManagerPopularList.setOrientation(LinearLayoutManager.VERTICAL);
         chatList.setLayoutManager(linearLayoutManagerPopularList);
-
         backbtn.setOnClickListener(this);
         chatList.setNestedScrollingEnabled(false);
         getChatHistory(new SessionManager(getApplication()).getUserID());
@@ -155,7 +158,6 @@ public class ChatListScreen extends BaseActivity implements View.OnClickListener
                 Log.d("error", "error");
                 hideLoadingIndicator();
             }
-
             @Override
             public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
                 hideLoadingIndicator();
@@ -172,12 +174,47 @@ public class ChatListScreen extends BaseActivity implements View.OnClickListener
                             chatList.setAdapter(chatAdapter);
                             chatAdapter.setItemClickListener(ChatListScreen.this);
                             noHistoryView.setVisibility(View.GONE);
-
                         }
                         else {
                             noHistoryView.setVisibility(View.VISIBLE);
                         }
-
+                    }
+                });
+            }
+        });
+    }
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private void getChatHistorys(String user_id) {
+        ApiRequest request = new ApiRequest();
+       hideLoadingIndicator();
+        if (userListList.size()>0)
+            userListList.clear();
+        request.requestforgetAllchatHistory(user_id, new okhttp3.Callback() {
+            @Override
+            public void onFailure(okhttp3.Call call, IOException e) {
+                Log.d("error", "error");
+                hideLoadingIndicator();
+            }
+            @Override
+            public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
+                hideLoadingIndicator();
+                final String myResponse = response.body().string();
+                Gson gson = new GsonBuilder().create();
+                final AllchatResponse form = gson.fromJson(myResponse, AllchatResponse.class);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (form.getUserList()!= null) {
+                            userListList=form.getUserList();
+                            data=form.getData();
+                            chatAdapter = new ChatListAdapter(data,userListList,ChatListScreen.this,new SessionManager(getApplicationContext()).getUserID());
+                            chatList.setAdapter(chatAdapter);
+                            chatAdapter.setItemClickListener(ChatListScreen.this);
+                            noHistoryView.setVisibility(View.GONE);
+                        }
+                        else {
+                            noHistoryView.setVisibility(View.VISIBLE);
+                        }
                     }
                 });
             }
@@ -193,4 +230,34 @@ public class ChatListScreen extends BaseActivity implements View.OnClickListener
             }
         });
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        IntentFilter intentFilter = new IntentFilter(
+                "android.intent.action.MAIN");
+
+        mReceiver = new BroadcastReceiver() {
+
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                //extract our message from intent
+                String msg_for_me = intent.getStringExtra("some_msg");
+                //log our message value
+                Log.i("InchooTutorial", msg_for_me);
+                getChatHistorys(new SessionManager(getApplication()).getUserID());
+            }
+        };
+        //registering our receiver
+        this.registerReceiver(mReceiver, intentFilter);
+    }
+    @Override
+    protected void onPause() {
+        // TODO Auto-generated method stub
+        super.onPause();
+        //unregister our receiver
+        this.unregisterReceiver(this.mReceiver);
+    }
+
 }

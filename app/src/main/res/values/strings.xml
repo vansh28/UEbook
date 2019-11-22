@@ -248,5 +248,5 @@
     <string name="book_isbn_number">Book ISBN Number</string>
     <string name="pending_book">Pending Book</string>
     <string name="login_successfully">Login Successfully</string>
-
+    <string name="category">Category</string>
 </resources>

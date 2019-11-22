@@ -85,7 +85,7 @@
         android:layout_marginLeft="@dimen/size_150"
         android:layout_marginTop="@dimen/size_8"
         android:layout_marginRight="@dimen/size_15"
-        android:background="@drawable/senderbg"
+        android:background="@drawable/border"
         android:baselineAligned="false"
         android:visibility="gone">
 
@@ -112,8 +112,7 @@
         android:layout_height="@dimen/size_150"
         android:layout_marginTop="@dimen/size_8"
         android:layout_marginRight="@dimen/size_200"
-        android:alpha=".4"
-        android:background="@drawable/rounded_rect"
+        android:background="@drawable/border"
         android:visibility="gone">
 
         <ImageButton

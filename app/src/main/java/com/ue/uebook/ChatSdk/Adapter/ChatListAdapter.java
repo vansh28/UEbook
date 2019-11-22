@@ -1,5 +1,8 @@
 package com.ue.uebook.ChatSdk.Adapter;
 
+import android.graphics.Color;
+import android.graphics.Typeface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -99,9 +102,16 @@ public class ChatListAdapter  extends RecyclerView.Adapter<ChatListAdapter.MyVie
                 }
             }
         });
-        if (dataList.get(position).getType().equalsIgnoreCase("text")){
-
-            holder.userchat.setText(getFirst4Words(dataList.get(position).getMessage()+".."));
+        if (dataList.get(position).getType().equalsIgnoreCase("text"))
+        {
+            if (dataList.get(position).getRead_msg().equalsIgnoreCase("1")){
+                holder.userchat.setText(getFirst4Words(dataList.get(position).getMessage()+".."));
+            }
+            else {
+                holder.userchat.setTextColor(Color.parseColor("#000000"));
+                holder.userchat.setTypeface( holder.userchat.getTypeface(), Typeface.BOLD);
+                holder.userchat.setText(getFirst4Words(dataList.get(position).getMessage()+".."));
+            }
         }
         else if (dataList.get(position).getType().equalsIgnoreCase("image")){
             holder.userchat.setText("Image");
@@ -115,14 +125,26 @@ public class ChatListAdapter  extends RecyclerView.Adapter<ChatListAdapter.MyVie
         else if (dataList.get(position).getType().equalsIgnoreCase("audio")){
             holder.userchat.setText("Audio");
         }
+        String str= dataList.get(position).getCreated();
+        String[] arrOfStr = str.split(" ");
+        Log.d("finsl",arrOfStr[1]);
+        holder.timeTv.setText(arrOfStr[1]);
+        if (Integer.valueOf(dataList.get(position).getMess_count().getTotalMessagecount())>0){
+            holder.unreadMszCounterTv.setVisibility(View.VISIBLE);
+            holder.unreadMszCounterTv.setText(dataList.get(position).getMess_count().getTotalMessagecount());
         }
+        else {
+            holder.unreadMszCounterTv.setVisibility(View.GONE);
+        }
+        }
+
     @Override
     public int getItemCount() {
         return dataList.size();
     }
     public class MyViewHolder extends RecyclerView.ViewHolder {
         ImageView profile;
-        TextView name,userchat;
+        TextView name,userchat,timeTv,unreadMszCounterTv;
         RelativeLayout chatContainer;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -130,6 +152,8 @@ public class ChatListAdapter  extends RecyclerView.Adapter<ChatListAdapter.MyVie
             name=itemView.findViewById(R.id.name);
             userchat=itemView.findViewById(R.id.userchat);
             chatContainer =itemView.findViewById(R.id.chatContainer);
+            timeTv=itemView.findViewById(R.id.timeTv);
+            unreadMszCounterTv=itemView.findViewById(R.id.unreadMszCounterTv);
         }
     }
     public String getFirst4Words(String arg) {
@@ -138,7 +162,8 @@ public class ChatListAdapter  extends RecyclerView.Adapter<ChatListAdapter.MyVie
         matcher.find();
         return matcher.group();
     }
-    public void filter(String charText) {
+    public void filter(String charText)
+    {
         charText = charText.toLowerCase(Locale.getDefault());
         dataList.clear();
         if (charText.length() == 0) {
