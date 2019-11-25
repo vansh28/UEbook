@@ -1,18 +1,32 @@
 package com.ue.uebook.HomeActivity.HomeFragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.ue.uebook.BookCategory.BookCategorywiseList;
+import com.ue.uebook.Data.ApiRequest;
 import com.ue.uebook.HomeActivity.HomeFragment.Adapter.BookCategoryAdapter;
 import com.ue.uebook.R;
+import com.ue.uebook.UploadBook.Pojo.BookCategoryResponsePojo;
+
+import java.io.IOException;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -22,7 +36,7 @@ import com.ue.uebook.R;
  * Use the {@link BookCategoryFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class BookCategoryFragment extends Fragment {
+public class BookCategoryFragment extends Fragment implements BookCategoryAdapter.CategoryItemClick {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -72,13 +86,13 @@ public class BookCategoryFragment extends Fragment {
         // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.fragment_book_category, container, false);
         categoryList=view.findViewById(R.id.categoryList);
-        LinearLayoutManager linearLayoutManagerBookmark = new LinearLayoutManager(getContext());
-        linearLayoutManagerBookmark.setOrientation(LinearLayoutManager.VERTICAL);
-        categoryList.setLayoutManager(linearLayoutManagerBookmark);
-        bookCategoryAdapter= new BookCategoryAdapter();
-        categoryList.setAdapter(bookCategoryAdapter);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(),2);
+        categoryList.setLayoutManager(gridLayoutManager);
+        getBookCategory();
         return view;
     }
+
+
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
@@ -104,6 +118,14 @@ public class BookCategoryFragment extends Fragment {
         mListener = null;
     }
 
+    @Override
+    public void onItemClick(String CategoryId,String CategotyName) {
+        Intent intent = new Intent(getContext(), BookCategorywiseList.class);
+        intent.putExtra("categoryId",CategoryId);
+        intent.putExtra("categoryName",CategotyName);
+        getContext().startActivity(intent);
+    }
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -118,4 +140,30 @@ public class BookCategoryFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+    private void getBookCategory() {
+        ApiRequest request = new ApiRequest();
+        request.requestforGetbookCategory(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.e("error", e.getLocalizedMessage());
+            }
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String myresponse = response.body().string();
+                Gson gson = new GsonBuilder().create();
+                final BookCategoryResponsePojo form = gson.fromJson(myresponse, BookCategoryResponsePojo.class);
+             getActivity().runOnUiThread(new Runnable() {
+             @Override
+             public void run() {
+               bookCategoryAdapter= new BookCategoryAdapter((AppCompatActivity) getContext(),form.getResponse());
+               categoryList.setAdapter(bookCategoryAdapter);
+               bookCategoryAdapter.setItemClickListener(BookCategoryFragment.this);
+           }
+       });
+            }
+        });
+
+
+    }
+
 }

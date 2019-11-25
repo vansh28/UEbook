@@ -177,7 +177,6 @@ public class AuthorProfileScreen extends BaseActivity implements View.OnClickLis
                             post_list.setAdapter(author_postAdapter);
                             author_postAdapter.setItemClickListener(AuthorProfileScreen.this);
                             author_post_count.setText(String.valueOf(form.getBooklist().size()));
-
                         }
                         else {
                             post_list.setVisibility(View.GONE);

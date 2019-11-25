@@ -26,8 +26,8 @@
     <uses-permission android:name="android.permission.READ_INTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION" />
-    <application
 
+    <application
         android:allowBackup="true"
         android:exported="false"
         android:icon="@drawable/applogo"
@@ -38,7 +38,8 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".ChatSdk.VideoScreen"></activity>
+        <activity android:name=".BookCategory.BookCategorywiseList"></activity>
+        <activity android:name=".ChatSdk.VideoScreen" />
         <activity android:name=".demo" />
         <activity android:name=".ChatSdk.MessageScreen" />
         <activity android:name=".ChatSdk.FriendListScreen" />
@@ -56,7 +57,6 @@
         <activity
             android:name=".AuthorProfileActivity.PendingRequestScreen"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".AuthorProfileActivity.AuthorList"
             android:screenOrientation="portrait" />
@@ -141,8 +141,6 @@
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="4b96a3f33893a42103eae91d2166d0c517b833d3" />
-
-
         <meta-data
             android:name="com.quickblox.messages.TYPE"
             android:value="GCM" />

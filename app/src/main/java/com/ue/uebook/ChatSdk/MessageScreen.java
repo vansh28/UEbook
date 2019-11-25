@@ -222,8 +222,6 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
                     Toast.makeText(this, "Please Select Again", Toast.LENGTH_SHORT).show();
                 }
             } else if (typevalue == 3) {
-
-
                 sendMesaage(new SessionManager(getApplication()).getUserID(), "", sendToID, "audio", chanelID, chat_message.getText().toString(), 3);
             } else if (typevalue == 4) {
 
