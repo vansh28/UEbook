@@ -4,17 +4,22 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.media.MediaPlayer;
+import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.SystemClock;
 import android.provider.MediaStore;
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
@@ -41,7 +46,9 @@ import android.widget.VideoView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.textfield.TextInputLayout;
@@ -65,7 +72,9 @@ import com.ue.uebook.UploadBook.Pojo.VerifyISBNPojo;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 import io.github.lizhangqu.coreprogress.ProgressHelper;
 import io.github.lizhangqu.coreprogress.ProgressUIListener;
@@ -78,6 +87,9 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
+import static android.Manifest.permission.RECORD_AUDIO;
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
+
 public class Upload_Book_Screen extends BaseActivity implements View.OnClickListener, ImageUtils.ImageAttachmentListener, AdapterView.OnItemSelectedListener, RecognitionListener {
     private static final int REQUEST_PICK_VIDEO = 4;
     private static final String CHANNEL_ID = "channelID";
@@ -87,15 +99,17 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
     private RelativeLayout cover_image_layout;
     private String filePath;
     private String fileName;
+    private CountDownTimer countDownTimer;
+    private long currentMillis=10;
     private String coverimageurl="";
     private Bitmap bitmap;
     ImageUtils imageUtils;
     private Spinner book_category;
     ArrayList<String> categoryName;
     private ImageView camera_btn, video_btn, audio_btn, documents_btn, cover_image_preview;
-    private TextView filname_view, verifyIsbnTv, upload_info, uploadcover_view, audioname_view, uploadMoreView, assignmentView;
+    private TextView timerTv,messageTv,filname_view, verifyIsbnTv, upload_info, uploadcover_view, audioname_view, uploadMoreView, assignmentView;
     private ProgressDialog progressdialog;
-    private Button publishBtn, addQuestion, saveForLater;
+    private Button publishBtn, addQuestion, saveForLater ,startvoiceRecord,pausevoiceRecord,stopvoiceRecord;
     private int categorytype;
     private EditText bookTitle, bookDesc, authorName, questionEdit, isbnTvview;
     private File coverimage, videofile;
@@ -130,6 +144,20 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
     private String uploadurl=" http://dnddemo.com/ebooks/api/v1/addNewBook";
     private String savelaterUrl;
     private int typevalue=0;  //
+
+    private Handler customHandler = new Handler();
+    private long startTime = 0L;
+    long timeInMilliseconds = 0L;
+    long timeSwapBuff = 0L;
+    long updatedTime = 0L;
+
+    String AudioSavePathInDevice = null;
+    MediaRecorder mediaRecorder ;
+    Random random ;
+    String RandomAudioFileName = "ABCDEFGHIJKLMNOP";
+    public static final int RequestPermissionCode = 1;
+
+
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -303,13 +331,93 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
             Add_Line();
 
         } else if (view == recordbtn) {
-            startVoiceRecognitionActivity();
+//            startVoiceRecognitionActivity();
+            showBottomSheet();
+
+//                     recordAudio("abcdf");
         } else if (view == saveForLater) {
             saveForlater(isbnTvview.getText().toString(), "0",bookid);
         } else if (view == verifyIsbnTv) {
             verifyISBN(isbnTvview.getText().toString());
         }
+        else if (view==startvoiceRecord){
+            startvoiceRecord.setVisibility(View.GONE);
+            pausevoiceRecord.setVisibility(View.VISIBLE);
+            stopvoiceRecord.setVisibility(View.VISIBLE);
+            messageTv.setText("Recording...");
+            startTime = SystemClock.uptimeMillis();
+            customHandler.postDelayed(updateTimerThread, 0);
+//            if(checkPermission()) {
+//
+//                AudioSavePathInDevice =
+//                        Environment.getExternalStorageDirectory().getAbsolutePath() + "/" +
+//                               "van" + "AudioRecording.3gp";
+//
+//                MediaRecorderReady();
+//
+//                try {
+//                    mediaRecorder.prepare();
+//                    mediaRecorder.start();
+//                } catch (IllegalStateException e) {
+//                    // TODO Auto-generated catch block
+//                    e.printStackTrace();
+//                } catch (IOException e) {
+//                    // TODO Auto-generated catch block
+//                    e.printStackTrace();
+//                }
+//
+//
+//                Toast.makeText(Upload_Book_Screen.this, "Recording started",
+//                        Toast.LENGTH_LONG).show();
+//            }
+//
+//
+//            else {
+//                requestPermission();
+//
+//
+//        }
+        }
+        else if (view ==pausevoiceRecord){
+            stopvoiceRecord.setVisibility(View.VISIBLE);
+            pausevoiceRecord.setVisibility(View.GONE);
+            startvoiceRecord.setVisibility(View.VISIBLE);
+            messageTv.setText("Paused...");
+
+            timeSwapBuff += timeInMilliseconds;
+            customHandler.removeCallbacks(updateTimerThread);
+//           MediaPlayer mediaPlayer = new MediaPlayer();
+//            try {
+//                mediaPlayer.setDataSource(AudioSavePathInDevice);
+//                mediaPlayer.prepare();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//
+//            mediaPlayer.start();
+        }
+        else if (view==stopvoiceRecord){
+            mBottomSheetDialog.dismiss();
+            timeSwapBuff=0L;
+            customHandler.removeCallbacks(updateTimerThread);
+//            mediaRecorder.stop();
+
+
+        }
     }
+    private Runnable updateTimerThread = new Runnable() {
+
+        public void run() {
+            timeInMilliseconds = SystemClock.uptimeMillis() - startTime;
+            updatedTime = timeSwapBuff + timeInMilliseconds;
+            int secs = (int) (updatedTime / 1000);
+            int mins = secs / 60;
+            secs = secs % 60;
+            int milliseconds = (int) (updatedTime % 1000);
+            timerTv.setText(String.format("%02d", mins) + ":" + String.format("%02d", secs));
+            customHandler.postDelayed(this, 0);
+        }
+    };
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void verifyISBN(String isbn) {
         ApiRequest request = new ApiRequest();
@@ -653,6 +761,23 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         imageUtils.request_permission_result(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case RequestPermissionCode:
+                if (grantResults.length> 0) {
+                    boolean StoragePermission = grantResults[0] ==
+                            PackageManager.PERMISSION_GRANTED;
+                    boolean RecordPermission = grantResults[1] ==
+                            PackageManager.PERMISSION_GRANTED;
+
+                    if (StoragePermission && RecordPermission) {
+                        Toast.makeText(Upload_Book_Screen.this, "Permission Granted",
+                                Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(Upload_Book_Screen.this,"Permission Denied",Toast.LENGTH_LONG).show();
+                    }
+                }
+                break;
+        }
     }
 
 
@@ -1023,7 +1148,125 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
 
         });
     }
+    private void showBottomSheet() {
+        final View bottomSheetLayout = getLayoutInflater().inflate(R.layout.voicerecognitionview, null);
+        mBottomSheetDialog = new BottomSheetDialog(this);
+        mBottomSheetDialog.setCanceledOnTouchOutside(false);
+        mBottomSheetDialog.setCancelable(false);
+        mBottomSheetDialog.setContentView(bottomSheetLayout);
+        startvoiceRecord = mBottomSheetDialog.findViewById(R.id.startVoicerecord);
+        pausevoiceRecord = mBottomSheetDialog.findViewById(R.id.pauseVoiceRecording);
+        stopvoiceRecord = mBottomSheetDialog.findViewById(R.id.stopVoiceRecording);
+        messageTv=mBottomSheetDialog.findViewById(R.id.messageTv);
+        timerTv=mBottomSheetDialog.findViewById(R.id.timerTv);
+        startvoiceRecord.setOnClickListener(this);
+        pausevoiceRecord.setOnClickListener(this);
+        stopvoiceRecord.setOnClickListener(this);
+        mBottomSheetDialog.show();
+    }
 
+
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private void requestRecordAudioPermission() {
+
+        String requiredPermission = RECORD_AUDIO;
+
+        // If the user previously denied this permission then show a message explaining why
+        // this permission is needed
+        if (checkCallingOrSelfPermission(requiredPermission) == PackageManager.PERMISSION_GRANTED) {
+//            startTime = SystemClock.uptimeMillis();
+//            customHandler.postDelayed(updateTimerThread, 0);
+        } else {
+            requestPermissions(new String[]{requiredPermission}, 101);
+        }
+    }
+    public void MediaRecorderReady(){
+        mediaRecorder=new MediaRecorder();
+        mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+        mediaRecorder.setAudioEncoder(MediaRecorder.OutputFormat.AMR_NB);
+        mediaRecorder.setOutputFile(AudioSavePathInDevice);
+    }
+    public boolean checkPermission() {
+        int result = ContextCompat.checkSelfPermission(getApplicationContext(),
+                WRITE_EXTERNAL_STORAGE);
+        int result1 = ContextCompat.checkSelfPermission(getApplicationContext(),
+                RECORD_AUDIO);
+        return result == PackageManager.PERMISSION_GRANTED &&
+                result1 == PackageManager.PERMISSION_GRANTED;
+    }
+    private void requestPermission() {
+        ActivityCompat.requestPermissions(Upload_Book_Screen.this, new
+                String[]{WRITE_EXTERNAL_STORAGE, RECORD_AUDIO}, RequestPermissionCode);
+    }
+
+    public String CreateRandomAudioFileName(int string){
+        StringBuilder stringBuilder = new StringBuilder( string );
+        int i = 0 ;
+        while(i < string ) {
+            stringBuilder.append(RandomAudioFileName.
+                    charAt(random.nextInt(RandomAudioFileName.length())));
+
+            i++ ;
+        }
+        return stringBuilder.toString();
+    }
+
+    public void recordAudio(String fileName) {
+        final MediaRecorder recorder = new MediaRecorder();
+        ContentValues values = new ContentValues(3);
+        values.put(MediaStore.MediaColumns.TITLE, fileName);
+        recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+        recorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
+        recorder.setAudioEncoder(MediaRecorder.AudioEncoder.DEFAULT);
+        recorder.setOutputFile("/sdcard/sound/" + fileName);
+        try {
+            recorder.prepare();
+
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
+        final ProgressDialog mProgressDialog = new ProgressDialog(Upload_Book_Screen.this);
+        mProgressDialog.setTitle("Record");
+        mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        mProgressDialog.setButton("Stop recording", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                mProgressDialog.dismiss();
+                recorder.stop();
+                recorder.release();
+            }
+        });
+
+        mProgressDialog.setOnCancelListener(new DialogInterface.OnCancelListener(){
+            public void onCancel(DialogInterface p1) {
+                recorder.stop();
+                recorder.release();
+            }
+        });
+        recorder.start();
+
+        mProgressDialog.show();
+    }
+
+    private void startRecording() {
+        mediaRecorder = new MediaRecorder();
+        mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+        mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+        File outputFolder = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/MediaMaster/Dub/");
+        Log.i("recording", "startRecording: creating output file " + outputFolder.mkdirs());
+        File output = new File(outputFolder.getAbsolutePath()+"out" + new Date().getTime() + ".3gpp");
+        mediaRecorder.setOutputFile(output.getAbsolutePath());
+        mediaRecorder.setMaxDuration(3000);
+        try {
+            mediaRecorder.prepare();
+        } catch (IOException e) {
+            Log.e("recording", "startRecording: ", e);
+        }
+        mediaRecorder.start();
+    }
 }
 
 

@@ -152,18 +152,19 @@ public class BookCategoryFragment extends Fragment implements BookCategoryAdapte
                 String myresponse = response.body().string();
                 Gson gson = new GsonBuilder().create();
                 final BookCategoryResponsePojo form = gson.fromJson(myresponse, BookCategoryResponsePojo.class);
-             getActivity().runOnUiThread(new Runnable() {
-             @Override
-             public void run() {
-               bookCategoryAdapter= new BookCategoryAdapter((AppCompatActivity) getContext(),form.getResponse());
-               categoryList.setAdapter(bookCategoryAdapter);
-               bookCategoryAdapter.setItemClickListener(BookCategoryFragment.this);
-           }
-       });
+
+                if (getActivity() != null){
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            bookCategoryAdapter= new BookCategoryAdapter((AppCompatActivity) getContext(),form.getResponse());
+                            categoryList.setAdapter(bookCategoryAdapter);
+                            bookCategoryAdapter.setItemClickListener(BookCategoryFragment.this);
+                        }
+                    });
+                }
             }
         });
-
-
     }
 
 }

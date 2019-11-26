@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:gravity="center_horizontal"
+    android:layout_marginBottom="@dimen/size_10"
+    android:layout_height="wrap_content">
+    <TextView
+        android:id="@+id/timerTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/size_25"
+        android:layout_margin="@dimen/size_10"
+        android:textColor="@color/black"
+        android:text="00:00"/>
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/size_10"
+        android:src="@drawable/audio"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/startVoicerecord"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/colorAccent"
+            android:textColor="@color/white"
+            android:layout_margin="@dimen/size_10"
+            android:text="Start"/>
+        <Button
+            android:id="@+id/playVoicerecord"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/colorAccent"
+            android:textColor="@color/white"
+            android:visibility="gone"
+            android:layout_margin="@dimen/size_10"
+            android:text="Play"/>
+
+        <Button
+            android:id="@+id/pauseVoiceRecording"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:background="@color/colorAccent"
+            android:textColor="@color/white"
+            android:layout_margin="@dimen/size_10"
+            android:text="Pause"/>
+        <Button
+            android:id="@+id/stopVoiceRecording"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:background="@color/colorAccent"
+            android:textColor="@color/white"
+            android:layout_margin="@dimen/size_10"
+            android:text="Stop"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/messageTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/size_10"
+        android:textSize="@dimen/size_18"
+        android:textColor="@color/colorAccent"
+       />
+
+
+</LinearLayout>
