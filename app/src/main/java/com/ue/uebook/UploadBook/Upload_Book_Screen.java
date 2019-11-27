@@ -72,7 +72,6 @@ import com.ue.uebook.UploadBook.Pojo.VerifyISBNPojo;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
@@ -165,6 +164,7 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
         setContentView(R.layout.activity_upload__book__screen);
         pendigbookIntent= getIntent();
         pendingBookdata= new ArrayList<>();
+        random = new Random();
         pendingbookID = pendigbookIntent.getIntExtra("screenid",0);
         bookid_pending = pendigbookIntent.getStringExtra("bookid");
         back_btn_uploadbook = findViewById(R.id.back_btn_uploadbook);
@@ -347,6 +347,8 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
             messageTv.setText("Recording...");
             startTime = SystemClock.uptimeMillis();
             customHandler.postDelayed(updateTimerThread, 0);
+            recordAudio(CreateRandomAudioFileName(5));
+            startVoiceRecognitionActivity();
 //            if(checkPermission()) {
 //
 //                AudioSavePathInDevice =
@@ -386,24 +388,34 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
 
             timeSwapBuff += timeInMilliseconds;
             customHandler.removeCallbacks(updateTimerThread);
-//           MediaPlayer mediaPlayer = new MediaPlayer();
-//            try {
-//                mediaPlayer.setDataSource(AudioSavePathInDevice);
-//                mediaPlayer.prepare();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//
-//            mediaPlayer.start();
+           MediaPlayer mediaPlayer = new MediaPlayer();
+            try {
+                mediaPlayer.setDataSource(AudioSavePathInDevice);
+                mediaPlayer.prepare();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            mediaPlayer.start();
         }
         else if (view==stopvoiceRecord){
+              stopRecording();
             mBottomSheetDialog.dismiss();
             timeSwapBuff=0L;
             customHandler.removeCallbacks(updateTimerThread);
-//            mediaRecorder.stop();
+
 
 
         }
+    }
+    private void stopRecording() {
+        try{
+            mediaRecorder.release();
+            mediaRecorder.stop();
+        }catch(RuntimeException stopException){
+            //handle cleanup here
+        }
+
     }
     private Runnable updateTimerThread = new Runnable() {
 
@@ -457,6 +469,7 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
                 RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
         intent.putExtra(RecognizerIntent.EXTRA_PROMPT,
                 "Speech recognition demo");
+        intent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_POSSIBLY_COMPLETE_SILENCE_LENGTH_MILLIS, 10000000);
         startActivityForResult(intent, VOICE_RECOGNITION_REQUEST_CODE);
     }
     public void Add_Line() {
@@ -1107,7 +1120,7 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
         request.requestforgetPendingBookDetail(book_id,new okhttp3.Callback() {
             @Override
             public void onFailure(okhttp3.Call call, IOException e) {
-                Log.d("error", "error");
+
                 hideLoadingIndicator();
             }
             @Override
@@ -1172,8 +1185,7 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
 
         String requiredPermission = RECORD_AUDIO;
 
-        // If the user previously denied this permission then show a message explaining why
-        // this permission is needed
+
         if (checkCallingOrSelfPermission(requiredPermission) == PackageManager.PERMISSION_GRANTED) {
 //            startTime = SystemClock.uptimeMillis();
 //            customHandler.postDelayed(updateTimerThread, 0);
@@ -1181,13 +1193,13 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
             requestPermissions(new String[]{requiredPermission}, 101);
         }
     }
-    public void MediaRecorderReady(){
-        mediaRecorder=new MediaRecorder();
-        mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-        mediaRecorder.setAudioEncoder(MediaRecorder.OutputFormat.AMR_NB);
-        mediaRecorder.setOutputFile(AudioSavePathInDevice);
-    }
+//    public void MediaRecorderReady(){
+//        mediaRecorder=new MediaRecorder();
+//        mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+//        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+//        mediaRecorder.setAudioEncoder(MediaRecorder.OutputFormat.AMR_NB);
+//        mediaRecorder.setOutputFile(AudioSavePathInDevice);
+//    }
     public boolean checkPermission() {
         int result = ContextCompat.checkSelfPermission(getApplicationContext(),
                 WRITE_EXTERNAL_STORAGE);
@@ -1206,67 +1218,50 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
         int i = 0 ;
         while(i < string ) {
             stringBuilder.append(RandomAudioFileName.
-                    charAt(random.nextInt(RandomAudioFileName.length())));
+                charAt(random.nextInt(RandomAudioFileName.length())));
 
-            i++ ;
-        }
+        i++ ;
+    }
         return stringBuilder.toString();
     }
 
     public void recordAudio(String fileName) {
-        final MediaRecorder recorder = new MediaRecorder();
+        mediaRecorder = new MediaRecorder();
         ContentValues values = new ContentValues(3);
         values.put(MediaStore.MediaColumns.TITLE, fileName);
-        recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-        recorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
-        recorder.setAudioEncoder(MediaRecorder.AudioEncoder.DEFAULT);
-        recorder.setOutputFile("/sdcard/sound/" + fileName);
+        mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
+        mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.DEFAULT);
+        mediaRecorder.setOutputFile( Environment.getExternalStorageDirectory() + File.separator + Environment.DIRECTORY_DCIM + File.separator + fileName+".mp3");
+        AudioSavePathInDevice=Environment.getExternalStorageDirectory() + File.separator + Environment.DIRECTORY_DCIM + File.separator + fileName+".mp3";
         try {
-            recorder.prepare();
-
+            mediaRecorder.prepare();
+            mediaRecorder.start();
         } catch (Exception e){
             e.printStackTrace();
         }
 
-        final ProgressDialog mProgressDialog = new ProgressDialog(Upload_Book_Screen.this);
-        mProgressDialog.setTitle("Record");
-        mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        mProgressDialog.setButton("Stop recording", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                mProgressDialog.dismiss();
-                recorder.stop();
-                recorder.release();
-            }
-        });
+//        final ProgressDialog mProgressDialog = new ProgressDialog(Upload_Book_Screen.this);
+//        mProgressDialog.setTitle("Record");
+//        mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+//        mProgressDialog.setButton("Stop recording", new DialogInterface.OnClickListener() {
+//            public void onClick(DialogInterface dialog, int whichButton) {
+//                mProgressDialog.dismiss();
+//                mediaRecorder.stop();
+//                mediaRecorder.release();
+//            }
+//        });
+//
+//        mProgressDialog.setOnCancelListener(new DialogInterface.OnCancelListener(){
+//            public void onCancel(DialogInterface p1) {
+//                mediaRecorder.stop();
+//                mediaRecorder.release();
+//            }
+//        });
 
-        mProgressDialog.setOnCancelListener(new DialogInterface.OnCancelListener(){
-            public void onCancel(DialogInterface p1) {
-                recorder.stop();
-                recorder.release();
-            }
-        });
-        recorder.start();
 
-        mProgressDialog.show();
     }
 
-    private void startRecording() {
-        mediaRecorder = new MediaRecorder();
-        mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-        mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
-        File outputFolder = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/MediaMaster/Dub/");
-        Log.i("recording", "startRecording: creating output file " + outputFolder.mkdirs());
-        File output = new File(outputFolder.getAbsolutePath()+"out" + new Date().getTime() + ".3gpp");
-        mediaRecorder.setOutputFile(output.getAbsolutePath());
-        mediaRecorder.setMaxDuration(3000);
-        try {
-            mediaRecorder.prepare();
-        } catch (IOException e) {
-            Log.e("recording", "startRecording: ", e);
-        }
-        mediaRecorder.start();
-    }
 }
 
 

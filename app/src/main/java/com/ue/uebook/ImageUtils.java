@@ -518,8 +518,6 @@ AlertDialog.Builder alertdialog = new AlertDialog.Builder(current_activity);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-
-
                 }
                 break;
             case 1:

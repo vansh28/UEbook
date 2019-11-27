@@ -90,7 +90,11 @@ public abstract class BaseActivity extends AppCompatActivity {
         dialog.setContentView(R.layout.layout_loading_indicator);
         dialog.setCancelable(false);
         dialog.setCanceledOnTouchOutside(false);
-        dialog.show();
+
+        if (dialog!=null){
+            dialog.show();
+        }
+
     }
 
     /**
