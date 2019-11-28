@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_margin="@dimen/size_10"
     android:orientation="vertical"
     android:id="@+id/view"
@@ -19,16 +20,25 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/logo_container"
         android:layout_width="match_parent"
         android:layout_height="100dp">
+
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="@dimen/size_12"
             android:src="@drawable/loginlogo"/>
-    </LinearLayout>
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/messenger"
+            android:background="@android:color/transparent"
+            android:id="@+id/chatBtn"
+            android:layout_margin="@dimen/size_10"
+            android:layout_alignParentRight="true"/>
+    </RelativeLayout>
 
     <EditText
         android:id="@+id/edittext_search"

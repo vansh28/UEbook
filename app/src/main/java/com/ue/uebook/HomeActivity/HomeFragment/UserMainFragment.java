@@ -233,8 +233,10 @@ public class UserMainFragment extends Fragment implements View.OnClickListener, 
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         new SessionManager(getActivity().getApplicationContext()).clearUserCredentials();
+
                         Intent intent = new Intent(getContext(), LoginScreen.class);
-                        getContext().startActivity(intent);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
                         new SessionManager(getActivity().getApplicationContext()).setCurrentLanguage("en");
                         getActivity().finish();
                     }

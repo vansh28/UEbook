@@ -79,10 +79,12 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
     private NetworkAPI networkAPI;
     private ProgressDialog pdialog;
     private static final int UNAUTHORIZED = 401;
+    private ProgressDialog progressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_screen);
+        progressDialog =new ProgressDialog(this);
         networkAPI = NetworkService.getAPI().create(NetworkAPI.class);
         pdialog= new ProgressDialog(this);
         signIn_btn = findViewById(R.id.signIn_btn);
@@ -258,9 +260,12 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
                         String id = object.getString("id");
                         final String image_url = "https://graph.facebook.com/" + id + "/picture?type=normal";
                         runOnUiThread(new Runnable() {
+                            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                             @Override
                             public void run() {
-                                showDialog(first_name, last_name, email, image_url);
+//                                showDialog(first_name, last_name, email, image_url);
+                                registrationUser(first_name, " ", email, "Reader", "","","");
+
                             }
                         });
 
@@ -285,7 +290,9 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
         callbackManager.onActivityResult(requestCode, resultCode, data);
         if (requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-            handleGPlusSignInResult(result);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                handleGPlusSignInResult(result);
+            }
         } else {
             super.onActivityResult(requestCode, resultCode, data);
             callbackManager.onActivityResult(requestCode, resultCode, data);
@@ -398,6 +405,7 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void handleGPlusSignInResult(GoogleSignInResult result) {
         Log.d("", "handleSignInResult:" + result.isSuccess());
         hideLoadingIndicator();
@@ -409,7 +417,9 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
             String email = acct.getEmail();
             String familyName = acct.getFamilyName();
             Uri uri = acct.getPhotoUrl();
-            showDialogGP(personName, "", email, acct.getPhotoUrl());
+//            showDialogGP(personName, "", email, acct.getPhotoUrl());
+            registrationUser(personName, " ", email, "Reader", "","","");
+
         }
     }
 
@@ -438,17 +448,24 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void registrationUser(final String full_name, String password, String email, String publisher_type, String gender, String country,String device_token) {
         ApiRequest request = new ApiRequest();
-       showLoadingIndicator();
+//        progressDialog.setMessage("Please wait ...");
+//
+//        try {
+//            progressDialog.show();        }
+//        catch (WindowManager.BadTokenException e) {
+//            //use a log message
+//        }
         request.requestforRegistration(full_name, password, email, publisher_type, gender,country,"" ,device_token,new okhttp3.Callback() {
             @Override
             public void onFailure(okhttp3.Call call, IOException e) {
                 Log.e("error",e.getLocalizedMessage());
-                hideLoadingIndicator();
+                progressDialog.dismiss();
 
             }
             @Override
             public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
                 String myResponse = response.body().string();
+                progressDialog.dismiss();
                 Gson gson = new GsonBuilder().create();
                 final RegistrationResponse form = gson.fromJson(myResponse, RegistrationResponse.class);
                 new SessionManager(getApplicationContext()).storeUseruserID(form.getUser_data().getId());
@@ -462,13 +479,6 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
                         @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                         @Override
                         public void run() {
-//                            String arr[] = form.getUser_data().getUser_name().split(" ", 2);
-//                            String firstWord = arr[0];   //the
-//                            QBUser qbUser = new QBUser();
-//                            qbUser.setLogin(firstWord.trim());
-//                            qbUser.setFullName(form.user_data.getUser_name());
-//                            qbUser.setPassword(App.USER_DEFAULT_PASSWORD);
-//                            signIn(qbUser);
                             gotoHome();
                         }
                     });

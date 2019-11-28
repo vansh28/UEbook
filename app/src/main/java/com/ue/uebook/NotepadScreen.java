@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,6 +29,7 @@ public class NotepadScreen extends AppCompatActivity implements View.OnClickList
     private String description,note_id;
     private Integer  id;
     private int textSize;
+    private RelativeLayout layoutmain;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +46,9 @@ public class NotepadScreen extends AppCompatActivity implements View.OnClickList
         back_btn.setOnClickListener(this);
         intent = getIntent();
         notes_view.setTextSize(textSize);
+        notes_view.setOnClickListener(this);
+        layoutmain=findViewById(R.id.layoutmain);
+        layoutmain.setOnClickListener(this);
          id = intent.getIntExtra("id",0);
         description=intent.getStringExtra("description");
         note_id=intent.getStringExtra("note_id");
@@ -96,6 +101,7 @@ public class NotepadScreen extends AppCompatActivity implements View.OnClickList
 
 
         }
+
     }
     private void confirmDeleteDialog() {
         final PrettyDialog pDialog=  new PrettyDialog(this);

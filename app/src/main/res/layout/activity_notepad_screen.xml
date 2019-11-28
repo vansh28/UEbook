@@ -49,27 +49,33 @@
             android:layout_marginRight="@dimen/size_20"/>
     </RelativeLayout>
     <RelativeLayout
+        android:id="@+id/layoutmain"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <EditText
             android:id="@+id/notes_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="@dimen/size_10"
             android:textColor="@color/black"
             android:textSize="@dimen/size_20"
             android:gravity="start"
+            android:layout_marginRight="@dimen/size_10"
+            android:layout_marginLeft="@dimen/size_10"
+            android:layout_marginTop="@dimen/size_10"
+            android:layout_marginBottom="@dimen/size_80"
             android:hint="@string/write_your_notes_here"
           />
-
         <Button
             android:id="@+id/updateNote"
             android:layout_width="match_parent"
             android:layout_alignParentBottom="true"
-            android:background="@color/colorPrimary"
+            android:background="@drawable/updatebtn"
             android:textColor="@color/white"
-            android:textSize="@dimen/size_20"
+            android:textSize="@dimen/size_18"
+            android:textAllCaps="false"
             android:text="@string/update_notes"
+            android:textStyle="normal"
+            android:layout_margin="@dimen/size_10"
             android:layout_height="@dimen/size_50"/>
     </RelativeLayout>
 

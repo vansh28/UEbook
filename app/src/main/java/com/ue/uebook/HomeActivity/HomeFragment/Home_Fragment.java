@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -29,6 +30,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.ue.uebook.ChatSdk.ChatListScreen;
 import com.ue.uebook.Data.ApiRequest;
 import com.ue.uebook.DeatailActivity.Book_Detail_Screen;
 import com.ue.uebook.HomeActivity.HomeFragment.Adapter.Home_recommended_Adapter;
@@ -84,6 +86,7 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
     private LinearLayout viewL;
     private SwipeRefreshLayout pullTorfrsh;
     private int textSize = 16;
+    private ImageButton chatBtn;
 
     public Home_Fragment() {
         // Required empty public constructor
@@ -128,6 +131,8 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
         View view = inflater.inflate(R.layout.fragment_home_, container, false);
         recommended_list = view.findViewById(R.id.recommended_list);
         viewL = view.findViewById(R.id.view);
+        chatBtn=view.findViewById(R.id.chatBtn);
+        chatBtn.setOnClickListener(this);
         edittext_search = view.findViewById(R.id.edittext_search);
         newBook_list = view.findViewById(R.id.newBook_list);
         popular_more_btn = view.findViewById(R.id.popular_more_btn);
@@ -232,6 +237,11 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
             Intent intent = new Intent(getActivity(), Popular_List_Screen.class);
             getActivity().startActivity(intent);
 
+        }
+        else if (view==chatBtn){
+
+            Intent intent = new Intent(getContext(), ChatListScreen.class);
+            getContext().startActivity(intent);
         }
     }
 

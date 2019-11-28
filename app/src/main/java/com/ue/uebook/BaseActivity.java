@@ -107,7 +107,6 @@ public abstract class BaseActivity extends AppCompatActivity {
             dialog = null;
         }
     }
-
     @TargetApi(Build.VERSION_CODES.M)
     public boolean checkPermissions() {
         int permissionState = ActivityCompat.checkSelfPermission(this,
