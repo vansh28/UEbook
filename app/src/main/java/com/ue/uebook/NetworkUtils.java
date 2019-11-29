@@ -23,12 +23,6 @@ public class NetworkUtils {
 
         return networkUtil;
     }
-
-    /**
-     * This method is invoked to check whether user device is connected to internet or not.
-     *
-     * @return a boolean value based on internet status.
-     */
     public boolean isConnectingToInternet() {
         if (mCtx != null) {
             ConnectivityManager connectivityManager = (ConnectivityManager) mCtx

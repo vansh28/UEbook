@@ -113,8 +113,6 @@ public class ChatListScreen extends BaseActivity implements View.OnClickListener
 
     @Override
     public void onUserChatClick(String channelID,String sendTo ,String name ,String image) {
-//             Intent intent = new Intent(this,MessageScreen.class);
-//              startActivity(intent);
         Intent intent = new Intent(this,MessageScreen.class);
         intent.putExtra("sendTo",sendTo);
         intent.putExtra("channelID",channelID);

@@ -34,14 +34,7 @@ import com.ue.uebook.SessionManager;
 import java.io.IOException;
 import java.util.Objects;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link Bookmark_Fragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link Bookmark_Fragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class Bookmark_Fragment extends Fragment implements Bookmark_List_Adapter.BookmarkBookItemClick {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";

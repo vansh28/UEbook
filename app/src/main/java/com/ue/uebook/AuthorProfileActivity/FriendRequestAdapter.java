@@ -81,7 +81,6 @@ public class FriendRequestAdapter   extends RecyclerView.Adapter<FriendRequestAd
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-
             profile=itemView.findViewById(R.id.image_user);
             name=itemView.findViewById(R.id.name);
             usertype=itemView.findViewById(R.id.usertype);

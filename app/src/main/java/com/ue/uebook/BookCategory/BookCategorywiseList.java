@@ -73,13 +73,11 @@ public class BookCategorywiseList extends BaseActivity implements View.OnClickLi
                 Gson gson = new GsonBuilder().create();
                 final HomeListingResponse form = gson.fromJson(myresponse, HomeListingResponse.class);
                 if (form.getData() != null) {
-
-                        runOnUiThread(new Runnable() {
+                    runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 categoryBookAdater = new CategoryBookAdater((AppCompatActivity) getApplicationContext(), form.getData(), 17);
                                 categoryBookList.setAdapter(categoryBookAdater);
-
                                 categoryBookAdater.notifyDataSetChanged();
 
                             }
@@ -98,16 +96,13 @@ public class BookCategorywiseList extends BaseActivity implements View.OnClickLi
                 Log.d("error", "error");
                 hideLoadingIndicator();
             }
-
             @Override
             public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
                 String myResponse = response.body().string();
                 hideLoadingIndicator();
-
                 Gson gson = new GsonBuilder().create();
                 final HomeListingResponse form = gson.fromJson(myResponse, HomeListingResponse.class);
                 if (form.getData() != null) {
-
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -131,8 +126,7 @@ public class BookCategorywiseList extends BaseActivity implements View.OnClickLi
             finish();
         }
     }
-
-        @Override
+    @Override
         public void onItemClick(int position, String book_id) {
             Intent intent = new Intent(this, Book_Detail_Screen.class);
             intent.putExtra("book_id", book_id);

@@ -308,6 +308,7 @@ public class AuthorProfileScreen extends BaseActivity implements View.OnClickLis
         }
 
     }
+
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void sendMail(String from,String mailto,String subject,String msg) {
         ApiRequest request = new ApiRequest();

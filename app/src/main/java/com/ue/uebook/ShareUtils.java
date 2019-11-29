@@ -43,15 +43,7 @@ public class ShareUtils {
         activity.startActivity(shareIntent);
     }
 
-    /**
-     * Share on Twitter. Using Twitter app if installed or web link otherwise.
-     *
-     * @param activity activity which launches the intent
-     * @param text     text to share
-     * @param url      url to share
-     * @param via      twitter username without '@' who shares
-     * @param hashtags hashtags for tweet without '#' and separated by ','
-     */
+
     public static void shareTwitter(Activity activity, String text, String url, String via, String hashtags) {
         StringBuilder tweetUrl = new StringBuilder("https://twitter.com/intent/tweet?text=");
         tweetUrl.append(TextUtils.isEmpty(text) ? urlEncode(" ") : urlEncode(text));
@@ -87,13 +79,7 @@ public class ShareUtils {
 //        intent.setPackage("com.twitter.android");
 //        activity.startActivity(intent);
     }
-    /**
-     * Share on Whatsapp (if installed)
-     *
-     * @param activity activity which launches the intent
-     * @param text     text to share
-     * @param url      url to share
-     */
+
     public static void shareWhatsapp(Activity activity, String text, String url) {
         PackageManager pm = activity.getPackageManager();
         try {

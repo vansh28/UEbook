@@ -160,27 +160,6 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
         book_asignment.setTextSize(textSize);
         readFull_Book_btn.setTextSize(textSize);
     }
-    private Spannable highlight(int color, Spannable original, String word) {
-        String normalized = Normalizer.normalize(original, Normalizer.Form.NFD)
-                .replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
-
-        int start = normalized.indexOf(word);
-        if (start < 0) {
-            return original;
-        } else {
-            Spannable highlighted = new SpannableString(original);
-            while (start >= 0) {
-                int spanStart = Math.min(start, original.length());
-                int spanEnd = Math.min(start+word.length(), original.length());
-
-                highlighted.setSpan(new ForegroundColorSpan(color), spanStart,
-                        spanEnd, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
-
-                start =bookdesc.indexOf(word, spanEnd);
-            }
-            return highlighted;
-        }
-    }
     private void pullTorefreshswipe(){
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)

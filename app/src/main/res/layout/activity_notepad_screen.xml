@@ -63,6 +63,7 @@
             android:layout_marginLeft="@dimen/size_10"
             android:layout_marginTop="@dimen/size_10"
             android:layout_marginBottom="@dimen/size_80"
+            android:background="@android:color/transparent"
             android:hint="@string/write_your_notes_here"
           />
         <Button

@@ -47,22 +47,10 @@ import okhttp3.Response;
 
 import static android.app.Activity.RESULT_OK;
 import static com.facebook.FacebookSdk.getApplicationContext;
-
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link Search_Fragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link Search_Fragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class Search_Fragment extends Fragment implements View.OnClickListener, Search_History_Adapter.SearchHistoryItemClick ,User_Search_List.SearchListItemClick{
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
     private RecyclerView search_history_list,search_list;
@@ -78,9 +66,6 @@ public class Search_Fragment extends Fragment implements View.OnClickListener, S
     public Search_Fragment() {
         // Required empty public constructor
     }
-
-
-    // TODO: Rename and change types and number of parameters
     public static Search_Fragment newInstance(String param1, String param2) {
         Search_Fragment fragment = new Search_Fragment();
         Bundle args = new Bundle();

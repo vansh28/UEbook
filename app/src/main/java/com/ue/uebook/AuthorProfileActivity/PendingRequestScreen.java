@@ -40,15 +40,10 @@ public class PendingRequestScreen extends BaseActivity implements View.OnClickLi
         LinearLayoutManager linearLayoutManagerPopularList = new LinearLayoutManager(this);
         linearLayoutManagerPopularList.setOrientation(LinearLayoutManager.VERTICAL);
         pendinglist.setLayoutManager(linearLayoutManagerPopularList);
-
         backbtn=findViewById(R.id.back_pending);
-
-
         pendingRequest(new SessionManager(getApplicationContext()).getUserID());
         backbtn.setOnClickListener(this);
-
     }
-
     @Override
     public void onClick(View view) {
         if (view==backbtn){
@@ -64,30 +59,22 @@ public class PendingRequestScreen extends BaseActivity implements View.OnClickLi
             public void onFailure(okhttp3.Call call, IOException e) {
                 hideLoadingIndicator();
             }
-
             @Override
             public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
                 hideLoadingIndicator();
                 String myResponse = response.body().string();
-
                 Gson gson = new GsonBuilder().create();
                 final FrirndRequestData form = gson.fromJson(myResponse, FrirndRequestData.class);
                 data=form.getData();
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-
-
-                            friendRequestAdapter = new FriendRequestAdapter(PendingRequestScreen.this, data);
-                            pendinglist.setAdapter(friendRequestAdapter);
-                            friendRequestAdapter.notifyDataSetChanged();
-                            friendRequestAdapter.setItemClickListener(PendingRequestScreen.this);
-
-
+                        friendRequestAdapter = new FriendRequestAdapter(PendingRequestScreen.this, data);
+                        pendinglist.setAdapter(friendRequestAdapter);
+                        friendRequestAdapter.notifyDataSetChanged();
+                        friendRequestAdapter.setItemClickListener(PendingRequestScreen.this);
                     }
-                });
-
-            }
+                }); }
         });
     }
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -104,27 +91,20 @@ public class PendingRequestScreen extends BaseActivity implements View.OnClickLi
             public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
                 hideLoadingIndicator();
                 String myResponse = response.body().string();
-
-             runOnUiThread(new Runnable() {
-                 @Override
-                 public void run() {
-                     pendingRequest(new SessionManager(getApplicationContext()).getUserID());
-                 }
-             });
-
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        pendingRequest(new SessionManager(getApplicationContext()).getUserID());
+                    }
+                });
             }
-
         });
     }
-
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void onConfirmclick(int position, String frndId) {
-
         pendingRequestConfirm(frndId,"1");
-
     }
-
     @Override
     public void ondeleteclick(int position, String book_id) {
 
