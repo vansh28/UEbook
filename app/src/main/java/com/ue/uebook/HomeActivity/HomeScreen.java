@@ -36,6 +36,7 @@ import com.ue.uebook.BaseActivity;
 import com.ue.uebook.HomeActivity.HomeFragment.BookCategoryFragment;
 import com.ue.uebook.HomeActivity.HomeFragment.Bookmark_Fragment;
 import com.ue.uebook.HomeActivity.HomeFragment.CompanyInfo_Fragment;
+import com.ue.uebook.HomeActivity.HomeFragment.HomeListingFragment;
 import com.ue.uebook.HomeActivity.HomeFragment.Home_Fragment;
 import com.ue.uebook.HomeActivity.HomeFragment.NotepadFragment;
 import com.ue.uebook.HomeActivity.HomeFragment.Pojo.HomeListing;
@@ -55,7 +56,7 @@ import static com.ue.uebook.NetworkUtils.getInstance;
 
 
 
-public class HomeScreen extends BaseActivity implements Home_Fragment.OnFragmentInteractionListener, Bookmark_Fragment.OnFragmentInteractionListener, User_Fragment.OnFragmentInteractionListener, Search_Fragment.OnFragmentInteractionListener, UserProfile_Fragment.OnFragmentInteractionListener, UserMainFragment.OnFragmentInteractionListener, CompanyInfo_Fragment.OnFragmentInteractionListener, NotepadFragment.OnFragmentInteractionListener, View.OnClickListener , BookCategoryFragment.OnFragmentInteractionListener {
+public class HomeScreen extends BaseActivity implements Home_Fragment.OnFragmentInteractionListener, Bookmark_Fragment.OnFragmentInteractionListener, User_Fragment.OnFragmentInteractionListener, Search_Fragment.OnFragmentInteractionListener, UserProfile_Fragment.OnFragmentInteractionListener, UserMainFragment.OnFragmentInteractionListener, CompanyInfo_Fragment.OnFragmentInteractionListener, NotepadFragment.OnFragmentInteractionListener, View.OnClickListener , BookCategoryFragment.OnFragmentInteractionListener , HomeListingFragment.OnFragmentInteractionListener {
     private ActionBar toolbar;
     private List<HomeListing> recommendedList_book,newBookList,popularBook_List;
     private FloatingActionButton addnotes_fab;
@@ -90,7 +91,6 @@ public class HomeScreen extends BaseActivity implements Home_Fragment.OnFragment
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         loadFragment(new Home_Fragment());
-
     }
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
         @SuppressLint("RestrictedApi")

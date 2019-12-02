@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="300dp"
+    android:layout_height="@dimen/size_180"
+    android:layout_margin="@dimen/size_10"
+    android:background="@drawable/cornercirclebg"
+    >
+    <ImageView
+        android:id="@+id/bookimageTv"
+        android:layout_width="@dimen/size_120"
+        android:layout_height="@dimen/size_150"
+        android:scaleType="fitXY"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="@dimen/size_20"
+        android:src="@drawable/download_book"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginLeft="@dimen/size_20"
+        android:layout_marginRight="@dimen/size_20"
+        android:layout_gravity="center_vertical"
+        >
+        <com.ue.uebook.Customview.CustomTextViewBold
+            android:id="@+id/bookTitleTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="The Good Son"
+            android:textSize="@dimen/size_15"
+            android:layout_margin="@dimen/size_3"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:maxLines="2"/>
+        <com.ue.uebook.Customview.CustomTextViewNormal
+            android:id="@+id/authorNameTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="By Vansh"
+            android:layout_margin="@dimen/size_3"
+            android:textSize="@dimen/size_15"
+            android:textColor="@color/white"
+            android:maxLines="1"/>
+        <com.ue.uebook.Customview.CustomTextViewNormal
+            android:id="@+id/categoryNameTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sports"
+            android:textSize="@dimen/size_15"
+            android:textColor="@color/white"
+            android:layout_margin="@dimen/size_3"
+            android:maxLines="1"/>
+        <RatingBar
+            android:id="@+id/myRatingBar"
+            style="?android:attr/ratingBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_5"
+            android:layout_marginLeft="6dp"
+            android:numStars="5"
+            android:isIndicator="true"
+            android:theme="@style/RatingBar"
+            />
+
+    </LinearLayout>
+</LinearLayout>

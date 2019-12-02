@@ -78,7 +78,6 @@ public class ChatListScreen extends BaseActivity implements View.OnClickListener
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
             }
-
             @Override
             public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
                  if (charSequence.length()>0){
@@ -92,7 +91,6 @@ public class ChatListScreen extends BaseActivity implements View.OnClickListener
                  }
 
             }
-
             @Override
             public void afterTextChanged(Editable s) {
 

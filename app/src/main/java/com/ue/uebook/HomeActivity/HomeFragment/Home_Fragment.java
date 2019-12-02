@@ -15,6 +15,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -23,11 +24,14 @@ import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.viewpager.widget.ViewPager;
 
+import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.ue.uebook.ChatSdk.ChatListScreen;
@@ -62,7 +66,7 @@ import static com.ue.uebook.NetworkUtils.getInstance;
  * Use the {@link Home_Fragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Home_Fragment extends Fragment implements View.OnClickListener, Home_recommended_Adapter.RecommendedItemClick, New_Book_Home_Adapter.NewBookItemClick, PopularList_Home_Adapter.PopularBookItemClick, UserMainFragment.OnFragmentInteractionListener, Search_Fragment.OnFragmentInteractionListener {
+public class Home_Fragment extends Fragment implements View.OnClickListener, Home_recommended_Adapter.RecommendedItemClick, New_Book_Home_Adapter.NewBookItemClick, PopularList_Home_Adapter.PopularBookItemClick, UserMainFragment.OnFragmentInteractionListener, Search_Fragment.OnFragmentInteractionListener  {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -84,10 +88,16 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
     private RelativeLayout popularview;
     private Dialog mdialog;
     private LinearLayout viewL;
-    private SwipeRefreshLayout pullTorfrsh;
+    private OnCategorydata onCategorydata;
+    private Home_Fragment home_fragment;
+
     private int textSize = 16;
     private ImageButton chatBtn;
-
+    private int dotscount;
+    private ImageView[] dots;
+    private TabLayout tabLayout;
+    private ViewPager viewPagerHome;
+    private String [] tabname ={"Tab1","Tab2","Tab3","Tab4","Tab5","Tab6","Tab7"};
     public Home_Fragment() {
         // Required empty public constructor
     }
@@ -119,34 +129,26 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home_, container, false);
-        recommended_list = view.findViewById(R.id.recommended_list);
+
         viewL = view.findViewById(R.id.view);
         chatBtn=view.findViewById(R.id.chatBtn);
         chatBtn.setOnClickListener(this);
         edittext_search = view.findViewById(R.id.edittext_search);
-        newBook_list = view.findViewById(R.id.newBook_list);
+
         popular_more_btn = view.findViewById(R.id.popular_more_btn);
         popular_list = view.findViewById(R.id.popular_list);
-        recommemnded_view = view.findViewById(R.id.recommended_view);
-        popular_view = view.findViewById(R.id.popular_view);
-        newBookview = view.findViewById(R.id.newBook_view);
-        popularview = view.findViewById(R.id.popularList_view);
-        textNobookfound = view.findViewById(R.id.textNobookfound);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL); // set Horizontal Orientation
-        recommended_list.setLayoutManager(linearLayoutManager);
-        pullTorfrsh = view.findViewById(R.id.swipe_refresh_layout);
+
+
+
         popular_more_btn.setOnClickListener(this);
         activity = (HomeScreen) getActivity();
+
         displayData();
-        LinearLayoutManager linearLayoutManagerBook = new LinearLayoutManager(getContext());
-        linearLayoutManagerBook.setOrientation(LinearLayoutManager.HORIZONTAL);
-        newBook_list.setLayoutManager(linearLayoutManagerBook);
-        recommended_list.setNestedScrollingEnabled(false);
-        newBook_list.setNestedScrollingEnabled(false);
+
         LinearLayoutManager linearLayoutManagerPopularList = new LinearLayoutManager(getContext());
-        linearLayoutManagerPopularList.setOrientation(LinearLayoutManager.VERTICAL);
+        linearLayoutManagerPopularList.setOrientation(LinearLayoutManager.HORIZONTAL);
         popular_list.setLayoutManager(linearLayoutManagerPopularList);
+        viewPagerHome=view.findViewById(R.id.viewPagerHome);
         popular_list.setNestedScrollingEnabled(false);
         edittext_search.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -154,8 +156,31 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
                 loadFragment(new Search_Fragment());
             }
         });
-        pullTorefreshswipe();
         fontsize();
+        tabLayout = view.findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(viewPagerHome);
+        addTabs(viewPagerHome);
+
+        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener(){
+            @Override
+            public void onTabSelected(TabLayout.Tab tab){
+              int  position = tab.getPosition();
+                Log.d("posit", String.valueOf(position));
+//                if (onCategorydata!=null){
+//                    onCategorydata.onDataReceived(1 ,tabname[position]);
+//                }
+            }
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
         return view;
 
     }
@@ -196,6 +221,11 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
         }
+//        try {
+//            onCategorydata = (OnCategorydata) getActivity();
+//        } catch (ClassCastException e) {
+//            throw new ClassCastException("Error in retrieving data. Please try again");
+//        }
     }
 
     @Override
@@ -208,8 +238,8 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
     public void onStart() {
         super.onStart();
         if (getInstance(getActivity()).isConnectingToInternet()) {
-            getRecommenedBookList("1");
-            getnewBookList("2");
+//            getRecommenedBookList("1");
+//            getnewBookList("2");
             getPopularList();
         }
         else
@@ -243,18 +273,6 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
     @Override
     public void onFragmentInteraction(Uri uri) {
 
-    }
-    private void pullTorefreshswipe() {
-        pullTorfrsh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-            @Override
-            public void onRefresh() {
-                getRecommenedBookList("1");
-                getnewBookList("2");
-                getPopularList();
-                pullTorfrsh.setRefreshing(false);
-            }
-        });
     }
 
     @Override
@@ -349,7 +367,7 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
                                 home_recommended_adapter.setItemClickListener(Home_Fragment.this);
                                 home_recommended_adapter.notifyDataSetChanged();
                                 recommended_list.setNestedScrollingEnabled(false);
-                                recommemnded_view.setVisibility(View.VISIBLE);
+                                recommemnded_view.setVisibility(View.GONE);
                                 recommemnded_view.setTextSize(textSize);
                             }
                         });
@@ -392,7 +410,7 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
                                 new_book_home_adapter = new New_Book_Home_Adapter((AppCompatActivity) getActivity(), newBookList, textSize);
                                 newBook_list.setAdapter(new_book_home_adapter);
                                 new_book_home_adapter.setItemClickListener(Home_Fragment.this);
-                                newBookview.setVisibility(View.VISIBLE);
+                                newBookview.setVisibility(View.GONE);
                                 newBookview.setTextSize(textSize);
                             }
                         });
@@ -431,9 +449,9 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
                                 popularList_home_adapter = new PopularList_Home_Adapter((AppCompatActivity) getActivity(), popularBook_List, textSize);
                                 popular_list.setAdapter(popularList_home_adapter);
                                 popularList_home_adapter.setItemClickListener(Home_Fragment.this);
-                                popularview.setVisibility(View.VISIBLE);
-                                popular_view.setTextSize(textSize);
-                                popular_more_btn.setTextSize(textSize);
+//                                popularview.setVisibility(View.GONE);
+//                                popular_view.setTextSize(textSize);
+//                                popular_more_btn.setTextSize(textSize);
                             }
                         });
 
@@ -452,7 +470,6 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
             }
         });
     }
-
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void showLoadingIndicator() {
         mdialog = new Dialog(getContext());
@@ -471,4 +488,46 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
             mdialog = null;
         }
     }
+    private void addTabs(ViewPager viewPager) {
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getFragmentManager());
+        for (int i=0;i<tabname.length;i++){
+            adapter.addFrag(new HomeListingFragment(), tabname[i]);
+            viewPager.setAdapter(adapter);
+        }
+
+    }
+    class ViewPagerAdapter extends FragmentPagerAdapter {
+        private final List<Fragment> mFragmentList = new ArrayList<>();
+        private final List<String> mFragmentTitleList = new ArrayList<>();
+
+        public ViewPagerAdapter(FragmentManager manager) {
+            super(manager);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return mFragmentList.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            return mFragmentList.size();
+        }
+
+        public void addFrag(Fragment fragment, String title) {
+            mFragmentList.add(fragment);
+            mFragmentTitleList.add(title);
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return mFragmentTitleList.get(position);
+        }
+    }
+
+
+    public interface OnCategorydata{
+        void onDataReceived(int model , String name);
+    }
+
 }
