@@ -46,6 +46,7 @@ import com.ue.uebook.HomeActivity.HomeScreen;
 import com.ue.uebook.PopularActivity.Popular_List_Screen;
 import com.ue.uebook.R;
 import com.ue.uebook.SessionManager;
+import com.ue.uebook.UploadBook.Pojo.BookCategoryResponsePojo;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -90,7 +91,7 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
     private LinearLayout viewL;
     private OnCategorydata onCategorydata;
     private Home_Fragment home_fragment;
-
+    ArrayList<String> categoryName;
     private int textSize = 16;
     private ImageButton chatBtn;
     private int dotscount;
@@ -117,7 +118,7 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
         recommendedList_book = new ArrayList<>();
         newBookList = new ArrayList<>();
         popularBook_List = new ArrayList<>();
-
+         categoryName= new ArrayList<>();
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -157,9 +158,11 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
             }
         });
         fontsize();
+
         tabLayout = view.findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPagerHome);
-        addTabs(viewPagerHome);
+        getBookCategory();
+
 
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener(){
             @Override
@@ -490,8 +493,8 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
     }
     private void addTabs(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getFragmentManager());
-        for (int i=0;i<tabname.length;i++){
-            adapter.addFrag(new HomeListingFragment(), tabname[i]);
+        for (int i=0;i<categoryName.size();i++){
+            adapter.addFrag(new HomeListingFragment(), categoryName.get(i));
             viewPager.setAdapter(adapter);
         }
 
@@ -528,6 +531,34 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
 
     public interface OnCategorydata{
         void onDataReceived(int model , String name);
+    }
+    private void getBookCategory() {
+        ApiRequest request = new ApiRequest();
+        request.requestforGetbookCategory(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.e("error", e.getLocalizedMessage());
+            }
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String myresponse = response.body().string();
+                Gson gson = new GsonBuilder().create();
+                final BookCategoryResponsePojo form = gson.fromJson(myresponse, BookCategoryResponsePojo.class);
+
+                if (form != null) {
+                    for (int i = 0; i < form.getResponse().size(); i++)
+                        categoryName.add(form.getResponse().get(i).getCategory_name());
+                }
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        addTabs(viewPagerHome);
+                    }
+                });
+            }
+        });
+
+
     }
 
 }

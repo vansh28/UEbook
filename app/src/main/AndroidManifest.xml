@@ -8,6 +8,7 @@
     <uses-feature
         android:glEsVersion="0x00020000"
         android:required="true" />
+
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -37,7 +38,11 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".BookCategory.BookCategorywiseList"></activity>
+        <activity android:name=".LoginActivity.Login_Screen.SignInScreen"
+            android:screenOrientation="portrait"
+            ></activity>
+        <activity android:name=".LoginActivity.Login_Screen.SignUp_screen" />
+        <activity android:name=".BookCategory.BookCategorywiseList" />
         <activity android:name=".ChatSdk.VideoScreen" />
         <activity android:name=".demo" />
         <activity android:name=".ChatSdk.MessageScreen" />

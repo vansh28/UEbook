@@ -21,6 +21,8 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.facebook.CallbackManager;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -69,7 +71,9 @@ public class SignIn_Fragment extends Fragment implements View.OnClickListener {
     private LinearLayout fragment;
     private ProgressDialog dialog;
     private static final int UNAUTHORIZED = 401;
-
+    private LinearLayout google_login_btn, facebook_login_btn, login_screen;
+    private CallbackManager callbackManager;
+    private GoogleApiClient mGoogleApiClient;
     public SignIn_Fragment() {
         // Required empty public constructor
     }

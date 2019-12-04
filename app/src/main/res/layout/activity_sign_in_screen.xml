@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:id="@+id/signinscreen"
+    tools:context=".LoginActivity.Login_Screen.SignInScreen">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <ImageView
+                android:layout_width="@dimen/size_150"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/size_25"
+                android:layout_marginTop="@dimen/size_10"
+                android:src="@drawable/loginlogo" />
+
+            <com.ue.uebook.Customview.CustomTextViewBold
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/size_25"
+                android:text="Sign In"
+                android:textColor="@color/black"
+                android:textSize="@dimen/size_25" />
+
+            <com.ue.uebook.Customview.CustomTextViewNormal
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/size_25"
+                android:text="Please login to continue"
+                android:textSize="@dimen/size_18" />
+
+
+
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/size_20"
+                android:layout_marginLeft="@dimen/size_20"
+                android:layout_marginTop="@dimen/size_15"                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/size_10"
+                    android:src="@drawable/usericon" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/size_15"
+                    android:orientation="vertical">
+
+                    <com.ue.uebook.Customview.CustomTextViewNormal
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Username"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/size_16" />
+
+                    <EditText
+                        android:id="@+id/loginEmailTv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:hint="enter your username "
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
+                        android:background="@android:color/transparent"
+                        android:textSize="@dimen/size_15" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="@dimen/size_25"
+                android:layout_marginTop="@dimen/size_5"
+                android:layout_marginRight="@dimen/size_25"
+                android:background="#B4B4B4" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/size_20"
+                android:layout_marginLeft="@dimen/size_20"
+                android:layout_marginTop="@dimen/size_15"                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/size_10"
+                    android:src="@drawable/password" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/size_15"
+                    android:orientation="vertical">
+
+                    <com.ue.uebook.Customview.CustomTextViewNormal
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Password"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/size_16" />
+
+                    <EditText
+                        android:id="@+id/loginPasswordTv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="enter your password "
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
+                        android:inputType="textPassword"
+                        android:background="@android:color/transparent"
+                        android:textSize="@dimen/size_15" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="@dimen/size_25"
+                android:layout_marginTop="@dimen/size_5"
+                android:layout_marginRight="@dimen/size_25"
+                android:background="#B4B4B4" />
+
+
+
+            <Button
+                android:id="@+id/signInBtn"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/loginbtnbg"
+                android:textSize="@dimen/size_18"
+                android:textAllCaps="true"
+                android:textColor="@color/white"
+                android:layout_marginTop="@dimen/size_25"
+                android:layout_marginLeft="@dimen/size_10"
+                android:layout_marginRight="@dimen/size_10"
+                android:layout_marginBottom="@dimen/size_10"
+                android:text="SIGN In"/>
+            <com.ue.uebook.Customview.CustomTextViewMedium
+                android:id="@+id/nothaveacountbtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/size_15"
+                android:layout_marginBottom="@dimen/size_20"
+                android:layout_gravity="center_horizontal"
+                android:text="not have an account? Sign Up"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center_horizontal"
+                android:layout_height="wrap_content">
+                <ImageButton
+                    android:id="@+id/facebookloginBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_margin="@dimen/size_5"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/fb"/>
+                <ImageButton
+                    android:id="@+id/googleloginBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/size_5"
+                    android:src="@drawable/google"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

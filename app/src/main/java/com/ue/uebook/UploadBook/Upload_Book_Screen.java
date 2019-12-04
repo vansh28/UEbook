@@ -348,7 +348,7 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
             startTime = SystemClock.uptimeMillis();
             customHandler.postDelayed(updateTimerThread, 0);
             recordAudio(CreateRandomAudioFileName(5));
-            startVoiceRecognitionActivity();
+//            startVoiceRecognitionActivity();
 //            if(checkPermission()) {
 //
 //                AudioSavePathInDevice =

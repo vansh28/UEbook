@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.ue.uebook.ChatSdk.MessageScreen;
 import com.ue.uebook.HomeActivity.HomeScreen;
 import com.ue.uebook.LoginActivity.LoginScreen;
+import com.ue.uebook.LoginActivity.Login_Screen.SignInScreen;
 import com.ue.uebook.R;
 import com.ue.uebook.SessionManager;
 
@@ -84,7 +85,7 @@ public class SplashScreenApp extends AppCompatActivity {
 
         switch (status) {
             case 0:
-                mainIntent = new Intent(SplashScreenApp.this, LoginScreen.class);
+                mainIntent = new Intent(SplashScreenApp.this, SignInScreen.class);
                 break;
             case 1:
                 mainIntent = new Intent(SplashScreenApp.this, HomeScreen.class);
