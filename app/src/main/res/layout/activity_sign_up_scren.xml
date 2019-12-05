@@ -67,6 +67,7 @@
                         android:textSize="@dimen/size_16" />
 
                     <EditText
+                        android:id="@+id/usernameTv"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="enter your name "
@@ -114,6 +115,7 @@
                         android:textSize="@dimen/size_16" />
 
                     <EditText
+                        android:id="@+id/emailTv"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="text"
@@ -161,6 +163,7 @@
                         android:textSize="@dimen/size_16" />
 
                     <EditText
+                        android:id="@+id/passwordTv"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="enter your password "
@@ -172,6 +175,52 @@
                 </LinearLayout>
             </LinearLayout>
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="@dimen/size_25"
+                android:layout_marginTop="@dimen/size_5"
+                android:layout_marginRight="@dimen/size_25"
+                android:background="#B4B4B4" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/size_20"
+                android:layout_marginLeft="@dimen/size_20"
+                android:layout_marginTop="@dimen/size_15"                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/size_10"
+                    android:src="@drawable/password" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/size_15"
+                    android:orientation="vertical">
+
+                    <com.ue.uebook.Customview.CustomTextViewNormal
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Brief Description"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/size_16" />
+
+                    <EditText
+                        android:id="@+id/briefDescption"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="enter about yourself "
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
+                        android:inputType="textPassword"
+                        android:background="@android:color/transparent"
+                        android:textSize="@dimen/size_15" />
+                </LinearLayout>
+            </LinearLayout>
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
@@ -207,14 +256,14 @@
                         android:textColor="@color/black"
                         android:textSize="@dimen/size_16" />
 
-                    <EditText
+                    <Spinner
+                        android:id="@+id/genderSpinner"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Select your gender "
-                        android:textColor="@color/black"
-                        android:textStyle="bold"
-                        android:background="@android:color/transparent"
-                        android:textSize="@dimen/size_15" />
+                        android:layout_gravity="center_vertical"
+                        android:spinnerMode="dropdown"
+                        android:layout_height="wrap_content">
+
+                    </Spinner>
                 </LinearLayout>
             </LinearLayout>
 
@@ -249,14 +298,17 @@
                         android:textColor="@color/black"
                         android:textSize="@dimen/size_16"
                         android:layout_height="wrap_content"/>
-                    <EditText
-                        android:layout_width="match_parent"
-                        android:hint="Select your actor "
-                        android:textSize="@dimen/size_15"
-                        android:textColor="@color/black"
-                        android:textStyle="bold"
-                        android:background="@android:color/transparent"
-                        android:layout_height="wrap_content"/>
+
+
+                        <Spinner
+                            android:id="@+id/actor_Spinner_signup"
+                            android:layout_width="match_parent"
+                            android:layout_gravity="center_vertical"
+                            android:spinnerMode="dropdown"
+                            android:layout_height="wrap_content">
+
+                        </Spinner>
+
                 </LinearLayout>
             </LinearLayout>
             <View
@@ -267,15 +319,17 @@
                 android:layout_marginRight="@dimen/size_25"
                 android:background="#B4B4B4" />
             <Button
+                android:id="@+id/signUpBtn"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/loginbtnbg"
                 android:textSize="@dimen/size_18"
                 android:textAllCaps="true"
                 android:textColor="@color/white"
+
                 android:layout_marginTop="@dimen/size_25"
-                android:layout_marginLeft="@dimen/size_10"
-                android:layout_marginRight="@dimen/size_10"
+                android:layout_marginLeft="@dimen/size_20"
+                android:layout_marginRight="@dimen/size_20"
                 android:layout_marginBottom="@dimen/size_10"
                 android:text="SIGN UP"/>
             <com.ue.uebook.Customview.CustomTextViewMedium

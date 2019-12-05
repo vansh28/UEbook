@@ -90,7 +90,7 @@
                 android:layout_marginRight="@dimen/size_25"
                 android:background="#B4B4B4" />
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/size_20"
@@ -98,6 +98,7 @@
                 android:layout_marginTop="@dimen/size_15"                android:orientation="horizontal">
 
                 <ImageView
+                    android:id="@+id/passwordLogo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
@@ -105,9 +106,10 @@
                     android:src="@drawable/password" />
 
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/size_15"
+                    android:layout_toRightOf="@+id/passwordLogo"
                     android:orientation="vertical">
 
                     <com.ue.uebook.Customview.CustomTextViewNormal
@@ -119,16 +121,24 @@
 
                     <EditText
                         android:id="@+id/loginPasswordTv"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:hint="enter your password "
+                        android:hint="enter your password  "
                         android:textColor="@color/black"
                         android:textStyle="bold"
                         android:inputType="textPassword"
                         android:background="@android:color/transparent"
                         android:textSize="@dimen/size_15" />
                 </LinearLayout>
-            </LinearLayout>
+
+                <ImageButton
+                    android:id="@+id/showPasswordTv"
+                    android:layout_width="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_height="wrap_content"/>
+
+
+            </RelativeLayout>
 
             <View
                 android:layout_width="match_parent"
@@ -137,6 +147,17 @@
                 android:layout_marginTop="@dimen/size_5"
                 android:layout_marginRight="@dimen/size_25"
                 android:background="#B4B4B4" />
+
+            <com.ue.uebook.Customview.CustomTextViewBold
+                android:id="@+id/forgotPasswordBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="forgot password?"
+                android:textColor="@color/colorAccent"
+                android:layout_gravity="end"
+                android:layout_marginTop="@dimen/size_10"
+                android:paddingRight="@dimen/size_25"
+                />
 
 
 
@@ -149,8 +170,8 @@
                 android:textAllCaps="true"
                 android:textColor="@color/white"
                 android:layout_marginTop="@dimen/size_25"
-                android:layout_marginLeft="@dimen/size_10"
-                android:layout_marginRight="@dimen/size_10"
+                android:layout_marginLeft="@dimen/size_20"
+                android:layout_marginRight="@dimen/size_20"
                 android:layout_marginBottom="@dimen/size_10"
                 android:text="SIGN In"/>
             <com.ue.uebook.Customview.CustomTextViewMedium
@@ -172,13 +193,17 @@
                     android:layout_width="wrap_content"
                     android:layout_margin="@dimen/size_5"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/fb"/>
+                    android:background="@android:color/transparent"
+
+                    android:src="@drawable/fblogo"/>
                 <ImageButton
                     android:id="@+id/googleloginBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/size_5"
-                    android:src="@drawable/google"/>
+                    android:layout_marginTop="@dimen/size_5"
+                    android:layout_marginLeft="@dimen/size_10"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/gplogo"/>
 
             </LinearLayout>
 

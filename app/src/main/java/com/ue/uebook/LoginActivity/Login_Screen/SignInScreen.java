@@ -1,9 +1,14 @@
 package com.ue.uebook.LoginActivity.Login_Screen;
 
 import android.content.Intent;
+import android.graphics.Paint;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Selection;
 import android.text.SpannableString;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.View;
@@ -12,6 +17,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 
 import com.facebook.AccessToken;
@@ -24,13 +30,21 @@ import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.ue.uebook.BaseActivity;
+import com.ue.uebook.Customview.CustomTextViewBold;
 import com.ue.uebook.Customview.CustomTextViewMedium;
 import com.ue.uebook.Data.ApiRequest;
+import com.ue.uebook.ForgotPassWord.ForgotPasswordScreen;
 import com.ue.uebook.HomeActivity.HomeScreen;
 import com.ue.uebook.LoginActivity.Pojo.LoginResponse;
 import com.ue.uebook.LoginActivity.Pojo.RegistrationResponse;
@@ -52,54 +66,71 @@ import okhttp3.RequestBody;
 
 import static com.ue.uebook.NetworkUtils.getInstance;
 
-public class SignInScreen extends BaseActivity implements View.OnClickListener {
+public class SignInScreen extends BaseActivity implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
     private CustomTextViewMedium nothaveacountbtn;
     private Button signInBtn;
-    private EditText emailTv,passwordTv;
-    private ImageButton googleloginBtn,fbloginBtn;
+    private EditText emailTv, passwordTv;
+    private ImageButton googleloginBtn, fbloginBtn,showPasswordTv;
     private CallbackManager callbackManager;
     private LinearLayout signinscreen;
+    private GoogleApiClient mGoogleApiClient;
+    private CustomTextViewBold forgotPasswordBtn;
+    private int id;
+    private Intent intent;
+    private Boolean ishown=false;
     private static final int RC_SIGN_IN = 21;
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in_screen);
-        nothaveacountbtn=findViewById(R.id.nothaveacountbtn);
-        signinscreen=findViewById(R.id.signinscreen);
+        intent = getIntent();
+        id = intent.getIntExtra("id", 0);
+        if (id == 1)
+        {
+            GoogleSignInOptions gso = new GoogleSignInOptions.
+                    Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).
+                    build();
+            GoogleSignInClient googleSignInClient = GoogleSignIn.getClient(this, gso);
+            googleSignInClient.signOut();
+        }
+        showPasswordTv=findViewById(R.id.showPasswordTv);
+        showPasswordTv.setOnClickListener(this);
+        forgotPasswordBtn = findViewById(R.id.forgotPasswordBtn);
+        forgotPasswordBtn.setOnClickListener(this);
+        nothaveacountbtn = findViewById(R.id.nothaveacountbtn);
+        signinscreen = findViewById(R.id.signinscreen);
         callbackManager = CallbackManager.Factory.create();
-        emailTv=findViewById(R.id.loginEmailTv);
-        passwordTv=findViewById(R.id.loginPasswordTv);
-        signInBtn=findViewById(R.id.signInBtn);
-        googleloginBtn=findViewById(R.id.googleloginBtn);
-        fbloginBtn=findViewById(R.id.facebookloginBtn);
+        emailTv = findViewById(R.id.loginEmailTv);
+        passwordTv = findViewById(R.id.loginPasswordTv);
+        signInBtn = findViewById(R.id.signInBtn);
+        googleloginBtn = findViewById(R.id.googleloginBtn);
+        fbloginBtn = findViewById(R.id.facebookloginBtn);
         signInBtn.setOnClickListener(this);
         nothaveacountbtn.setOnClickListener(this);
         googleloginBtn.setOnClickListener(this);
         fbloginBtn.setOnClickListener(this);
-        SpannableString blueSpannable = new SpannableString("Do you have an account? Sign In");
-        blueSpannable.setSpan(new ForegroundColorSpan(getColor(R.color.colorAccent)), 23,31, 0);
+        SpannableString blueSpannable = new SpannableString("Do you have an account? Sign Up");
+        blueSpannable.setSpan(new ForegroundColorSpan(getColor(R.color.colorAccent)), 23, 31, 0);
         nothaveacountbtn.setText(blueSpannable);
+        initializeGPlusSettings();
+        showPasswordTv.setBackgroundResource(R.drawable.eyec);
+        forgotPasswordBtn.setPaintFlags(forgotPasswordBtn.getPaintFlags() |   Paint.UNDERLINE_TEXT_FLAG);
     }
-
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void onClick(View v) {
-        if (v==nothaveacountbtn){
-            Intent intent = new Intent(SignInScreen.this,SignUp_screen.class);
+        if (v == nothaveacountbtn) {
+            Intent intent = new Intent(SignInScreen.this, SignUp_screen.class);
             startActivity(intent);
-        }
-        else if (v==signInBtn){
-            if (isvalidate())
-            {
+        } else if (v == signInBtn) {
+            if (isvalidate()) {
                 String user = emailTv.getText().toString().trim();
                 String userpass = passwordTv.getText().toString().trim();
                 requestforLogin(user, userpass);
             }
 
-        }
-        else if (v==fbloginBtn)
-        {
+        } else if (v == fbloginBtn) {
             if (getInstance(this).isConnectingToInternet()) {
                 Fblogin();
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
@@ -110,13 +141,64 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener {
 
                 showSnackBar(signinscreen, getString(R.string.no_internet));
             }
-        }
-        else if (v==googleloginBtn)
-        {
+        } else if (v == googleloginBtn) {
+            if (getInstance(this).isConnectingToInternet()) {
+                signIn();
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                    showLoadingIndicator();
+                }
+            } else {
+                showSnackBar(signinscreen, getString(R.string.no_internet));
+            }
 
+        } else if (v == forgotPasswordBtn)
+        {
+            gotoForgotPasswordScren();
+        }
+        else if (v==showPasswordTv){
+            if (!ishown)
+            {
+                ishown=true;
+                passwordTv.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                int position = passwordTv.getText().toString().length();
+                Selection.setSelection(passwordTv.getText(), position);
+                showPasswordTv.setBackgroundResource(R.drawable.eye);
+            }
+            else
+                {
+                ishown=false;
+                passwordTv.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                int position = passwordTv.getText().toString().length();
+                Selection.setSelection(passwordTv.getText(), position);
+                showPasswordTv.setBackgroundResource(R.drawable.eyec);
+            }
 
         }
     }
+
+    private void gotoForgotPasswordScren() {
+        Intent intent = new Intent(this, ForgotPasswordScreen.class);
+        startActivity(intent);
+
+    }
+
+    private void initializeGPlusSettings() {
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this, SignInScreen.this)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
+
+    }
+
+
+    private void signIn() {
+        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+        startActivityForResult(signInIntent, RC_SIGN_IN);
+    }
+
     AccessTokenTracker tokenTracker = new AccessTokenTracker() {
         @Override
         protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken currentAccessToken) {
@@ -132,7 +214,7 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener {
         GraphRequest request = GraphRequest.newMeRequest(newAccessToken, new GraphRequest.GraphJSONObjectCallback() {
             @Override
             public void onCompleted(JSONObject object, GraphResponse response) {
-                if (object!=null){
+                if (object != null) {
                     try {
                         final String first_name = object.getString("first_name");
                         final String last_name = object.getString("last_name");
@@ -144,17 +226,13 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener {
                             @Override
                             public void run() {
 //                                showDialog(first_name, last_name, email, image_url);
-                                registrationUser(first_name, " ", email, "Reader", "","","");
-
+                                registrationUser(first_name, " ", email, "Reader", "", "", "");
                             }
                         });
-
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-
                 }
-
             }
         });
         Bundle parameters = new Bundle();
@@ -182,6 +260,7 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener {
                         hideLoadingIndicator();
 
                     }
+
                     @Override
                     public void onError(FacebookException error) {
                         Log.d("error", error.toString());
@@ -190,6 +269,7 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener {
                     }
                 });
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -198,13 +278,38 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener {
         if (requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-//                handleGPlusSignInResult(result);
+                handleGPlusSignInResult(result);
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);
             callbackManager.onActivityResult(requestCode, resultCode, data);
         }
     }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        hideLoadingIndicator();
+
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private void handleGPlusSignInResult(GoogleSignInResult result) {
+        Log.d("", "handleSignInResult:" + result.isSuccess());
+        hideLoadingIndicator();
+        if (result.isSuccess()) {
+            GoogleSignInAccount acct = result.getSignInAccount();
+            //Fetch values
+            String personName = acct.getDisplayName();
+
+            String email = acct.getEmail();
+            String familyName = acct.getFamilyName();
+            Uri uri = acct.getPhotoUrl();
+//            showDialogGP(personName, "", email, acct.getPhotoUrl());
+            registrationUser(personName, " ", email, "Reader", "", "", "");
+
+        }
+    }
+
     private Boolean isvalidate() {
         String user_NAme = emailTv.getText().toString();
         String userpass = passwordTv.getText().toString();
@@ -226,16 +331,17 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener {
             return false;
         }
     }
+
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void requestforLogin(final String user_name, final String password) {
         String url = null;
-     showLoadingIndicator();
+        showLoadingIndicator();
         url = "http://dnddemo.com/ebooks/api/v1/userLogin";
         OkHttpClient client = new OkHttpClient();
         RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
                 .addFormDataPart("user_name", user_name)
                 .addFormDataPart("password", password)
-                .addFormDataPart("device_type","android")
+                .addFormDataPart("device_type", "android")
                 .addFormDataPart("device_token", FirebaseInstanceId.getInstance().getToken())
                 .build();
         Request request = new Request.Builder()
@@ -260,12 +366,12 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener {
                     new SessionManager(getApplicationContext()).storeUserPublishtype(form.getResponse().getPublisher_type());
                     new SessionManager(getApplicationContext()).storeUseruserID(form.getResponse().getId());
                     new SessionManager(getApplicationContext()).storeUserName(form.getResponse().getUser_name());
-                   runOnUiThread(new Runnable() {
+                    runOnUiThread(new Runnable() {
                         @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                         @Override
                         public void run() {
 //                            Toast.makeText(getContext(), "Succesfully Login", Toast.LENGTH_SHORT).show();
-                           {
+                            {
                                 new SessionManager(getApplicationContext()).storeUserLoginStatus(1);
 
                             }
@@ -275,22 +381,20 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener {
                     });
 
 
-
-
                 } else {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
 //                            showDialogWithOkButton("Login Error", form.getMessage());
-                            final PrettyDialog pDialog=  new PrettyDialog(SignInScreen.this);
-                            pDialog  .setTitle("Login Error");
+                            final PrettyDialog pDialog = new PrettyDialog(SignInScreen.this);
+                            pDialog.setTitle("Login Error");
                             pDialog.setIcon(R.drawable.cancel);
                             pDialog.setMessage(form.getMessage());
-                            pDialog   .addButton(
-                                    "OK",					// button text
-                                    R.color.pdlg_color_white,		// button text color
-                                    R.color.colorPrimary,		// button background color
-                                    new PrettyDialogCallback() {		// button OnClick listener
+                            pDialog.addButton(
+                                    "OK",                    // button text
+                                    R.color.pdlg_color_white,        // button text color
+                                    R.color.colorPrimary,        // button background color
+                                    new PrettyDialogCallback() {        // button OnClick listener
                                         @Override
                                         public void onClick() {
                                             pDialog.dismiss();
@@ -309,13 +413,15 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener {
         });
 
     }
+
     public void gotoHome() {
         Intent intent = new Intent(this, HomeScreen.class);
-        intent.putExtra("login",1);
-      startActivity(intent);
+        intent.putExtra("login", 1);
+        startActivity(intent);
         finish();
     }
-    private void registrationUser(final String full_name, String password, String email, String publisher_type, String gender, String country,String device_token) {
+
+    private void registrationUser(final String full_name, String password, String email, String publisher_type, String gender, String country, String device_token) {
         ApiRequest request = new ApiRequest();
         hideLoadingIndicator();
 //        progressDialog.setMessage("Please wait ...");
@@ -325,13 +431,14 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener {
 //        catch (WindowManager.BadTokenException e) {
 //            //use a log message
 //        }
-        request.requestforRegistration(full_name, password, email, publisher_type, gender,country,"" ,device_token,new okhttp3.Callback() {
+        request.requestforRegistration(full_name, password, email, publisher_type, gender, country, "", device_token, new okhttp3.Callback() {
             @Override
             public void onFailure(okhttp3.Call call, IOException e) {
-                Log.e("error",e.getLocalizedMessage());
+                Log.e("error", e.getLocalizedMessage());
 
 
             }
+
             @Override
             public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
                 String myResponse = response.body().string();
@@ -339,7 +446,7 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener {
                 Gson gson = new GsonBuilder().create();
                 final RegistrationResponse form = gson.fromJson(myResponse, RegistrationResponse.class);
                 new SessionManager(getApplicationContext()).storeUseruserID(form.getUser_data().getId());
-                if (form.getError().equalsIgnoreCase("false")&&form.getUser_data()!=null) {
+                if (form.getError().equalsIgnoreCase("false") && form.getUser_data() != null) {
                     new SessionManager(getApplicationContext()).storeUserName(form.getUser_data().getUser_name());
                     new SessionManager(getApplicationContext()).storeUserImage(form.getUser_data().getUrl());
                     new SessionManager(getApplicationContext()).storeUserEmail(form.getUser_data().getEmail());

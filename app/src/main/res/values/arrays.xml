@@ -1,10 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="planets_array">
+        <item>Select kind of actor</item>
         <item>Reader</item>
         <item>Writer</item>
         <item>Publish House</item>
     </string-array>
+    <string-array name="gender_array">
+        <item>Select gender</item>
+        <item>Male</item>
+        <item>Female</item>
+        <item>Other</item>
+    </string-array>
+
     <string-array name="uploadImages">
         <item>Pick from gallery</item>
         <item>Click from camera</item>

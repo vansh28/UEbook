@@ -155,8 +155,6 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
     Random random ;
     String RandomAudioFileName = "ABCDEFGHIJKLMNOP";
     public static final int RequestPermissionCode = 1;
-
-
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     protected void onCreate(Bundle savedInstanceState) {

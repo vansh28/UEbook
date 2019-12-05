@@ -214,6 +214,7 @@ public class UserMainFragment extends Fragment implements View.OnClickListener, 
 
                         Intent intent = new Intent(getContext(), SignInScreen.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        intent.putExtra("id",1);
                         startActivity(intent);
                         new SessionManager(getActivity().getApplicationContext()).setCurrentLanguage("en");
                         getActivity().finish();
