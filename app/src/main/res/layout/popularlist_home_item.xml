@@ -37,7 +37,7 @@
         android:layout_marginLeft="@dimen/size_10"
         android:layout_marginRight="@dimen/size_25"
         android:orientation="vertical">
-        <TextView
+        <com.ue.uebook.Customview.CustomTextViewNormal
             android:id="@+id/bookname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -46,7 +46,7 @@
             android:maxLines="1"
             android:layout_marginTop="@dimen/size_5"
             android:textColor="@color/black"/>
-        <TextView
+        <com.ue.uebook.Customview.CustomTextViewNormal
             android:id="@+id/auhorname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -55,8 +55,8 @@
             android:layout_marginLeft="6dp"
             android:layout_marginTop="@dimen/size_5"
             android:textColor="#9B9B9B"/>
-        <TextView
-            android:id="@+id/shortDesc"
+        <com.ue.uebook.Customview.CustomTextViewNormal
+        android:id="@+id/shortDesc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="13sp"
@@ -77,7 +77,6 @@
             android:isIndicator="true"
             android:theme="@style/RatingBar"
              />
-
     </LinearLayout>
     </LinearLayout>
 <ImageButton

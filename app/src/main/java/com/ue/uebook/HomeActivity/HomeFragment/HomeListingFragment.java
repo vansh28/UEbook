@@ -156,10 +156,7 @@ public class HomeListingFragment extends Fragment implements OnCategorydata {
             @Override
             public void onFailure(Call call, IOException e) {
                 Log.e("error", e.getLocalizedMessage());
-
-
             }
-
             @Override
             public void onResponse(Call call, Response response) throws IOException {
 

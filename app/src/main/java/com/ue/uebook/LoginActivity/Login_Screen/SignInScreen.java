@@ -190,15 +190,11 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener, 
                 .enableAutoManage(this, SignInScreen.this)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
-
     }
-
-
     private void signIn() {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
-
     AccessTokenTracker tokenTracker = new AccessTokenTracker() {
         @Override
         protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken currentAccessToken) {

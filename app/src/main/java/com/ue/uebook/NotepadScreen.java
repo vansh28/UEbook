@@ -22,7 +22,7 @@ import libs.mjn.prettydialog.PrettyDialog;
 import libs.mjn.prettydialog.PrettyDialogCallback;
 
 public class NotepadScreen extends AppCompatActivity implements View.OnClickListener {
-    private ImageButton back_btn ,edit_btn,delete_btn;
+    private ImageButton back_btn ,save_Post,delete_btn;
     private Intent intent;
     private Button updateNote;
     private EditText notes_view;
@@ -36,12 +36,12 @@ public class NotepadScreen extends AppCompatActivity implements View.OnClickList
         setContentView(R.layout.activity_notepad_screen);
         fontsize();
         back_btn = findViewById(R.id.back_btn_notes);
-        edit_btn=findViewById(R.id.edit_Post);
+        save_Post=findViewById(R.id.save_Post);
         delete_btn=findViewById(R.id.delete_Btn);
         notes_view=findViewById(R.id.notes_view);
         updateNote=findViewById(R.id.updateNote);
         updateNote.setOnClickListener(this);
-        edit_btn.setOnClickListener(this);
+        save_Post.setOnClickListener(this);
         delete_btn.setOnClickListener(this);
         back_btn.setOnClickListener(this);
         intent = getIntent();
@@ -53,17 +53,12 @@ public class NotepadScreen extends AppCompatActivity implements View.OnClickList
         description=intent.getStringExtra("description");
         note_id=intent.getStringExtra("note_id");
         if (id==1){
-            edit_btn.setVisibility(View.VISIBLE);
             delete_btn.setVisibility(View.VISIBLE);
-            notes_view.setEnabled(false);
-            notes_view.setText(description);
+             notes_view.setText(description);
+
         }
         else {
-            edit_btn.setVisibility(View.GONE);
             delete_btn.setVisibility(View.GONE);
-            notes_view.setEnabled(true);
-            notes_view.setFocusable(true);
-            notes_view.requestFocus();
         }
 
     }
@@ -77,31 +72,21 @@ public class NotepadScreen extends AppCompatActivity implements View.OnClickList
         else if (view==delete_btn){
             confirmDeleteDialog();
         }
-        else if (view==edit_btn){
-            notes_view.setEnabled(true);;
-            notes_view.setFocusable(true);
-            notes_view.setSelection(notes_view.getText().length());
-            notes_view.requestFocus();
-        }
-        else if (view==updateNote){
+        else if (view==save_Post) {
 
-            if (id==1){
-                updateNotes(note_id,notes_view.getText().toString());
-                notes_view.setEnabled(false);
-            }
-            else {
-                if (!notes_view.getText().toString().isEmpty()){
-                    AddNotes(new SessionManager(getApplicationContext()).getUserID(),notes_view.getText().toString());
+            if (id == 1) {
+                updateNotes(note_id, notes_view.getText().toString());
+            } else {
+                if (!notes_view.getText().toString().isEmpty())
+                {
+                    AddNotes(new SessionManager(getApplicationContext()).getUserID(), notes_view.getText().toString());
                 }
-                else {
-                    Toast.makeText(getApplicationContext(),"Please Add Notes For Update",Toast.LENGTH_SHORT).show();
+                else
+                    {
+                    Toast.makeText(getApplicationContext(), "Please Add Notes For Update", Toast.LENGTH_SHORT).show();
                 }
-
             }
-
-
         }
-
     }
     private void confirmDeleteDialog() {
         final PrettyDialog pDialog=  new PrettyDialog(this);

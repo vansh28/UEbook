@@ -1,12 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorAccent"
     tools:context=".HomeActivity.HomeFragment.BookCategoryFragment">
-<androidx.recyclerview.widget.RecyclerView
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:weightSum="4"
+        android:id="@+id/header"
+        android:layout_margin="@dimen/size_10"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/edittext_search"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/size_50"
+            android:layout_weight="4"
+            android:layout_marginTop="@dimen/size_5"
+            android:background="@drawable/chatsearch"
+            android:drawableLeft="@drawable/search"
+            android:drawablePadding="@dimen/size_15"
+            android:hint="@string/enter_the_name_of_book_or_author"
+            android:maxLines="1"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/size_10"
+            android:focusable="true"
+            android:textColor="@color/black"
+            android:focusedByDefault="false"
+            android:textSize="@dimen/size_15"
+            android:layout_marginLeft="@dimen/size_10"
+            android:layout_marginRight="@dimen/size_10"
+            android:textColorHint="#818080" />
+
+        <ImageButton
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".5"
+            android:src="@drawable/messenger"
+            android:background="@android:color/transparent"
+            android:id="@+id/chatBtn"
+            android:visibility="gone"
+            android:layout_margin="@dimen/size_10"
+            android:layout_alignParentRight="true"/>
+
+    </LinearLayout>
+    <com.ue.uebook.Customview.CustomTextViewBold
+        android:layout_width="match_parent"
+        android:id="@+id/top"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/header"
+        android:layout_margin="@dimen/size_15"
+        android:textColor="@color/white"
+        android:textSize="@dimen/size_18"
+        android:text="Top Categories"/>
+
+    <androidx.recyclerview.widget.RecyclerView
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="@dimen/size_10"
+        android:layout_below="@+id/top"
     android:id="@+id/categoryList"/>
-</FrameLayout>
+</RelativeLayout>

@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -29,7 +30,7 @@ import okhttp3.Callback;
 import okhttp3.Response;
 
 
-public class BookCategoryFragment extends Fragment implements BookCategoryAdapter.CategoryItemClick {
+public class BookCategoryFragment extends Fragment implements BookCategoryAdapter.CategoryItemClick, View.OnClickListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -39,6 +40,7 @@ public class BookCategoryFragment extends Fragment implements BookCategoryAdapte
     private String mParam1;
     private String mParam2;
     private RecyclerView categoryList;
+    private EditText edittext_search;
     private OnFragmentInteractionListener mListener;
     private BookCategoryAdapter bookCategoryAdapter;
 
@@ -69,6 +71,8 @@ public class BookCategoryFragment extends Fragment implements BookCategoryAdapte
         // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.fragment_book_category, container, false);
         categoryList=view.findViewById(R.id.categoryList);
+        edittext_search=view.findViewById(R.id.edittext_search);
+        edittext_search.setOnClickListener(this);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(),2);
         categoryList.setLayoutManager(gridLayoutManager);
         getBookCategory();
@@ -103,6 +107,15 @@ public class BookCategoryFragment extends Fragment implements BookCategoryAdapte
         intent.putExtra("categoryId",CategoryId);
         intent.putExtra("categoryName",CategotyName);
         getContext().startActivity(intent);
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (view==edittext_search){
+
+
+        }
+
     }
 
     public interface OnFragmentInteractionListener {
