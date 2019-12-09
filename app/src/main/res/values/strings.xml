@@ -14,6 +14,7 @@
     <string name="share_intent_title">Share</string>
 
     <string name="facebook_app_id">559094584629511</string>
+<!--    <string name="facebook_app_id">448806012448420</string>-->
     <string name="fb_login_protocol_scheme">fb559094584629511</string>
     <string name="no_internet" translatable="false">No internet connection!</string>
     <string name="ok_txt" translatable="false">ok</string>

@@ -38,17 +38,27 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".LoginActivity.Login_Screen.SignInScreen"
-            android:screenOrientation="portrait"
-            ></activity>
-        <activity android:name=".LoginActivity.Login_Screen.SignUp_screen" />
-        <activity android:name=".BookCategory.BookCategorywiseList" />
-        <activity android:name=".ChatSdk.VideoScreen" />
+        <activity android:name=".AudioRecordActivity"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name=".LoginActivity.Login_Screen.SignInScreen"
+            android:screenOrientation="portrait" />
+        <activity android:name=".LoginActivity.Login_Screen.SignUp_screen"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".BookCategory.BookCategorywiseList"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ChatSdk.VideoScreen"
+            android:screenOrientation="portrait"/>
         <activity android:name=".demo" />
-        <activity android:name=".ChatSdk.MessageScreen" />
-        <activity android:name=".ChatSdk.FriendListScreen" />
-        <activity android:name=".ChatSdk.ChatListScreen" />
-        <activity android:name=".PendingBook.PendingBookScreen" />
+        <activity android:name=".ChatSdk.MessageScreen"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ChatSdk.FriendListScreen"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ChatSdk.ChatListScreen"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".PendingBook.PendingBookScreen"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".AuthorProfileActivity.AuthorEditProfile"
             android:screenOrientation="portrait" />

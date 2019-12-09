@@ -34,9 +34,7 @@ public class ApiRequest {
                 .post(requestBody)
                 .build();
         client.newCall(request).enqueue(callback);
-
     }
-
     public void requestforgetUserInfo(String user_id, Callback callback) {
         String url = null;
         url = BaseUrl + "getUserInfo";
@@ -44,15 +42,12 @@ public class ApiRequest {
         RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
                 .addFormDataPart("user_id", user_id)
                 .build();
-
         Request request = new Request.Builder()
                 .url(url)
                 .post(requestBody)
                 .build();
         client.newCall(request).enqueue(callback);
-
     }
-
     public void requestforforgotPassword(final String email, Callback callback)
     {
         String url = null;
