@@ -53,7 +53,6 @@ ext.versions = [
         'ion': '2.1.7',
         'videoAndroid': '4.3.2'
 ]
-
 ext {
     compileSdkVersion = 28
     buildToolsVersion = "28.0.3"

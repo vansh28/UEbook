@@ -5,12 +5,10 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
-import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
-import android.text.style.ForegroundColorSpan;
 import android.text.style.UnderlineSpan;
 import android.util.Log;
 import android.view.MenuItem;
@@ -49,7 +47,6 @@ import com.ue.uebook.WebviewScreen;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -295,7 +292,7 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
                         if (form.getData().getUser_name()!=null){
                             SpannableString content = new SpannableString(form.getData().getUser_name());
                             content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
-                            book_uploadBy.setText(getResources().getString(R.string.uploadby)+ content);
+                            book_uploadBy.setText(content);
                         }
                         bookDesc.setText(form.getData().getBook_description());
                         videourl=form.getData().getVideo_url();

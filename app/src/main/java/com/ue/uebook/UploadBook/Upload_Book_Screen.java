@@ -86,6 +86,8 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
+import static android.Manifest.permission.CAMERA;
+import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
 import static android.Manifest.permission.RECORD_AUDIO;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
@@ -749,6 +751,13 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
                             "Saved: " + result,
                             Toast.LENGTH_LONG).show();
 //                    String audioPathStr = FilePath.getPath(Upload_Book_Screen.this, data.getData());
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//                        try {
+//                            audioToText(result);
+//                        } catch (IOException e) {
+//                            e.printStackTrace();
+//                        }
+                    }
                     audioUrl = new File(result);
                     audioname_view.setVisibility(View.VISIBLE);
                     audioname_view.setText(audioUrl.getName());
@@ -767,7 +776,6 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
             bookDesc.setEnabled(true);
         }}
     }
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         imageUtils.request_permission_result(requestCode, permissions, grantResults);
@@ -778,8 +786,11 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
                             PackageManager.PERMISSION_GRANTED;
                     boolean RecordPermission = grantResults[1] ==
                             PackageManager.PERMISSION_GRANTED;
-
-                    if (StoragePermission && RecordPermission) {
+                    boolean CameraPermission = grantResults[2] ==
+                            PackageManager.PERMISSION_GRANTED;
+                    boolean ReadPermission = grantResults[2] ==
+                            PackageManager.PERMISSION_GRANTED;
+                    if (StoragePermission && RecordPermission && CameraPermission && ReadPermission) {
                         Toast.makeText(Upload_Book_Screen.this, "Permission Granted",
                                 Toast.LENGTH_LONG).show();
                     } else {
@@ -1208,10 +1219,51 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
 
     private void requestPermission() {
         ActivityCompat.requestPermissions(Upload_Book_Screen.this, new
-                String[]{WRITE_EXTERNAL_STORAGE, RECORD_AUDIO}, RequestPermissionCode);
+                String[]{
+                        WRITE_EXTERNAL_STORAGE, RECORD_AUDIO,CAMERA,READ_EXTERNAL_STORAGE
+        }, RequestPermissionCode);
     }
 
-
+//    @RequiresApi(api = Build.VERSION_CODES.O)
+//    public void  audioToText(String patha) throws IOException {
+//        SpeechClient speech = SpeechClient.create();
+//
+//        // The path to the audio file to transcribe
+//        String fileName = "./resources/audio.raw";
+//
+//        // Reads the audio file into memory
+//        Path path = Paths.get(patha);
+//        byte[] data = Files.readAllBytes(path);
+//        ByteString audioBytes = ByteString.copyFrom(data);
+//
+//        // Builds the sync recognize request
+//        RecognitionConfig config = RecognitionConfig.newBuilder()
+//                .setEncoding(RecognitionConfig.AudioEncoding.LINEAR16)
+//                .setSampleRateHertz(16000)
+//                .setLanguageCode("en-US")
+//                .build();
+//        RecognitionAudio audio = RecognitionAudio.newBuilder()
+//                .setContent(audioBytes)
+//                .build();
+//
+//        // Performs speech recognition on the audio file
+//        RecognizeResponse response = speech.recognize(config, audio);
+//        List<SpeechRecognitionResult> results = response.getResultsList();
+//
+//        for (SpeechRecognitionResult result: results) {
+//            // There can be several alternative transcripts for a given chunk of speech. Just use the
+//            // first (most likely) one here.
+//            SpeechRecognitionAlternative alternative = result.getAlternativesList().get(0);
+//            System.out.printf("Transcription: %s%n", alternative.getTranscript());
+//            bookDesc.setText(alternative.getTranscript().toString());
+//
+//        }
+//        try {
+//            speech.close();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
 
 
 }

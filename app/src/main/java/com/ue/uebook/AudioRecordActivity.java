@@ -12,7 +12,6 @@ import android.os.SystemClock;
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -224,7 +223,7 @@ public class AudioRecordActivity extends AppCompatActivity implements  Recogniti
 
     @Override
     public void onResults(Bundle results) {
-        Log.i("voicetotext", "onResults");
+
         ArrayList<String> matches = results
                 .getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
         if (matches.size() > 0) {
@@ -290,5 +289,6 @@ public class AudioRecordActivity extends AppCompatActivity implements  Recogniti
         }
         return message;
     }
+
 
 }

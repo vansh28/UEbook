@@ -1,6 +1,7 @@
 package com.ue.uebook.LoginActivity.Login_Screen;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Build;
@@ -16,9 +17,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
@@ -64,6 +68,11 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 
+import static android.Manifest.permission.ACCESS_FINE_LOCATION;
+import static android.Manifest.permission.CAMERA;
+import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
+import static android.Manifest.permission.RECORD_AUDIO;
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 import static com.ue.uebook.NetworkUtils.getInstance;
 
 public class SignInScreen extends BaseActivity implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
@@ -79,12 +88,16 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener, 
     private Intent intent;
     private Boolean ishown=false;
     private static final int RC_SIGN_IN = 21;
+    public static final int RequestPermissionCode = 1;
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in_screen);
         intent = getIntent();
+        if (!checkPermission()){
+            requestPermission();
+        }
         id = intent.getIntExtra("id", 0);
         if (id == 1)
         {
@@ -354,6 +367,7 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener, 
             @Override
             public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
                 final String myResponse = response.body().string();
+                hideLoadingIndicator();
                 Gson gson = new GsonBuilder().create();
                 final LoginResponse form = gson.fromJson(myResponse, LoginResponse.class);
                 if (form.getError() == false) {
@@ -460,5 +474,54 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener, 
             }
         });
     }
+    private void requestPermission() {
+        ActivityCompat.requestPermissions(SignInScreen.this, new
+                String[]{
+                WRITE_EXTERNAL_STORAGE, RECORD_AUDIO,CAMERA,READ_EXTERNAL_STORAGE,ACCESS_FINE_LOCATION
+        }, RequestPermissionCode);
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
 
+        switch (requestCode) {
+            case RequestPermissionCode:
+                if (grantResults.length> 0) {
+                    boolean StoragePermission = grantResults[0] ==
+                            PackageManager.PERMISSION_GRANTED;
+                    boolean RecordPermission = grantResults[1] ==
+                            PackageManager.PERMISSION_GRANTED;
+                    boolean CameraPermission = grantResults[2] ==
+                            PackageManager.PERMISSION_GRANTED;
+                    boolean ReadPermission = grantResults[3] ==
+                            PackageManager.PERMISSION_GRANTED;
+                    boolean LocationPermission = grantResults[4] ==
+                            PackageManager.PERMISSION_GRANTED;
+                    if (StoragePermission && RecordPermission && CameraPermission && ReadPermission && LocationPermission) {
+                        Toast.makeText(SignInScreen.this, "Permission Granted",
+                                Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(SignInScreen.this,"Permission Denied",Toast.LENGTH_LONG).show();
+                    }
+                }
+                break;
+
+        }
+    }
+    public boolean checkPermission() {
+        int result = ContextCompat.checkSelfPermission(getApplicationContext(),
+                WRITE_EXTERNAL_STORAGE);
+        int result1 = ContextCompat.checkSelfPermission(getApplicationContext(),
+                RECORD_AUDIO);
+        int result2= ContextCompat.checkSelfPermission(getApplicationContext(),
+                CAMERA);
+        int result3 = ContextCompat.checkSelfPermission(getApplicationContext(),
+                READ_EXTERNAL_STORAGE);
+        int result4= ContextCompat.checkSelfPermission(getApplicationContext(),
+                ACCESS_FINE_LOCATION);
+        return result == PackageManager.PERMISSION_GRANTED &&
+                result1 == PackageManager.PERMISSION_GRANTED &&
+                result2 == PackageManager.PERMISSION_GRANTED &&
+                result3 == PackageManager.PERMISSION_GRANTED&&
+                result4 == PackageManager.PERMISSION_GRANTED ;
+    }
 }
