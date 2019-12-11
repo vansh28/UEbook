@@ -4,6 +4,7 @@
     android:layout_width="300dp"
     android:layout_height="@dimen/size_180"
     android:layout_margin="@dimen/size_10"
+    android:id="@+id/bookContainerTv"
     android:background="@drawable/cornercirclebg"
     >
     <ImageView

@@ -160,7 +160,7 @@ public class NotepadScreen extends AppCompatActivity implements View.OnClickList
                     @Override
                     public void run() {
                         Toast.makeText(getApplicationContext(),"Successfuly Updated",Toast.LENGTH_SHORT).show();
-
+                                  finish();
                     }
                 });
             }

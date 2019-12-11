@@ -35,8 +35,10 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.ue.uebook.ChatSdk.ChatListScreen;
+import com.ue.uebook.Constants;
 import com.ue.uebook.Data.ApiRequest;
 import com.ue.uebook.DeatailActivity.Book_Detail_Screen;
+import com.ue.uebook.FontCache;
 import com.ue.uebook.HomeActivity.HomeFragment.Adapter.Home_recommended_Adapter;
 import com.ue.uebook.HomeActivity.HomeFragment.Adapter.New_Book_Home_Adapter;
 import com.ue.uebook.HomeActivity.HomeFragment.Adapter.PopularList_Home_Adapter;
@@ -76,7 +78,7 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    private RecyclerView recommended_list, newBook_list, popular_list;
+    private RecyclerView recommended_list, newBook_list, popular_list,homelist;
     private Home_recommended_Adapter home_recommended_adapter;
     private Button popular_more_btn;
     private PopularList_Home_Adapter popularList_home_adapter;
@@ -99,6 +101,7 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
     private TabLayout tabLayout;
     private ViewPager viewPagerHome;
     private String [] tabname ={"Tab1","Tab2","Tab3","Tab4","Tab5","Tab6","Tab7"};
+    private static int homeRefresh=0;
     public Home_Fragment() {
         // Required empty public constructor
     }
@@ -135,7 +138,7 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
         chatBtn=view.findViewById(R.id.chatBtn);
         chatBtn.setOnClickListener(this);
         edittext_search = view.findViewById(R.id.edittext_search);
-
+        homelist=view.findViewById(R.id.homelist);
         popular_more_btn = view.findViewById(R.id.popular_more_btn);
         popular_list = view.findViewById(R.id.popular_list);
 
@@ -149,6 +152,11 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
         LinearLayoutManager linearLayoutManagerPopularList = new LinearLayoutManager(getContext());
         linearLayoutManagerPopularList.setOrientation(LinearLayoutManager.HORIZONTAL);
         popular_list.setLayoutManager(linearLayoutManagerPopularList);
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        linearLayoutManagerPopularList.setOrientation(LinearLayoutManager.HORIZONTAL);
+        homelist.setLayoutManager(linearLayoutManager);
+
         viewPagerHome=view.findViewById(R.id.viewPagerHome);
         popular_list.setNestedScrollingEnabled(false);
         edittext_search.setOnClickListener(new View.OnClickListener() {
@@ -160,18 +168,24 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
         fontsize();
 
         tabLayout = view.findViewById(R.id.tabs);
+
         tabLayout.setupWithViewPager(viewPagerHome);
+
         getBookCategory();
 
 
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener(){
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onTabSelected(TabLayout.Tab tab){
               int  position = tab.getPosition();
-                Log.d("posit", String.valueOf(position));
+                Log.d("posit", String.valueOf(position+1));
 //                if (onCategorydata!=null){
 //                    onCategorydata.onDataReceived(1 ,tabname[position]);
 //                }
+                if (getInstance(getActivity()).isConnectingToInternet()) {
+                    getRecommenedBookList(String.valueOf(position+1));
+                }
             }
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
@@ -242,7 +256,7 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
         super.onStart();
         if (getInstance(getActivity()).isConnectingToInternet()) {
 //            getRecommenedBookList("1");
-//            getnewBookList("2");
+////            getnewBookList("2");
             getPopularList();
         }
         else
@@ -341,7 +355,7 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void getRecommenedBookList(String categoryId) {
-        showLoadingIndicator();
+
         ApiRequest request = new ApiRequest();
         if (recommendedList_book.size() > 0)
             recommendedList_book.clear();
@@ -366,17 +380,16 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
                             @Override
                             public void run() {
                                 home_recommended_adapter = new Home_recommended_Adapter((AppCompatActivity) getActivity(), recommendedList_book, textSize);
-                                recommended_list.setAdapter(home_recommended_adapter);
+                                homelist.setAdapter(home_recommended_adapter);
                                 home_recommended_adapter.setItemClickListener(Home_Fragment.this);
                                 home_recommended_adapter.notifyDataSetChanged();
-                                recommended_list.setNestedScrollingEnabled(false);
-                                recommemnded_view.setVisibility(View.GONE);
-                                recommemnded_view.setTextSize(textSize);
+                                homelist.setNestedScrollingEnabled(false);
+
                             }
                         });
                     }
                 } else {
-                    recommemnded_view.setVisibility(View.GONE);
+
                 }
 
             }
@@ -553,12 +566,30 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
                     @Override
                     public void run() {
                         addTabs(viewPagerHome);
+                        changeTabsFont(tabLayout);
                     }
                 });
             }
         });
 
 
+    }
+    private void changeTabsFont(TabLayout tabLayout) {
+        ViewGroup vg = (ViewGroup) tabLayout.getChildAt(0);
+        int tabsCount = vg.getChildCount();
+        for (int j = 0; j < tabsCount; j++) {
+            ViewGroup vgTab = (ViewGroup) vg.getChildAt(j);
+            int tabChildsCount = vgTab.getChildCount();
+            for (int i = 0; i < tabChildsCount; i++) {
+                View tabViewChild = vgTab.getChildAt(i);
+                if (tabViewChild instanceof TextView) {
+                    ((TextView) tabViewChild).setTypeface(FontCache.getTypeface(Constants.FONT_MENU, getContext()));
+//                    ((TextView) tabViewChild).setTextColor(getResources().getColor(R.color.dark_gray));
+//                    ((TextView) tabViewChild).setTextSize(getResources().getDimension(R.dimen.size_20));
+                    //((TextView) tabViewChild).setTextSize(50);
+                }
+            }
+        }
     }
 
 }

@@ -47,6 +47,17 @@
 
         </LinearLayout>
 
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
 <RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
@@ -71,26 +82,36 @@
         android:layout_alignParentRight="true"/>
 </RelativeLayout>
 
+
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/popular_list"
         android:layout_width="wrap_content"
-        android:layout_marginTop="@dimen/size_10"
-        android:layout_height="@dimen/size_200">
-    </androidx.recyclerview.widget.RecyclerView>
+        android:layout_height="@dimen/size_200"
+        android:layout_marginTop="@dimen/size_10"/>
 
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:visibility="visible"
+        app:tabGravity="fill"
+        app:tabIndicatorColor="@color/black"
+        app:tabMode="scrollable" />
 
-            <com.google.android.material.tabs.TabLayout
-                android:id="@+id/tabs"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:tabMode="scrollable"
-               android:visibility="visible"
-                android:background="@android:color/transparent"
-                app:tabIndicatorColor="@color/black"
-                app:tabGravity="fill"/>
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/viewPagerHome"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:visibility="gone"
+        android:layout_height="match_parent" />
+    <com.ue.uebook.NonScrollRecyclerView
+        android:id="@+id/homelist"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/size_200"
+        android:layout_marginTop="@dimen/size_10"/>
+
+</LinearLayout>
+    </ScrollView>
 
 </LinearLayout>

@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -48,22 +49,22 @@ public class Home_recommended_Adapter extends RecyclerView.Adapter<Home_recommen
     @Override
     public Home_recommended_Adapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 // infalte the item Layout
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.recommended_home_item, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.popularlist_home_item, parent, false);
 // set the view's size, margins, paddings and layout parameters
 
         Home_recommended_Adapter.MyViewHolder vh = new Home_recommended_Adapter.MyViewHolder(v);
         // pass the view to View Holder
 
 
-        vh.book_name.setTextSize(textsize);
-        vh.author_name.setTextSize(textsize);
+        vh.bookname.setTextSize(textsize);
+        vh.authorName.setTextSize(textsize);
         return vh;
     }
 
     @Override
     public void onBindViewHolder(@NonNull Home_recommended_Adapter.MyViewHolder holder, final int position) {
 
-        holder.main_container.setOnClickListener(new View.OnClickListener() {
+        holder.book_container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (recommendedItemClick != null) {
@@ -71,10 +72,10 @@ public class Home_recommended_Adapter extends RecyclerView.Adapter<Home_recommen
                 }
             }
         });
-        holder.book_name.setText(recommendedList_book.get(position).getBook_title());
-        holder.author_name.setText(recommendedList_book.get(position).getAuthor_name());
+        holder.bookname.setText(recommendedList_book.get(position).getBook_title());
+        holder.authorName.setText(recommendedList_book.get(position).getAuthor_name());
         Log.e("image",recommendedList_book.get(position).getThubm_image());
-       GlideUtils.loadImage(mctx,"http://"+recommendedList_book.get(position).getThubm_image(),holder.book_cover,R.drawable.noimage,R.drawable.noimage);
+       GlideUtils.loadImage(mctx,"http://"+recommendedList_book.get(position).getThubm_image(),holder.bookimage,R.drawable.noimage,R.drawable.noimage);
     }
 
     @Override
@@ -83,15 +84,18 @@ public class Home_recommended_Adapter extends RecyclerView.Adapter<Home_recommen
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        private LinearLayout main_container;
-        private ImageView book_cover;
-        private TextView book_name,author_name;
+        LinearLayout book_container;
+        ImageView bookimage;
+        TextView bookname, authorName, bookDesc;
+        RatingBar ratingBar;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            main_container=itemView.findViewById(R.id.container_book);
-            book_name=itemView.findViewById(R.id.book_name);
-            author_name =itemView.findViewById(R.id.author_name);
-            book_cover =itemView.findViewById(R.id.item_image);
+            book_container = itemView.findViewById(R.id.container);
+            bookimage = itemView.findViewById(R.id.item_image);
+            bookname = itemView.findViewById(R.id.bookname);
+            authorName = itemView.findViewById(R.id.auhorname);
+            bookDesc = itemView.findViewById(R.id.shortDesc);
+            ratingBar = itemView.findViewById(R.id.myRatingBar);
 
         }
     }

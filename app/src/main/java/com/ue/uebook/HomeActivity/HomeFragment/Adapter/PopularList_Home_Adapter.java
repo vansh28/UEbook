@@ -26,6 +26,7 @@ public class PopularList_Home_Adapter extends RecyclerView.Adapter<PopularList_H
     private List<HomeListing> popularBook_list;
     private AppCompatActivity mctx;
     private int textsize;
+    private int colorArray[]={R.drawable.cornercirclebg,R.drawable.cornercirclepink,R.drawable.cornercirclebgred,R.drawable.cornercirclebg};
     public PopularList_Home_Adapter(AppCompatActivity mctx, List<HomeListing> popularBook_list, int textSize) {
         this.popularBook_list=popularBook_list;
         this.mctx=mctx;
@@ -55,14 +56,15 @@ public class PopularList_Home_Adapter extends RecyclerView.Adapter<PopularList_H
 
     @Override
     public void onBindViewHolder(@NonNull PopularList_Home_Adapter.MyViewHolder holder, final int position) {
-//        holder.book_container.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                if (popularBookItemClick != null) {
-//                    popularBookItemClick.onItemClick_PopularBook(position,popularBook_list.get(position).getId());
-//                }
-//            }
-//        });
+        holder.bookContainerTv.setBackgroundResource(colorArray[position]);
+        holder.bookContainerTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (popularBookItemClick != null) {
+                    popularBookItemClick.onItemClick_PopularBook(position,popularBook_list.get(position).getId());
+                }
+            }
+        });
             holder.authorName.setText(popularBook_list.get(position).getAuthor_name());
             holder.bookname.setText(popularBook_list.get(position).getBook_title());
 //        if (popularBook_list.get(position).getBook_description().length()>11){
@@ -88,13 +90,13 @@ public class PopularList_Home_Adapter extends RecyclerView.Adapter<PopularList_H
         return popularBook_list.size();
     }
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        LinearLayout book_container;
+        LinearLayout bookContainerTv;
         ImageView bookimage;
         TextView bookname,authorName,bookDesc;
         RatingBar ratingBar;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-
+            bookContainerTv=itemView.findViewById(R.id.bookContainerTv);
             bookimage=itemView.findViewById(R.id.bookimageTv);
             bookname=itemView.findViewById(R.id.bookTitleTv);
             authorName=itemView.findViewById(R.id.authorNameTv);

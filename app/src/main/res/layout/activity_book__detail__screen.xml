@@ -50,26 +50,24 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/size_15"
-                    android:layout_marginBottom="@dimen/size_40"
+                    android:layout_marginBottom="@dimen/size_10"
                     android:orientation="horizontal"
                     android:visibility="visible">
                     <androidx.cardview.widget.CardView
                         android:layout_width="@dimen/size_150"
                         android:layout_height="@dimen/size_200"
                         android:layout_margin="6dp"
-                        android:layout_marginTop="@dimen/size_5"
                         android:background="@color/white"
                         android:visibility="visible"
                         app:cardCornerRadius="8dp"
-                        app:cardMaxElevation="15dp"
-                        card_view:cardElevation="16dp"
+                        app:cardMaxElevation="8dp"
+                        card_view:cardElevation="15dp"
                         card_view:cardPreventCornerOverlap="false">
 
                         <ImageView
                             android:id="@+id/bookcoverImage"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:padding="@dimen/size_5"
                             android:scaleType="fitXY" />
                     </androidx.cardview.widget.CardView>
 
@@ -108,7 +106,7 @@
                             android:layout_height="wrap_content">
                             <de.hdodenhof.circleimageview.CircleImageView
                                 xmlns:app="http://schemas.android.com/apk/res-auto"
-                                android:id="@+id/profile_image_user"
+                                android:id="@+id/profile_user"
                                 android:layout_width="@dimen/size_40"
                                 android:layout_height="@dimen/size_40"
                                 android:src="@drawable/user_default"
@@ -119,17 +117,84 @@
                                   android:id="@+id/book_uploadBy"
                                   android:layout_width="wrap_content"
                                   android:layout_marginLeft="@dimen/size_10"
-                                  android:textSize="@dimen/size_17"
+                                  android:textSize="@dimen/size_14"
                                   android:textColor="@color/white"
                                   android:layout_marginTop="@dimen/size_10"
-                                  android:layout_toRightOf="@id/profile_image_user"
+                                  android:layout_toRightOf="@id/profile_user"
                                   android:layout_height="wrap_content"
                                  />
+                            <RatingBar
+                                android:id="@+id/myRatingBar"
+                                style="?android:attr/ratingBarStyleSmall"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/size_5"
+                                android:layout_marginLeft="20dp"
+                                android:numStars="5"
+                                android:layout_toRightOf="@+id/profile_user"
+                                android:isIndicator="true"
+                                android:layout_below="@+id/book_uploadBy"
+                                android:theme="@style/RatingBar"
+                                />
 
                         </RelativeLayout>
-                    </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/size_15"
+                            android:layout_marginTop="@dimen/size_25"
+                            android:orientation="horizontal">
+                            <ImageButton
+                                android:id="@+id/fbshare_btn"
+                                android:layout_width="@dimen/size_25"
+                                android:layout_height="@dimen/size_25"
+                                android:background="@android:color/transparent"
+                                android:src="@drawable/fblogo" />
+                            <ImageButton
+                                android:id="@+id/googleshare_btn"
+                                android:layout_width="@dimen/size_25"
+                                android:layout_height="@dimen/size_25"
+                                android:layout_marginLeft="@dimen/size_15"
+                                android:background="@android:color/transparent"
+                                android:src="@drawable/gplogo" />
+                            <ImageButton
+                                android:id="@+id/twittershare_btn"
+                                android:layout_width="@dimen/size_25"
+                                android:layout_height="@dimen/size_25"
+                                android:layout_marginLeft="@dimen/size_15"
+                                android:background="@android:color/transparent"
+                                android:src="@drawable/twlogo" />
+                            <ImageButton
+                                android:id="@+id/whatsappshare_btn"
+                                android:layout_width="@dimen/size_25"
+                                android:layout_height="@dimen/size_25"
+                                android:layout_marginLeft="@dimen/size_15"
+                                android:background="@android:color/transparent"
+                                android:src="@drawable/whatsapp" />
+                        </LinearLayout>
 
+                    </LinearLayout>
                 </LinearLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_marginBottom="@dimen/size_20"
+                    android:layout_height="wrap_content">
+                    <com.ue.uebook.Customview.CustomTextViewNormal
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/size_17"
+                        android:layout_marginLeft="@dimen/size_25"
+                        android:text="Info"/>
+                    <com.ue.uebook.Customview.CustomTextViewNormal
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/size_17"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="@dimen/size_40"
+                        android:text="(250) Reviews"/>
+                </RelativeLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -188,6 +253,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/size_10"
                         android:layout_marginTop="@dimen/size_10"
+                        android:visibility="gone"
                         android:orientation="vertical">
                         <TextView
                             android:layout_width="wrap_content"
@@ -197,40 +263,6 @@
                             android:textColor="@color/black"
                             android:textSize="20sp"
                             android:textStyle="bold" />
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/size_10"
-                            android:layout_marginTop="@dimen/size_10"
-                            android:orientation="horizontal">
-                            <ImageButton
-                                android:id="@+id/fbshare_btn"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:background="@android:color/transparent"
-                                android:src="@drawable/fblogo" />
-                            <ImageButton
-                                android:id="@+id/googleshare_btn"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="@dimen/size_10"
-                                android:background="@android:color/transparent"
-                                android:src="@drawable/gplogo" />
-                            <ImageButton
-                                android:id="@+id/twittershare_btn"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="@dimen/size_10"
-                                android:background="@android:color/transparent"
-                                android:src="@drawable/twlogo" />
-                            <ImageButton
-                                android:id="@+id/whatsappshare_btn"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="@dimen/size_10"
-                                android:background="@android:color/transparent"
-                                android:src="@drawable/whatsapp" />
-                        </LinearLayout>
                     </LinearLayout>
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -238,9 +270,7 @@
                         android:layout_marginLeft="@dimen/size_10"
                         android:layout_marginTop="@dimen/size_10"
                         android:orientation="vertical"
-
                         android:paddingBottom="@dimen/size_10">
-
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -250,12 +280,9 @@
                             android:textColor="@color/black"
                             android:textSize="20sp"
                             android:textStyle="bold" />
-
                         <RelativeLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content">
-
-
                             <RatingBar
                                 android:id="@+id/myRatingBar_detail"
                                 style="?android:attr/ratingBarStyleIndicator"
@@ -266,14 +293,12 @@
                                 android:isIndicator="false"
                                 android:numStars="5"
                                 android:theme="@style/RatingBar" />
-
                             <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentRight="true"
                                 android:layout_marginRight="@dimen/size_20"
                                 android:orientation="horizontal">
-
                                 <TextView
                                     android:id="@+id/averageRating"
                                     android:layout_width="wrap_content"
@@ -281,24 +306,18 @@
                                     android:layout_height="wrap_content"
                                     android:textColor="@color/colorPrimary"
                                     android:textSize="@dimen/size_25" />
-
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="/"
                                     android:textSize="@dimen/size_20" />
-
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="5"
                                     android:textSize="@dimen/size_20" />
-
-
                             </LinearLayout>
-
                         </RelativeLayout>
-
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -308,7 +327,6 @@
                             android:textColor="@color/black"
                             android:textSize="20sp"
                             android:textStyle="bold" />
-
                         <com.google.android.material.textfield.TextInputLayout
                             android:id="@+id/password_text_input"
                             style="@style/TextInputLayout"
@@ -317,26 +335,21 @@
                             android:layout_marginTop="@dimen/size_10"
                             android:hint="@string/write_your_comments"
                             app:errorEnabled="true">
-
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/comment_edit_text"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:minHeight="@dimen/size_60" />
                         </com.google.android.material.textfield.TextInputLayout>
-
-
                         <Button
                             android:id="@+id/submit_comment"
                             android:layout_width="@dimen/size_150"
                             android:layout_height="@dimen/size_40"
                             android:layout_marginLeft="@dimen/size_12"
                             android:background="@drawable/submitbg"
-                            android:padding="@dimen/size_10"
                             android:text="@string/submit"
                             android:textColor="@color/white"
                             android:textSize="@dimen/size_15" />
-
                         <TextView
                             android:id="@+id/topreviewView"
                             android:layout_width="wrap_content"

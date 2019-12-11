@@ -61,7 +61,7 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
     private Button  comment_Submit;
     private List<BookDetails>bookDetail;
     private ProgressDialog dialog;
-    private ImageView book_coverTv;
+    private ImageView book_coverTv,profile_user;
     private TextView bookTitle,bookDesc,bookAuthor,averageRating,topreviewView,book_uploadBy ,book_asignment ,readFull_Book_btn;
     private Intent intent;
     private String book_Id,videourl,docurl,audiourl;
@@ -73,6 +73,7 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
     private String ulpoadByUserId;
     private List<Assignment>assignmentList;
     private List<user_answer>user_answers;
+    private RatingBar myRatingBar;
     private int textSize;
     String docbaseUrl="http://docs.google.com/gview?embedded=true&url=";
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -81,6 +82,8 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book__detail__screen);
         swipeRefreshLayout=findViewById(R.id.swipe_refresh_layout);
+        myRatingBar=findViewById(R.id.myRatingBar);
+        profile_user=findViewById(R.id.profile_user);
         book_uploadBy=findViewById(R.id.book_uploadBy);
         averageRating=findViewById(R.id.averageRating);
         topreviewView=findViewById(R.id.topreviewView);
@@ -290,16 +293,24 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
                         bookAuthor.setText(form.getData().getAuthor_name());
                         ulpoadByUserId=form.getData().getUser_id();
                         if (form.getData().getUser_name()!=null){
-                            SpannableString content = new SpannableString(form.getData().getUser_name());
-                            content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
-                            book_uploadBy.setText(content);
+//                            SpannableString content = new SpannableString(form.getData().getUser_name());
+//                            content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
+                            book_uploadBy.setText((form.getData().getUser_name()));
+//                            GlideUtils.loadImage(Book_Detail_Screen.this,"http://"+form.getData().get,book_coverTv,R.drawable.noimage,R.drawable.noimage);
+
                         }
+                          else {
+                            profile_user.setVisibility(View.GONE);
+
+                        }
+
                         bookDesc.setText(form.getData().getBook_description());
                         videourl=form.getData().getVideo_url();
                         docurl=form.getData().getPdf_url();
                         audiourl=form.getData().getAudio_url();
                         bookdesc=form.getData().getBook_description();
                         averageRating.setText(form.getAveraVal());
+                        myRatingBar.setRating(Float.parseFloat(form.getAveraVal()));
                         if (form.getBookMark()!=null){
                             if (form.getBookMark().getBookmarkStatus().equals("1")){
                                 bookmark_btn.setBackgroundResource(R.drawable.bookmark_active);

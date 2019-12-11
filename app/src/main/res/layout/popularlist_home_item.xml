@@ -27,7 +27,6 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/size_120"
             android:layout_centerHorizontal="true"
-            android:padding="@dimen/size_5"
             android:scaleType="fitXY"
             />
     </androidx.cardview.widget.CardView>

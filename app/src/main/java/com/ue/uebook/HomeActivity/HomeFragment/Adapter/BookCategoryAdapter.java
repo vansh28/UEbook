@@ -27,7 +27,6 @@ public class BookCategoryAdapter extends RecyclerView.Adapter<BookCategoryAdapte
             "#284b5e",
             "#224156",
             "#86a6a1",
-
     };
     public BookCategoryAdapter(AppCompatActivity mtx ,List<BookCategoryPojo> response) {
         this.response=response;
@@ -60,7 +59,7 @@ public class BookCategoryAdapter extends RecyclerView.Adapter<BookCategoryAdapte
              @Override
              public void onClick(View v) {
                  if (categoryItemClick!=null){
-                     categoryItemClick.onItemClick(response.get(position).getId(),response.get(position).getCategory_name());
+                     categoryItemClick.onItemClick(String.valueOf(position+1) ,response.get(position).getCategory_name());
                  }
              }
          });

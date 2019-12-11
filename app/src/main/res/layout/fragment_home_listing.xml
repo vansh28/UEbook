@@ -4,11 +4,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".HomeActivity.HomeFragment.HomeListingFragment">
-      <androidx.recyclerview.widget.RecyclerView
+      <com.ue.uebook.NonScrollRecyclerView
           android:id="@+id/homelistTv"
-     android:layout_width="match_parent"
+       android:layout_width="match_parent"
           android:layout_margin="@dimen/size_10"
         android:layout_height="match_parent">
-        </androidx.recyclerview.widget.RecyclerView>
+        </com.ue.uebook.NonScrollRecyclerView>
 
 </LinearLayout>

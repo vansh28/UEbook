@@ -29,6 +29,16 @@
             android:textColor="@color/white"
             android:textSize="@dimen/size_18"/>
     </RelativeLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            >
+
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -70,9 +80,11 @@
         android:layout_marginTop="@dimen/size_5"
         android:background="#d3d3d3"/>
 
-    <androidx.recyclerview.widget.RecyclerView
+    <com.ue.uebook.NonScrollRecyclerView
         android:id="@+id/font_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/size_10"/>
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>
