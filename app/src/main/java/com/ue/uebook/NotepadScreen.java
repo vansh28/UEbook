@@ -25,8 +25,8 @@ public class NotepadScreen extends AppCompatActivity implements View.OnClickList
     private ImageButton back_btn ,save_Post,delete_btn;
     private Intent intent;
     private Button updateNote;
-    private EditText notes_view;
-    private String description,note_id;
+    private EditText notes_view,notes_title;
+    private String description,note_id,title;
     private Integer  id;
     private int textSize;
     private RelativeLayout layoutmain;
@@ -40,6 +40,7 @@ public class NotepadScreen extends AppCompatActivity implements View.OnClickList
         delete_btn=findViewById(R.id.delete_Btn);
         notes_view=findViewById(R.id.notes_view);
         updateNote=findViewById(R.id.updateNote);
+        notes_title=findViewById(R.id.notes_title);
         updateNote.setOnClickListener(this);
         save_Post.setOnClickListener(this);
         delete_btn.setOnClickListener(this);
@@ -52,9 +53,11 @@ public class NotepadScreen extends AppCompatActivity implements View.OnClickList
          id = intent.getIntExtra("id",0);
         description=intent.getStringExtra("description");
         note_id=intent.getStringExtra("note_id");
+        title=intent.getStringExtra("title");
         if (id==1){
             delete_btn.setVisibility(View.VISIBLE);
              notes_view.setText(description);
+             notes_title.setText(title);
 
         }
         else {
@@ -75,11 +78,14 @@ public class NotepadScreen extends AppCompatActivity implements View.OnClickList
         else if (view==save_Post) {
 
             if (id == 1) {
-                updateNotes(note_id, notes_view.getText().toString());
+                if (isvalidate()){
+
+                    updateNotes(note_id, notes_view.getText().toString(),notes_title.getText().toString());
+                }
             } else {
-                if (!notes_view.getText().toString().isEmpty())
+                if (isvalidate())
                 {
-                    AddNotes(new SessionManager(getApplicationContext()).getUserID(), notes_view.getText().toString());
+                    AddNotes(new SessionManager(getApplicationContext()).getUserID(), notes_view.getText().toString(),notes_title.getText().toString());
                 }
                 else
                     {
@@ -120,9 +126,9 @@ public class NotepadScreen extends AppCompatActivity implements View.OnClickList
 
 
     }
-    private void AddNotes(String user_id,String desc) {
+    private void AddNotes(String user_id,String desc,String title) {
         ApiRequest request = new ApiRequest();
-        request.requestforAddNotes(user_id,desc,new okhttp3.Callback() {
+        request.requestforAddNotes(user_id,desc,title,new okhttp3.Callback() {
             @Override
             public void onFailure(okhttp3.Call call, IOException e) {
                 Log.d("error", "error");
@@ -146,9 +152,9 @@ public class NotepadScreen extends AppCompatActivity implements View.OnClickList
             }
         });
     }
-    private void updateNotes(String note_id , String description) {
+    private void updateNotes(String note_id , String description,String title) {
         ApiRequest request = new ApiRequest();
-        request.requestforupdateNote(note_id,description,new okhttp3.Callback() {
+        request.requestforupdateNote(note_id,description,title,new okhttp3.Callback() {
             @Override
             public void onFailure(okhttp3.Call call, IOException e) {
                 Log.d("error", "error");
@@ -205,4 +211,26 @@ public class NotepadScreen extends AppCompatActivity implements View.OnClickList
                 break;
         }
     }
+    private Boolean isvalidate() {
+        String notestitle = notes_title.getText().toString();
+        String notesview = notes_view.getText().toString();
+        if (!notestitle.isEmpty()) {
+            if (!notesview.isEmpty()) {
+                return true;
+            } else {
+                notes_view.setError("Enter your Note here");
+                notes_view.requestFocus();
+                notes_view.setEnabled(true);
+                return false;
+            }
+
+        } else {
+            notes_title.setError("Enter your note title");
+            notes_title.requestFocus();
+            notes_title.setEnabled(true);
+
+            return false;
+        }
+    }
+
 }

@@ -128,6 +128,7 @@
         <ImageView
             android:id="@+id/imageoponent"
             android:layout_width="match_parent"
+            android:layout_margin="@dimen/size_5"
             android:layout_height="@dimen/size_150" />
 
         <ImageButton
@@ -139,7 +140,7 @@
             android:alpha="1"
             android:background="@android:color/transparent"
             android:src="@drawable/download"
-            android:visibility="visible" />
+            android:visibility="gone" />
 
     </RelativeLayout>
 

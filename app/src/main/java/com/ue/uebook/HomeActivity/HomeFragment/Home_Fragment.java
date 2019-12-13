@@ -74,7 +74,6 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -126,14 +125,11 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-
     }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home_, container, false);
-
         viewL = view.findViewById(R.id.view);
         chatBtn=view.findViewById(R.id.chatBtn);
         chatBtn.setOnClickListener(this);
@@ -141,22 +137,15 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
         homelist=view.findViewById(R.id.homelist);
         popular_more_btn = view.findViewById(R.id.popular_more_btn);
         popular_list = view.findViewById(R.id.popular_list);
-
-
-
         popular_more_btn.setOnClickListener(this);
         activity = (HomeScreen) getActivity();
-
         displayData();
-
         LinearLayoutManager linearLayoutManagerPopularList = new LinearLayoutManager(getContext());
         linearLayoutManagerPopularList.setOrientation(LinearLayoutManager.HORIZONTAL);
         popular_list.setLayoutManager(linearLayoutManagerPopularList);
-
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManagerPopularList.setOrientation(LinearLayoutManager.HORIZONTAL);
         homelist.setLayoutManager(linearLayoutManager);
-
         viewPagerHome=view.findViewById(R.id.viewPagerHome);
         popular_list.setNestedScrollingEnabled(false);
         edittext_search.setOnClickListener(new View.OnClickListener() {
@@ -166,14 +155,9 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
             }
         });
         fontsize();
-
         tabLayout = view.findViewById(R.id.tabs);
-
         tabLayout.setupWithViewPager(viewPagerHome);
-
         getBookCategory();
-
-
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener(){
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
@@ -470,8 +454,6 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
 //                                popular_more_btn.setTextSize(textSize);
                             }
                         });
-
-
                     }
                     if (form.getData().size() > 3) {
                         popularBook_List.add(form.getData().get(0));
@@ -562,6 +544,7 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
                     for (int i = 0; i < form.getResponse().size(); i++)
                         categoryName.add(form.getResponse().get(i).getCategory_name());
                 }
+                if (getActivity() != null) {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -569,6 +552,7 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
                         changeTabsFont(tabLayout);
                     }
                 });
+            }
             }
         });
 
@@ -591,5 +575,14 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
             }
         }
     }
-
+    @Override
+    public void onResume() {
+        Log.d("onresume","onresume");
+        super.onResume();
+    }
+    @Override
+    public void onPause() {
+        Log.d("onPasuse","onPasuse");
+        super.onPause();
+    }
 }

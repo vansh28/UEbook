@@ -21,7 +21,7 @@
             android:layout_marginLeft="@dimen/size_5"
             android:background="@android:color/transparent"
             android:paddingLeft="@dimen/size_5"
-            android:src="@drawable/back_black" />
+            android:src="@drawable/backnote" />
 
         <ImageButton
             android:id="@+id/bookmark_btn"
@@ -30,10 +30,11 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/size_12"
-            android:background="@drawable/bookmark_unactive" />
+            android:background="@drawable/bookmarkwhite" />
     </RelativeLayout>
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/swipe_refresh_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">

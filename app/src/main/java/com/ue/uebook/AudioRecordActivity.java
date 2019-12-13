@@ -28,15 +28,15 @@ import java.util.Random;
 import static android.Manifest.permission.RECORD_AUDIO;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
-public class AudioRecordActivity extends AppCompatActivity implements  RecognitionListener {
+public class AudioRecordActivity extends AppCompatActivity implements RecognitionListener {
 
-    Button buttonStart, buttonStop ;
+    Button buttonStart, buttonStop;
     String AudioSavePathInDevice = null;
-    MediaRecorder mediaRecorder ;
-    Random random ;
+    MediaRecorder mediaRecorder;
+    Random random;
     String RandomAudioFileName = "ABCDEFGHIJKLMNOP";
     public static final int RequestPermissionCode = 1;
-    MediaPlayer mediaPlayer ;
+    MediaPlayer mediaPlayer;
     TextView timer;
     private long startTime = 0L;
     long timeInMilliseconds = 0L;
@@ -46,6 +46,7 @@ public class AudioRecordActivity extends AppCompatActivity implements  Recogniti
     private SpeechRecognizer speech = null;
     private Intent recognizerIntent;
     private static final int REQ_CODE_SPEECH_INPUT = 100;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,11 +54,11 @@ public class AudioRecordActivity extends AppCompatActivity implements  Recogniti
         speech = SpeechRecognizer.createSpeechRecognizer(this);
         speech.setRecognitionListener(this);
         recognizerIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-        recognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_PREFERENCE,"en");
-        recognizerIntent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE,this.getPackageName());
-        recognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,RecognizerIntent.LANGUAGE_MODEL_WEB_SEARCH);
+        recognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_PREFERENCE, "en");
+        recognizerIntent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, this.getPackageName());
+        recognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_WEB_SEARCH);
         recognizerIntent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 3);
-        timer=findViewById(R.id.timer);
+        timer = findViewById(R.id.timer);
         buttonStart = (Button) findViewById(R.id.button);
         buttonStop = (Button) findViewById(R.id.button2);
         buttonStop.setEnabled(false);
@@ -65,12 +66,10 @@ public class AudioRecordActivity extends AppCompatActivity implements  Recogniti
         buttonStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(checkPermission()) {
-                speech.startListening(recognizerIntent);
+                if (checkPermission()) {
                     AudioSavePathInDevice =
                             Environment.getExternalStorageDirectory().getAbsolutePath() + "/" +
                                     CreateRandomAudioFileName(5) + "UebookRecord.3gp";
-
                     MediaRecorderReady();
                     try {
                         mediaRecorder.prepare();
@@ -98,36 +97,38 @@ public class AudioRecordActivity extends AppCompatActivity implements  Recogniti
         buttonStop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mediaRecorder.stop();
+//                mediaRecorder.stop();
                 buttonStop.setEnabled(false);
                 buttonStart.setEnabled(true);
-                timeSwapBuff=0L;
+                timeSwapBuff = 0L;
                 customHandler.removeCallbacks(updateTimerThread);
                 Toast.makeText(AudioRecordActivity.this, "Recording Completed",
                         Toast.LENGTH_LONG).show();
                 Intent returnIntent = new Intent();
-                returnIntent.putExtra("result",AudioSavePathInDevice);
-                setResult(Activity.RESULT_OK,returnIntent);
-                finish();
+                returnIntent.putExtra("result", AudioSavePathInDevice);
+                setResult(Activity.RESULT_OK, returnIntent);
+
+//                finish();
             }
         });
     }
-    public void MediaRecorderReady(){
-        mediaRecorder=new MediaRecorder();
+
+    public void MediaRecorderReady() {
+        mediaRecorder = new MediaRecorder();
         mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
         mediaRecorder.setAudioEncoder(MediaRecorder.OutputFormat.AMR_NB);
         mediaRecorder.setOutputFile(AudioSavePathInDevice);
     }
 
-    public String CreateRandomAudioFileName(int string){
-        StringBuilder stringBuilder = new StringBuilder( string );
-        int i = 0 ;
-        while(i < string ) {
+    public String CreateRandomAudioFileName(int string) {
+        StringBuilder stringBuilder = new StringBuilder(string);
+        int i = 0;
+        while (i < string) {
             stringBuilder.append(RandomAudioFileName.
                     charAt(random.nextInt(RandomAudioFileName.length())));
 
-            i++ ;
+            i++;
         }
         return stringBuilder.toString();
     }
@@ -143,7 +144,7 @@ public class AudioRecordActivity extends AppCompatActivity implements  Recogniti
 
         switch (requestCode) {
             case RequestPermissionCode:
-                if (grantResults.length> 0) {
+                if (grantResults.length > 0) {
                     boolean StoragePermission = grantResults[0] ==
                             PackageManager.PERMISSION_GRANTED;
                     boolean RecordPermission = grantResults[1] ==
@@ -153,18 +154,18 @@ public class AudioRecordActivity extends AppCompatActivity implements  Recogniti
                         Toast.makeText(AudioRecordActivity.this, "Permission Granted",
                                 Toast.LENGTH_LONG).show();
                     } else {
-                        Toast.makeText(AudioRecordActivity.this,"Permission Denied",Toast.LENGTH_LONG).show();
+                        Toast.makeText(AudioRecordActivity.this, "Permission Denied", Toast.LENGTH_LONG).show();
                     }
                 }
                 break;
-                case REQ_CODE_SPEECH_INPUT:
-                    if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                        speech.startListening(recognizerIntent);
+            case REQ_CODE_SPEECH_INPUT:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    speech.startListening(recognizerIntent);
 
-                    } else {
+                } else {
 
-                    }
-            }
+                }
+        }
 
     }
 
@@ -176,6 +177,7 @@ public class AudioRecordActivity extends AppCompatActivity implements  Recogniti
         return result == PackageManager.PERMISSION_GRANTED &&
                 result1 == PackageManager.PERMISSION_GRANTED;
     }
+
     private Runnable updateTimerThread = new Runnable() {
 
         public void run() {
@@ -218,7 +220,7 @@ public class AudioRecordActivity extends AppCompatActivity implements  Recogniti
     @Override
     public void onError(int error) {
         String errorText = getErrorText(error);
-        Toast.makeText(this,errorText,Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, errorText, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -228,7 +230,7 @@ public class AudioRecordActivity extends AppCompatActivity implements  Recogniti
                 .getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
         if (matches.size() > 0) {
 //            sendQuestion(matches.get(0), true);
-            Toast.makeText(getApplicationContext(),matches.get(0),Toast.LENGTH_SHORT);
+            Toast.makeText(getApplicationContext(), matches.get(0), Toast.LENGTH_SHORT);
         }
 
     }

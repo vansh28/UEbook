@@ -170,6 +170,16 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+
+        <receiver android:name=".MyBroadcastReceiver">
+
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN">
+            </action>
+        </intent-filter>
+        </receiver>
+
+
     </application>
 
 </manifest>

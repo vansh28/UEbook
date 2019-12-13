@@ -193,13 +193,15 @@ public class ApiRequest {
                 .build();
         client.newCall(request).enqueue(callback);
     }
-    public void requestforAddNotes(final String userId, final String description, Callback callback) {
+    public void requestforAddNotes(final String userId, final String description, final String title, Callback callback) {
         String url = null;
         url = BaseUrl + "addNote";
         OkHttpClient client = new OkHttpClient();
         RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
                 .addFormDataPart("user_id", userId)
                 .addFormDataPart("description", description)
+                .addFormDataPart("title", title)
+
                 .build();
         Request request = new Request.Builder()
                 .url(url)
@@ -221,13 +223,14 @@ public class ApiRequest {
                 .build();
         client.newCall(request).enqueue(callback);
     }
-    public void requestforupdateNote(final String note_id, final String description, Callback callback) {
+    public void requestforupdateNote(final String note_id, final String description,final String title, Callback callback) {
         String url = null;
         url = BaseUrl + "UpdateNoteBook";
         OkHttpClient client = new OkHttpClient();
         RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
                 .addFormDataPart("note_id", note_id)
                 .addFormDataPart("description", description)
+                .addFormDataPart("title", title)
                 .build();
         Request request = new Request.Builder()
                 .url(url)

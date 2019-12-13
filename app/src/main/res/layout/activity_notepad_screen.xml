@@ -20,7 +20,7 @@
             android:layout_centerVertical="true"
             android:layout_margin="@dimen/size_5"
             android:background="@android:color/transparent"
-            android:src="@drawable/backbtn"/>
+            android:src="@drawable/backnote"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -35,7 +35,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
-            app:srcCompat="@drawable/ic_delete_black_32dp"
+             android:src="@drawable/deletenote"
             android:visibility="visible"
             android:layout_toLeftOf="@id/save_Post"
             android:layout_centerVertical="true"
@@ -45,7 +45,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
-            app:srcCompat="@drawable/edit"
+            app:srcCompat="@drawable/checknote"
             android:visibility="visible"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"

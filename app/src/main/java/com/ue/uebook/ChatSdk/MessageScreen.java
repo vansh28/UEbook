@@ -565,6 +565,7 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
                 hideLoadingIndicator();
                 final String myResponse = response.body().string();
                 Gson gson = new GsonBuilder().create();
+                Log.e("chatresponse",myResponse);
                 final ChatResponse form = gson.fromJson(myResponse, ChatResponse.class);
                 runOnUiThread(new Runnable() {
                     @RequiresApi(api = Build.VERSION_CODES.KITKAT)

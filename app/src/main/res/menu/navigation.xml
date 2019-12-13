@@ -3,28 +3,28 @@
 
     <item
         android:id="@+id/home_bottom"
-        android:icon="@drawable/home"
+        android:icon="@drawable/homenew"
         android:title="@string/home" />
 
 
     <item
         android:id="@+id/bookmark_bottom"
-        android:icon="@drawable/bookmark"
+        android:icon="@drawable/bookmarkhome"
         android:title="@string/bookmark" />
     <item
         android:id="@+id/book_catTv"
-        android:icon="@drawable/search"
+        android:icon="@drawable/categorieshome"
 
         android:title="@string/category" />
 
     <item
         android:id="@+id/notepad_bottom"
-        android:icon="@drawable/notepad"
+        android:icon="@drawable/notehome"
         android:title="@string/notepadv" />
 
     <item
         android:id="@+id/user_bottom"
-        android:icon="@drawable/user"
+        android:icon="@drawable/userhome"
         android:title="@string/user" />
 
 

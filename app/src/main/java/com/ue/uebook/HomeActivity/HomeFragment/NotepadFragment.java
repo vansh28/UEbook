@@ -93,7 +93,6 @@ public class NotepadFragment extends Fragment  implements  NotepadAdapter.Notepa
         notepad_list=view.findViewById(R.id.notepad_list);
         dialog = new ProgressDialog(getContext());
         swipe_refresh_layout=view.findViewById(R.id.swipe_refresh_layout);
-
         textNonotepadList=view.findViewById(R.id.textNonotepadList);
         LinearLayoutManager linearLayoutManagerPopularList = new LinearLayoutManager(getContext());
         linearLayoutManagerPopularList.setOrientation(LinearLayoutManager.VERTICAL);
@@ -144,10 +143,11 @@ public class NotepadFragment extends Fragment  implements  NotepadAdapter.Notepa
     }
 
     @Override
-    public void onItemClick(String note_id, String description) {
+    public void onItemClick(String note_id, String description ,String title) {
         Intent intent = new Intent(getContext(), NotepadScreen.class);
         intent.putExtra("note_id",note_id);
         intent.putExtra("description",description);
+        intent.putExtra("title",title);
         intent.putExtra("id",1);
         startActivity(intent);
     }

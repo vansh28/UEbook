@@ -27,7 +27,7 @@ public class NotepadAdapter  extends RecyclerView.Adapter<NotepadAdapter.MyViewH
     }
 
     public interface NotepadItemClick {
-        void onItemClick(String note_id,String description);
+        void onItemClick(String note_id,String description,String title);
         void sharenotes(String note);
     }
     public void setItemClickListener(NotepadItemClick clickListener) {
@@ -47,7 +47,7 @@ public class NotepadAdapter  extends RecyclerView.Adapter<NotepadAdapter.MyViewH
             @Override
             public void onClick(View view) {
                 if (notepadItemClickl != null) {
-                    notepadItemClickl.onItemClick(data.get(position).getId(),data.get(position).getDescription());
+                    notepadItemClickl.onItemClick(data.get(position).getId(),data.get(position).getDescription(),data.get(position).getTitle());
                 }
             }
         });
@@ -56,7 +56,7 @@ public class NotepadAdapter  extends RecyclerView.Adapter<NotepadAdapter.MyViewH
         if (data.get(position).getDescription().length()>11){
 //            holder.textView.setText(getFirst10Words(data.get(position).getDescription())+"...");
 
-            holder.textView.setText(data.get(position).getDescription().substring(0, Math.min(data.get(position).getDescription().length(), 30))+"...");
+            holder.textView.setText(data.get(position).getTitle().substring(0, Math.min(data.get(position).getTitle().length(), 30))+"...");
         }
         else {
             holder.textView.setText(data.get(position).getDescription());

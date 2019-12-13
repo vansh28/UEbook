@@ -61,7 +61,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
 
             try {
-                JSONObject jsonObject = new JSONObject(remoteMessage.getData().get("message"));
+                JSONObject jsonObject = new JSONObject(remoteMessage.getData());
                 name=jsonObject.getString("UserName");
                 noti_msz =jsonObject.getString("noti_msg");
                 user_id=jsonObject.getString("user_id");
@@ -112,11 +112,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         // Check if message contains a data payload.
         if (remoteMessage.getData().size() > 0) {
             Log.d(TAG, "Message data payload: " + remoteMessage.getData());
-            try {
-                JSONObject jsonObject = new JSONObject(remoteMessage.getData().get("message"));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+
             if (/* Check if data needs to be processed by long running job */ true) {
                 // For long-running tasks (10 seconds or more) use WorkManager.
 

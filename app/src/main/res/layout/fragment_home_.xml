@@ -1,117 +1,116 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_margin="@dimen/size_10"
     android:orientation="vertical"
-    android:id="@+id/view"
     tools:context=".HomeActivity.HomeFragment.Home_Fragment">
 
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:weightSum="4"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/size_10"
+        android:weightSum="4">
+
+        <EditText
+            android:id="@+id/edittext_search"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/size_50"
+            android:layout_marginTop="@dimen/size_5"
+            android:layout_weight="3.5"
+            android:background="@drawable/chatsearch"
+            android:drawableLeft="@drawable/search"
+            android:drawablePadding="@dimen/size_15"
+            android:focusable="false"
+            android:focusedByDefault="false"
+            android:gravity="center_vertical"
+            android:hint="@string/enter_the_name_of_book_or_author"
+            android:maxLines="1"
+            android:paddingLeft="@dimen/size_10"
+            android:textColor="@color/black"
+            android:textColorHint="#818080"
+            android:textSize="@dimen/size_15" />
+
+        <ImageButton
+            android:id="@+id/chatBtn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
             android:layout_margin="@dimen/size_10"
-            android:layout_height="wrap_content">
-
-            <EditText
-                android:id="@+id/edittext_search"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/size_50"
-                android:layout_weight="3.5"
-                android:layout_marginTop="@dimen/size_5"
-                android:background="@drawable/chatsearch"
-                android:drawableLeft="@drawable/search"
-                android:drawablePadding="@dimen/size_15"
-                android:hint="@string/enter_the_name_of_book_or_author"
-                android:maxLines="1"
-                android:gravity="center_vertical"
-                android:paddingLeft="@dimen/size_10"
-                android:focusable="false"
-                android:textColor="@color/black"
-                android:focusedByDefault="false"
-                android:textSize="@dimen/size_15"
-                android:textColorHint="#818080" />
-
-            <ImageButton
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight=".5"
-                android:src="@drawable/messenger"
-                android:background="@android:color/transparent"
-                android:id="@+id/chatBtn"
-                android:layout_margin="@dimen/size_10"
-                android:layout_alignParentRight="true"/>
-
-        </LinearLayout>
-
+            android:layout_weight=".5"
+            android:background="@android:color/transparent"
+            android:src="@drawable/messenger" />
+    </LinearLayout>
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-<RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-    <com.ue.uebook.Customview.CustomTextViewBold
-        android:id="@+id/topStoryTv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:text="@string/popular_lists"
-        android:visibility="visible"
-        android:layout_marginLeft="6dp"
-        android:layout_marginTop="@dimen/size_15"
-        android:textStyle="bold"
-        android:textColor="@color/black"/>
-    <Button
-        android:id="@+id/popular_more_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="see all"
-        android:textAllCaps="false"
-        android:background="@android:color/transparent"
-        android:layout_alignParentRight="true"/>
-</RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.ue.uebook.Customview.CustomTextViewBold
+                    android:id="@+id/topStoryTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="6dp"
+                    android:layout_marginTop="@dimen/size_15"
+                    android:text="@string/popular_lists"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:visibility="visible" />
+
+                <Button
+                    android:id="@+id/popular_more_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:background="@android:color/transparent"
+                    android:text="see all"
+                    android:textAllCaps="false" />
+            </RelativeLayout>
 
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/popular_list"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/size_200"
+                android:layout_marginTop="@dimen/size_10" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/popular_list"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/size_200"
-        android:layout_marginTop="@dimen/size_10"/>
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tabs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:visibility="visible"
+                app:tabGravity="fill"
+                app:tabIndicatorColor="@color/black"
+                app:tabMode="scrollable" />
 
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tabs"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
-        android:visibility="visible"
-        app:tabGravity="fill"
-        app:tabIndicatorColor="@color/black"
-        app:tabMode="scrollable" />
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/viewPagerHome"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone" />
 
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/viewPagerHome"
-        android:layout_width="match_parent"
-        android:visibility="gone"
-        android:layout_height="match_parent" />
-    <com.ue.uebook.NonScrollRecyclerView
-        android:id="@+id/homelist"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/size_200"
-        android:layout_marginTop="@dimen/size_10"/>
+            <com.ue.uebook.NonScrollRecyclerView
+                android:id="@+id/homelist"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/size_200"
+                android:layout_marginTop="@dimen/size_10" />
 
-</LinearLayout>
+        </LinearLayout>
     </ScrollView>
 
 </LinearLayout>

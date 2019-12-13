@@ -35,6 +35,7 @@
         android:layout_width="match_parent"
         android:hint="@string/enter_your_word"
         android:layout_margin="@dimen/size_15"
+        android:textStyle="bold|italic"
         android:layout_height="wrap_content"/>
     <Button
         android:id="@+id/searchbtn"
