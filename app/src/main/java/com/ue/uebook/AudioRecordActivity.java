@@ -97,7 +97,7 @@ public class AudioRecordActivity extends AppCompatActivity implements Recognitio
         buttonStop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                mediaRecorder.stop();
+                mediaRecorder.stop();
                 buttonStop.setEnabled(false);
                 buttonStart.setEnabled(true);
                 timeSwapBuff = 0L;
@@ -107,8 +107,7 @@ public class AudioRecordActivity extends AppCompatActivity implements Recognitio
                 Intent returnIntent = new Intent();
                 returnIntent.putExtra("result", AudioSavePathInDevice);
                 setResult(Activity.RESULT_OK, returnIntent);
-
-//                finish();
+                finish();
             }
         });
     }

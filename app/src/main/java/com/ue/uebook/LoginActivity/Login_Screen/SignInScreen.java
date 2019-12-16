@@ -370,9 +370,9 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener, 
                 hideLoadingIndicator();
                 Gson gson = new GsonBuilder().create();
                 final LoginResponse form = gson.fromJson(myResponse, LoginResponse.class);
-                if (form.getError() == false) {
+                if (form.getError() == false)
+                {
                     new SessionManager(getApplicationContext()).storeUserEmail(form.getResponse().getEmail());
-
                     new SessionManager(getApplicationContext()).storeUserPublishtype(form.getResponse().getPublisher_type());
                     new SessionManager(getApplicationContext()).storeUseruserID(form.getResponse().getId());
                     new SessionManager(getApplicationContext()).storeUserName(form.getResponse().getUser_name());

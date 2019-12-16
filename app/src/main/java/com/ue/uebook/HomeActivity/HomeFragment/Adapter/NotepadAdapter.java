@@ -53,13 +53,13 @@ public class NotepadAdapter  extends RecyclerView.Adapter<NotepadAdapter.MyViewH
         });
 
         holder.notepadTextdate.setText(data.get(position).getCreated_at());
-        if (data.get(position).getDescription().length()>11){
+        if (data.get(position).getTitle().length()>11){
 //            holder.textView.setText(getFirst10Words(data.get(position).getDescription())+"...");
 
             holder.textView.setText(data.get(position).getTitle().substring(0, Math.min(data.get(position).getTitle().length(), 30))+"...");
         }
         else {
-            holder.textView.setText(data.get(position).getDescription());
+            holder.textView.setText(data.get(position).getTitle());
         }
 
         holder.shareNotes.setOnClickListener(new View.OnClickListener() {

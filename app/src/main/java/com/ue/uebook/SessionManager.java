@@ -64,8 +64,6 @@ public class SessionManager {
     public void clearUserCredentials() {
         editor.clear();
         editor.commit();
-
-
     }
     public void storeUseruserID(final String userId) {
         editor.putString(UserId, userId);
@@ -94,7 +92,6 @@ public class SessionManager {
         editor.putString(key, json);
         editor.apply();     // This line is IMPORTANT !!!
     }
-
     public List<String> getArrayList(String key){
         Gson gson = new Gson();
         String json = sharedPreference.getString(key, null);

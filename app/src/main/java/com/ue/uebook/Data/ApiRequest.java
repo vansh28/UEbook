@@ -154,15 +154,12 @@ public class ApiRequest {
         RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
                 .addFormDataPart("book_id", book_id)
                 .addFormDataPart("user_id", user_id)
-
                 .build();
-
         Request request = new Request.Builder()
                 .url(url)
                 .post(requestBody)
                 .build();
         client.newCall(request).enqueue(callback);
-
     }
     public void requestforaddBookmark(final String book_id, final String bookmark_status, final String userId, Callback callback) {
         String url = null;
@@ -171,7 +168,6 @@ public class ApiRequest {
         RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
                 .addFormDataPart("book_id", book_id)
                 .addFormDataPart("user_id", userId)
-
                 .build();
         Request request = new Request.Builder()
                 .url(url)
@@ -185,7 +181,6 @@ public class ApiRequest {
         OkHttpClient client = new OkHttpClient();
         RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
                 .addFormDataPart("user_id", userId)
-
                 .build();
         Request request = new Request.Builder()
                 .url(url)
@@ -201,7 +196,6 @@ public class ApiRequest {
                 .addFormDataPart("user_id", userId)
                 .addFormDataPart("description", description)
                 .addFormDataPart("title", title)
-
                 .build();
         Request request = new Request.Builder()
                 .url(url)
@@ -215,7 +209,6 @@ public class ApiRequest {
         OkHttpClient client = new OkHttpClient();
         RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
                 .addFormDataPart("user_id", userId)
-
                 .build();
         Request request = new Request.Builder()
                 .url(url)
@@ -288,13 +281,11 @@ public class ApiRequest {
                 .addFormDataPart("comment", comment)
                 .addFormDataPart("rating", rating)
                 .build();
-
         Request request = new Request.Builder()
                 .url(url)
                 .post(requestBody)
                 .build();
         client.newCall(request).enqueue(callback);
-
     }
 
     public void requestforContactUs(final String user_id, final String name, String email, String phone, String contatMessage, Callback callback) {
@@ -308,7 +299,6 @@ public class ApiRequest {
                 .addFormDataPart("phone", phone)
                 .addFormDataPart("contatMessage", contatMessage)
                 .build();
-
         Request request = new Request.Builder()
                 .url(url)
                 .post(requestBody)
@@ -353,13 +343,11 @@ public class ApiRequest {
         RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
                 .addFormDataPart("user_id", user_id)
                 .build();
-
         Request request = new Request.Builder()
                 .url(url)
                 .post(requestBody)
                 .build();
         client.newCall(request).enqueue(callback);
-
     }
 
     public void requestforgetPendingRequest(String user_id, Callback callback) {
@@ -369,7 +357,6 @@ public class ApiRequest {
         RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
                 .addFormDataPart("user_id", user_id)
                 .build();
-
         Request request = new Request.Builder()
                 .url(url)
                 .post(requestBody)
@@ -385,13 +372,11 @@ public class ApiRequest {
                 .addFormDataPart("friend_id", friend_id)
                 .addFormDataPart("status", status)
                 .build();
-
         Request request = new Request.Builder()
                 .url(url)
                 .post(requestBody)
                 .build();
         client.newCall(request).enqueue(callback);
-
     }
 
     public void requestforgetAllFriendList(String user_id, Callback callback) {
@@ -444,7 +429,6 @@ public class ApiRequest {
                 .addFormDataPart("emailto", emailto)
                 .addFormDataPart("subject", subject)
                 .addFormDataPart("message", message)
-
                 .build();
         Request request = new Request.Builder()
                 .url(url)
@@ -571,7 +555,6 @@ public class ApiRequest {
         RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
                 .addFormDataPart("user_id",  user_id)
                 .addFormDataPart("receiver",  receiver)
-
                 .build();
         Request request = new Request.Builder()
                 .url(url)

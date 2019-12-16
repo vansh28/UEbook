@@ -54,7 +54,6 @@ class CommonUtils {public static final String TICKET_DETAILS = "ticketDetails";
     private static boolean isValidMobile(String phone) {
         return Patterns.PHONE.matcher(phone).matches();
     }
-
     public static String validatePhoneNumber(String phNo) {
         if (TextUtils.isEmpty(phNo))
             return "Enter Mobile number";
@@ -65,7 +64,6 @@ class CommonUtils {public static final String TICKET_DETAILS = "ticketDetails";
         else
             return null;
     }
-
     @SuppressLint("NewApi")
     public static String getAddressFromLocation(final double latitude, final double longitude, Context context) {
         Geocoder geocoder;
@@ -76,10 +74,21 @@ class CommonUtils {public static final String TICKET_DETAILS = "ticketDetails";
                 geocoder = new Geocoder(Objects.requireNonNull(context), Locale.getDefault());
                 addresses = geocoder.getFromLocation(latitude, longitude, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
                 address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
-
+//                if (addresses != null && addresses.size() > 0) {
+//                    String address = addresses.get(0).getAddressLine(0);
+//                    String city = addresses.get(0).getLocality();
+//                    String state = addresses.get(0).getAdminArea();
+//                    String country = addresses.get(0).getCountryName();
+//                    String postalCode = addresses.get(0).getPostalCode();
+//                    String knownName = addresses.get(0).getFeatureName();
+//                    locationTxt.setText(address + " " + city + " " + country);
+//                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
+
+
+
 
         }
 

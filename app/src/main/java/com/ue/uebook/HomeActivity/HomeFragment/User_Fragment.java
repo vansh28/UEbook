@@ -158,7 +158,6 @@ public class User_Fragment extends Fragment implements View.OnClickListener, Use
 
     }
     private void selectImage() {
-
         try {
             PackageManager pm = getContext().getPackageManager();
             int hasPerm = pm.checkPermission(Manifest.permission.CAMERA, getContext().getPackageName());
@@ -225,9 +224,8 @@ public class User_Fragment extends Fragment implements View.OnClickListener, Use
         super.onActivityResult(requestCode, resultCode, data);
         inputStreamImg = null;
         if (requestCode == PICK_IMAGE_CAMERA) {
-            Uri selectedImage = data.getData();
-            try {
 
+            try {
                 bitmap = (Bitmap) data.getExtras().get("data");
                 ByteArrayOutputStream bytes = new ByteArrayOutputStream();
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
@@ -245,25 +243,26 @@ public class User_Fragment extends Fragment implements View.OnClickListener, Use
             } catch (Exception e) {
                 e.printStackTrace();
 
-
             }
         } else if (requestCode == PICK_IMAGE_GALLERY) {
             if (data != null) {
                 Uri selectedImage = data.getData();
                 try {
-
                     bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), selectedImage);
                     ByteArrayOutputStream bytes = new ByteArrayOutputStream();
                     bitmap.compress(Bitmap.CompressFormat.JPEG, 50, bytes);
                     profile_image_user.setImageBitmap(bitmap);
-
                     UpdateUser(new File(getPath(selectedImage)));
 
                 } catch (Exception e) {
+
                     e.printStackTrace();
+
                 }
 
-            } else {
+            }
+            else
+                {
                 Toast.makeText(getContext(), "Please Try Again ", Toast.LENGTH_SHORT).show();
             }
 
@@ -347,7 +346,6 @@ public class User_Fragment extends Fragment implements View.OnClickListener, Use
             }
         });
     }
-
     public boolean isStoragePermissionGranted() {
         if (Build.VERSION.SDK_INT >= 23) {
             if (getActivity().checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -383,10 +381,6 @@ public class User_Fragment extends Fragment implements View.OnClickListener, Use
                 textSize = 24;
                 break;
         }
-
-
     }
-
-
 }
 

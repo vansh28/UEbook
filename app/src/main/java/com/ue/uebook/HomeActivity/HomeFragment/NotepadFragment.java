@@ -189,7 +189,6 @@ public class NotepadFragment extends Fragment  implements  NotepadAdapter.Notepa
                             notepad_list.setAdapter(notepadAdapter);
                             notepad_list.setNestedScrollingEnabled(true);
                             notepadAdapter.setItemClickListener(NotepadFragment.this);
-
                         }
                     });
                 }

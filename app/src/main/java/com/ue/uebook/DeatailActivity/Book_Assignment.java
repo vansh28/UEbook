@@ -11,7 +11,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -66,14 +65,16 @@ public class Book_Assignment extends BaseActivity implements View.OnClickListene
         answerlist=new ArrayList<>();
         user_answers= new ArrayList<>();
         intent = getIntent();
-        questionList = (List<Assignment>) intent.getSerializableExtra("QuestionListExtra");
-        user_answers = (List<user_answer>) intent.getSerializableExtra("answer");
+        questionList = (List<Assignment>)intent.getSerializableExtra("QuestionListExtra");
+        user_answers = (List<user_answer>)intent.getSerializableExtra("answer");
         book_id = intent.getStringExtra("book_id");
         if (questionList != null) {
             viewfornoBook.setVisibility(View.GONE);
             question_list.setVisibility(View.GONE);
             Add_Line();
-        } else {
+        }
+        else
+            {
             viewfornoBook.setVisibility(View.VISIBLE);
             question_list.setVisibility(View.GONE);
             submit_assignment.setVisibility(View.INVISIBLE);
@@ -109,6 +110,7 @@ public class Book_Assignment extends BaseActivity implements View.OnClickListene
                 }
                 ja.put(jo);
             }
+
             sendAnswer(String.valueOf(ja));
         }
     }
@@ -126,7 +128,6 @@ public class Book_Assignment extends BaseActivity implements View.OnClickListene
             public void onFailure(okhttp3.Call call, IOException e) {
                 hideLoadingIndicator();
             }
-
             @Override
             public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
                 hideLoadingIndicator();

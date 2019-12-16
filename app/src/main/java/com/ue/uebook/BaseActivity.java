@@ -226,14 +226,13 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
                 .addLocationRequest(locationRequest);
-
         LocationServices
                 .getSettingsClient(this)
                 .checkLocationSettings(builder.build())
                 .addOnSuccessListener(this, new OnSuccessListener<LocationSettingsResponse>() {
                     @Override
                     public void onSuccess(LocationSettingsResponse response) {
-                        // startUpdatingLocation(...);
+//                         startUpdatingLocation(...);
                     }
                 })
                 .addOnFailureListener(this, new OnFailureListener() {
@@ -306,7 +305,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_GPS_CHECK_SETTINGS) {
             if (resultCode == RESULT_OK) {
-//                getCurrentLocation();
+                getCurrentLocation();
 
             }
         }

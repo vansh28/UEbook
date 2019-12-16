@@ -30,7 +30,6 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/change_username"
                 app:errorEnabled="true">
-
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/username_edit_text"
 
