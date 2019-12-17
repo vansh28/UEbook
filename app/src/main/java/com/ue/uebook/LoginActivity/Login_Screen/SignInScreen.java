@@ -1,11 +1,16 @@
 package com.ue.uebook.LoginActivity.Login_Screen;
 
+import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.Selection;
 import android.text.SpannableString;
 import android.text.method.HideReturnsTransformationMethod;
@@ -13,9 +18,11 @@ import android.text.method.PasswordTransformationMethod;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -58,6 +65,7 @@ import com.ue.uebook.SessionManager;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
 
@@ -77,7 +85,7 @@ import static com.ue.uebook.NetworkUtils.getInstance;
 
 public class SignInScreen extends BaseActivity implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
     private CustomTextViewMedium nothaveacountbtn;
-    private Button signInBtn;
+    private Button signInBtn,loginbyFaceBtn;
     private EditText emailTv, passwordTv;
     private ImageButton googleloginBtn, fbloginBtn,showPasswordTv;
     private CallbackManager callbackManager;
@@ -89,6 +97,8 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener, 
     private Boolean ishown=false;
     private static final int RC_SIGN_IN = 21;
     public static final int RequestPermissionCode = 1;
+    private final int PICK_IMAGE_CAMERA = 121;
+    private Bitmap bitmap;
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,6 +117,8 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener, 
             GoogleSignInClient googleSignInClient = GoogleSignIn.getClient(this, gso);
             googleSignInClient.signOut();
         }
+        loginbyFaceBtn=findViewById(R.id.loginbyFaceBtn);
+        loginbyFaceBtn.setOnClickListener(this);
         showPasswordTv=findViewById(R.id.showPasswordTv);
         showPasswordTv.setOnClickListener(this);
         forgotPasswordBtn = findViewById(R.id.forgotPasswordBtn);
@@ -185,16 +197,21 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener, 
                 Selection.setSelection(passwordTv.getText(), position);
                 showPasswordTv.setBackgroundResource(R.drawable.eyec);
             }
-
+        }
+        else if (v==loginbyFaceBtn){
+            if (!checkPermission()){
+                requestPermission();
+            }
+            else {
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(intent, PICK_IMAGE_CAMERA);
+            }
         }
     }
-
     private void gotoForgotPasswordScren() {
         Intent intent = new Intent(this, ForgotPasswordScreen.class);
         startActivity(intent);
-
     }
-
     private void initializeGPlusSettings() {
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
@@ -248,13 +265,12 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener, 
         parameters.putString("fields", "first_name,last_name,email,gender,id,taggable_friends");
         request.setParameters(parameters);
         request.executeAsync();
-    }
 
+    }
     private void Fblogin() {
         callbackManager = CallbackManager.Factory.create();
         // Set permissions
         LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("email", "public_profile"));
-
         LoginManager.getInstance().registerCallback(callbackManager,
                 new FacebookCallback<LoginResult>() {
                     @Override
@@ -262,14 +278,12 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener, 
                         hideLoadingIndicator();
 
                     }
-
                     @Override
                     public void onCancel() {
                         Log.d("error", "On cancel");
                         hideLoadingIndicator();
 
                     }
-
                     @Override
                     public void onError(FacebookException error) {
                         Log.d("error", error.toString());
@@ -293,14 +307,26 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener, 
             super.onActivityResult(requestCode, resultCode, data);
             callbackManager.onActivityResult(requestCode, resultCode, data);
         }
-    }
+        if (requestCode == PICK_IMAGE_CAMERA) {
 
+            try {
+                bitmap = (Bitmap) data.getExtras().get("data");
+                ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+                final byte[] bitmapdata = bytes.toByteArray();
+                Log.e("imageForLogin",getPath(getImageUri(this,bitmap)));
+//                UpdateUser(new File(getPath(getImageUri(this,bitmap))));
+                imagePreview(bitmap);
+            } catch (Exception e) {
+                e.printStackTrace();
+
+            }
+        }
+    }
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         hideLoadingIndicator();
-
     }
-
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void handleGPlusSignInResult(GoogleSignInResult result) {
         Log.d("", "handleSignInResult:" + result.isSuccess());
@@ -309,16 +335,13 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener, 
             GoogleSignInAccount acct = result.getSignInAccount();
             //Fetch values
             String personName = acct.getDisplayName();
-
             String email = acct.getEmail();
             String familyName = acct.getFamilyName();
             Uri uri = acct.getPhotoUrl();
 //            showDialogGP(personName, "", email, acct.getPhotoUrl());
             registrationUser(personName, " ", email, "Reader", "", "", "");
-
         }
     }
-
     private Boolean isvalidate() {
         String user_NAme = emailTv.getText().toString();
         String userpass = passwordTv.getText().toString();
@@ -336,11 +359,9 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener, 
             emailTv.setError("Enter your Username");
             emailTv.requestFocus();
             emailTv.setEnabled(true);
-
             return false;
         }
     }
-
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void requestforLogin(final String user_name, final String password) {
         String url = null;
@@ -363,7 +384,6 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener, 
                 final String myResponse = e.getLocalizedMessage();
                 hideLoadingIndicator();
             }
-
             @Override
             public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
                 final String myResponse = response.body().string();
@@ -383,14 +403,10 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener, 
 //                            Toast.makeText(getContext(), "Succesfully Login", Toast.LENGTH_SHORT).show();
                             {
                                 new SessionManager(getApplicationContext()).storeUserLoginStatus(1);
-
                             }
-
                             gotoHome();
                         }
                     });
-
-
                 } else {
                     runOnUiThread(new Runnable() {
                         @Override
@@ -413,24 +429,18 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener, 
                                     }
                             )
                                     .show();
-
                         }
                     });
                 }
-
-
             }
         });
-
     }
-
     public void gotoHome() {
         Intent intent = new Intent(this, HomeScreen.class);
         intent.putExtra("login", 1);
         startActivity(intent);
         finish();
     }
-
     private void registrationUser(final String full_name, String password, String email, String publisher_type, String gender, String country, String device_token) {
         ApiRequest request = new ApiRequest();
         hideLoadingIndicator();
@@ -523,5 +533,45 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener, 
                 result2 == PackageManager.PERMISSION_GRANTED &&
                 result3 == PackageManager.PERMISSION_GRANTED&&
                 result4 == PackageManager.PERMISSION_GRANTED ;
+    }
+    private void imagePreview(Bitmap file) {
+        final Dialog previewDialog = new Dialog(this);
+        previewDialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        previewDialog.setContentView(getLayoutInflater().inflate(R.layout.image_layout
+                , null));
+        ImageView imageView = previewDialog.findViewById(R.id.image_view);
+        imageView.setImageBitmap(file);
+//        GlideUtils.loadImage(SignInScreen.this, "http://dnddemo.com/ebooks/api/v1/upload/" + file, imageView, R.drawable.user_default, R.drawable.user_default);
+        Button ok_Btn = previewDialog.findViewById(R.id.buton_ok);
+
+        ok_Btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                    requestforLogin("de", "123");
+                }
+                previewDialog.dismiss();
+            }
+        });
+        previewDialog.show();
+    }
+    public Uri getImageUri(Context inContext, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
+        return Uri.parse(path);
+    }
+    public String getPath(Uri uri) {
+        String[] projection = {MediaStore.Images.Media.DATA};
+        Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
+        int column_index = 0;
+        if (cursor != null) {
+            column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            cursor.moveToFirst();
+            String path = cursor.getString(column_index);
+            cursor.close();
+            return path;
+        } else
+            return uri.getPath();
     }
 }

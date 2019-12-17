@@ -156,26 +156,32 @@ public class Bookmark_Fragment extends Fragment implements Bookmark_List_Adapter
                 Gson gson = new GsonBuilder().create();
                 final UserBookmarkResponse form = gson.fromJson(myResponse, UserBookmarkResponse.class);
              if (form.getData()!=null&&form.getError().equalsIgnoreCase("false")){
-                 getActivity().runOnUiThread(new Runnable() {
-                     @Override
-                     public void run() {
-                         bookmark_list_adapter = new Bookmark_List_Adapter((AppCompatActivity) getContext(),form.getData(),textSize);
-                         bookmark_Book_list.setVisibility(View.VISIBLE);
-                         bookmark_Book_list.setAdapter(bookmark_list_adapter);
-                         bookmark_list_adapter.setItemClickListener(Bookmark_Fragment.this);
-                         bookmark_list_adapter.notifyDataSetChanged();
-                         textNobookmarkList.setVisibility(View.GONE);
-                     }
-                 });
+
+                 if (getActivity()!=null) {
+                     getActivity().runOnUiThread(new Runnable() {
+                         @Override
+                         public void run() {
+                             bookmark_list_adapter = new Bookmark_List_Adapter((AppCompatActivity) getContext(), form.getData(), textSize);
+                             bookmark_Book_list.setVisibility(View.VISIBLE);
+                             bookmark_Book_list.setAdapter(bookmark_list_adapter);
+                             bookmark_list_adapter.setItemClickListener(Bookmark_Fragment.this);
+                             bookmark_list_adapter.notifyDataSetChanged();
+                             textNobookmarkList.setVisibility(View.GONE);
+                         }
+                     });
+                 }
              }
              else {
-                 getActivity().runOnUiThread(new Runnable() {
-                     @Override
-                     public void run() {
-                         textNobookmarkList.setVisibility(View.VISIBLE);
-                         bookmark_Book_list.setVisibility(View.GONE);
-                     }
-                 });
+                 if (getActivity()!=null){
+                     getActivity().runOnUiThread(new Runnable() {
+                         @Override
+                         public void run() {
+                             textNobookmarkList.setVisibility(View.VISIBLE);
+                             bookmark_Book_list.setVisibility(View.GONE);
+                         }
+                     });
+
+                 }
 
              }
 

@@ -48,7 +48,6 @@ public class NotepadFragment extends Fragment  implements  NotepadAdapter.Notepa
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -60,12 +59,10 @@ public class NotepadFragment extends Fragment  implements  NotepadAdapter.Notepa
     private int textSize;
     private SwipeRefreshLayout swipe_refresh_layout;
     private OnFragmentInteractionListener mListener;
-
-    public NotepadFragment() {
+    public NotepadFragment()
+    {
 
     }
-
-
     // TODO: Rename and change types and number of parameters
     public static NotepadFragment newInstance(String param1, String param2) {
         NotepadFragment fragment = new NotepadFragment();
@@ -75,7 +72,6 @@ public class NotepadFragment extends Fragment  implements  NotepadAdapter.Notepa
         fragment.setArguments(args);
         return fragment;
     }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,7 +81,6 @@ public class NotepadFragment extends Fragment  implements  NotepadAdapter.Notepa
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -100,14 +95,12 @@ public class NotepadFragment extends Fragment  implements  NotepadAdapter.Notepa
         pullTorefreshswipe();
         return  view;
     }
-
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
         }
     }
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -133,7 +126,6 @@ public class NotepadFragment extends Fragment  implements  NotepadAdapter.Notepa
         super.onDetach();
         mListener = null;
     }
-
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void onStart(){
         super.onStart();
@@ -141,7 +133,6 @@ public class NotepadFragment extends Fragment  implements  NotepadAdapter.Notepa
 
 
     }
-
     @Override
     public void onItemClick(String note_id, String description ,String title) {
         Intent intent = new Intent(getContext(), NotepadScreen.class);
@@ -151,17 +142,14 @@ public class NotepadFragment extends Fragment  implements  NotepadAdapter.Notepa
         intent.putExtra("id",1);
         startActivity(intent);
     }
-
     @Override
     public void sharenotes(String note) {
         ShareUtils.shareToAllApp(getActivity(),note);
     }
-
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
-
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void getnotePadList(String user_id) {
         ApiRequest request = new ApiRequest();
@@ -171,7 +159,6 @@ public class NotepadFragment extends Fragment  implements  NotepadAdapter.Notepa
             public void onFailure(okhttp3.Call call, IOException e) {
                 Log.d("error", "error");
                 hideLoadingIndicator();
-
             }
             @Override
             public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
@@ -180,6 +167,7 @@ public class NotepadFragment extends Fragment  implements  NotepadAdapter.Notepa
                 Gson gson = new GsonBuilder().create();
                 final NotepadResponse form = gson.fromJson(myResponse, NotepadResponse.class);
                 if (form.getData()!=null&&form.getError().equalsIgnoreCase("false")){
+                   if (getActivity()!=null){
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -191,18 +179,18 @@ public class NotepadFragment extends Fragment  implements  NotepadAdapter.Notepa
                             notepadAdapter.setItemClickListener(NotepadFragment.this);
                         }
                     });
-                }
+                }}
                 else {
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                        notepad_list.setVisibility(View.GONE);
-                        textNonotepadList.setVisibility(View.VISIBLE);
-                        }
-                    });
-
+                    if (getActivity()!=null){
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                notepad_list.setVisibility(View.GONE);
+                                textNonotepadList.setVisibility(View.VISIBLE);
+                            }
+                        });
+                    }
                 }
-
             }
         });
     }

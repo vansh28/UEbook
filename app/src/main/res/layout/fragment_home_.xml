@@ -8,14 +8,11 @@
     android:layout_margin="@dimen/size_10"
     android:orientation="vertical"
     tools:context=".HomeActivity.HomeFragment.Home_Fragment">
-
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/size_10"
         android:weightSum="4">
-
         <EditText
             android:id="@+id/edittext_search"
             android:layout_width="0dp"
@@ -34,7 +31,6 @@
             android:textColor="@color/black"
             android:textColorHint="#818080"
             android:textSize="@dimen/size_15" />
-
         <ImageButton
             android:id="@+id/chatBtn"
             android:layout_width="0dp"
@@ -45,20 +41,16 @@
             android:background="@android:color/transparent"
             android:src="@drawable/messenger" />
     </LinearLayout>
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-
                 <com.ue.uebook.Customview.CustomTextViewBold
                     android:id="@+id/topStoryTv"
                     android:layout_width="wrap_content"
@@ -70,7 +62,6 @@
                     android:textSize="18sp"
                     android:textStyle="bold"
                     android:visibility="visible" />
-
                 <Button
                     android:id="@+id/popular_more_btn"
                     android:layout_width="wrap_content"
@@ -80,14 +71,11 @@
                     android:text="see all"
                     android:textAllCaps="false" />
             </RelativeLayout>
-
-
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/popular_list"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/size_200"
                 android:layout_marginTop="@dimen/size_10" />
-
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/tabs"
                 android:layout_width="match_parent"
@@ -97,20 +85,16 @@
                 app:tabGravity="fill"
                 app:tabIndicatorColor="@color/black"
                 app:tabMode="scrollable" />
-
             <androidx.viewpager.widget.ViewPager
                 android:id="@+id/viewPagerHome"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:visibility="gone" />
-
             <com.ue.uebook.NonScrollRecyclerView
                 android:id="@+id/homelist"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/size_200"
                 android:layout_marginTop="@dimen/size_10" />
-
         </LinearLayout>
     </ScrollView>
-
 </LinearLayout>

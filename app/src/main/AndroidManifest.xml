@@ -38,27 +38,35 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".AudioRecordActivity"
-            android:screenOrientation="portrait">
-        </activity>
+        <activity android:name=".faceRecognition.FaceLogin"></activity>
+        <activity
+            android:name=".AudioRecordActivity"
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".LoginActivity.Login_Screen.SignInScreen"
             android:screenOrientation="portrait" />
-        <activity android:name=".LoginActivity.Login_Screen.SignUp_screen"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".BookCategory.BookCategorywiseList"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ChatSdk.VideoScreen"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".LoginActivity.Login_Screen.SignUp_screen"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".BookCategory.BookCategorywiseList"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ChatSdk.VideoScreen"
+            android:screenOrientation="portrait" />
         <activity android:name=".demo" />
-        <activity android:name=".ChatSdk.MessageScreen"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ChatSdk.FriendListScreen"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ChatSdk.ChatListScreen"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".PendingBook.PendingBookScreen"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ChatSdk.MessageScreen"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ChatSdk.FriendListScreen"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ChatSdk.ChatListScreen"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".PendingBook.PendingBookScreen"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".AuthorProfileActivity.AuthorEditProfile"
             android:screenOrientation="portrait" />
@@ -172,14 +180,10 @@
         </service>
 
         <receiver android:name=".MyBroadcastReceiver">
-
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN">
-            </action>
-        </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"></action>
+            </intent-filter>
         </receiver>
-
-
     </application>
 
 </manifest>

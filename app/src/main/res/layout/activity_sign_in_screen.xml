@@ -206,6 +206,30 @@
                     android:src="@drawable/gplogo"/>
 
             </LinearLayout>
+            <com.ue.uebook.Customview.CustomTextViewNormal
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="OR"
+                android:layout_margin="@dimen/size_8"
+                android:layout_gravity="center_horizontal"
+                android:textSize="@dimen/size_17"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center_horizontal"
+                android:layout_height="wrap_content">
+                <Button
+                    android:id="@+id/loginbyFaceBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Login by Face"
+                    android:background="@drawable/loginbtnbg"
+                    android:textSize="@dimen/size_15"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:padding="@dimen/size_15"/>
+            </LinearLayout>
+
 
         </LinearLayout>
     </ScrollView>

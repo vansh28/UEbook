@@ -372,7 +372,9 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
                             }
                         });
                     }
-                } else {
+                }
+                else
+                    {
 
                 }
 
@@ -472,8 +474,7 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
     public void showLoadingIndicator() {
         mdialog = new Dialog(getContext());
         mdialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        Objects.requireNonNull(mdialog.getWindow()).setBackgroundDrawable(
-                new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        Objects.requireNonNull(mdialog.getWindow()).setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         mdialog.setContentView(R.layout.layout_loading_indicator);
         mdialog.setCancelable(true);
         mdialog.setCanceledOnTouchOutside(true);
@@ -555,8 +556,6 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
             }
             }
         });
-
-
     }
     private void changeTabsFont(TabLayout tabLayout) {
         ViewGroup vg = (ViewGroup) tabLayout.getChildAt(0);
