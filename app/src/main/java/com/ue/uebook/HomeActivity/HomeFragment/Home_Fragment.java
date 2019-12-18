@@ -93,6 +93,7 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
     private OnCategorydata onCategorydata;
     private Home_Fragment home_fragment;
     ArrayList<String> categoryName;
+    ArrayList<String> categoryID;
     private int textSize = 16;
     private ImageButton chatBtn;
     private int dotscount;
@@ -121,6 +122,7 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
         newBookList = new ArrayList<>();
         popularBook_List = new ArrayList<>();
          categoryName= new ArrayList<>();
+         categoryID = new ArrayList<>();
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -168,7 +170,7 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
 //                    onCategorydata.onDataReceived(1 ,tabname[position]);
 //                }
                 if (getInstance(getActivity()).isConnectingToInternet()) {
-                    getRecommenedBookList(String.valueOf(position+1));
+                    getRecommenedBookList(categoryID.get(position));
                 }
             }
             @Override
@@ -542,8 +544,10 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
                 final BookCategoryResponsePojo form = gson.fromJson(myresponse, BookCategoryResponsePojo.class);
 
                 if (form != null) {
-                    for (int i = 0; i < form.getResponse().size(); i++)
+                    for (int i = 0; i < form.getResponse().size(); i++){
                         categoryName.add(form.getResponse().get(i).getCategory_name());
+                    categoryID.add(form.getResponse().get(i).getId());
+                }
                 }
                 if (getActivity() != null) {
                 getActivity().runOnUiThread(new Runnable() {

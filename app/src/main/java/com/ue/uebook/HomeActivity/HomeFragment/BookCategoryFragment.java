@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -76,6 +78,21 @@ public class BookCategoryFragment extends Fragment implements BookCategoryAdapte
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(),2);
         categoryList.setLayoutManager(gridLayoutManager);
         getBookCategory();
+        edittext_search.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                bookCategoryAdapter.filter(s.toString());
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
         return view;
     }
     public void onButtonPressed(Uri uri) {

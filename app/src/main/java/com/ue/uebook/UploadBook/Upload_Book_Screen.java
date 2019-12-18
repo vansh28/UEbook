@@ -112,7 +112,7 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
     private TextView timerTv,messageTv,filname_view, verifyIsbnTv, upload_info, uploadcover_view, audioname_view, uploadMoreView, assignmentView;
     private ProgressDialog progressdialog;
     private Button publishBtn, addQuestion, saveForLater ,startvoiceRecord,pausevoiceRecord,stopvoiceRecord;
-    private int categorytype;
+    private String categorytype;
     private EditText bookTitle, bookDesc, authorName, questionEdit, isbnTvview;
     private File coverimage, videofile;
     private File docfile, audioUrl;
@@ -122,6 +122,7 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
     private ImageView profile_image_user_upload, verifyImageview;
     private VideoView videoview;
     private int mCurrentPosition = 0;
+    private List<String>categoryId;
     Handler handler = new Handler();
     int status = 0;
     private NotificationCompat.Builder mBuilder;
@@ -163,6 +164,7 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upload__book__screen);
+        categoryId= new ArrayList<>();
         pendigbookIntent= getIntent();
         pendingBookdata= new ArrayList<>();
         random = new Random();
@@ -825,9 +827,11 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
                 final BookCategoryResponsePojo form = gson.fromJson(myresponse, BookCategoryResponsePojo.class);
 
                 if (form != null) {
-                    for (int i = 0; i < form.getResponse().size(); i++)
+
+                    for (int i = 0; i < form.getResponse().size(); i++){
                         categoryName.add(form.getResponse().get(i).getCategory_name());
-                }
+                    categoryId.add(form.getResponse().get(i).getId());
+                }}
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -842,10 +846,8 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        categorytype = i + 1;
-
+        categorytype = categoryId.get(i);
     }
-
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
 

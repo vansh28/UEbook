@@ -15,10 +15,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ue.uebook.R;
 import com.ue.uebook.UploadBook.Pojo.BookCategoryPojo;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class BookCategoryAdapter extends RecyclerView.Adapter<BookCategoryAdapter.MyViewHolder> {
     private List<BookCategoryPojo> response;
+    private List<BookCategoryPojo> arraylist=null;
+
     private CategoryItemClick categoryItemClick;
     private AppCompatActivity mtx;
     String[] gridColor = {
@@ -30,6 +34,8 @@ public class BookCategoryAdapter extends RecyclerView.Adapter<BookCategoryAdapte
     };
     public BookCategoryAdapter(AppCompatActivity mtx ,List<BookCategoryPojo> response) {
         this.response=response;
+        this.arraylist = new ArrayList<BookCategoryPojo>();
+        this.arraylist.addAll(response);
         this.mtx=mtx;
     }
 
@@ -87,4 +93,22 @@ public class BookCategoryAdapter extends RecyclerView.Adapter<BookCategoryAdapte
 
         }
     }
+    public void filter(String charText) {
+        charText = charText.toLowerCase(Locale.getDefault());
+        response.clear();
+        if (charText.length() == 0) {
+            response.addAll(arraylist);
+
+        }
+        else
+        {
+            for (BookCategoryPojo wp : arraylist) {
+                if (wp.getCategory_name().toLowerCase(Locale.getDefault()).contains(charText)) {
+                    response.add(wp);
+                }
+            }
+        }
+        notifyDataSetChanged();
+    }
+
 }

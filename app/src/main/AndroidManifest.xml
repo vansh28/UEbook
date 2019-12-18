@@ -38,10 +38,11 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".faceRecognition.FaceLogin"></activity>
+        <activity android:name=".FullImageVIew"></activity>
+        <activity android:name=".faceRecognition.FaceLogin" />
         <activity
             android:name=".AudioRecordActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".LoginActivity.Login_Screen.SignInScreen"
             android:screenOrientation="portrait" />
@@ -181,7 +182,7 @@
 
         <receiver android:name=".MyBroadcastReceiver">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"></action>
+                <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </receiver>
     </application>

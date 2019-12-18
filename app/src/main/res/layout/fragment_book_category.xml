@@ -11,7 +11,6 @@
         android:id="@+id/header"
         android:layout_margin="@dimen/size_10"
         android:layout_height="wrap_content">
-
         <EditText
             android:id="@+id/edittext_search"
             android:layout_width="0dp"
@@ -21,7 +20,7 @@
             android:background="@drawable/chatsearch"
             android:drawableLeft="@drawable/search"
             android:drawablePadding="@dimen/size_15"
-            android:hint="@string/enter_the_name_of_book_or_author"
+            android:hint="Enter the Category Name"
             android:maxLines="1"
             android:gravity="center_vertical"
             android:paddingLeft="@dimen/size_10"
@@ -32,7 +31,6 @@
             android:layout_marginLeft="@dimen/size_10"
             android:layout_marginRight="@dimen/size_10"
             android:textColorHint="#818080" />
-
         <ImageButton
             android:layout_width="0dp"
             android:layout_height="wrap_content"
