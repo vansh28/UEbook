@@ -183,7 +183,7 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
                 isBookmark_book = true;
                 addBookToBookmark(book_Id,"1");
             } else {
-                bookmark_btn.setBackgroundResource(R.drawable.bookmark_unactive);
+                bookmark_btn.setBackgroundResource(R.drawable.bookmarkwhite);
                 isBookmark_book = false;
                 addBookToBookmark(book_Id,"0");
             }
@@ -236,9 +236,7 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
             startActivity(intent);
 
         }
-
     }
-
     private Boolean isvalidate() {
         String user_Comment = user_comment.getText().toString();
         Float userRating = commnetRating.getRating();
@@ -251,9 +249,9 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
 
                 return false;
             }
-
-
-        } else {
+        }
+        else
+            {
             Toast.makeText(this, "Please Enter your Comment", Toast.LENGTH_LONG).show();
             return false;
         }
@@ -297,14 +295,11 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
 //                            content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
                             book_uploadBy.setText((form.getData().getUser_name()));
 //                            GlideUtils.loadImage(Book_Detail_Screen.this,"http://"+form.getData().get,book_coverTv,R.drawable.noimage,R.drawable.noimage);
-
                         }
-                          else {
+                        else {
                             profile_user.setVisibility(View.GONE);
-
                         }
-
-                        bookDesc.setText(form.getData().getBook_description());
+                          bookDesc.setText(form.getData().getBook_description());
                         videourl=form.getData().getVideo_url();
                         docurl=form.getData().getPdf_url();
                         audiourl=form.getData().getAudio_url();
@@ -317,12 +312,12 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
                                 isBookmark_book = true;
                             }
                             else {
-                                bookmark_btn.setBackgroundResource(R.drawable.bookmark_unactive);
+                                bookmark_btn.setBackgroundResource(R.drawable.bookmarkwhite);
                                 isBookmark_book=false;
                             }
                         }
                         else {
-                            bookmark_btn.setBackgroundResource(R.drawable.bookmark_unactive);
+                            bookmark_btn.setBackgroundResource(R.drawable.bookmarkwhite);
                             isBookmark_book=false;
                         }
                         if (form.getData().getBook_description().length()>=50){

@@ -8,28 +8,22 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.ue.uebook.GlideUtils;
 import com.ue.uebook.HomeActivity.HomeFragment.Pojo.HomeListing;
 import com.ue.uebook.R;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-
 public class Home_recommended_Adapter extends RecyclerView.Adapter<Home_recommended_Adapter.MyViewHolder> {
-
     private RecommendedItemClick recommendedItemClick;
     List<HomeListing> recommendedList_book;
     private AppCompatActivity mctx;
      // for loading main list
     private List<HomeListing> arraylist=null;
     private int textsize;// for loading  filter data
-
     public Home_recommended_Adapter(AppCompatActivity mctx, List<HomeListing> recommendedList_book, int textSize) {
         this.recommendedList_book=recommendedList_book;
         this.mctx=mctx;
@@ -38,9 +32,10 @@ public class Home_recommended_Adapter extends RecyclerView.Adapter<Home_recommen
         this.textsize=textSize;
     }
     public interface RecommendedItemClick {
-        void onItemClick(int position ,String book_id);
-    }
 
+        void onItemClick(int position ,String book_id);
+
+    }
     public void setItemClickListener(RecommendedItemClick clickListener) {
         recommendedItemClick = clickListener;
     }
@@ -67,8 +62,11 @@ public class Home_recommended_Adapter extends RecyclerView.Adapter<Home_recommen
         holder.book_container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                try {
                 if (recommendedItemClick != null) {
                     recommendedItemClick.onItemClick(position,recommendedList_book.get(position).getId());
+                }} catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         });

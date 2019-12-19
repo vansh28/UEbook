@@ -66,6 +66,7 @@ public class Book_Assignment extends BaseActivity implements View.OnClickListene
         user_answers= new ArrayList<>();
         intent = getIntent();
         questionList = (List<Assignment>)intent.getSerializableExtra("QuestionListExtra");
+
         user_answers = (List<user_answer>)intent.getSerializableExtra("answer");
         book_id = intent.getStringExtra("book_id");
         if (questionList != null) {
