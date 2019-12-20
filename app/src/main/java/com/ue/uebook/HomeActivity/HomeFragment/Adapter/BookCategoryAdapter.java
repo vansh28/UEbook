@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.ue.uebook.GlideUtils;
 import com.ue.uebook.R;
 import com.ue.uebook.UploadBook.Pojo.BookCategoryPojo;
 
@@ -38,16 +39,13 @@ public class BookCategoryAdapter extends RecyclerView.Adapter<BookCategoryAdapte
         this.arraylist.addAll(response);
         this.mtx=mtx;
     }
-
     public interface CategoryItemClick {
         void onItemClick(String CategoryId,String CategoryName);
     }
-
     public void setItemClickListener(CategoryItemClick clickListener) {
         categoryItemClick = clickListener;
 
     }
-
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -56,7 +54,6 @@ public class BookCategoryAdapter extends RecyclerView.Adapter<BookCategoryAdapte
         BookCategoryAdapter.MyViewHolder holder = new BookCategoryAdapter.MyViewHolder(view);
         return holder;
     }
-
     @SuppressLint("ResourceType")
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, final int position) {
@@ -65,22 +62,23 @@ public class BookCategoryAdapter extends RecyclerView.Adapter<BookCategoryAdapte
              @Override
              public void onClick(View v) {
                  if (categoryItemClick!=null){
-                     categoryItemClick.onItemClick(String.valueOf(position+1) ,response.get(position).getCategory_name());
+                     categoryItemClick.onItemClick(response.get(position).getId() ,response.get(position).getCategory_name());
                  }
              }
          });
          if (response.get(position).getThum_image()!=null)
          {
-//             GlideUtils.loadImage(mtx, "http://dnddemo.com/ebooks/uploads/category/" + response.get(position).getThum_image(), holder.categoryimage, R.drawable.bookbglist, R.drawable.bookbglist);
+             GlideUtils.loadImage(mtx, "http://dnddemo.com/ebooks/uploads/category/" + response.get(position).getThum_image(), holder.categoryimage, R.drawable.bookbglist, R.drawable.bookbglist);
          }
-//         holder.categoryimage.setImageResource(Color.parseColor(gridColor[position]));
+         else {
+             holder.categoryimage.setImageResource(R.drawable.bookbglist);
+         }
+//
     }
-
     @Override
     public int getItemCount() {
         return response.size();
     }
-
     public class MyViewHolder extends RecyclerView.ViewHolder {
         private TextView categoryName;
         private LinearLayout categoryContqainer;

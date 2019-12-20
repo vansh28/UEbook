@@ -92,6 +92,7 @@ public class Search_Fragment extends Fragment implements View.OnClickListener, S
         View view = inflater.inflate(R.layout.fragment_search_, container, false);
         search_history_list=view.findViewById(R.id.search_history_list);
         search_list=view.findViewById(R.id.search_list);
+        search_list.setVisibility(View.GONE);
         edittext_search=view.findViewById(R.id.edittext_search);
         audio_search_btn=view.findViewById(R.id.audio_search_btn);
         audio_search_btn.setOnClickListener(this);
@@ -138,7 +139,7 @@ public class Search_Fragment extends Fragment implements View.OnClickListener, S
                      search_list.setAdapter(user_search_list);
                      user_search_list.setItemClickListener(Search_Fragment.this);
                  }
-                 search_list.setVisibility(View.VISIBLE);
+                 search_list.setVisibility(View.GONE);
              }
              else {
                  bookimage_search.setVisibility(View.GONE);

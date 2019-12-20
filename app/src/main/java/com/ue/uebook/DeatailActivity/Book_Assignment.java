@@ -111,7 +111,6 @@ public class Book_Assignment extends BaseActivity implements View.OnClickListene
                 }
                 ja.put(jo);
             }
-
             sendAnswer(String.valueOf(ja));
         }
     }
