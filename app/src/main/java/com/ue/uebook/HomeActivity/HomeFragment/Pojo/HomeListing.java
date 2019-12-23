@@ -5,14 +5,16 @@ public class HomeListing {
     private String book_title;
     private String thubm_image ;
     private String author_name;
+    private String book_description;
+    private String rating;
+    private String category_name;
 
-    public HomeListing(String id, String book_title, String thubm_image, String author_name, String book_description, String rating) {
-        this.id = id;
-        this.book_title = book_title;
-        this.thubm_image = thubm_image;
-        this.author_name = author_name;
-        this.book_description = book_description;
-        this.rating = rating;
+    public String getCategory_name() {
+        return category_name;
+    }
+
+    public void setCategory_name(String category_name) {
+        this.category_name = category_name;
     }
 
     public String getRating() {
@@ -23,8 +25,7 @@ public class HomeListing {
         this.rating = rating;
     }
 
-    private String book_description;
-    private String rating;
+
 
 
 

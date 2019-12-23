@@ -31,6 +31,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -50,9 +56,14 @@ import com.ue.uebook.R;
 import com.ue.uebook.SessionManager;
 import com.ue.uebook.UploadBook.Pojo.BookCategoryResponsePojo;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import okhttp3.Call;
@@ -100,6 +111,7 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
     private ImageView[] dots;
     private TabLayout tabLayout;
     private ViewPager viewPagerHome;
+    private List<HomeListing>popularListData;
     private String [] tabname ={"Tab1","Tab2","Tab3","Tab4","Tab5","Tab6","Tab7"};
     private static int homeRefresh=0;
     public Home_Fragment() {
@@ -123,6 +135,7 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
         popularBook_List = new ArrayList<>();
          categoryName= new ArrayList<>();
          categoryID = new ArrayList<>();
+        popularListData=new ArrayList<>();
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -472,6 +485,7 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
             }
         });
     }
+
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void showLoadingIndicator() {
         mdialog = new Dialog(getContext());
@@ -570,22 +584,104 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
             for (int i = 0; i < tabChildsCount; i++) {
                 View tabViewChild = vgTab.getChildAt(i);
                 if (tabViewChild instanceof TextView) {
-                    ((TextView) tabViewChild).setTypeface(FontCache.getTypeface(Constants.FONT_MENU, getContext()));
+                      ((TextView) tabViewChild).setTypeface(FontCache.getTypeface(Constants.FONT_MENU, getContext()));
 //                    ((TextView) tabViewChild).setTextColor(getResources().getColor(R.color.dark_gray));
 //                    ((TextView) tabViewChild).setTextSize(getResources().getDimension(R.dimen.size_20));
-                    //((TextView) tabViewChild).setTextSize(50);
+//                    ((TextView) tabViewChild).setTextSize(50);
                 }
             }
         }
     }
     @Override
     public void onResume() {
+
         Log.d("onresume","onresume");
+
         super.onResume();
     }
     @Override
     public void onPause() {
+
         Log.d("onPasuse","onPasuse");
         super.onPause();
+
     }
+
+    public void getPopularBooks(){
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, ApiRequest.BaseUrl+"getAllpopularBook",
+                new com.android.volley.Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                        Log.e("bookresponse", response);
+                        try {
+                            JSONObject jsonObject = new JSONObject(String.valueOf(response));
+                            if (jsonObject.getString("status").equals("true")){
+                                JSONArray jsonObjectResponse = jsonObject.getJSONArray("data");
+                                if (jsonObjectResponse!=null){
+                                    for (int i=0; i<jsonObjectResponse.length();i++){
+                                        HomeListing homeListingResponse = new HomeListing();
+                                        JSONObject rec = jsonObjectResponse.getJSONObject(i);
+                                        homeListingResponse.setId(rec.getString("id"));
+                                        homeListingResponse.setBook_title(rec.getString("book_title"));
+                                        homeListingResponse.setThubm_image(rec.getString("thubm_image"));
+                                        homeListingResponse.setAuthor_name(rec.getString("author_name"));
+                                        homeListingResponse.setBook_description(rec.getString("book_description"));
+                                        homeListingResponse.setRating(rec.getString("rating"));
+                                        popularListData.add(homeListingResponse);
+                                    }
+                                    getActivity().runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            popularList_home_adapter = new PopularList_Home_Adapter((AppCompatActivity) getActivity(), popularListData, textSize);
+                                            popular_list.setAdapter(popularList_home_adapter);
+                                            popularList_home_adapter.setItemClickListener(Home_Fragment.this);
+                                        }
+                                    });
+
+                                    if (popularListData.size() > 3) {
+                                        popularListData.add(popularListData.get(0));
+                                        popularListData.add(popularListData.get(1));
+                                        popularListData.add(popularListData.get(2));
+                                    } else {
+                                        popularListData.addAll(popularListData);
+                                    }
+                                }
+
+
+                            }
+                        }
+                        catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new com.android.volley.Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        try {
+                            String responseBody = new String(error.networkResponse.data, "utf-8");
+                            JSONObject data = new JSONObject(responseBody);
+
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
+
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> arguments = new HashMap<String, String>();
+                return arguments;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        requestQueue.add(stringRequest);
+
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                30000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+    }
+
 }

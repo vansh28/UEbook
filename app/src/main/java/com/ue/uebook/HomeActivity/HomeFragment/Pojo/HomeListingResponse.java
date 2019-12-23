@@ -6,11 +6,6 @@ public class HomeListingResponse {
     private String error;
     private List<HomeListing>data;
 
-    public HomeListingResponse(String error, List<HomeListing> data) {
-        this.error = error;
-        this.data = data;
-    }
-
     public String getError() {
         return error;
     }

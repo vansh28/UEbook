@@ -67,6 +67,7 @@ public class PopularList_Home_Adapter extends RecyclerView.Adapter<PopularList_H
         });
             holder.authorName.setText(popularBook_list.get(position).getAuthor_name());
             holder.bookname.setText(popularBook_list.get(position).getBook_title());
+            holder.categoryNameTv.setText(popularBook_list.get(position).getCategory_name());
 //        if (popularBook_list.get(position).getBook_description().length()>11){
 //            holder.bookDesc.setText(getFirst10Words(popularBook_list.get(position).getBook_description())+"...");
 //        }
@@ -92,7 +93,7 @@ public class PopularList_Home_Adapter extends RecyclerView.Adapter<PopularList_H
     public class MyViewHolder extends RecyclerView.ViewHolder {
         LinearLayout bookContainerTv;
         ImageView bookimage;
-        TextView bookname,authorName,bookDesc;
+        TextView bookname,authorName,bookDesc,categoryNameTv;
         RatingBar ratingBar;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -101,6 +102,7 @@ public class PopularList_Home_Adapter extends RecyclerView.Adapter<PopularList_H
             bookname=itemView.findViewById(R.id.bookTitleTv);
             authorName=itemView.findViewById(R.id.authorNameTv);
             ratingBar =itemView.findViewById(R.id.myRatingBar);
+            categoryNameTv=itemView.findViewById(R.id.categoryNameTv);
         }
 }}
 

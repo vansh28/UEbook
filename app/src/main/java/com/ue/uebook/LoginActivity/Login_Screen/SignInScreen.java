@@ -66,6 +66,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 
@@ -316,7 +317,7 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener, 
                 final byte[] bitmapdata = bytes.toByteArray();
                 Log.e("imageForLogin",getPath(getImageUri(this,bitmap)));
 //                UpdateUser(new File(getPath(getImageUri(this,bitmap))));
-                imagePreview(bitmap);
+                imagePreview(bitmap,new File(getPath(getImageUri(this,bitmap))));
             } catch (Exception e) {
                 e.printStackTrace();
 
@@ -534,7 +535,7 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener, 
                 result3 == PackageManager.PERMISSION_GRANTED&&
                 result4 == PackageManager.PERMISSION_GRANTED ;
     }
-    private void imagePreview(Bitmap file) {
+    private void imagePreview(final Bitmap file,final File userFile) {
         final Dialog previewDialog = new Dialog(this);
         previewDialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         previewDialog.setContentView(getLayoutInflater().inflate(R.layout.image_layout
@@ -548,7 +549,9 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener, 
             @Override
             public void onClick(View view) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                    requestforLogin("de", "123");
+//                    requestforLogin("de", "123");
+                    loginUserByFace(userFile);
+
                 }
                 previewDialog.dismiss();
             }
@@ -561,6 +564,7 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener, 
         String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
         return Uri.parse(path);
     }
+
     public String getPath(Uri uri) {
         String[] projection = {MediaStore.Images.Media.DATA};
         Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
@@ -574,4 +578,23 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener, 
         } else
             return uri.getPath();
     }
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private void loginUserByFace(File imagepath) {
+        ApiRequest request = new ApiRequest();
+        showLoadingIndicator();
+        request.requestforLoginByFace( imagepath, new okhttp3.Callback() {
+            @Override
+            public void onFailure(okhttp3.Call call, IOException e) {
+                hideLoadingIndicator();
+            }
+            @Override
+            public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
+                hideLoadingIndicator();
+                String myResponse = response.body().string();
+                Gson gson = new GsonBuilder().create();
+                final LoginResponse form = gson.fromJson(myResponse, LoginResponse.class);
+            }
+        });
+    }
+
 }

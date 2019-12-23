@@ -135,6 +135,8 @@ public class Book_Assignment extends BaseActivity implements View.OnClickListene
             }
         });
     }
+
+
     public void Add_Line() {
         for (int i = 0; i < questionList.size(); i++) {
             LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -153,6 +155,7 @@ public class Book_Assignment extends BaseActivity implements View.OnClickListene
             numberOfLines++;
         }
     }
+
     private void font_size(){
         switch(new SessionManager(getApplicationContext()).getfontSize()) {
             case "smallest":

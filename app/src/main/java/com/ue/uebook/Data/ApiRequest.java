@@ -11,7 +11,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 
 public class ApiRequest {
-    private static final String BaseUrl = "http://dnddemo.com/ebooks/api/v1/";
+    public static final String BaseUrl = "http://dnddemo.com/ebooks/api/v1/";
 
     public void requestforRegistration(final String full_name, final String password, final String email, final String publisher_type, final String gender, final String country, final String about_me,final  String device_token, Callback callback) {
         String url = null;
@@ -562,4 +562,22 @@ public class ApiRequest {
                 .build();
         client.newCall(request).enqueue(callback);
     }
+
+    public void requestforLoginByFace(File profile_image, Callback callback) {
+        String url = null;
+        url = BaseUrl + "UpdatePrfilePic";
+        OkHttpClient client = new OkHttpClient();
+        final MediaType MEDIA_TYPE_PNG = MediaType.parse("image/png");
+        RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
+                .addFormDataPart("profile_image", profile_image.getName(), RequestBody.create(MEDIA_TYPE_PNG, profile_image))
+                .build();
+
+        Request request = new Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .build();
+        client.newCall(request).enqueue(callback);
+
+    }
+
 }
