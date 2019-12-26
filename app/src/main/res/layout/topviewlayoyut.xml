@@ -14,7 +14,7 @@
         android:scaleType="fitXY"
         android:layout_gravity="center_vertical"
         android:layout_marginLeft="@dimen/size_20"
-        android:src="@drawable/download_book"/>
+        />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -28,7 +28,6 @@
             android:id="@+id/bookTitleTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="The Good Son"
             android:textSize="@dimen/size_15"
             android:layout_margin="@dimen/size_3"
             android:textColor="@color/white"
@@ -38,7 +37,6 @@
             android:id="@+id/authorNameTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="By Vansh"
             android:layout_margin="@dimen/size_3"
             android:textSize="@dimen/size_15"
             android:textColor="@color/white"
@@ -47,8 +45,7 @@
             android:id="@+id/categoryNameTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Sports"
-            android:textSize="@dimen/size_15"
+            android:textSize="@dimen/size_12"
             android:textColor="@color/white"
             android:layout_margin="@dimen/size_3"
             android:maxLines="1"/>

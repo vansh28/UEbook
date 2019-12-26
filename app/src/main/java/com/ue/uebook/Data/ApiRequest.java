@@ -565,11 +565,11 @@ public class ApiRequest {
 
     public void requestforLoginByFace(File profile_image, Callback callback) {
         String url = null;
-        url = BaseUrl + "UpdatePrfilePic";
+        url = BaseUrl + "userFaceLogin";
         OkHttpClient client = new OkHttpClient();
         final MediaType MEDIA_TYPE_PNG = MediaType.parse("image/png");
         RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
-                .addFormDataPart("profile_image", profile_image.getName(), RequestBody.create(MEDIA_TYPE_PNG, profile_image))
+                .addFormDataPart("face_detect_image", profile_image.getName(), RequestBody.create(MEDIA_TYPE_PNG, profile_image))
                 .build();
 
         Request request = new Request.Builder()

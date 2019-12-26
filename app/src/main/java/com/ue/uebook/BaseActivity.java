@@ -185,12 +185,12 @@ public abstract class BaseActivity extends AppCompatActivity {
         String add = "";
         if (mCurrentLocation != null) {
 
-            add = CommonUtils.getAddressFromLocation(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude(), this);
+            add = Commonutils.getAddressFromLocation(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude(), this);
             lattt = mCurrentLocation.getLatitude();
             //setStringToText(text_Address, add);
             locationlongitude();
             locationlatitude();
-            Log.i(TAG, "Location" + CommonUtils.getAddressFromLocation(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude(), this));
+            Log.i(TAG, "Location" + Commonutils.getAddressFromLocation(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude(), this));
             mFusedLocationClient.removeLocationUpdates(mLocationCallback);
             hideLoadingIndicator();
         }

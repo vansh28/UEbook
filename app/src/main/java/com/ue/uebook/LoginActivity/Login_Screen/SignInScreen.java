@@ -266,7 +266,6 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener, 
         parameters.putString("fields", "first_name,last_name,email,gender,id,taggable_friends");
         request.setParameters(parameters);
         request.executeAsync();
-
     }
     private void Fblogin() {
         callbackManager = CallbackManager.Factory.create();
@@ -283,13 +282,11 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener, 
                     public void onCancel() {
                         Log.d("error", "On cancel");
                         hideLoadingIndicator();
-
                     }
                     @Override
                     public void onError(FacebookException error) {
                         Log.d("error", error.toString());
                         hideLoadingIndicator();
-
                     }
                 });
     }
@@ -480,7 +477,6 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener, 
                             gotoHome();
                         }
                     });
-
                 }
             }
         });
@@ -593,6 +589,43 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener, 
                 String myResponse = response.body().string();
                 Gson gson = new GsonBuilder().create();
                 final LoginResponse form = gson.fromJson(myResponse, LoginResponse.class);
+                if (form.getError() == false)
+                {
+                    new SessionManager(getApplicationContext()).storeUserEmail(form.getResponse().getEmail());
+                    new SessionManager(getApplicationContext()).storeUserPublishtype(form.getResponse().getPublisher_type());
+                    new SessionManager(getApplicationContext()).storeUseruserID(form.getResponse().getId());
+                    new SessionManager(getApplicationContext()).storeUserName(form.getResponse().getUser_name());
+                    runOnUiThread(new Runnable() {
+                        @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+                        @Override
+                        public void run() {
+//                            Toast.makeText(getContext(), "Succesfully Login", Toast.LENGTH_SHORT).show();
+                            {
+                                new SessionManager(getApplicationContext()).storeUserLoginStatus(1);
+                            }
+                            gotoHome();
+                        }
+                    });
+                }
+                else {
+                    final PrettyDialog pDialog = new PrettyDialog(SignInScreen.this);
+                    pDialog.setTitle("Login Error");
+                    pDialog.setIcon(R.drawable.cancel);
+                    pDialog.setMessage(form.getMessage());
+                    pDialog.addButton(
+                            "OK",                    // button text
+                            R.color.pdlg_color_white,        // button text color
+                            R.color.colorPrimary,        // button background color
+                            new PrettyDialogCallback() {        // button OnClick listener
+                                @Override
+                                public void onClick() {
+                                    pDialog.dismiss();
+                                    hideLoadingIndicator();
+                                }
+                            }
+                    )
+                            .show();
+                }
             }
         });
     }

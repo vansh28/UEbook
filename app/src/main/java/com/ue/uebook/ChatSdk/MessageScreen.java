@@ -222,10 +222,10 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
                     Toast.makeText(this, "Please Select Again", Toast.LENGTH_SHORT).show();
                 }
             } else if (typevalue == 3) {
-                sendMesaage(new SessionManager(getApplication()).getUserID(), "", sendToID, "audio", chanelID, chat_message.getText().toString(), 3);
+//                sendMesaage(new SessionManager(getApplication()).getUserID(), "", sendToID, "audio", chanelID, chat_message.getText().toString(), 3);
             } else if (typevalue == 4) {
 
-                sendMesaage(new SessionManager(getApplication()).getUserID(), "", sendToID, "docfile", chanelID, chat_message.getText().toString(), 4);
+//                sendMesaage(new SessionManager(getApplication()).getUserID(), "", sendToID, "docfile", chanelID, chat_message.getText().toString(), 4);
             }
         } else if (v == audiobtn) {
             typevalue = 3;
@@ -283,7 +283,7 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
     private void getAudioFile() {
         try {
             Intent audioIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI);
-            startActivityForResult(audioIntent, 12);
+            startActivityForResult(audioIntent, 132);
         } catch (ActivityNotFoundException e) {
 
         }
@@ -448,17 +448,19 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
 
                 try {
                     docfile = FileUtil.from(MessageScreen.this, selectedfile);
+                    sendMesaage(new SessionManager(getApplication()).getUserID(), "", sendToID, "docfile", chanelID, chat_message.getText().toString(), 4);
                 } catch (Exception e) {
                     e.printStackTrace();
                     Toast.makeText(this, "Please Select Again", Toast.LENGTH_SHORT).show();
                 }
 
-            } else if (requestCode == 12) {
+            } else if (requestCode == 132) {
 
                 Uri selectedaudio = data.getData();
                 try {
                     String audioPathStr = FilePath.getPath(MessageScreen.this, selectedaudio);
                     audioUrl = new File(audioPathStr);
+                    sendMesaage(new SessionManager(getApplication()).getUserID(), "", sendToID, "audio", chanelID, chat_message.getText().toString(), 3);
                 } catch (Exception e) {
                     e.printStackTrace();
                     Toast.makeText(this, "Please Select Again", Toast.LENGTH_SHORT).show();
@@ -592,15 +594,13 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
 
     }
 
-
     else   if (type.equalsIgnoreCase("video")){
-
         Intent intent = new Intent(this,VideoScreen.class);
         intent.putExtra("url",url);
         startActivity(intent);
     }
     else   if (type.equalsIgnoreCase("audio")){
-        gotoWebview("http://"+url);
+        gotoWebview(url);
     }
     else   if (type.equalsIgnoreCase("file")){
         gotoWebview(docbaseUrl+url);

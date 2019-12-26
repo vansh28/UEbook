@@ -2,7 +2,6 @@ package com.ue.uebook.ChatSdk.Adapter;
 
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,6 +41,7 @@ public class ChatListAdapter  extends RecyclerView.Adapter<ChatListAdapter.MyVie
         this.data=data;
         this.userID=userID;
     }
+
     public interface ItemClick {
         void onUserChatClick(String channelID,String sendTo ,String name ,String imageUrl);
         void  onUserProfileClick(String imageURl);
@@ -56,14 +56,12 @@ public class ChatListAdapter  extends RecyclerView.Adapter<ChatListAdapter.MyVie
         ChatListAdapter.MyViewHolder vh = new ChatListAdapter.MyViewHolder(v); // pass the view to View Holder
         return vh;
     }
-
     @Override
     public void onBindViewHolder(@NonNull ChatListAdapter.MyViewHolder holder, final int position) {
         if (userID.equalsIgnoreCase(dataList.get(position).getSend_detail().getId())){
             reciverName=dataList.get(position).getRec_detail().getUser_name();
             holder.name.setText(dataList.get(position).getRec_detail().getUser_name());
             GlideUtils.loadImage(mtx, "http://dnddemo.com/ebooks/api/v1/upload/" + dataList.get(position).getRec_detail().getUrl(), holder.profile, R.drawable.user_default, R.drawable.user_default);
-
         }
         else {
             reciverName=dataList.get(position).getSend_detail().getUser_name();
@@ -71,18 +69,15 @@ public class ChatListAdapter  extends RecyclerView.Adapter<ChatListAdapter.MyVie
             GlideUtils.loadImage(mtx, "http://dnddemo.com/ebooks/api/v1/upload/" + dataList.get(position).getSend_detail().getUrl(), holder.profile, R.drawable.user_default, R.drawable.user_default);
 
         }
-
        holder.chatContainer.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View v) {
                if (itemClick!=null){
                    if (userID.equalsIgnoreCase(dataList.get(position).getSend_detail().getId())){
                        itemClick.onUserChatClick(dataList.get(position).getChannel_id(),dataList.get(position).getRec_detail().getId(),userList.get(position).getRec_detail().getUser_name(),userList.get(position).getRec_detail().getUrl());
-
                    }
                    else {
                        itemClick.onUserChatClick(dataList.get(position).getChannel_id(),dataList.get(position).getSend_detail().getId(),userList.get(position).getSend_detail().getUser_name(),userList.get(position).getSend_detail().getUrl());
-
                    }
                }
            }
@@ -127,7 +122,6 @@ public class ChatListAdapter  extends RecyclerView.Adapter<ChatListAdapter.MyVie
         }
         String str= dataList.get(position).getCreated();
         String[] arrOfStr = str.split(" ");
-        Log.d("finsl",arrOfStr[1]);
         holder.timeTv.setText(arrOfStr[1]);
         if (Integer.valueOf(dataList.get(position).getMess_count().getTotalMessagecount())>0){
             holder.unreadMszCounterTv.setVisibility(View.VISIBLE);

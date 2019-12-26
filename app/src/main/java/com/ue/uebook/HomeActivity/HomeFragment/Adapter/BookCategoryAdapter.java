@@ -73,7 +73,7 @@ public class BookCategoryAdapter extends RecyclerView.Adapter<BookCategoryAdapte
          else {
              holder.categoryimage.setImageResource(R.drawable.bookbglist);
          }
-//
+
     }
     @Override
     public int getItemCount() {

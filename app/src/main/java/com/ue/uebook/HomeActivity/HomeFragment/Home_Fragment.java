@@ -29,6 +29,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewpager.widget.ViewPager;
 
 import com.android.volley.DefaultRetryPolicy;
@@ -113,6 +114,7 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
     private ViewPager viewPagerHome;
     private List<HomeListing>popularListData;
     private String [] tabname ={"Tab1","Tab2","Tab3","Tab4","Tab5","Tab6","Tab7"};
+    private SwipeRefreshLayout swipe_refresh_layout;
     private static int homeRefresh=0;
     public Home_Fragment() {
         // Required empty public constructor
@@ -145,6 +147,7 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home_, container, false);
+        swipe_refresh_layout=view.findViewById(R.id.swipe_refresh_layout);
         viewL = view.findViewById(R.id.view);
         chatBtn=view.findViewById(R.id.chatBtn);
         chatBtn.setOnClickListener(this);
@@ -196,9 +199,20 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
 
             }
         });
-
+        pullTorefreshswipe();
         return view;
 
+    }
+    private void pullTorefreshswipe(){
+        swipe_refresh_layout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void onRefresh() {
+                getBookCategory();
+                getPopularList();
+                swipe_refresh_layout.setRefreshing(false);
+            }
+        });
     }
 
     private void fontsize() {

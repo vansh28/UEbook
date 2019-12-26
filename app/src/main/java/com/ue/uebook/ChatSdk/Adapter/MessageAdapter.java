@@ -2,6 +2,8 @@ package com.ue.uebook.ChatSdk.Adapter;
 
 import android.graphics.Bitmap;
 import android.media.MediaMetadataRetriever;
+import android.media.MediaPlayer;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -27,7 +30,14 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyviewHo
    private String userId;
    private AppCompatActivity mtx;
    private ChatImageFileClick chatImageFileClick;
+    private MediaPlayer mediaPlayer =new MediaPlayer();
+    private MediaPlayer omediaPlayer =new MediaPlayer();
+    private int mediaFileLengthInMilliseconds; // this value contains the song
+    // duration in milliseconds.
+    // Look at getDuration() method
+    // in MediaPlayer class
 
+    private final Handler handler = new Handler();
     public MessageAdapter(AppCompatActivity mtx, List<Chathistory> chat_list, String userID) {
         this.chatData=chat_list;
         this.userId=userID;
@@ -36,7 +46,6 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyviewHo
     public interface ChatImageFileClick {
         void onImageClick(String url ,String type);
         void onDownloadClick(String url ,String type ,String name);
-
     }
     public void setItemClickListener(ChatImageFileClick clickListener) {
         chatImageFileClick = clickListener;
@@ -46,10 +55,12 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyviewHo
     public MyviewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.lefttext, parent, false);
         MessageAdapter.MyviewHolder vh = new MessageAdapter.MyviewHolder(v); // pass the view to View Holder
+
+
         return vh;
     }
     @Override
-    public void onBindViewHolder(@NonNull MyviewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final MyviewHolder holder, final int position) {
         Log.d("sender",chatData.get(position).getSender());
         if (chatData.get(position).getSender().equalsIgnoreCase(userId)) {
             if (chatData.get(position).getType().equalsIgnoreCase("image")){
@@ -185,19 +196,19 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyviewHo
 
             }
         });
-        holder.audioviewoponent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                chatImageFileClick.onImageClick("http://dnddemo.com/ebooks/api/v1/" + chatData.get(position).getMessage(),"audio");
-
-            }
-        });
-        holder.audioviewoponent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                chatImageFileClick.onImageClick("http://dnddemo.com/ebooks/api/v1/" + chatData.get(position).getMessage(),"audio");
-            }
-        });
+//        holder.audioviewoponent.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                chatImageFileClick.onImageClick("http://dnddemo.com/ebooks/api/v1/" + chatData.get(position).getMessage(),"audio");
+//
+//            }
+//        });
+//        holder.audioviewSender.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                chatImageFileClick.onImageClick("http://dnddemo.com/ebooks/api/v1/" + chatData.get(position).getMessage(),"audio");
+//            }
+//        });
 
         holder.downloadfileoponent.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -226,20 +237,99 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyviewHo
             }
         });
 
+        holder.senderButtonTestPlayPause.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    String url="http://dnddemo.com/ebooks/api/v1/" + chatData.get(position).getMessage();
+                    Log.d("urllll",url);
+                    mediaPlayer.setDataSource(url); // setup
+                    mediaPlayer.prepare();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                mediaFileLengthInMilliseconds = mediaPlayer.getDuration();
+
+                if (!mediaPlayer.isPlaying()) {
+                    mediaPlayer.start();
+                    holder.senderButtonTestPlayPause.setImageResource(R.drawable.pause);
+
+                } else {
+                    mediaPlayer.pause();
+                    holder.senderButtonTestPlayPause.setImageResource(R.drawable.play);
+                }
+                primarySeekBarProgressUpdater(holder.senderSeekBarTestPlay);
+
+            }
+
+
+        });
+        holder.oponentButtonTestPlayPause.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    mediaPlayer.setDataSource("http://dnddemo.com/ebooks/api/v1/" + chatData.get(position).getMessage()); // setup
+                    mediaPlayer.prepare();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                mediaFileLengthInMilliseconds = mediaPlayer.getDuration();
+                if (!mediaPlayer.isPlaying()) {
+                    mediaPlayer.start();
+                    holder.oponentButtonTestPlayPause.setImageResource(R.drawable.pause);
+
+                } else {
+                    mediaPlayer.pause();
+                    holder.oponentButtonTestPlayPause.setImageResource(R.drawable.play);
+                }
+                primarySeekBarProgressUpdater(holder.oponentsenderSeekBarTestPlay);
+            }
+
+        });
+
+
+    }
+
+    private void primarySeekBarProgressUpdater(final SeekBar SeekBarTestPlay) {
+        SeekBarTestPlay.setProgress((int) (((float) mediaPlayer
+                .getCurrentPosition() / mediaFileLengthInMilliseconds) * 100)); // This
+        if (mediaPlayer.isPlaying()) {
+            Runnable notification = new Runnable() {
+                public void run() {
+                    primarySeekBarProgressUpdater(SeekBarTestPlay);
+                }
+            };
+            handler.postDelayed(notification, 1000);
+        }
     }
     @Override
     public int getItemCount() {
         return chatData.size();
     }
+
+    private void clearMediaPlayer(MediaPlayer mp) {
+        if (mp != null) {
+            mp.stop();
+            mp.release();
+            mp = null;
+        }
+    }
     public class MyviewHolder extends RecyclerView.ViewHolder {
         TextView sendermsz,oponentmsz;
         ImageView senderimage,oponentimage ,videoviewSender,VideoViewOponent;
+        SeekBar senderSeekBarTestPlay,oponentsenderSeekBarTestPlay;
 
         RelativeLayout videoConainersender,videoConainerOpopnent ,fileviewSender,fileviewoponent ,audioviewoponent,audioviewSender;
         RelativeLayout senderlayout,oponentlayout,senderlayoutimage,oponentlayoutimage;
-        ImageButton playbtnOponent,playbtnSender,downloadimageoponent,downloadfileoponent,downloadaudio;
+        ImageButton playbtnOponent,playbtnSender,downloadimageoponent,downloadfileoponent,downloadaudio,senderButtonTestPlayPause,oponentButtonTestPlayPause;
         public MyviewHolder(@NonNull View itemView) {
             super(itemView);
+            oponentsenderSeekBarTestPlay=itemView.findViewById(R.id.oponentSeekBarTestPlay);
+            senderSeekBarTestPlay=itemView.findViewById(R.id.SeekBarTestPlay);
+            senderButtonTestPlayPause=itemView.findViewById(R.id.ButtonTestPlayPause);
+
+            oponentButtonTestPlayPause=itemView.findViewById(R.id.oponentButtonTestPlayPause);
+
             sendermsz=itemView.findViewById(R.id.userMessage);
             oponentmsz=itemView.findViewById(R.id.oPonentMessage);
             senderlayout=itemView.findViewById(R.id.senderlayout);

@@ -62,7 +62,7 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
     private List<BookDetails>bookDetail;
     private ProgressDialog dialog;
     private ImageView book_coverTv,profile_user;
-    private TextView bookTitle,bookDesc,bookAuthor,averageRating,topreviewView,book_uploadBy ,book_asignment ,readFull_Book_btn;
+    private TextView reviewCountView,bookTitle,bookDesc,bookAuthor,averageRating,topreviewView,book_uploadBy ,book_asignment ,readFull_Book_btn;
     private Intent intent;
     private String book_Id,videourl,docurl,audiourl;
     private int position;
@@ -83,6 +83,7 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
         setContentView(R.layout.activity_book__detail__screen);
         swipeRefreshLayout=findViewById(R.id.swipe_refresh_layout);
         myRatingBar=findViewById(R.id.myRatingBar);
+        reviewCountView=findViewById(R.id.reviewCountView);
         profile_user=findViewById(R.id.profile_user);
         book_uploadBy=findViewById(R.id.book_uploadBy);
         averageRating=findViewById(R.id.averageRating);
@@ -129,6 +130,7 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
         review_List.setNestedScrollingEnabled(false);
         getBookDetail(book_Id);
         pullTorefreshswipe();
+
       fontsize();
     }
 
@@ -306,6 +308,7 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
                         bookdesc=form.getData().getBook_description();
                         averageRating.setText(form.getAveraVal());
                         myRatingBar.setRating(Float.parseFloat(form.getAveraVal()));
+                        reviewCountView.setText("(250)Reviews");
                         if (form.getBookMark()!=null){
                             if (form.getBookMark().getBookmarkStatus().equals("1")){
                                 bookmark_btn.setBackgroundResource(R.drawable.bookmark_active);
@@ -374,6 +377,7 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.videotv:
+
                         if (videourl!=null)
                         {
                             gotoWebview("http://"+videourl);

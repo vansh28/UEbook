@@ -1,6 +1,7 @@
 package com.ue.uebook.LoginActivity.Login_Screen;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.SpannableString;
@@ -12,12 +13,14 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.ue.uebook.BaseActivity;
+import com.ue.uebook.Commonutils;
 import com.ue.uebook.Customview.CustomTextViewMedium;
 import com.ue.uebook.Data.ApiRequest;
 import com.ue.uebook.HomeActivity.HomeScreen;
@@ -33,6 +36,8 @@ public class SignUp_screen extends BaseActivity implements View.OnClickListener 
     private Spinner actorType,genderSpinner;
     private String actorName,userGender;
     private Button signUpBtn;
+    private String actorname="Select kind of actor";
+    private String usergender="Select gender";
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +73,7 @@ public class SignUp_screen extends BaseActivity implements View.OnClickListener 
                 String label = parent.getItemAtPosition(arg2).toString();
                 // Showing selected spinner item
                 actorName = label;
+                actorname=actorName;
             }
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
@@ -81,6 +87,7 @@ public class SignUp_screen extends BaseActivity implements View.OnClickListener 
                 String label = parent.getItemAtPosition(arg2).toString();
                 // Showing selected spinner item
                 userGender = label;
+                usergender=userGender;
             }
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
@@ -157,22 +164,39 @@ public class SignUp_screen extends BaseActivity implements View.OnClickListener 
         String user_Email = emailTv.getText().toString();
         String userpass = passwordTv.getText().toString();
         String brief_des = briefDescption.getText().toString();
-
-
         if (!userNAme.isEmpty()) {
             if (!brief_des.isEmpty()) {
-                if (!user_Email.isEmpty()) {
+                if (Commonutils.isValidEmail(user_Email)) {
                     if (!userpass.isEmpty()) {
-                        return true;
-                    }
+                            if (usergender.equalsIgnoreCase("Select gender")){
+                                TextView errorText = (TextView)genderSpinner.getSelectedView();
+                                errorText.setError("");
+                                errorText.setTextColor(Color.RED);//just to highlight that this is an error
+                                errorText.setText("Select your gender");
+                                return false;
+                            }
                             else {
+                                if (actorname.equalsIgnoreCase("Select kind of actor")){
+                                    TextView errorText = (TextView)actorType.getSelectedView();
+                                    errorText.setError("");
+                                    errorText.setTextColor(Color.RED);//just to highlight that this is an error
+                                    errorText.setText("Select Actor type");
+                                    return false;
+                                }
+                                else {
+                                    return true;
+                                }
+                            }
+                    }
+
+                    else {
                         passwordTv.setError("Enter your Password");
                         passwordTv.requestFocus();
                         passwordTv.setEnabled(true);
                         return false;
                     }
                 } else {
-                    emailTv.setError("Enter your Email ");
+                    emailTv.setError("Enter your  Email ");
                     emailTv.requestFocus();
                     emailTv.setEnabled(true);
                     return false;

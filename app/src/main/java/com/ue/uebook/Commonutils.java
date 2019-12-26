@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
-class CommonUtils {public static final String TICKET_DETAILS = "ticketDetails";
+public  class Commonutils {public static final String TICKET_DETAILS = "ticketDetails";
     public static final String SCREEN_TITLE = "screenTitle";
 
     public static final String SELECTED_CIRCLE = "selectedCircle";
@@ -53,6 +53,9 @@ class CommonUtils {public static final String TICKET_DETAILS = "ticketDetails";
 
     private static boolean isValidMobile(String phone) {
         return Patterns.PHONE.matcher(phone).matches();
+    }
+    public static boolean isValidEmail(CharSequence target) {
+        return (!TextUtils.isEmpty(target) && Patterns.EMAIL_ADDRESS.matcher(target).matches());
     }
     public static String validatePhoneNumber(String phNo) {
         if (TextUtils.isEmpty(phNo))

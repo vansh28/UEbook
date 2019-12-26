@@ -192,9 +192,10 @@
                         android:layout_height="wrap_content"
                         android:textColor="@color/white"
                         android:textSize="@dimen/size_17"
+                        android:id="@+id/reviewCountView"
                         android:layout_alignParentRight="true"
                         android:layout_marginRight="@dimen/size_40"
-                        android:text="(250) Reviews"/>
+                        />
                 </RelativeLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
