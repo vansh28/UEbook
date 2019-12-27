@@ -107,7 +107,6 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
 
         try {
             String refreshedToken = FirebaseInstanceId.getInstance().getToken();
-            Log.d("Firbase id login", "Refreshed token: " + refreshedToken);
         } catch (Exception e) {
             e.printStackTrace();
         }

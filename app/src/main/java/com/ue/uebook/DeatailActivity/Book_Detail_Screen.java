@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Html;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
@@ -58,48 +59,52 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
     private Review_List_Adapter review_list_adapter;
     private ImageButton bookmark_btn;
     private Boolean isBookmark_book = false;
-    private Button  comment_Submit;
-    private List<BookDetails>bookDetail;
+    private Button comment_Submit;
+    private List<BookDetails> bookDetail;
     private ProgressDialog dialog;
-    private ImageView book_coverTv,profile_user;
-    private TextView reviewCountView,bookTitle,bookDesc,bookAuthor,averageRating,topreviewView,book_uploadBy ,book_asignment ,readFull_Book_btn;
+    private ImageView book_coverTv, profile_user;
+    private TextView reviewCountView, bookTitle, bookDesc, bookAuthor, averageRating, topreviewView, book_uploadBy, book_asignment, readFull_Book_btn;
     private Intent intent;
-    private String book_Id,videourl,docurl,audiourl;
+    private String book_Id, videourl, docurl, audiourl;
     private int position;
     private String bookdesc;
     private RatingBar commnetRating;
     private EditText user_comment;
     private SwipeRefreshLayout swipeRefreshLayout;
     private String ulpoadByUserId;
-    private List<Assignment>assignmentList;
-    private List<user_answer>user_answers;
+    private List<Assignment> assignmentList;
+    private List<user_answer> user_answers;
     private RatingBar myRatingBar;
     private int textSize;
-    String docbaseUrl="http://docs.google.com/gview?embedded=true&url=";
+
+    private Handler handler;
+
+    String docbaseUrl = "http://docs.google.com/gview?embedded=true&url=";
+
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book__detail__screen);
-        swipeRefreshLayout=findViewById(R.id.swipe_refresh_layout);
-        myRatingBar=findViewById(R.id.myRatingBar);
-        reviewCountView=findViewById(R.id.reviewCountView);
-        profile_user=findViewById(R.id.profile_user);
-        book_uploadBy=findViewById(R.id.book_uploadBy);
-        averageRating=findViewById(R.id.averageRating);
-        topreviewView=findViewById(R.id.topreviewView);
-        comment_Submit=findViewById(R.id.submit_comment);
-        commnetRating=findViewById(R.id.myRatingBar_detail);
-        user_comment=findViewById(R.id.comment_edit_text);
-        book_asignment=findViewById(R.id.book_asignment);
+        swipeRefreshLayout = findViewById(R.id.swipe_refresh_layout);
+        myRatingBar = findViewById(R.id.myRatingBar);
+        reviewCountView = findViewById(R.id.reviewCountView);
+        profile_user = findViewById(R.id.profile_user);
+        book_uploadBy = findViewById(R.id.book_uploadBy);
+        averageRating = findViewById(R.id.averageRating);
+        topreviewView = findViewById(R.id.topreviewView);
+        comment_Submit = findViewById(R.id.submit_comment);
+        commnetRating = findViewById(R.id.myRatingBar_detail);
+        user_comment = findViewById(R.id.comment_edit_text);
+        book_asignment = findViewById(R.id.book_asignment);
         book_asignment.setOnClickListener(this);
-        bookDetail= new ArrayList<>();
+        bookDetail = new ArrayList<>();
         assignmentList = new ArrayList<>();
-        user_answers=new ArrayList<>();
+        user_answers = new ArrayList<>();
         dialog = new ProgressDialog(this);
         intent = getIntent();
         book_Id = intent.getStringExtra("book_id");
-        position =intent.getIntExtra("position",0);
+        position = intent.getIntExtra("position", 0);
         back_btn_Deatils = findViewById(R.id.back_btn_Deatils);
         readFull_Book_btn = findViewById(R.id.readFull_Book_btn);
         readFull_Book_btn.setOnClickListener(this);
@@ -109,10 +114,10 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
         twitter_btn = findViewById(R.id.twittershare_btn);
         whatsappshare_btn = findViewById(R.id.whatsappshare_btn);
         bookTitle = findViewById(R.id.book_name_detail);
-        bookDesc=findViewById(R.id.book_desc);
-        bookAuthor=findViewById(R.id.bookauthor);
+        bookDesc = findViewById(R.id.book_desc);
+        bookAuthor = findViewById(R.id.bookauthor);
         book_uploadBy.setOnClickListener(this);
-        book_coverTv=findViewById(R.id.bookcoverImage);
+        book_coverTv = findViewById(R.id.bookcoverImage);
         comment_Submit.setOnClickListener(this);
         facebook_btn.setOnClickListener(this);
         google_btn.setOnClickListener(this);
@@ -131,12 +136,12 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
         getBookDetail(book_Id);
         pullTorefreshswipe();
 
-      fontsize();
+        fontsize();
     }
 
 
-    private void fontsize(){
-        switch(new SessionManager(getApplicationContext()).getfontSize()) {
+    private void fontsize() {
+        switch (new SessionManager(getApplicationContext()).getfontSize()) {
             case "smallest":
                 textSize = 12;
                 break;
@@ -162,7 +167,8 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
         book_asignment.setTextSize(textSize);
         readFull_Book_btn.setTextSize(textSize);
     }
-    private void pullTorefreshswipe(){
+
+    private void pullTorefreshswipe() {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
@@ -172,6 +178,7 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
             }
         });
     }
+
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void onClick(View view) {
@@ -183,101 +190,96 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
 
                 bookmark_btn.setBackgroundResource(R.drawable.bookmark_active);
                 isBookmark_book = true;
-                addBookToBookmark(book_Id,"1");
+                addBookToBookmark(book_Id, "1");
             } else {
                 bookmark_btn.setBackgroundResource(R.drawable.bookmarkwhite);
                 isBookmark_book = false;
-                addBookToBookmark(book_Id,"0");
+                addBookToBookmark(book_Id, "0");
             }
         } else if (view == facebook_btn) {
 
-          ShareUtils.shareFacebook(this,bookdesc,"");
+            ShareUtils.shareFacebook(this, bookdesc, "");
 
         } else if (view == google_btn) {
 
-            ShareUtils.shareByGmail(this,"UeBook",bookdesc);
+            ShareUtils.shareByGmail(this, "UeBook", bookdesc);
 
         } else if (view == twitter_btn) {
-            ShareUtils.shareTwitter(this,bookdesc,"","","");
+            ShareUtils.shareTwitter(this, bookdesc, "", "", "");
 
         } else if (view == whatsappshare_btn) {
-            ShareUtils.shareWhatsapp(this,bookdesc,"");
+            ShareUtils.shareWhatsapp(this, bookdesc, "");
 
 
-        }
-        else if (view==readFull_Book_btn){
-           showFilterPopup(view);
-        }
-        else if (view == comment_Submit){
-            if (isvalidate())
-            {
+        } else if (view == readFull_Book_btn) {
+            showFilterPopup(view);
+        } else if (view == comment_Submit) {
+            if (isvalidate()) {
                 addCommentToBook(user_comment.getText().toString(), String.valueOf(commnetRating.getRating()));
             }
-        }
-        else if (view==book_uploadBy){
+        } else if (view == book_uploadBy) {
 
-            if (ulpoadByUserId.equalsIgnoreCase(new SessionManager(getApplicationContext()).getUserID())){
+            if (ulpoadByUserId.equalsIgnoreCase(new SessionManager(getApplicationContext()).getUserID())) {
                 Intent intent = new Intent(Book_Detail_Screen.this, AuthorProfileScreen.class);
-                intent.putExtra("id",1);
-                intent.putExtra("userID",new SessionManager(getApplicationContext()).getUserID());
+                intent.putExtra("id", 1);
+                intent.putExtra("userID", new SessionManager(getApplicationContext()).getUserID());
                 startActivity(intent);
-            }
-            else {
+            } else {
                 Intent intent = new Intent(this, AuthorProfileScreen.class);
-                intent.putExtra("userID",ulpoadByUserId);
+                intent.putExtra("userID", ulpoadByUserId);
                 startActivity(intent);
             }
 
 
-        }
-        else if (view==book_asignment){
+        } else if (view == book_asignment) {
             Intent intent = new Intent(this, Book_Assignment.class);
             intent.putExtra("QuestionListExtra", (Serializable) assignmentList);
             intent.putExtra("answer", (Serializable) user_answers);
-            intent.putExtra("book_id",book_Id);
+            intent.putExtra("book_id", book_Id);
             startActivity(intent);
 
         }
     }
+
     private Boolean isvalidate() {
         String user_Comment = user_comment.getText().toString();
         Float userRating = commnetRating.getRating();
         if (!user_Comment.isEmpty()) {
-            if (userRating!=0.0) {
+            if (userRating != 0.0) {
                 return true;
-            }
-            else {
+            } else {
                 Toast.makeText(this, "Please Rate the Book", Toast.LENGTH_LONG).show();
-
                 return false;
             }
-        }
-        else
-            {
+        } else {
+
             Toast.makeText(this, "Please Enter your Comment", Toast.LENGTH_LONG).show();
             return false;
+
         }
     }
 
-    private  void  gotoWebview(String url){
+    private void gotoWebview(String url) {
         Intent intent = new Intent(this, WebviewScreen.class);
-        intent.putExtra("url",url);
+        intent.putExtra("url", url);
         startActivity(intent);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    private void getBookDetail(String book_id) {
+    private void getBookDetail(final String book_id) {
         ApiRequest request = new ApiRequest();
         showLoadingIndicator();
-        if (bookDetail.size()>0)
+        if (bookDetail.size() > 0)
             bookDetail.clear();
 
-        request.requestforgetBookDetail(book_id,new SessionManager(getApplicationContext()).getUserID(), new okhttp3.Callback() {
+        request.requestforgetBookDetail(book_id, new SessionManager(getApplicationContext()).getUserID(), new okhttp3.Callback() {
             @Override
             public void onFailure(okhttp3.Call call, IOException e) {
                 Log.d("error", "error");
                 hideLoadingIndicator();
+
             }
+
             @Override
             public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
                 hideLoadingIndicator();
@@ -287,53 +289,49 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        assignmentList=form.getAssignment();
-                        user_answers=form.getUser_answer();
+                        assignmentList = form.getAssignment();
+                        user_answers = form.getUser_answer();
                         bookTitle.setText(form.getData().getBook_title());
                         bookAuthor.setText(form.getData().getAuthor_name());
-                        ulpoadByUserId=form.getData().getUser_id();
-                        if (form.getData().getUser_name()!=null){
+                        ulpoadByUserId = form.getData().getUser_id();
+                        if (form.getData().getUser_name() != null) {
 //                            SpannableString content = new SpannableString(form.getData().getUser_name());
 //                            content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
                             book_uploadBy.setText((form.getData().getUser_name()));
 //                            GlideUtils.loadImage(Book_Detail_Screen.this,"http://"+form.getData().get,book_coverTv,R.drawable.noimage,R.drawable.noimage);
-                        }
-                        else {
+                        } else {
                             profile_user.setVisibility(View.GONE);
                         }
-                          bookDesc.setText(form.getData().getBook_description());
-                        videourl=form.getData().getVideo_url();
-                        docurl=form.getData().getPdf_url();
-                        audiourl=form.getData().getAudio_url();
-                        bookdesc=form.getData().getBook_description();
+                        bookDesc.setText(form.getData().getBook_description());
+                        videourl = form.getData().getVideo_url();
+                        docurl = form.getData().getPdf_url();
+                        audiourl = form.getData().getAudio_url();
+                        bookdesc = form.getData().getBook_description();
                         averageRating.setText(form.getAveraVal());
                         myRatingBar.setRating(Float.parseFloat(form.getAveraVal()));
                         reviewCountView.setText("(250)Reviews");
-                        if (form.getBookMark()!=null){
-                            if (form.getBookMark().getBookmarkStatus().equals("1")){
+                        if (form.getBookMark() != null) {
+                            if (form.getBookMark().getBookmarkStatus().equals("1")) {
                                 bookmark_btn.setBackgroundResource(R.drawable.bookmark_active);
                                 isBookmark_book = true;
-                            }
-                            else {
+                            } else {
                                 bookmark_btn.setBackgroundResource(R.drawable.bookmarkwhite);
-                                isBookmark_book=false;
+                                isBookmark_book = false;
                             }
-                        }
-                        else {
+                        } else {
                             bookmark_btn.setBackgroundResource(R.drawable.bookmarkwhite);
-                            isBookmark_book=false;
+                            isBookmark_book = false;
                         }
-                        if (form.getData().getBook_description().length()>=50){
+                        if (form.getData().getBook_description().length() >= 50) {
                             makeTextViewResizable(bookDesc, 5, "See More", true);
                         }
-                        GlideUtils.loadImage(Book_Detail_Screen.this,"http://"+form.getData().getThubm_image(),book_coverTv,R.drawable.noimage,R.drawable.noimage);
-                        if (form.getReview()!=null){
-                            review_list_adapter = new Review_List_Adapter(Book_Detail_Screen.this,form.getReview());
+                        GlideUtils.loadImage(Book_Detail_Screen.this, "http://" + form.getData().getThubm_image(), book_coverTv, R.drawable.noimage, R.drawable.noimage);
+                        if (form.getReview() != null) {
+                            review_list_adapter = new Review_List_Adapter(Book_Detail_Screen.this, form.getReview());
                             review_List.setAdapter(review_list_adapter);
                             review_list_adapter.notifyDataSetChanged();
                             topreviewView.setVisibility(View.VISIBLE);
-                        }
-                        else {
+                        } else {
                             topreviewView.setVisibility(View.GONE);
                         }
                     }
@@ -342,31 +340,28 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
             }
         });
     }
+
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    private void addBookToBookmark(String book_id , String bookStatus) {
+    private void addBookToBookmark(String book_id, String bookStatus) {
         ApiRequest request = new ApiRequest();
         showLoadingIndicator();
-        request.requestforaddBookmark(book_id, bookStatus,new SessionManager(getApplicationContext()).getUserID(),new okhttp3.Callback() {
+        request.requestforaddBookmark(book_id, bookStatus, new SessionManager(getApplicationContext()).getUserID(), new okhttp3.Callback() {
             @Override
             public void onFailure(okhttp3.Call call, IOException e) {
                 hideLoadingIndicator();
-
             }
-
             @Override
             public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
-              hideLoadingIndicator();
+                hideLoadingIndicator();
                 final String myResponse = response.body().string();
                 Gson gson = new GsonBuilder().create();
                 final BookmarkResponse form = gson.fromJson(myResponse, BookmarkResponse.class);
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(Book_Detail_Screen.this,form.getMessage(),Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Book_Detail_Screen.this, form.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
-
-
             }
         });
     }
@@ -378,32 +373,27 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
                 switch (item.getItemId()) {
                     case R.id.videotv:
 
-                        if (videourl!=null)
-                        {
-                            gotoWebview("http://"+videourl);
-                        }
-                        else {
+                        if (videourl != null) {
+                            gotoWebview("http://" + videourl);
+                        } else {
 
                             Toast.makeText(Book_Detail_Screen.this, "No Video for this Book", Toast.LENGTH_SHORT).show();
                         }
                         return true;
                     case R.id.audiotv:
-                        if (audiourl!=null)
-                        {
-                            gotoWebview("http://"+audiourl);
-                        }
-                        else {
+                        if (audiourl != null) {
+                            gotoWebview("http://" + audiourl);
+                        } else {
 
                             Toast.makeText(Book_Detail_Screen.this, "No Audio for this Book", Toast.LENGTH_SHORT).show();
-                        }                         return true;
+                        }
+                        return true;
                     case R.id.doctv:
 
 
-                        if (docurl!=null)
-                        {
-                            gotoWebview(docbaseUrl+docurl);
-                        }
-                        else {
+                        if (docurl != null) {
+                            gotoWebview(docbaseUrl + docurl);
+                        } else {
 
                             Toast.makeText(Book_Detail_Screen.this, "No Document File", Toast.LENGTH_SHORT).show();
                         }
@@ -416,6 +406,7 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
         });
         popup.show();
     }
+
     public static void makeTextViewResizable(final TextView tv, final int maxLine, final String expandText, final boolean viewMore) {
         if (tv.getTag() == null) {
             tv.setTag(tv.getText());
@@ -444,8 +435,7 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
                     tv.setText(
                             addClickablePartTextViewResizable(fromHtml(tv.getText().toString()), tv, maxLine, expandText,
                                     viewMore), TextView.BufferType.SPANNABLE);
-                }
-                else {
+                } else {
                     int lineEndIndex = tv.getLayout().getLineEnd(tv.getLayout().getLineCount() - 1);
                     String text = tv.getText().subSequence(0, lineEndIndex) + " " + expandText;
                     tv.setText(text);
@@ -457,11 +447,12 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
             }
         });
     }
+
     private static SpannableStringBuilder addClickablePartTextViewResizable(final Spanned strSpanned, final TextView tv, final int maxLine, final String spanableText, final boolean viewMore) {
         String str = strSpanned.toString();
         SpannableStringBuilder ssb = new SpannableStringBuilder(strSpanned);
         if (str.contains(spanableText)) {
-            ssb.setSpan(new MySpannable(false){
+            ssb.setSpan(new MySpannable(false) {
                 @Override
                 public void onClick(View widget) {
                     if (viewMore) {
@@ -480,17 +471,19 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
         }
         return ssb;
     }
+
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    private void addCommentToBook(String comment , String rating) {
+    private void addCommentToBook(String comment, String rating) {
         showLoadingIndicator();
         ApiRequest request = new ApiRequest();
-        request.requestforAddComment(new SessionManager(getApplicationContext()).getUserID(),book_Id,comment,rating, new okhttp3.Callback() {
+        request.requestforAddComment(new SessionManager(getApplicationContext()).getUserID(), book_Id, comment, rating, new okhttp3.Callback() {
             @Override
             public void onFailure(okhttp3.Call call, IOException e) {
                 Log.d("error", "error");
                 hideLoadingIndicator();
 
             }
+
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
@@ -498,7 +491,8 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
                 hideLoadingIndicator();
                 runOnUiThread(new Runnable() {
                     @Override
-                    public void run() {
+                    public void run()
+                    {
                         user_comment.setText("");
                         commnetRating.setRating(0);
                         getBookDetail(book_Id);
@@ -508,8 +502,7 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
         });
     }
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    public void onRestart()
-    {
+    public void onRestart() {
         super.onRestart();
         getBookDetail(book_Id);
     }

@@ -22,8 +22,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Search_History_Adapter   extends RecyclerView.Adapter<Search_History_Adapter.MyViewHolder> {
-
-
     private SearchHistoryItemClick searchHistoryItemClick;
     private List<HomeListing>dataList;
     private List<HomeListing> arraylist=null;

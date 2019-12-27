@@ -20,13 +20,8 @@ public class Language_adapter extends RecyclerView.Adapter<Language_adapter.MyVi
     private String[] lanuage;
     private String[] language_name;
     private Context context;
-    private Boolean isSelectedLanguage = false;
     private String val []={"en", "fr","de","es"};
     private int id;
-
-    private static CheckBox lastChecked = null;
-    private static int mCheckedPostion = 0;
-
     public Language_adapter(Context applicationContext, String[] language, String[] language_name, int id) {
         this.context = applicationContext;
         this.lanuage = language;
@@ -47,24 +42,14 @@ public class Language_adapter extends RecyclerView.Adapter<Language_adapter.MyVi
     @NonNull
     @Override
     public Language_adapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-// infalte the item Layout
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.language_list_item, parent, false);
-// set the view's size, margins, paddings and layout parameters
         Language_adapter.MyViewHolder vh = new Language_adapter.MyViewHolder(v); // pass the view to View Holder
-
-
         return vh;
     }
 
     @Override
     public void onBindViewHolder(@NonNull final Language_adapter.MyViewHolder holder, final int position) {
-
-
-
           holder.selected_language.setChecked(position==id);
-
-
-//        holder.selected_language.setChecked(position == mCheckedPostion);
         holder.language_change.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

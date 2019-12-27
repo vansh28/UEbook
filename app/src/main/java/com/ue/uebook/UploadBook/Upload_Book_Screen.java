@@ -144,7 +144,7 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
     private String bookid=" ";
     private List<BookResponse>pendingBookdata;
     private   int pendingbookID,pendingbookPosition;
-    private String uploadurl=" http://dnddemo.com/ebooks/api/v1/addNewBook";
+    private String uploadurl=ApiRequest.BaseUrl+"addNewBook";
     private String savelaterUrl;
     private int typevalue=0;  //
 
@@ -244,7 +244,7 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
         getBookCategory();
         String image = new SessionManager(getApplicationContext()).getUserimage();
         if (!image.isEmpty()) {
-            GlideUtils.loadImage(this, "http://dnddemo.com/ebooks/api/v1/upload/" + image, profile_image_user_upload, R.drawable.user_default, R.drawable.user_default);
+            GlideUtils.loadImage(this, ApiRequest.BaseUrl+"upload/" + image, profile_image_user_upload, R.drawable.user_default, R.drawable.user_default);
         } else {
 
             profile_image_user_upload.setImageResource(R.drawable.user_default);
@@ -334,11 +334,6 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
             Add_Line();
 
         } else if (view == recordbtn) {
-//            startVoiceRecognitionActivity();
-//            showBottomSheet();
-
-//                     recordAudio("abcdf");
-
             Intent intent = new Intent(Upload_Book_Screen.this , AudioRecordActivity.class);
             startActivityForResult(intent, RQS_RECORDING);
 
@@ -476,7 +471,7 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
                 , null));
         ImageView imageView = previewDialog.findViewById(R.id.image_view);
         if (file==null) {
-            GlideUtils.loadImage(this, "http://dnddemo.com/ebooks/api/v1/upload/books/" + coverimageurl, imageView, R.drawable.noimage, R.drawable.noimage);
+            GlideUtils.loadImage(this, ApiRequest.BaseUrl+"upload/books/" + coverimageurl, imageView, R.drawable.noimage, R.drawable.noimage);
         }
         else {
             imageView.setImageBitmap(file);
@@ -648,7 +643,6 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
                 throw new IllegalStateException("Unexpected value: " + 1);
         }
         RequestBody requestBodys = ProgressHelper.withProgress(requestBody, new ProgressUIListener() {
-            //if you don't need this method, don't override this methd. It isn't an abstract method, just an empty method.
             @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
             @Override
             public void onUIProgressStart(long totalBytes) {
@@ -660,7 +654,6 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
                 progressdialog.show();
                 progressdialog.setProgress((int) (100 * percent));
             }
-            //if you don't need this method, don't override this method. It isn't an abstract method, just an empty method.
             @Override
             public void onUIProgressFinish() {
                 super.onUIProgressFinish();
@@ -1059,7 +1052,7 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
     }
     private void saveForlater(String isbnNumber, String status,String book_id) {
         if (pendingbookID==2){
-            savelaterUrl=" http://dnddemo.com/ebooks/api/v1/updateBookByid";
+            savelaterUrl=ApiRequest.BaseUrl+"updateBookByid";
         }
         else {
             savelaterUrl=uploadurl;

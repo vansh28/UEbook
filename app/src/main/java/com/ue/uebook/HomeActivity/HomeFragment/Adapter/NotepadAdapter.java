@@ -14,8 +14,6 @@ import com.ue.uebook.HomeActivity.HomeFragment.Pojo.NotepadUserList;
 import com.ue.uebook.R;
 
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class NotepadAdapter  extends RecyclerView.Adapter<NotepadAdapter.MyViewHolder>{
     private  NotepadItemClick notepadItemClickl;
@@ -25,7 +23,6 @@ public class NotepadAdapter  extends RecyclerView.Adapter<NotepadAdapter.MyViewH
         this.data=data;
         this.textsize=textSize;
     }
-
     public interface NotepadItemClick {
         void onItemClick(String note_id,String description,String title);
         void sharenotes(String note);
@@ -54,14 +51,11 @@ public class NotepadAdapter  extends RecyclerView.Adapter<NotepadAdapter.MyViewH
 
         holder.notepadTextdate.setText(data.get(position).getCreated_at());
         if (data.get(position).getTitle().length()>11){
-//            holder.textView.setText(getFirst10Words(data.get(position).getDescription())+"...");
-
             holder.textView.setText(data.get(position).getTitle().substring(0, Math.min(data.get(position).getTitle().length(), 30))+"...");
         }
         else {
             holder.textView.setText(data.get(position).getTitle());
         }
-
         holder.shareNotes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -70,13 +64,6 @@ public class NotepadAdapter  extends RecyclerView.Adapter<NotepadAdapter.MyViewH
                 }
             }
         });
-    }
-
-    public String getFirst10Words(String arg) {
-        Pattern pattern = Pattern.compile("([\\S]+\\s*){1,5}");
-        Matcher matcher = pattern.matcher(arg);
-        matcher.find();
-        return matcher.group();
     }
     @Override
     public int getItemCount() {

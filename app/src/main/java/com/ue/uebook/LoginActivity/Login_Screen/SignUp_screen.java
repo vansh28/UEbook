@@ -71,7 +71,6 @@ public class SignUp_screen extends BaseActivity implements View.OnClickListener 
             public void onItemSelected(AdapterView<?> parent, View arg1,
                                        int arg2, long arg3) {
                 String label = parent.getItemAtPosition(arg2).toString();
-                // Showing selected spinner item
                 actorName = label;
                 actorname=actorName;
             }
@@ -85,7 +84,6 @@ public class SignUp_screen extends BaseActivity implements View.OnClickListener 
             public void onItemSelected(AdapterView<?> parent, View arg1,
                                        int arg2, long arg3) {
                 String label = parent.getItemAtPosition(arg2).toString();
-                // Showing selected spinner item
                 userGender = label;
                 usergender=userGender;
             }
@@ -149,7 +147,6 @@ public class SignUp_screen extends BaseActivity implements View.OnClickListener 
                         public void run() {
 //
                             gotoHome();
-//                            Toast.makeText(getContext(), "Succesfully Login", Toast.LENGTH_SHORT).show();
                         }
 
 

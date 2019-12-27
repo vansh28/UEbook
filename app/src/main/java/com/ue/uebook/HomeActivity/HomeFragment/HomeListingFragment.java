@@ -92,7 +92,6 @@ public class HomeListingFragment extends Fragment implements OnCategorydata {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view=inflater.inflate(R.layout.fragment_home_listing, container, false);
         homelistTv=view.findViewById(R.id.homelistTv);
         LinearLayoutManager linearLayoutManagerPopularList = new LinearLayoutManager(getContext());

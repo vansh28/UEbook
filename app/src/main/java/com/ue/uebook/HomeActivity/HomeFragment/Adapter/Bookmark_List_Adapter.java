@@ -23,7 +23,6 @@ import java.util.regex.Pattern;
 
 public class Bookmark_List_Adapter extends RecyclerView.Adapter<Bookmark_List_Adapter.MyViewHolder> {
 
-
     private BookmarkBookItemClick bookmarkBookItemClick;
     private AppCompatActivity context;
     private List<BookmarkBookList> bookList;
@@ -47,9 +46,7 @@ public class Bookmark_List_Adapter extends RecyclerView.Adapter<Bookmark_List_Ad
     @NonNull
     @Override
     public Bookmark_List_Adapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-// infalte the item Layout
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.popularlist_home_item, parent, false);
-// set the view's size, margins, paddings and layout parameters
         Bookmark_List_Adapter.MyViewHolder vh = new Bookmark_List_Adapter.MyViewHolder(v); // pass the view to View Holder
         vh.bookDesc.setTextSize(textsize);
         vh.authorName.setTextSize(textsize);

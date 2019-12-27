@@ -55,7 +55,6 @@ public class User_Fragment extends Fragment implements View.OnClickListener, Use
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private static final int MY_PERMISSIONS_REQUEST_CAMERA = 99;
-    private static final int PERMISSION_REQUEST_CODE = 31;
     Context context;
     private String mParam1;
     private String mParam2;
@@ -229,10 +228,6 @@ public class User_Fragment extends Fragment implements View.OnClickListener, Use
                 bitmap = (Bitmap) data.getExtras().get("data");
                 ByteArrayOutputStream bytes = new ByteArrayOutputStream();
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-                final byte[] bitmapdata = bytes.toByteArray();
-
-                Log.e("Activity", "Pick from Camera::>>> ");
-
                 String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
                 destination = new File(Environment.getExternalStorageDirectory() + "/" +
                         getString(R.string.app_name), "IMG_" + timeStamp + ".jpg");

@@ -33,10 +33,6 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyviewHo
     private MediaPlayer mediaPlayer =new MediaPlayer();
     private MediaPlayer omediaPlayer =new MediaPlayer();
     private int mediaFileLengthInMilliseconds; // this value contains the song
-    // duration in milliseconds.
-    // Look at getDuration() method
-    // in MediaPlayer class
-
     private final Handler handler = new Handler();
     public MessageAdapter(AppCompatActivity mtx, List<Chathistory> chat_list, String userID) {
         this.chatData=chat_list;
@@ -55,8 +51,6 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyviewHo
     public MyviewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.lefttext, parent, false);
         MessageAdapter.MyviewHolder vh = new MessageAdapter.MyviewHolder(v); // pass the view to View Holder
-
-
         return vh;
     }
     @Override

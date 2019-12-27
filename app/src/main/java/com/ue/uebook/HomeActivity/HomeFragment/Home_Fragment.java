@@ -15,7 +15,6 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -102,20 +101,15 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
     private RelativeLayout popularview;
     private Dialog mdialog;
     private LinearLayout viewL;
-    private OnCategorydata onCategorydata;
-    private Home_Fragment home_fragment;
     ArrayList<String> categoryName;
     ArrayList<String> categoryID;
     private int textSize = 16;
     private ImageButton chatBtn;
-    private int dotscount;
-    private ImageView[] dots;
     private TabLayout tabLayout;
     private ViewPager viewPagerHome;
     private List<HomeListing>popularListData;
     private String [] tabname ={"Tab1","Tab2","Tab3","Tab4","Tab5","Tab6","Tab7"};
     private SwipeRefreshLayout swipe_refresh_layout;
-    private static int homeRefresh=0;
     public Home_Fragment() {
         // Required empty public constructor
     }
@@ -182,9 +176,6 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
             public void onTabSelected(TabLayout.Tab tab){
               int  position = tab.getPosition();
                 Log.d("posit", String.valueOf(position+1));
-//                if (onCategorydata!=null){
-//                    onCategorydata.onDataReceived(1 ,tabname[position]);
-//                }
                 if (getInstance(getActivity()).isConnectingToInternet()) {
                     getRecommenedBookList(categoryID.get(position));
                 }
@@ -526,6 +517,7 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
 
     }
     class ViewPagerAdapter extends FragmentPagerAdapter {
+
         private final List<Fragment> mFragmentList = new ArrayList<>();
         private final List<String> mFragmentTitleList = new ArrayList<>();
 
@@ -608,17 +600,11 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
     }
     @Override
     public void onResume() {
-
-        Log.d("onresume","onresume");
-
         super.onResume();
     }
     @Override
     public void onPause() {
-
-        Log.d("onPasuse","onPasuse");
         super.onPause();
-
     }
 
     public void getPopularBooks(){

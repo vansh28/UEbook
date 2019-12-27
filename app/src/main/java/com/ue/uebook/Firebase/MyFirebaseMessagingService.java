@@ -48,13 +48,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         ActivityManager am = (ActivityManager) this.getSystemService(ACTIVITY_SERVICE);
         List<ActivityManager.RunningTaskInfo> taskInfo = am.getRunningTasks(1);
-        Log.d("topActivity", "CURRENT Activity ::" + taskInfo.get(0).topActivity.getClassName());
         ComponentName componentInfo = taskInfo.get(0).topActivity;
         componentInfo.getPackageName();
 
 
         if (remoteMessage.getData().size() > 0) {
-            //Log.d(TAG, "Message data payload: " + remoteMessage.getData().get("my_custom_key"));
             Log.d("RedListed", "Message data payload: " + remoteMessage.getData());
             Intent i = new Intent("android.intent.action.MAIN").putExtra("some_msg", "I will be sent!");
             this.sendBroadcast(i);
@@ -202,12 +200,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         .setContentIntent(pendingIntent)
                         .setPriority(NotificationManager.IMPORTANCE_HIGH);
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);// Since android Oreo notification channel is needed.
-//           if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//            @SuppressLint("WrongConstant") NotificationChannel channel = new NotificationChannel(channelId,
-//                    "Channel human readable title",
-//                    Notification.DEFAULT_ALL);
-//            notificationManager.createNotificationChannel(channel);
-//             }
         createNotificationChannel();
         notificationManager.notify(value /* ID of notification */, notificationBuilder.build());
     }

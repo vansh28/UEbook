@@ -52,23 +52,18 @@ public class BookCategorywiseList extends BaseActivity implements View.OnClickLi
         linearLayoutManagerBookmark.setOrientation(LinearLayoutManager.VERTICAL);
         categoryBookList.setLayoutManager(linearLayoutManagerBookmark);
         getRecommenedBookList(cId);
-
     }
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void getPopularList() {
-
         ApiRequest request = new ApiRequest();
         request.requestforGetPopularBook(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 Log.e("error", e.getLocalizedMessage());
                 hideLoadingIndicator();
-
             }
-
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-
                 String myresponse = response.body().string();
                 Gson gson = new GsonBuilder().create();
                 final HomeListingResponse form = gson.fromJson(myresponse, HomeListingResponse.class);
@@ -79,7 +74,6 @@ public class BookCategorywiseList extends BaseActivity implements View.OnClickLi
                                 categoryBookAdater = new CategoryBookAdater((AppCompatActivity) getApplicationContext(), form.getData(), 17);
                                 categoryBookList.setAdapter(categoryBookAdater);
                                 categoryBookAdater.notifyDataSetChanged();
-
                             }
                         });
                     }

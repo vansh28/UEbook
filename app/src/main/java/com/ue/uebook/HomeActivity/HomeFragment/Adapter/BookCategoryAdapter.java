@@ -23,16 +23,8 @@ import java.util.Locale;
 public class BookCategoryAdapter extends RecyclerView.Adapter<BookCategoryAdapter.MyViewHolder> {
     private List<BookCategoryPojo> response;
     private List<BookCategoryPojo> arraylist=null;
-
     private CategoryItemClick categoryItemClick;
     private AppCompatActivity mtx;
-    String[] gridColor = {
-            "#3c6169",
-            "#30515d",
-            "#284b5e",
-            "#224156",
-            "#86a6a1",
-    };
     public BookCategoryAdapter(AppCompatActivity mtx ,List<BookCategoryPojo> response) {
         this.response=response;
         this.arraylist = new ArrayList<BookCategoryPojo>();

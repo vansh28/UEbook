@@ -126,8 +126,6 @@ public class ImageUtils {
         String temp = Base64.encodeToString(b, Base64.DEFAULT);
         return temp;
     }
-
-
     /**
      * Check Camera Availability
      *
@@ -144,8 +142,6 @@ public class ImageUtils {
             return false;
         }
     }
-
-
     /**
      * Compress Imgae
      *

@@ -228,7 +228,6 @@ public class AudioRecordActivity extends AppCompatActivity implements Recognitio
         ArrayList<String> matches = results
                 .getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
         if (matches.size() > 0) {
-//            sendQuestion(matches.get(0), true);
             Toast.makeText(getApplicationContext(), matches.get(0), Toast.LENGTH_SHORT);
         }
 

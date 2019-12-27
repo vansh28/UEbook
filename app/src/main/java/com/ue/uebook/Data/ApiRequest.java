@@ -321,7 +321,8 @@ public class ApiRequest {
         client.newCall(request).enqueue(callback);
     }
 
-    public void requestforSendFriendRequest(final String user_id, final String frnd_id, Callback callback) {
+    public void requestforSendFriendRequest(final String user_id, final String frnd_id, Callback callback)
+    {
         String url = null;
         url = BaseUrl + "sendFrndReq";
         OkHttpClient client = new OkHttpClient();
@@ -470,6 +471,7 @@ public class ApiRequest {
         RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
                 .addFormDataPart("user_id", userID)
                 .build();
+
         Request request = new Request.Builder()
                 .url(url)
                 .post(requestBody)

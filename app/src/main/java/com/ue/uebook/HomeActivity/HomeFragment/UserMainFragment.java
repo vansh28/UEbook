@@ -168,12 +168,6 @@ public class UserMainFragment extends Fragment implements View.OnClickListener, 
         } else if (view == logOut) {
             confirmLogoutDialog();
         } else if (view == chat_Container) {
-
-//            showLoadingIndicator();
-//
-//            if (SharedPrefsHelper.getInstance().hasQbUser()) {
-//                restoreChatSession();
-//            }
             Intent intent = new Intent(getContext(), ChatListScreen.class);
             getContext().startActivity(intent);
 

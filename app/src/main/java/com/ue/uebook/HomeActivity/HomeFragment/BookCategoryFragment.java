@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,7 +33,6 @@ import okhttp3.Response;
 
 public class BookCategoryFragment extends Fragment implements BookCategoryAdapter.CategoryItemClick, View.OnClickListener {
     // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
@@ -70,7 +68,6 @@ public class BookCategoryFragment extends Fragment implements BookCategoryAdapte
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.fragment_book_category, container, false);
         categoryList=view.findViewById(R.id.categoryList);
         edittext_search=view.findViewById(R.id.edittext_search);
@@ -144,7 +141,7 @@ public class BookCategoryFragment extends Fragment implements BookCategoryAdapte
         request.requestforGetbookCategory(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                Log.e("error", e.getLocalizedMessage());
+
             }
             @Override
             public void onResponse(Call call, Response response) throws IOException {

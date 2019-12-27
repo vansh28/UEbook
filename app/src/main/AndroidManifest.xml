@@ -38,7 +38,6 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".FullImageVIew"></activity>
         <activity android:name=".faceRecognition.FaceLogin" />
         <activity
             android:name=".AudioRecordActivity"

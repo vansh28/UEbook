@@ -21,8 +21,6 @@ public class FontAdapter   extends RecyclerView.Adapter<FontAdapter.MyViewHolder
     private Boolean isSelectedLanguage = false;
     private String val []={"smallest", "small","normal","large","largest"};
     private int id;
-    private static CheckBox lastChecked = null;
-    private static int mCheckedPostion = 0;
     public FontAdapter(Context applicationContext,  String[] fontname, int id) {
         this.context = applicationContext;
         this.fontname = fontname;

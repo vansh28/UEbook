@@ -44,9 +44,7 @@ public class New_Book_Home_Adapter   extends RecyclerView.Adapter<New_Book_Home_
     @NonNull
     @Override
     public New_Book_Home_Adapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-// infalte the item Layout
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.popularlist_home_item, parent, false);
-// set the view's size, margins, paddings and layout parameters
         New_Book_Home_Adapter.MyViewHolder vh = new New_Book_Home_Adapter.MyViewHolder(v); // pass the view to View Holder
         vh.bookname.setTextSize(textsize);
         vh.authorName.setTextSize(textsize);

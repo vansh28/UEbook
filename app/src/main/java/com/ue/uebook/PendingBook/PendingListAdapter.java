@@ -1,6 +1,5 @@
 package com.ue.uebook.PendingBook;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,9 +46,7 @@ public class PendingListAdapter extends RecyclerView.Adapter<PendingListAdapter.
     @NonNull
     @Override
     public PendingListAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-// infalte the item Layout
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.popularlist_home_item, parent, false);
-// set the view's size, margins, paddings and layout parameters
         PendingListAdapter.MyViewHolder vh = new PendingListAdapter.MyViewHolder(v); // pass the view to View Holder
         vh.bookDesc.setTextSize(textsize);
         vh.authorName.setTextSize(textsize);
@@ -63,7 +60,6 @@ public class PendingListAdapter extends RecyclerView.Adapter<PendingListAdapter.
             @Override
             public void onClick(View view) {
                 if (bookItemClick != null) {
-                    Log.d("ddd", bookList.get(position).getId());
                     bookItemClick.onItemClick(position, bookList.get(position).getId());
                 }
             }
@@ -71,16 +67,11 @@ public class PendingListAdapter extends RecyclerView.Adapter<PendingListAdapter.
         holder.bookname.setText(bookList.get(position).getBook_title());
         holder.authorName.setText(bookList.get(position).getAuthor_name());
        GlideUtils.loadImage(context, "http://" + bookList.get(position).getThubm_image(), holder.bookimage, R.drawable.noimage, R.drawable.noimage);
-//
         if (bookList.get(position).getBook_description().length() > 11) {
             holder.bookDesc.setText(getFirst10Words(bookList.get(position).getBook_description()) + "...");
         } else {
             holder.bookDesc.setText(bookList.get(position).getBook_description());
         }
-//        if (bookList.get(position).getRating() != null) {
-//            holder.ratingBar.setRating(Float.valueOf(bookList.get(position).getRating()));
-//
-//        }
     }
 
     public String getFirst10Words(String arg) {

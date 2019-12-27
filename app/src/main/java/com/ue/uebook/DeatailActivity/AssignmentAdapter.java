@@ -10,20 +10,15 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.ue.uebook.DeatailActivity.Pojo.Assignment;
-import com.ue.uebook.DeatailActivity.Pojo.ReviewPojo;
 import com.ue.uebook.R;
 
 import java.util.List;
 
 public class AssignmentAdapter   extends RecyclerView.Adapter<AssignmentAdapter.MyViewHolder>{
-    private List<ReviewPojo> data;
-    private AppCompatActivity mtc;
-
     private List<Assignment> questionList;
     private SubmitAnswerClick submit_Answer_Click;
     public AssignmentAdapter(List<Assignment> questionList) {
@@ -47,59 +42,48 @@ public class AssignmentAdapter   extends RecyclerView.Adapter<AssignmentAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull final AssignmentAdapter.MyViewHolder holder, final int position) {
-                 if (questionList.get(position).getAnswer()!=null)
-                 {
-                     holder.answer_btn.setText(questionList.get(position).getAnswer());
-                     holder.answer_view.setVisibility(View.GONE);
-                     holder.editanswer.setVisibility(View.VISIBLE);
-                 }
-               holder.answer_btn.setOnClickListener(new View.OnClickListener() {
-                   @Override
-                   public void onClick(View view) {
-                       holder.answer_view.setVisibility(View.VISIBLE);
-                   }
-               });
-               holder.question.setText(questionList.get(position).getQuestion());
-               holder.editanswer.setOnClickListener(new View.OnClickListener() {
-                   @Override
-                   public void onClick(View v) {
-                       holder.answer_view.setVisibility(View.VISIBLE);
-                       holder.submit.setVisibility(View.VISIBLE);
-                       holder.editanswer.setVisibility(View.GONE);
-                       holder.answer_text_input.setVisibility(View.VISIBLE);
-                       holder.answer.setVisibility(View.VISIBLE);
-                       holder.answer_btn.setText("Answer");
-                       holder.answer.setText(questionList.get(position).getAnswer());
-                   }
-               });
-               holder.submit.setOnClickListener(new View.OnClickListener() {
-                   @Override
-                   public void onClick(View v) {
-                       if (!holder.answer.getText().toString().isEmpty()){
-                          if (submit_Answer_Click!=null){
-                              holder.submit.setVisibility(View.GONE);
-                              holder.answer_view.setVisibility(View.GONE);
-                              holder.editanswer.setVisibility(View.VISIBLE);
-                              holder.answer_btn.setText(holder.answer.getText().toString());
-                              submit_Answer_Click.onItemClick(questionList.get(position).getId(),holder.answer.getText().toString());
-                          }
-                          else {
-                              holder.answer.setError("Enter the Answer");
-                              holder.answer.requestFocus();
-                              holder.answer.setEnabled(true);
-                          }
-                       }
-                   }
-               });
-
-//        for(int i = 0; i < questionList.size(); i++){
-//            if (!allEds.get(i).getText().toString().isEmpty()){
-//                Log.d("Value ","Val " + allEds.get(i).getText());
-//                questionList.add( allEds.get(i).getText().toString());
-//            }
-//        }
-//        String json = new Gson().toJson(questionList );
-
+        if (questionList.get(position).getAnswer() != null) {
+            holder.answer_btn.setText(questionList.get(position).getAnswer());
+            holder.answer_view.setVisibility(View.GONE);
+            holder.editanswer.setVisibility(View.VISIBLE);
+        }
+        holder.answer_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                holder.answer_view.setVisibility(View.VISIBLE);
+            }
+        });
+        holder.question.setText(questionList.get(position).getQuestion());
+        holder.editanswer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                holder.answer_view.setVisibility(View.VISIBLE);
+                holder.submit.setVisibility(View.VISIBLE);
+                holder.editanswer.setVisibility(View.GONE);
+                holder.answer_text_input.setVisibility(View.VISIBLE);
+                holder.answer.setVisibility(View.VISIBLE);
+                holder.answer_btn.setText("Answer");
+                holder.answer.setText(questionList.get(position).getAnswer());
+            }
+        });
+        holder.submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!holder.answer.getText().toString().isEmpty()) {
+                    if (submit_Answer_Click != null) {
+                        holder.submit.setVisibility(View.GONE);
+                        holder.answer_view.setVisibility(View.GONE);
+                        holder.editanswer.setVisibility(View.VISIBLE);
+                        holder.answer_btn.setText(holder.answer.getText().toString());
+                        submit_Answer_Click.onItemClick(questionList.get(position).getId(), holder.answer.getText().toString());
+                    } else {
+                        holder.answer.setError("Enter the Answer");
+                        holder.answer.requestFocus();
+                        holder.answer.setEnabled(true);
+                    }
+                }
+            }
+        });
     }
 
     @Override

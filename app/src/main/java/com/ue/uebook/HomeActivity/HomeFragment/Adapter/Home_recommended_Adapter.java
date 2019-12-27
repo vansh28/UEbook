@@ -1,6 +1,5 @@
 package com.ue.uebook.HomeActivity.HomeFragment.Adapter;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,12 +7,15 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.ue.uebook.GlideUtils;
 import com.ue.uebook.HomeActivity.HomeFragment.Pojo.HomeListing;
 import com.ue.uebook.R;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -43,14 +45,8 @@ public class Home_recommended_Adapter extends RecyclerView.Adapter<Home_recommen
     @NonNull
     @Override
     public Home_recommended_Adapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-// infalte the item Layout
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.popularlist_home_item, parent, false);
-// set the view's size, margins, paddings and layout parameters
-
         Home_recommended_Adapter.MyViewHolder vh = new Home_recommended_Adapter.MyViewHolder(v);
-        // pass the view to View Holder
-
-
         vh.bookname.setTextSize(textsize);
         vh.authorName.setTextSize(textsize);
         return vh;
@@ -72,7 +68,6 @@ public class Home_recommended_Adapter extends RecyclerView.Adapter<Home_recommen
         });
         holder.bookname.setText(recommendedList_book.get(position).getBook_title());
         holder.authorName.setText(recommendedList_book.get(position).getAuthor_name());
-        Log.e("image",recommendedList_book.get(position).getThubm_image());
        GlideUtils.loadImage(mctx,"http://"+recommendedList_book.get(position).getThubm_image(),holder.bookimage,R.drawable.noimage,R.drawable.noimage);
     }
 

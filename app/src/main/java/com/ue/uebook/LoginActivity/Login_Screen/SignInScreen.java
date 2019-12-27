@@ -599,7 +599,6 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener, 
                         @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                         @Override
                         public void run() {
-//                            Toast.makeText(getContext(), "Succesfully Login", Toast.LENGTH_SHORT).show();
                             {
                                 new SessionManager(getApplicationContext()).storeUserLoginStatus(1);
                             }
