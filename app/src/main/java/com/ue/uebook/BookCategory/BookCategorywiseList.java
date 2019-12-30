@@ -107,7 +107,12 @@ public class BookCategorywiseList extends BaseActivity implements View.OnClickLi
                     });
                 }
                 else {
-
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                hideLoadingIndicator();
+                            }
+                        });
                 }
             }
         });
@@ -125,7 +130,7 @@ public class BookCategorywiseList extends BaseActivity implements View.OnClickLi
             Intent intent = new Intent(this, Book_Detail_Screen.class);
             intent.putExtra("book_id", book_id);
             intent.putExtra("position", position);
-         startActivity(intent);
+            startActivity(intent);
         }
 
 }

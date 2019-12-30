@@ -28,8 +28,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.firebase.FirebaseApp;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.ue.uebook.Data.ApiRequest;
 import com.ue.uebook.Data.NetworkAPI;
 import com.ue.uebook.Data.NetworkService;
@@ -212,7 +210,7 @@ public class SignUp_Fragment extends Fragment implements View.OnClickListener {
 
             case R.id.create_USerAccount:
                 if (isvalidate()) {
-                    registrationUser(username.getText().toString(), userPassword.getText().toString(), userEmail.getText().toString(), checkboxlist, gender, country_edit_text.getText().toString(), brief_desc.getText().toString(),androidID);
+//                    registrationUser(username.getText().toString(), userPassword.getText().toString(), userEmail.getText().toString(), checkboxlist, gender, country_edit_text.getText().toString(), brief_desc.getText().toString(),androidID);
                 }
                 break;
 
@@ -348,43 +346,43 @@ public class SignUp_Fragment extends Fragment implements View.OnClickListener {
     }
 
 
-    private void registrationUser(String full_name, String password, String email, String publisher_type, String gender, String country, String about_me ,String device_token) {
-        ApiRequest request = new ApiRequest();
-        dialog.setMessage("please wait");
-        dialog.show();
-        request.requestforRegistration(full_name, password, email, publisher_type, gender, country, about_me, "SDHDHDD",new okhttp3.Callback() {
-            @Override
-            public void onFailure(okhttp3.Call call, IOException e) {
-                Log.e("error", e.getLocalizedMessage());
-                dialog.dismiss();
-            }
-
-            @Override
-            public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
-                String myResponse = response.body().string();
-                Gson gson = new GsonBuilder().create();
-                final RegistrationResponse form = gson.fromJson(myResponse, RegistrationResponse.class);
-                new SessionManager(getContext().getApplicationContext()).storeUseruserID(form.getUser_data().getId());
-                new SessionManager(getContext().getApplicationContext()).storeUserName(form.getUser_data().getUser_name());
-                new SessionManager(getApplicationContext()).storeUserImage(form.getUser_data().getUrl());
-                if (form.getError().equalsIgnoreCase("false")) {
-                    Log.d("user_id", form.getUser_data().getId());
-                    new SessionManager(getContext().getApplicationContext()).storeUserPublishtype(form.getUser_data().getPublisher_type());
-                    new SessionManager(getContext().getApplicationContext()).storeUserLoginStatus(1);
-                    getActivity().runOnUiThread(new Runnable() {
-                        @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-                        @Override
-                        public void run() {
+//    private void registrationUser(String full_name, String password, String email, String publisher_type, String gender, String country, String about_me ,String device_token) {
+//        ApiRequest request = new ApiRequest();
+//        dialog.setMessage("please wait");
+//        dialog.show();
+//        request.requestforRegistration(full_name, password, email, publisher_type, gender, country, about_me, "SDHDHDD",new okhttp3.Callback() {
+//            @Override
+//            public void onFailure(okhttp3.Call call, IOException e) {
+//                Log.e("error", e.getLocalizedMessage());
+//                dialog.dismiss();
+//            }
 //
-                            gotoHome();
-//                            Toast.makeText(getContext(), "Succesfully Login", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                }
-
-            }
-        });
-    }
+//            @Override
+//            public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
+//                String myResponse = response.body().string();
+//                Gson gson = new GsonBuilder().create();
+//                final RegistrationResponse form = gson.fromJson(myResponse, RegistrationResponse.class);
+//                new SessionManager(getContext().getApplicationContext()).storeUseruserID(form.getUser_data().getId());
+//                new SessionManager(getContext().getApplicationContext()).storeUserName(form.getUser_data().getUser_name());
+//                new SessionManager(getApplicationContext()).storeUserImage(form.getUser_data().getUrl());
+//                if (form.getError().equalsIgnoreCase("false")) {
+//                    Log.d("user_id", form.getUser_data().getId());
+//                    new SessionManager(getContext().getApplicationContext()).storeUserPublishtype(form.getUser_data().getPublisher_type());
+//                    new SessionManager(getContext().getApplicationContext()).storeUserLoginStatus(1);
+//                    getActivity().runOnUiThread(new Runnable() {
+//                        @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+//                        @Override
+//                        public void run() {
+////
+//                            gotoHome();
+////                            Toast.makeText(getContext(), "Succesfully Login", Toast.LENGTH_SHORT).show();
+//                        }
+//                    });
+//                }
+//
+//            }
+//        });
+//    }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void updateUserChatId(String chatID) {

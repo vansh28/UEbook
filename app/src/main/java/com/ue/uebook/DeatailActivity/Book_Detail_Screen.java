@@ -135,10 +135,8 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
         review_List.setNestedScrollingEnabled(false);
         getBookDetail(book_Id);
         pullTorefreshswipe();
-
         fontsize();
     }
-
 
     private void fontsize() {
         switch (new SessionManager(getApplicationContext()).getfontSize()) {

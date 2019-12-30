@@ -117,6 +117,7 @@ public class Search_Fragment extends Fragment implements View.OnClickListener, S
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
+
             }
 
             @Override
@@ -150,6 +151,7 @@ public class Search_Fragment extends Fragment implements View.OnClickListener, S
 
             @Override
             public void afterTextChanged(Editable editable) {
+
 
             }
         });

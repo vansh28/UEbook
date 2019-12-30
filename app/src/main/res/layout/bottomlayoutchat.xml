@@ -23,7 +23,6 @@
             android:layout_weight="1"
             android:src="@drawable/videochat"
             android:background="@android:color/transparent"
-
             android:layout_gravity="center"
             android:layout_height="wrap_content"/>
         <ImageButton

@@ -41,8 +41,6 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.ue.uebook.BaseActivity;
 import com.ue.uebook.Data.ApiRequest;
 import com.ue.uebook.Data.NetworkAPI;
@@ -454,37 +452,37 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
 //        catch (WindowManager.BadTokenException e) {
 //            //use a log message
 //        }
-        request.requestforRegistration(full_name, password, email, publisher_type, gender,country,"" ,device_token,new okhttp3.Callback() {
-            @Override
-            public void onFailure(okhttp3.Call call, IOException e) {
-                Log.e("error",e.getLocalizedMessage());
-                progressDialog.dismiss();
-
-            }
-            @Override
-            public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
-                String myResponse = response.body().string();
-                progressDialog.dismiss();
-                Gson gson = new GsonBuilder().create();
-                final RegistrationResponse form = gson.fromJson(myResponse, RegistrationResponse.class);
-                new SessionManager(getApplicationContext()).storeUseruserID(form.getUser_data().getId());
-                if (form.getError().equalsIgnoreCase("false")&&form.getUser_data()!=null) {
-                    new SessionManager(getApplicationContext()).storeUserName(form.getUser_data().getUser_name());
-                    new SessionManager(getApplicationContext()).storeUserImage(form.getUser_data().getUrl());
-                    new SessionManager(getApplicationContext()).storeUserEmail(form.getUser_data().getEmail());
-                    new SessionManager(getApplicationContext()).storeUserPublishtype(form.getUser_data().getPublisher_type());
-                    new SessionManager(getApplicationContext()).storeUserLoginStatus(1);
-                runOnUiThread(new Runnable() {
-                        @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-                        @Override
-                        public void run() {
-                            gotoHome();
-                        }
-                    });
-
-                }
-            }
-        });
+//        request.requestforRegistration(full_name, password, email, publisher_type, gender,country,"" ,device_token,"dsddd",new okhttp3.Callback() {
+//            @Override
+//            public void onFailure(okhttp3.Call call, IOException e) {
+//                Log.e("error",e.getLocalizedMessage());
+//                progressDialog.dismiss();
+//
+//            }
+//            @Override
+//            public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
+//                String myResponse = response.body().string();
+//                progressDialog.dismiss();
+//                Gson gson = new GsonBuilder().create();
+//                final RegistrationResponse form = gson.fromJson(myResponse, RegistrationResponse.class);
+//                new SessionManager(getApplicationContext()).storeUseruserID(form.getUser_data().getId());
+//                if (form.getError().equalsIgnoreCase("false")&&form.getUser_data()!=null) {
+//                    new SessionManager(getApplicationContext()).storeUserName(form.getUser_data().getUser_name());
+//                    new SessionManager(getApplicationContext()).storeUserImage(form.getUser_data().getUrl());
+//                    new SessionManager(getApplicationContext()).storeUserEmail(form.getUser_data().getEmail());
+//                    new SessionManager(getApplicationContext()).storeUserPublishtype(form.getUser_data().getPublisher_type());
+//                    new SessionManager(getApplicationContext()).storeUserLoginStatus(1);
+//                runOnUiThread(new Runnable() {
+//                        @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+//                        @Override
+//                        public void run() {
+//                            gotoHome();
+//                        }
+//                    });
+//
+//                }
+//            }
+//        });
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)

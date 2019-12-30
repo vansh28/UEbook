@@ -6,7 +6,6 @@
     android:layout_margin="@dimen/size_10"
     android:orientation="vertical"
     tools:context=".HomeActivity.HomeFragment.Search_Fragment">
-
     <LinearLayout
         android:id="@+id/view"
         android:layout_width="match_parent"
@@ -14,7 +13,6 @@
         android:layout_margin="@dimen/size_10"
         android:background="@drawable/searchbg"
         android:orientation="horizontal">
-
         <EditText
             android:id="@+id/edittext_search"
             android:layout_width="wrap_content"
@@ -35,7 +33,6 @@
             android:textColorHint="#818080"
             android:textSize="@dimen/size_15"
             tools:ignore="RtlCompat" />
-
         <ImageView
             android:id="@+id/audio_search_btn"
             android:layout_width="wrap_content"
@@ -46,7 +43,6 @@
             android:layout_toRightOf="@id/edittext_search"
             android:src="@drawable/audio" />
     </LinearLayout>
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/search_history_list"
         android:layout_width="match_parent"
@@ -54,7 +50,6 @@
         android:layout_below="@id/view"
         android:layout_margin="@dimen/size_5"
         android:visibility="gone" />
-
     <ImageView
         android:id="@+id/bookimage_search"
         android:layout_width="300dp"
@@ -62,7 +57,6 @@
         android:layout_centerInParent="true"
         android:background="@drawable/download_book"
         android:visibility="gone" />
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/search_list"
         android:layout_width="match_parent"

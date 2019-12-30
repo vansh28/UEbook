@@ -291,6 +291,7 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener, 
                 });
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -314,10 +315,10 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener, 
                 final byte[] bitmapdata = bytes.toByteArray();
                 Log.e("imageForLogin",getPath(getImageUri(this,bitmap)));
 //                UpdateUser(new File(getPath(getImageUri(this,bitmap))));
-                imagePreview(bitmap,new File(getPath(getImageUri(this,bitmap))));
+//                imagePreview(bitmap,new File(getPath(getImageUri(this,bitmap))));
+                loginUserByFace(new File(getPath(getImageUri(this,bitmap))));
             } catch (Exception e) {
                 e.printStackTrace();
-
             }
         }
     }
@@ -449,7 +450,7 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener, 
 //        catch (WindowManager.BadTokenException e) {
 //            //use a log message
 //        }
-        request.requestforRegistration(full_name, password, email, publisher_type, gender, country, "", device_token, new okhttp3.Callback() {
+        request.requestforRegistrationfb(full_name, password, email, publisher_type, gender, country, "", device_token, new okhttp3.Callback() {
             @Override
             public void onFailure(okhttp3.Call call, IOException e) {
                 Log.e("error", e.getLocalizedMessage());
@@ -511,7 +512,6 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener, 
                     }
                 }
                 break;
-
         }
     }
     public boolean checkPermission() {
@@ -546,7 +546,7 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener, 
             public void onClick(View view) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 //                    requestforLogin("de", "123");
-                    loginUserByFace(userFile);
+
 
                 }
                 previewDialog.dismiss();
@@ -582,6 +582,12 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener, 
             @Override
             public void onFailure(okhttp3.Call call, IOException e) {
                 hideLoadingIndicator();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(SignInScreen.this,"Please retake the picture",Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
             @Override
             public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
@@ -589,7 +595,7 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener, 
                 String myResponse = response.body().string();
                 Gson gson = new GsonBuilder().create();
                 final LoginResponse form = gson.fromJson(myResponse, LoginResponse.class);
-                if (form.getError() == false)
+                if (form.getError() == false && form.getResponse()!=null)
                 {
                     new SessionManager(getApplicationContext()).storeUserEmail(form.getResponse().getEmail());
                     new SessionManager(getApplicationContext()).storeUserPublishtype(form.getResponse().getPublisher_type());
@@ -607,23 +613,28 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener, 
                     });
                 }
                 else {
-                    final PrettyDialog pDialog = new PrettyDialog(SignInScreen.this);
-                    pDialog.setTitle("Login Error");
-                    pDialog.setIcon(R.drawable.cancel);
-                    pDialog.setMessage(form.getMessage());
-                    pDialog.addButton(
-                            "OK",                    // button text
-                            R.color.pdlg_color_white,        // button text color
-                            R.color.colorPrimary,        // button background color
-                            new PrettyDialogCallback() {        // button OnClick listener
-                                @Override
-                                public void onClick() {
-                                    pDialog.dismiss();
-                                    hideLoadingIndicator();
-                                }
-                            }
-                    )
-                            .show();
+                   runOnUiThread(new Runnable() {
+                       @Override
+                       public void run() {
+                           final PrettyDialog pDialog = new PrettyDialog(SignInScreen.this);
+                           pDialog.setTitle("Login Error");
+                           pDialog.setIcon(R.drawable.cancel);
+                           pDialog.setMessage("Invalid User");
+                           pDialog.addButton(
+                                   "OK",                    // button text
+                                   R.color.pdlg_color_white,        // button text color
+                                   R.color.colorPrimary,        // button background color
+                                   new PrettyDialogCallback() {        // button OnClick listener
+                                       @Override
+                                       public void onClick() {
+                                           pDialog.dismiss();
+                                           hideLoadingIndicator();
+                                       }
+                                   }
+                           )
+                                   .show();
+                       }
+                   });
                 }
             }
         });

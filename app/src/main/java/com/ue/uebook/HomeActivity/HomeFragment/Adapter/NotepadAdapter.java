@@ -48,7 +48,6 @@ public class NotepadAdapter  extends RecyclerView.Adapter<NotepadAdapter.MyViewH
                 }
             }
         });
-
         holder.notepadTextdate.setText(data.get(position).getCreated_at());
         if (data.get(position).getTitle().length()>11){
             holder.textView.setText(data.get(position).getTitle().substring(0, Math.min(data.get(position).getTitle().length(), 30))+"...");

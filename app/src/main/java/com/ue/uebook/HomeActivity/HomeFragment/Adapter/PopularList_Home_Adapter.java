@@ -30,7 +30,6 @@ public class PopularList_Home_Adapter extends RecyclerView.Adapter<PopularList_H
         this.mctx=mctx;
         this.textsize=textSize;
     }
-
     public interface PopularBookItemClick {
         void onItemClick_PopularBook(int position ,String book_id);
     }
@@ -52,7 +51,9 @@ public class PopularList_Home_Adapter extends RecyclerView.Adapter<PopularList_H
             @Override
             public void onClick(View view) {
                 if (popularBookItemClick != null) {
+
                     popularBookItemClick.onItemClick_PopularBook(position, popularBook_list.get(position).getId());
+
                 }
             }
         });
@@ -61,7 +62,9 @@ public class PopularList_Home_Adapter extends RecyclerView.Adapter<PopularList_H
         holder.categoryNameTv.setText(popularBook_list.get(position).getCategory_name());
         GlideUtils.loadImage(mctx, "http://" + popularBook_list.get(position).getThubm_image(), holder.bookimage, R.drawable.noimage, R.drawable.noimage);
         if (popularBook_list.get(position).getRating() != null) {
+
             holder.ratingBar.setRating(Float.valueOf(popularBook_list.get(position).getRating()));
+
         }
     }
     @Override

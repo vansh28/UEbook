@@ -209,13 +209,13 @@ public class AuthorEditProfile extends BaseActivity implements View.OnClickListe
                             country__user.setText(form.getResponse().getCountry());
                             about_me.setText(form.getResponse().getAbout_me());
                             if (form.getResponse().getPublisher_type().equalsIgnoreCase("Reader")) {
-                                actor_Spinner.setSelection(0);
-                            } else if (form.getResponse().getPublisher_type().equalsIgnoreCase("Writer")) {
                                 actor_Spinner.setSelection(1);
-                            } else if (form.getResponse().getPublisher_type().equalsIgnoreCase("Publish House")) {
+                            } else if (form.getResponse().getPublisher_type().equalsIgnoreCase("Writer")) {
                                 actor_Spinner.setSelection(2);
-                            } else if (form.getResponse().getPublisher_type().equalsIgnoreCase("Reader and Writer")) {
+                            } else if (form.getResponse().getPublisher_type().equalsIgnoreCase("Publish House")) {
                                 actor_Spinner.setSelection(3);
+                            } else if (form.getResponse().getPublisher_type().equalsIgnoreCase("Reader and Writer")) {
+                                actor_Spinner.setSelection(4);
                             }
                         }
                     });

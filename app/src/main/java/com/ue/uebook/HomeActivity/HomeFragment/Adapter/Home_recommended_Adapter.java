@@ -54,7 +54,6 @@ public class Home_recommended_Adapter extends RecyclerView.Adapter<Home_recommen
 
     @Override
     public void onBindViewHolder(@NonNull Home_recommended_Adapter.MyViewHolder holder, final int position) {
-
         holder.book_container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -70,12 +69,10 @@ public class Home_recommended_Adapter extends RecyclerView.Adapter<Home_recommen
         holder.authorName.setText(recommendedList_book.get(position).getAuthor_name());
        GlideUtils.loadImage(mctx,"http://"+recommendedList_book.get(position).getThubm_image(),holder.bookimage,R.drawable.noimage,R.drawable.noimage);
     }
-
     @Override
     public int getItemCount() {
         return recommendedList_book.size();
     }
-
     public class MyViewHolder extends RecyclerView.ViewHolder {
         LinearLayout book_container;
         ImageView bookimage;
@@ -89,7 +86,6 @@ public class Home_recommended_Adapter extends RecyclerView.Adapter<Home_recommen
             authorName = itemView.findViewById(R.id.auhorname);
             bookDesc = itemView.findViewById(R.id.shortDesc);
             ratingBar = itemView.findViewById(R.id.myRatingBar);
-
         }
     }
     public void filter(String charText) {

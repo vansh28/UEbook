@@ -194,7 +194,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="@dimen/size_10"
-                    android:src="@drawable/password" />
+                    android:src="@drawable/user" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -216,7 +216,6 @@
                         android:hint="enter about yourself "
                         android:textColor="@color/black"
                         android:textStyle="bold"
-                        android:inputType="textPassword"
                         android:background="@android:color/transparent"
                         android:textSize="@dimen/size_15" />
                 </LinearLayout>
@@ -310,6 +309,7 @@
                         </Spinner>
 
                 </LinearLayout>
+
             </LinearLayout>
             <View
                 android:layout_width="match_parent"
@@ -318,6 +318,43 @@
                 android:layout_marginTop="@dimen/size_5"
                 android:layout_marginRight="@dimen/size_25"
                 android:background="#B4B4B4" />
+            <LinearLayout
+                android:id="@+id/upload_faceDetect_image"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/size_60"
+                android:layout_marginLeft="@dimen/size_15"
+                android:layout_marginTop="@dimen/size_15"
+                android:layout_marginRight="@dimen/size_15"
+                android:background="@drawable/buttonbg">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/size_20"/>
+                <TextView
+                    android:id="@+id/uploadfaceDetectView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/size_15"
+                    android:text="Upload face detect Image"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/size_16"/>
+            </LinearLayout>
+            <RelativeLayout
+                android:id="@+id/faceimage"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/size_80"
+                android:layout_marginTop="@dimen/size_10"
+                android:paddingRight="@dimen/size_10"
+                android:visibility="gone">
+                <ImageView
+                    android:id="@+id/faceimage_preview"
+                    android:layout_width="80dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="@dimen/size_10"/>
+            </RelativeLayout>
+
             <Button
                 android:id="@+id/signUpBtn"
                 android:layout_width="match_parent"
@@ -326,7 +363,6 @@
                 android:textSize="@dimen/size_18"
                 android:textAllCaps="true"
                 android:textColor="@color/white"
-
                 android:layout_marginTop="@dimen/size_25"
                 android:layout_marginLeft="@dimen/size_20"
                 android:layout_marginRight="@dimen/size_20"

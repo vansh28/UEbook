@@ -75,8 +75,6 @@ public class Search_History_Adapter   extends RecyclerView.Adapter<Search_Histor
         else {
             holder.bookDesc.setText(dataList.get(position).getBook_description());
         }
-
-
     }
     public String getFirst10Words(String arg) {
         Pattern pattern = Pattern.compile("([\\S]+\\s*){1,10}");
@@ -104,7 +102,9 @@ public class Search_History_Adapter   extends RecyclerView.Adapter<Search_Histor
     public void filter(String charText) {
         charText = charText.toLowerCase(Locale.getDefault());
         dataList.clear();
-        if (charText.length() == 0) {
+        if (charText.length() == 0)
+        {
+           dataList.addAll(arraylist);
 
         }
         else
