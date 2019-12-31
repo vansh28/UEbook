@@ -13,7 +13,7 @@ import okhttp3.RequestBody;
 public class ApiRequest {
     public static final String BaseUrl = "http://dnddemo.com/ebooks/api/v1/";
 
-    public void requestforRegistration(final String full_name, final String password, final String email, final String publisher_type, final String gender, final String country, final String about_me,final  String device_token, File face_detect_image,Callback callback) {
+    public void requestforRegistration(final String full_name, final String password, final String email, final String publisher_type, final String gender, final String country, final String about_me,final  String device_token,Callback callback) {
         String url = null;
         url = BaseUrl + "createUser";
         OkHttpClient client = new OkHttpClient();
@@ -28,8 +28,7 @@ public class ApiRequest {
                 .addFormDataPart("about_me", about_me)
                 .addFormDataPart("device_token",device_token)
                 .addFormDataPart("device_type","android")
-                .addFormDataPart("face_detect_image", face_detect_image.getName(), RequestBody.create(MEDIA_TYPE_PNG, face_detect_image))
-
+//                .addFormDataPart("face_detect_image", face_detect_image.getName(), RequestBody.create(MEDIA_TYPE_PNG, face_detect_image))
                 .addFormDataPart("device_token",FirebaseInstanceId.getInstance().getToken())
                 .build();
         Request request = new Request.Builder()

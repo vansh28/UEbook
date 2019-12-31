@@ -18,6 +18,7 @@
         android:layout_width="@dimen/size_150"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/size_25"
+        android:visibility="gone"
         android:layout_marginTop="@dimen/size_10"
         android:src="@drawable/loginlogo" />
 
@@ -27,6 +28,7 @@
         android:layout_marginLeft="@dimen/size_25"
         android:text="Sign Up"
         android:textColor="@color/black"
+        android:layout_marginTop="@dimen/size_25"
         android:textSize="@dimen/size_25" />
 
     <com.ue.uebook.Customview.CustomTextViewNormal
@@ -324,6 +326,7 @@
                 android:layout_height="@dimen/size_60"
                 android:layout_marginLeft="@dimen/size_15"
                 android:layout_marginTop="@dimen/size_15"
+                android:visibility="gone"
                 android:layout_marginRight="@dimen/size_15"
                 android:background="@drawable/buttonbg">
                 <ImageView

@@ -22,8 +22,8 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.ue.uebook.AuthorProfileActivity.AuthorProfileScreen;
 import com.ue.uebook.ChatSdk.ChatListScreen;
+import com.ue.uebook.Dashboard.StartActivityHome;
 import com.ue.uebook.Dictionary.DictionaryScreen;
-import com.ue.uebook.LoginActivity.Login_Screen.SignInScreen;
 import com.ue.uebook.PendingBook.PendingBookScreen;
 import com.ue.uebook.R;
 import com.ue.uebook.SessionManager;
@@ -206,7 +206,7 @@ public class UserMainFragment extends Fragment implements View.OnClickListener, 
                     public void onClick(DialogInterface dialog, int id) {
                         new SessionManager(getActivity().getApplicationContext()).clearUserCredentials();
 
-                        Intent intent = new Intent(getContext(), SignInScreen.class);
+                        Intent intent = new Intent(getContext(), StartActivityHome.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         intent.putExtra("id",1);
                         startActivity(intent);

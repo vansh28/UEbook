@@ -464,6 +464,7 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener, 
 
                 Gson gson = new GsonBuilder().create();
                 final RegistrationResponse form = gson.fromJson(myResponse, RegistrationResponse.class);
+                if (form.getError().equalsIgnoreCase("false")&&form.getUser_data()!=null){
                 new SessionManager(getApplicationContext()).storeUseruserID(form.getUser_data().getId());
                 if (form.getError().equalsIgnoreCase("false") && form.getUser_data() != null) {
                     new SessionManager(getApplicationContext()).storeUserName(form.getUser_data().getUser_name());
@@ -476,6 +477,30 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener, 
                         @Override
                         public void run() {
                             gotoHome();
+                        }
+                    });
+                }}
+                else {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            final PrettyDialog pDialog = new PrettyDialog(SignInScreen.this);
+                            pDialog.setTitle("Login Error");
+                            pDialog.setIcon(R.drawable.cancel);
+                            pDialog.setMessage("Please Try Again");
+                            pDialog.addButton(
+                                    "OK",                    // button text
+                                    R.color.pdlg_color_white,        // button text color
+                                    R.color.colorPrimary,        // button background color
+                                    new PrettyDialogCallback() {        // button OnClick listener
+                                        @Override
+                                        public void onClick() {
+                                            pDialog.dismiss();
+                                            hideLoadingIndicator();
+                                        }
+                                    }
+                            )
+                                    .show();
                         }
                     });
                 }

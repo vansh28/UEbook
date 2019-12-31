@@ -20,6 +20,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/size_25"
                 android:layout_marginTop="@dimen/size_10"
+                android:visibility="gone"
                 android:src="@drawable/loginlogo" />
 
             <com.ue.uebook.Customview.CustomTextViewBold
@@ -27,6 +28,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/size_25"
                 android:text="Sign In"
+                android:layout_marginTop="@dimen/size_25"
                 android:textColor="@color/black"
                 android:textSize="@dimen/size_25" />
 

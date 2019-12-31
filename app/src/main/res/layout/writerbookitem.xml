@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/container_book"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/size_5"
+    xmlns:card_view="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    >
+    <androidx.cardview.widget.CardView
+        card_view:cardElevation="16dp"
+        card_view:cardPreventCornerOverlap="false"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_5"
+        app:cardCornerRadius="8dp"
+        app:cardMaxElevation="15dp">
+        <ImageView
+            android:id="@+id/item_image"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size_150"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/vvv"
+            android:scaleType="fitXY"
+            />
+    </androidx.cardview.widget.CardView>
+    <com.ue.uebook.Customview.CustomTextViewNormal
+        android:id="@+id/book_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:layout_gravity="center_horizontal"
+        android:text="Book of Days"
+        android:layout_marginTop="@dimen/size_3"
+        android:layout_marginLeft="6dp"
+        android:textColor="@color/black"/>
+    <com.ue.uebook.Customview.CustomTextViewNormal
+        android:id="@+id/author_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="13sp"
+        android:layout_gravity="center_horizontal"
+        android:text="Author Name"
+        android:layout_marginLeft="6dp"
+        android:textColor="#9B9B9B"/>
+
+
+</LinearLayout>

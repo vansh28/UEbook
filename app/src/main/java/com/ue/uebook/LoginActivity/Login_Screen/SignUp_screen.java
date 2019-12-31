@@ -149,7 +149,7 @@ public class SignUp_screen extends BaseActivity implements View.OnClickListener 
     private void registrationUser(String full_name, String password, String email, String publisher_type, String gender, String country, String about_me , String device_token,File face_detect_image) {
         ApiRequest request = new ApiRequest();
           showLoadingIndicator();
-        request.requestforRegistration(full_name, password, email, publisher_type, gender, country, about_me, "SDHDHDD",face_detect_image,new okhttp3.Callback() {
+        request.requestforRegistration(full_name, password, email, publisher_type, gender, country, about_me, "SDHDHDD",new okhttp3.Callback() {
             @Override
             public void onFailure(okhttp3.Call call, IOException e) {
                 Log.e("error", e.getLocalizedMessage());

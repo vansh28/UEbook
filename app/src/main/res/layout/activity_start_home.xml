@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#546E7A"
+    android:orientation="vertical"
+    tools:context=".Dashboard.StartActivityHome">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+
+            <com.ue.uebook.Customview.CustomTextViewNormal
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/size_25"
+                android:gravity="center"
+                android:lineSpacingMultiplier="0.8"
+                android:textColor="@color/white"
+                android:textSize="22sp" />
+
+            <com.ue.uebook.Customview.CustomTextViewBold
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/size_5"
+                android:gravity="center"
+                android:text="with UEbook"
+                android:textColor="@color/white"
+                android:textSize="@dimen/size_25"
+                android:visibility="gone" />
+
+            <com.ue.uebook.Customview.CustomTextViewNormal
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/size_10"
+                android:layout_marginTop="@dimen/size_5"
+                android:layout_marginRight="@dimen/size_10"
+                android:gravity="center"
+                android:text="@string/homecontent"
+                android:textColor="@color/white"
+                android:textSize="@dimen/size_14" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/size_15"
+                android:gravity="center"
+                android:text="Get Started"
+                android:textColor="#ffe068"
+                android:textSize="@dimen/size_25"
+                android:textStyle="italic|bold" />
+
+            <LinearLayout
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/size_25"
+                android:layout_weight="2"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/size_100"
+                        android:layout_gravity="center"
+                        android:src="@drawable/voicen" />
+
+                    <com.ue.uebook.Customview.CustomTextViewNormal
+                        android:id="@+id/voiceText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:lineSpacingMultiplier="0.8"
+                        android:textColor="@color/white"
+                        android:letterSpacing="0.1"
+                        android:layout_marginTop="@dimen/size_3"
+                        android:textSize="@dimen/size_12" />
+
+                    <com.ue.uebook.Customview.CustomTextViewNormal
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="VOICE"
+                        android:visibility="gone"
+
+                        android:textAllCaps="true"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/size_20" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/size_100"
+                        android:layout_gravity="center"
+                        android:src="@drawable/typingn" />
+
+                    <com.ue.uebook.Customview.CustomTextViewNormal
+                        android:id="@+id/keyboardText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:letterSpacing="0.1"
+                        android:lineSpacingMultiplier="0.8"
+                        android:textColor="@color/white"
+                        android:layout_marginTop="@dimen/size_3"
+                        android:textSize="@dimen/size_12" />
+
+                    <com.ue.uebook.Customview.CustomTextViewNormal
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="Typing"
+                        android:visibility="gone"
+
+                        android:textAllCaps="true"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/size_20" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/size_60"
+                android:layout_marginTop="@dimen/size_20"
+                android:background="@color/white"
+                android:gravity="center">
+
+                <com.ue.uebook.Customview.CustomTextViewBold
+                    android:id="@+id/abc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="UEbook "
+                    android:textSize="@dimen/size_25" />
+
+                <com.ue.uebook.Customview.CustomTextViewNormal
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/abc"
+                    android:text="Explore more "
+                    android:textSize="@dimen/size_25" />
+
+            </RelativeLayout>
+
+            <LinearLayout
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/size_25"
+                android:layout_weight="2"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/size_100"
+                        android:layout_gravity="center"
+                        android:src="@drawable/chatn" />
+
+                    <com.ue.uebook.Customview.CustomTextViewNormal
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:lineSpacingMultiplier="0.8"
+                        android:layout_marginTop="@dimen/size_3"
+                        android:letterSpacing="0.1"
+                        android:id="@+id/chatText"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/size_12" />
+
+                    <com.ue.uebook.Customview.CustomTextViewNormal
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="Chating"
+                        android:visibility="gone"
+                        android:textAllCaps="true"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/size_20" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/size_100"
+                        android:layout_gravity="center"
+                        android:src="@drawable/readn" />
+
+                    <com.ue.uebook.Customview.CustomTextViewNormal
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:lineSpacingMultiplier="0.8"
+                        android:id="@+id/readBookText"
+                        android:layout_marginTop="@dimen/size_3"
+                        android:letterSpacing="0.1"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/size_12" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_below="@id/answer_view"
+                android:layout_marginLeft="@dimen/size_15"
+                android:layout_marginTop="@dimen/size_25"
+                android:layout_marginRight="@dimen/size_15"
+                android:background="@drawable/whitedot" />
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/signUp_btn_new"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center_horizontal">
+
+                <com.ue.uebook.Customview.CustomTextViewMedium
+                    android:id="@+id/nothaveacountbtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="@dimen/size_25"
+                    android:layout_marginBottom="@dimen/size_20"
+                    android:text="Not have an account?  "
+                    android:textColor="@color/white" />
+
+                <com.ue.uebook.Customview.CustomTextViewMedium
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="@dimen/size_25"
+                    android:layout_marginBottom="@dimen/size_20"
+                    android:layout_toRightOf="@+id/nothaveacountbtn"
+                    android:text=" Sign Up"
+                    android:textColor="#ffe068" />
+            </RelativeLayout>
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
