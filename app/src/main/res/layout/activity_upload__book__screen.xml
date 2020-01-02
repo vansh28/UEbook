@@ -368,19 +368,6 @@
                        android:orientation="horizontal"
                        android:weightSum="2">
                        <Button
-                           android:id="@+id/publish_book"
-                           android:layout_width="0dp"
-                           android:layout_weight="1"
-                           android:layout_height="wrap_content"
-                           android:layout_marginLeft="@dimen/size_8"
-                           android:layout_marginTop="@dimen/size_40"
-                           android:layout_marginRight="@dimen/size_8"
-                           android:layout_marginBottom="@dimen/size_20"
-                           android:background="@drawable/createacount_bg"
-                           android:text="@string/publish_book"
-                           android:textAllCaps="true"
-                           android:textColor="@color/white"/>
-                       <Button
                            android:id="@+id/saveForLater"
                            android:layout_width="0dp"
                            android:layout_weight="1"
@@ -393,6 +380,20 @@
                            android:text="Save For Later"
                            android:textAllCaps="true"
                            android:textColor="@color/white"/>
+                       <Button
+                           android:id="@+id/publish_book"
+                           android:layout_width="0dp"
+                           android:layout_weight="1"
+                           android:layout_height="wrap_content"
+                           android:layout_marginLeft="@dimen/size_8"
+                           android:layout_marginTop="@dimen/size_40"
+                           android:layout_marginRight="@dimen/size_8"
+                           android:layout_marginBottom="@dimen/size_20"
+                           android:text="@string/publish_book"
+                           android:textAllCaps="true"
+                           android:background="#00154f"
+                           android:textColor="@color/white"/>
+
 
                    </LinearLayout>
             </LinearLayout>

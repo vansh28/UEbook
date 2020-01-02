@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.net.Uri;
@@ -70,7 +71,15 @@ import com.ue.uebook.UploadBook.Pojo.UploadPojo;
 import com.ue.uebook.UploadBook.Pojo.VerifyISBNPojo;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -122,6 +131,7 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
     private ImageView profile_image_user_upload, verifyImageview;
     private VideoView videoview;
     private int mCurrentPosition = 0;
+
     private List<String>categoryId;
     Handler handler = new Handler();
     int status = 0;
@@ -153,11 +163,13 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
     long timeInMilliseconds = 0L;
     long timeSwapBuff = 0L;
     long updatedTime = 0L;
+    private TextView questionNumber;
 
     String AudioSavePathInDevice = null;
     MediaRecorder mediaRecorder ;
     Random random ;
     String RandomAudioFileName = "ABCDEFGHIJKLMNOP";
+    private String coverimaqgeURL;
     public static final int RequestPermissionCode = 1;
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
@@ -457,9 +469,12 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View newRowView = inflater.inflate(R.layout.questionitem, null);
         questionEdit = newRowView.findViewById(R.id.question_edit_text);
+        questionNumber=newRowView.findViewById(R.id.questionNumber);
+
         questionEdit.setTextSize(textSize);
         allEds.add(questionEdit);
         questionEdit.setId(numberOfLines + 1);
+        questionNumber.setText("Question "+  numberOfLines);
         question_layout.addView(newRowView);
         numberOfLines++;
 
@@ -467,8 +482,7 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
     private void imagePreview(Bitmap file ,int id ,String coverimageurl) {
         final Dialog previewDialog = new Dialog(this);
         previewDialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-        previewDialog.setContentView(getLayoutInflater().inflate(R.layout.image_layout
-                , null));
+        previewDialog.setContentView(getLayoutInflater().inflate(R.layout.image_layout , null));
         ImageView imageView = previewDialog.findViewById(R.id.image_view);
         if (file==null) {
             GlideUtils.loadImage(this, ApiRequest.BaseUrl+"upload/books/" + coverimageurl, imageView, R.drawable.noimage, R.drawable.noimage);
@@ -533,6 +547,7 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
                         .addFormDataPart("isbn_number", isbn_number)
                         .addFormDataPart("status", statusbook)
                         .addFormDataPart("book_id", book_id)
+                        .addFormDataPart("cover_url",coverimaqgeURL)
                         .build();
                 break;
             case 2:
@@ -548,6 +563,8 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
                         .addFormDataPart("isbn_number", isbn_number)
                         .addFormDataPart("status", statusbook)
                         .addFormDataPart("book_id", book_id)
+                        .addFormDataPart("cover_url",coverimaqgeURL)
+
                         .build();
                 break;
             case 3:
@@ -563,6 +580,8 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
                         .addFormDataPart("isbn_number", isbn_number)
                         .addFormDataPart("status", statusbook)
                         .addFormDataPart("book_id", book_id)
+                        .addFormDataPart("cover_url",coverimaqgeURL)
+
                         .build();
                 break;
             case 4:
@@ -577,6 +596,8 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
                         .addFormDataPart("isbn_number", isbn_number)
                         .addFormDataPart("status", statusbook)
                         .addFormDataPart("book_id", book_id)
+                        .addFormDataPart("cover_url",coverimaqgeURL)
+
                         .build();
                 break;
             case 5:
@@ -592,6 +613,8 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
                         .addFormDataPart("isbn_number", isbn_number)
                         .addFormDataPart("status", statusbook)
                         .addFormDataPart("book_id", book_id)
+                        .addFormDataPart("cover_url",coverimaqgeURL)
+
                         .build();
                 break;
             case 6:
@@ -608,6 +631,8 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
                         .addFormDataPart("isbn_number", isbn_number)
                         .addFormDataPart("status", statusbook)
                         .addFormDataPart("book_id", book_id)
+                        .addFormDataPart("cover_url",coverimaqgeURL)
+
                         .build();
                 break;
             case 7:
@@ -624,6 +649,8 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
                         .addFormDataPart("isbn_number", isbn_number)
                         .addFormDataPart("status", statusbook)
                         .addFormDataPart("book_id", book_id)
+                        .addFormDataPart("cover_url",coverimaqgeURL)
+
                         .build();
                 break;
             case 8:
@@ -637,6 +664,8 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
                         .addFormDataPart("isbn_number", isbn_number)
                         .addFormDataPart("status", statusbook)
                         .addFormDataPart("book_id", book_id)
+                        .addFormDataPart("cover_url",coverimaqgeURL)
+
                         .build();
                 break;
             default:
@@ -855,15 +884,9 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
     private Boolean isvalidate() {
         String booktitle = bookTitle.getText().toString();
         String bookdesc = bookDesc.getText().toString();
-        Bitmap file = bitmap;
         if (!booktitle.isEmpty()) {
             if (!bookdesc.isEmpty()) {
-                if (file != null) {
-                    return true;
-                } else {
-                    Toast.makeText(this, "Please Upload Book Cover Image", Toast.LENGTH_SHORT).show();
-                    return false;
-                }
+                return  true;
             } else {
                 bookDesc.setError("Enter Your Book Description");
                 bookDesc.requestFocus();
@@ -1151,6 +1174,13 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
                             bookDesc.setText(form.getResponse().getBook_description());
                             if (coverimageurl!=null){
                                 cover_image_layout.setVisibility(View.VISIBLE);
+                                coverimaqgeURL=coverimageurl;
+//                                try {
+//                                    persistImage(getBitmapFromURL("http://dnddemo.com/ebooks/api/v1/upload/books/" + coverimageurl),coverimageurl);
+////                                    coverimage=toFile(new URL("http://dnddemo.com/ebooks/api/v1/upload/books/" + coverimageurl));
+//                                } catch (MalformedURLException e) {
+//                                    e.printStackTrace();
+//                                }
                                 GlideUtils.loadImage(Upload_Book_Screen.this, "http://dnddemo.com/ebooks/api/v1/upload/books/" + coverimageurl, cover_image_preview, R.drawable.noimage, R.drawable.noimage);
                             }
                             else {
@@ -1260,7 +1290,49 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
 //        }
 //    }
 
+    private File toFile(final URL url) throws MalformedURLException {
+        // only correct way to convert the URL to a File object, also see issue #16
+        // Do not use URLDecoder
+        try {
+            return new File(url.toURI());
+        } catch (URISyntaxException ex) {
+            throw new MalformedURLException(ex.getMessage());
+        } catch (IllegalArgumentException ex) {
+            try {
+                return new File(URLDecoder.decode(url.getFile(), "UTF-8"));
+            } catch (Exception ex2) {
+                throw new MalformedURLException(ex.getMessage());
+            }
+        }
+    }
+    public static Bitmap getBitmapFromURL(String src) {
+        try {
+            URL url = new URL(src);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setDoInput(true);
+            connection.connect();
+            InputStream input = connection.getInputStream();
+            Bitmap myBitmap = BitmapFactory.decodeStream(input);
+            return myBitmap;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    public void persistImage(Bitmap bitmap, String name) {
+        File filesDir = getFilesDir();
+        File imageFile = new File(filesDir, name + ".jpg");
+         coverimage=imageFile;
+        OutputStream os;
+        try {
+            os = new FileOutputStream(imageFile);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, os);
+            os.flush();
+            os.close();
+        } catch (Exception e) {
 
+        }
+    }
 }
 
 

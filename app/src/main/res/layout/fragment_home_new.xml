@@ -27,6 +27,7 @@
         android:layout_marginRight="@dimen/size_25"
         android:layout_marginLeft="@dimen/size_25"
         android:layout_marginTop="@dimen/size_15"
+        android:id="@+id/uploadBookBtn"
         android:background="@drawable/homeitembg"
         android:layout_height="@dimen/size_45">
         <ImageView
@@ -59,6 +60,7 @@
         android:layout_marginRight="@dimen/size_25"
         android:layout_marginLeft="@dimen/size_25"
         android:layout_marginTop="@dimen/size_15"
+        android:id="@+id/readBookBtn"
         android:background="@drawable/homeitembg"
         android:layout_height="@dimen/size_45">
         <ImageView
@@ -91,6 +93,7 @@
         android:layout_marginRight="@dimen/size_25"
         android:layout_marginLeft="@dimen/size_25"
         android:layout_marginTop="@dimen/size_15"
+        android:id="@+id/chatBtn"
         android:background="@drawable/homeitembg"
         android:layout_height="@dimen/size_45">
         <ImageView

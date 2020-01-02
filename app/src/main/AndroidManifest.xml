@@ -38,7 +38,8 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".Dashboard.StartActivityHome"></activity>
+        <activity android:name=".HomeActivity.BookListing"></activity>
+        <activity android:name=".Dashboard.StartActivityHome" />
         <activity android:name=".faceRecognition.FaceLogin" />
         <activity
             android:name=".AudioRecordActivity"
