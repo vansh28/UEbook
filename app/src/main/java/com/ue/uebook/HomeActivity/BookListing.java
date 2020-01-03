@@ -210,7 +210,8 @@ public class BookListing extends BaseActivity implements HomeListingFragment.OnF
                     recommendedList_book.addAll(form.getData());
                         runOnUiThread(new Runnable() {
                             @Override
-                            public void run() {
+                            public void run()
+                            {
                                 homelist.setVisibility(View.VISIBLE);
                                 noBookfoundText.setVisibility(View.GONE);
                                 home_recommended_adapter = new Home_recommended_Adapter(BookListing.this , form.getData(), 16);
