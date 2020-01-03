@@ -184,12 +184,14 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
             finish();
         } else if (view == bookmark_btn) {
 
-            if (!isBookmark_book) {
-
+            if (!isBookmark_book)
+            {
                 bookmark_btn.setBackgroundResource(R.drawable.bookmark_active);
                 isBookmark_book = true;
                 addBookToBookmark(book_Id, "1");
-            } else {
+            }
+
+            else {
                 bookmark_btn.setBackgroundResource(R.drawable.bookmarkwhite);
                 isBookmark_book = false;
                 addBookToBookmark(book_Id, "0");
@@ -316,7 +318,8 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
                                 bookmark_btn.setBackgroundResource(R.drawable.bookmarkwhite);
                                 isBookmark_book = false;
                             }
-                        } else {
+                        }
+                        else {
                             bookmark_btn.setBackgroundResource(R.drawable.bookmarkwhite);
                             isBookmark_book = false;
                         }

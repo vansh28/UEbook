@@ -169,7 +169,7 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
     MediaRecorder mediaRecorder ;
     Random random ;
     String RandomAudioFileName = "ABCDEFGHIJKLMNOP";
-    private String coverimaqgeURL;
+    private String coverimaqgeURL=" ";
     public static final int RequestPermissionCode = 1;
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
@@ -548,6 +548,7 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
                         .addFormDataPart("status", statusbook)
                         .addFormDataPart("book_id", book_id)
                         .addFormDataPart("cover_url",coverimaqgeURL)
+
                         .build();
                 break;
             case 2:

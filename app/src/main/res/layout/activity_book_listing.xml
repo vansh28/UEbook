@@ -71,6 +71,16 @@
         android:id="@+id/homelist"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:visibility="gone"
         android:layout_margin="@dimen/size_10" />
+    <com.ue.uebook.Customview.CustomTextViewNormal
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="No Book Found"
+        android:textSize="@dimen/size_20"
+        android:gravity="center"
+        android:visibility="gone"
+        android:id="@+id/noBookfoundText"
+        android:textColor="@color/black"/>
 
 </LinearLayout>

@@ -393,8 +393,6 @@
                            android:textAllCaps="true"
                            android:background="#00154f"
                            android:textColor="@color/white"/>
-
-
                    </LinearLayout>
             </LinearLayout>
 

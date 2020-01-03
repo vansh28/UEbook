@@ -136,8 +136,8 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener, 
         nothaveacountbtn.setOnClickListener(this);
         googleloginBtn.setOnClickListener(this);
         fbloginBtn.setOnClickListener(this);
-        SpannableString blueSpannable = new SpannableString("Do you have an account? Sign Up");
-        blueSpannable.setSpan(new ForegroundColorSpan(getColor(R.color.colorAccent)), 23, 31, 0);
+        SpannableString blueSpannable = new SpannableString("not have an account? Sign Up");
+        blueSpannable.setSpan(new ForegroundColorSpan(getColor(R.color.colorAccent)), 18, 25, 0);
         nothaveacountbtn.setText(blueSpannable);
         initializeGPlusSettings();
         showPasswordTv.setBackgroundResource(R.drawable.eyec);

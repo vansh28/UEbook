@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
@@ -48,7 +49,9 @@ public class BookListing extends BaseActivity implements HomeListingFragment.OnF
     private Home_recommended_Adapter home_recommended_adapter;
     private RecyclerView homelist;
     private ImageView back_iv,search_iv;
+    private TextView noBookfoundText;
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +61,7 @@ public class BookListing extends BaseActivity implements HomeListingFragment.OnF
         homelist = findViewById(R.id.homelist);
         back_iv=findViewById(R.id.back_iv);
         search_iv=findViewById(R.id.search_iv);
+        noBookfoundText=findViewById(R.id.noBookfoundText);
         search_iv.setOnClickListener(this);
         back_iv.setOnClickListener(this);
         categoryName = new ArrayList<>();
@@ -68,14 +72,15 @@ public class BookListing extends BaseActivity implements HomeListingFragment.OnF
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         homelist.setLayoutManager(linearLayoutManager);
         getBookCategory();
+
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener(){
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onTabSelected(TabLayout.Tab tab){
                 int  position = tab.getPosition();
-                Log.d("posit", String.valueOf(position+1));
+                Log.d("position", String.valueOf(position));
                 if (getInstance(BookListing.this).isConnectingToInternet()) {
-                  getRecommenedBookList(categoryID.get(position));
+                    getRecommenedBookList(categoryID.get(position));
                 }
             }
             @Override
@@ -109,10 +114,11 @@ public class BookListing extends BaseActivity implements HomeListingFragment.OnF
                     }
                 }
                 runOnUiThread(new Runnable() {
+                        @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                         @Override
                         public void run() {
                             addTabs(viewPager);
-
+                            getRecommenedBookList(categoryID.get(0));
                         }
                     });
 
@@ -205,18 +211,25 @@ public class BookListing extends BaseActivity implements HomeListingFragment.OnF
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                home_recommended_adapter = new Home_recommended_Adapter(BookListing.this , recommendedList_book, 16);
+                                homelist.setVisibility(View.VISIBLE);
+                                noBookfoundText.setVisibility(View.GONE);
+                                home_recommended_adapter = new Home_recommended_Adapter(BookListing.this , form.getData(), 16);
                                 homelist.setAdapter(home_recommended_adapter);
                                 home_recommended_adapter.setItemClickListener(BookListing.this);
                                 home_recommended_adapter.notifyDataSetChanged();
                                 homelist.setNestedScrollingEnabled(false);
-
                             }
                         });
-
                 }
                 else
                 {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            homelist.setVisibility(View.GONE);
+                            noBookfoundText.setVisibility(View.VISIBLE);
+                        }
+                    });
 
                 }
 

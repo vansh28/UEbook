@@ -60,6 +60,7 @@ public class SignUp_screen extends BaseActivity implements View.OnClickListener 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up_scren);
+        setContentView(R.layout.activity_sign_up_scren);
         haveAcountBtn=findViewById(R.id.haveAcountBtn);
         faceimage_preview=findViewById(R.id.faceimage_preview);
         faceimage=findViewById(R.id.faceimage);
@@ -84,8 +85,8 @@ public class SignUp_screen extends BaseActivity implements View.OnClickListener 
         genderadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         genderSpinner.setSelection(0);
         genderSpinner.setAdapter(genderadapter);
-        SpannableString blueSpannable = new SpannableString("not have an account? Sign In");
-        blueSpannable.setSpan(new ForegroundColorSpan(getColor(R.color.colorAccent)), 20,28, 0);
+        SpannableString blueSpannable = new SpannableString("Do you have an account? Sign In");
+        blueSpannable.setSpan(new ForegroundColorSpan(getColor(R.color.colorAccent)), 22,28, 0);
         haveAcountBtn.setText(blueSpannable);
         haveAcountBtn.setOnClickListener(this);
         actorType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -108,6 +109,7 @@ public class SignUp_screen extends BaseActivity implements View.OnClickListener 
                 String label = parent.getItemAtPosition(arg2).toString();
                 userGender = label;
                 usergender=userGender;
+
             }
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {

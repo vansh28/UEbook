@@ -46,6 +46,7 @@ public class AudioRecordActivity extends AppCompatActivity implements Recognitio
     private SpeechRecognizer speech = null;
     private Intent recognizerIntent;
     private static final int REQ_CODE_SPEECH_INPUT = 100;
+    private int value=1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,27 +68,36 @@ public class AudioRecordActivity extends AppCompatActivity implements Recognitio
             @Override
             public void onClick(View view) {
                 if (checkPermission()) {
-                    AudioSavePathInDevice =
-                            Environment.getExternalStorageDirectory().getAbsolutePath() + "/" +
-                                    CreateRandomAudioFileName(5) + "UebookRecord.3gp";
-                    MediaRecorderReady();
-                    try {
-                        mediaRecorder.prepare();
-                        mediaRecorder.start();
-                    } catch (IllegalStateException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    }
+             if (value==1){
+                 AudioSavePathInDevice =
+                         Environment.getExternalStorageDirectory().getAbsolutePath() + "/" +
+                                 CreateRandomAudioFileName(5) + "UebookRecord.3gp";
+                 MediaRecorderReady();
+                 try {
+                     mediaRecorder.prepare();
+                     mediaRecorder.start();
+                 } catch (IllegalStateException e) {
+                     // TODO Auto-generated catch block
+                     e.printStackTrace();
+                 } catch (IOException e) {
+                     // TODO Auto-generated catch block
+                     e.printStackTrace();
+                 }
+                 value=2;
+                 buttonStart.setText("Pause");
+                 buttonStop.setEnabled(true);
+                 startTime = SystemClock.uptimeMillis();
+                 customHandler.postDelayed(updateTimerThread, 0);
+                 Toast.makeText(AudioRecordActivity.this, "Recording started",
+                         Toast.LENGTH_LONG).show();
 
-                    buttonStart.setEnabled(false);
-                    buttonStop.setEnabled(true);
-                    startTime = SystemClock.uptimeMillis();
-                    customHandler.postDelayed(updateTimerThread, 0);
-                    Toast.makeText(AudioRecordActivity.this, "Recording started",
-                            Toast.LENGTH_LONG).show();
+
+             }
+             else {
+
+
+             }
+
                 } else {
                     requestPermission();
                 }
