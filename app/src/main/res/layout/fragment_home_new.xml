@@ -123,7 +123,9 @@
         android:layout_width="match_parent"
         android:text="Our Writer Books"
         android:layout_marginTop="@dimen/size_30"
+        android:id="@+id/ourWriterBookTextView"
         android:textSize="@dimen/size_20"
+        android:visibility="gone"
         android:textColor="@color/black"
         android:layout_marginLeft="@dimen/size_25"
         android:layout_height="wrap_content"/>
@@ -133,6 +135,8 @@
         android:layout_width="match_parent"
         android:layout_marginLeft="@dimen/size_25"
         android:layout_marginRight="@dimen/size_25"
+        android:visibility="gone"
+        android:layout_marginTop="@dimen/size_10"
         android:layout_height="match_parent">
     </androidx.recyclerview.widget.RecyclerView>
 

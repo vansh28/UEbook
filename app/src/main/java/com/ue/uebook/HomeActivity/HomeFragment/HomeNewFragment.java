@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -62,6 +63,7 @@ public class HomeNewFragment extends Fragment implements View.OnClickListener ,B
     private LinearLayout uploadBook,readBook,chatBtn;
     private List<HomeListing> recommendedList_book, newBookList, popularBook_List;
     private int textSize = 16;
+    private TextView ourWriterBookTextView;
 
     public HomeNewFragment() {
         // Required empty public constructor
@@ -105,6 +107,7 @@ public class HomeNewFragment extends Fragment implements View.OnClickListener ,B
         uploadBook=view.findViewById(R.id.uploadBookBtn);
         readBook=view.findViewById(R.id.readBookBtn);
         chatBtn=view.findViewById(R.id.chatBtn);
+        ourWriterBookTextView=view.findViewById(R.id.ourWriterBookTextView);
         uploadBook.setOnClickListener(this);
         readBook.setOnClickListener(this);
         chatBtn.setOnClickListener(this);
@@ -141,18 +144,24 @@ public class HomeNewFragment extends Fragment implements View.OnClickListener ,B
     @Override
     public void onClick(View v) {
         if (v==uploadBook){
+
             Intent intent = new Intent(getContext(), Upload_Book_Screen.class);
             getContext().startActivity(intent);
+
         }
         else if (v==readBook)
         {
+
             Intent intent = new Intent(getContext(), BookListing.class);
             startActivity(intent);
+
         }
         else if (v==chatBtn)
         {
+
             Intent intent = new Intent(getContext(), ChatListScreen.class);
             startActivity(intent);
+
         }
 
     }
@@ -215,6 +224,8 @@ public class HomeNewFragment extends Fragment implements View.OnClickListener ,B
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                booklist.setVisibility(View.VISIBLE);
+                                ourWriterBookTextView.setVisibility(View.VISIBLE);
                                 bookListnewAdaper = new BookListnewAdaper((AppCompatActivity) getActivity(), popularBook_List, textSize);
                                 booklist.setAdapter(bookListnewAdaper);
                                 bookListnewAdaper.setItemClickListener(HomeNewFragment.this);
@@ -235,6 +246,15 @@ public class HomeNewFragment extends Fragment implements View.OnClickListener ,B
                         popularBook_List.addAll(form.getData());
                     }
 
+                }
+                else {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            booklist.setVisibility(View.GONE);
+                            ourWriterBookTextView.setVisibility(View.GONE);
+                        }
+                    });
                 }
             }
         });

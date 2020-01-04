@@ -7,6 +7,8 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Paint;
+import android.graphics.PointF;
+import android.media.FaceDetector;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -100,6 +102,17 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener, 
     public static final int RequestPermissionCode = 1;
     private final int PICK_IMAGE_CAMERA = 121;
     private Bitmap bitmap;
+
+    private static final int MAX_FACES = 10;
+    private static final String IMAGE_FN = "face.jpg";
+    private Bitmap background_image;
+    private FaceDetector.Face[] faces;
+    private int face_count;
+
+    // preallocate for onDraw(...)
+    private PointF tmp_point = new PointF();
+    private Paint tmp_paint = new Paint();
+
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -142,6 +155,8 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener, 
         initializeGPlusSettings();
         showPasswordTv.setBackgroundResource(R.drawable.eyec);
         forgotPasswordBtn.setPaintFlags(forgotPasswordBtn.getPaintFlags() |   Paint.UNDERLINE_TEXT_FLAG);
+
+
     }
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
@@ -316,7 +331,9 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener, 
                 Log.e("imageForLogin",getPath(getImageUri(this,bitmap)));
 //                UpdateUser(new File(getPath(getImageUri(this,bitmap))));
 //                imagePreview(bitmap,new File(getPath(getImageUri(this,bitmap))));
-                loginUserByFace(new File(getPath(getImageUri(this,bitmap))));
+//                loginUserByFace(new File(getPath(getImageUri(this,bitmap))));
+
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -664,5 +681,6 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener, 
             }
         });
     }
+
 
 }

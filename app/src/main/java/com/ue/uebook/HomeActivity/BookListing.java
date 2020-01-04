@@ -118,7 +118,7 @@ public class BookListing extends BaseActivity implements HomeListingFragment.OnF
                         @Override
                         public void run() {
                             addTabs(viewPager);
-                            getRecommenedBookList(categoryID.get(0));
+
                         }
                     });
 
