@@ -29,6 +29,7 @@ public class StartActivityHome extends AppCompatActivity implements View.OnClick
         chatText=(CustomTextViewNormal)findViewById(R.id.chatText);
         bookText=(CustomTextViewNormal)findViewById(R.id.readBookText);
 
+
         signUp_btn_new=findViewById(R.id.signUp_btn_new);
         signUp_btn_new.setOnClickListener(this);
 

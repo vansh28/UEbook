@@ -36,7 +36,7 @@
         android:layout_marginLeft="@dimen/size_10"
         android:layout_marginRight="@dimen/size_25"
         android:orientation="vertical">
-        <com.ue.uebook.Customview.CustomTextViewNormal
+        <com.ue.uebook.Customview.CustomTextViewBold
             android:id="@+id/bookname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -53,7 +53,7 @@
             android:maxLines="1"
             android:layout_marginLeft="6dp"
             android:layout_marginTop="@dimen/size_5"
-            android:textColor="#9B9B9B"/>
+            android:textColor="#161515"/>
         <com.ue.uebook.Customview.CustomTextViewNormal
         android:id="@+id/shortDesc"
             android:layout_width="wrap_content"

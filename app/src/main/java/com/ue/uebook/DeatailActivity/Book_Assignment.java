@@ -41,7 +41,7 @@ public class Book_Assignment extends BaseActivity implements View.OnClickListene
     private String book_id;
     private LinearLayout question_container;
     private EditText questionEdit;
-    List<EditText> allEds;
+    private List<EditText> allEds;
     private Button submit_assignment;
     private List<String>answerlist;
     private int numberOfLines=1;

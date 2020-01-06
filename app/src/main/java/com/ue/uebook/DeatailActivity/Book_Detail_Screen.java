@@ -209,8 +209,6 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
 
         } else if (view == whatsappshare_btn) {
             ShareUtils.shareWhatsapp(this, bookdesc, "");
-
-
         } else if (view == readFull_Book_btn) {
             showFilterPopup(view);
         } else if (view == comment_Submit) {
@@ -229,8 +227,6 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
                 intent.putExtra("userID", ulpoadByUserId);
                 startActivity(intent);
             }
-
-
         } else if (view == book_asignment) {
             Intent intent = new Intent(this, Book_Assignment.class);
             intent.putExtra("QuestionListExtra", (Serializable) assignmentList);
@@ -309,7 +305,7 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
                         bookdesc = form.getData().getBook_description();
                         averageRating.setText(form.getAveraVal());
                         myRatingBar.setRating(Float.parseFloat(form.getAveraVal()));
-                        reviewCountView.setText("(250)Reviews");
+                        reviewCountView.setText("( "+form.getData().getMostView()+" )"+" Reviews");
                         if (form.getBookMark() != null) {
                             if (form.getBookMark().getBookmarkStatus().equals("1")) {
                                 bookmark_btn.setBackgroundResource(R.drawable.bookmark_active);
@@ -327,6 +323,10 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
                             makeTextViewResizable(bookDesc, 5, "See More", true);
                         }
                         GlideUtils.loadImage(Book_Detail_Screen.this, "http://" + form.getData().getThubm_image(), book_coverTv, R.drawable.noimage, R.drawable.noimage);
+
+                        GlideUtils.loadImage(Book_Detail_Screen.this, "http://dnddemo.com/ebooks/api/v1/upload/" + form.getData().getProfile_pic(), profile_user, R.drawable.user_default, R.drawable.user_default);
+
+
                         if (form.getReview() != null) {
                             review_list_adapter = new Review_List_Adapter(Book_Detail_Screen.this, form.getReview());
                             review_List.setAdapter(review_list_adapter);

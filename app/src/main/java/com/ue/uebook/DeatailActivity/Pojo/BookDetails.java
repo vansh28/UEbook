@@ -20,6 +20,16 @@ public class BookDetails {
     private String updated_at;
     private String user_name;
 
+    public String getProfile_pic() {
+        return profile_pic;
+    }
+
+    public void setProfile_pic(String profile_pic) {
+        this.profile_pic = profile_pic;
+    }
+
+    private String profile_pic;
+
     public BookDetails(String id, String user_id, String category_id, String book_title, String book_slug, String thubm_image, String book_description, String author_name, String book_image, String video_url, String audio_url, String pdf_url, String bookMark, String mostView, String status, String created_at, String updated_at, String user_name) {
         this.id = id;
         this.user_id = user_id;

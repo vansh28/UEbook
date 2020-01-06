@@ -21,11 +21,12 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/size_150"
             android:layout_centerHorizontal="true"
+            android:textAlignment="center"
             android:src="@drawable/vvv"
             android:scaleType="fitXY"
             />
     </androidx.cardview.widget.CardView>
-    <com.ue.uebook.Customview.CustomTextViewNormal
+    <com.ue.uebook.Customview.CustomTextViewBold
         android:id="@+id/book_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -33,17 +34,19 @@
         android:layout_gravity="center_horizontal"
         android:text="Book of Days"
         android:layout_marginTop="@dimen/size_3"
-        android:layout_marginLeft="6dp"
+        android:singleLine="true"
+        android:ellipsize="end"
         android:textColor="@color/black"/>
-    <com.ue.uebook.Customview.CustomTextViewNormal
+    <com.ue.uebook.Customview.CustomTextViewMedium
         android:id="@+id/author_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="13sp"
         android:layout_gravity="center_horizontal"
         android:text="Author Name"
-        android:layout_marginLeft="6dp"
-        android:textColor="#9B9B9B"/>
+        android:singleLine="true"
+        android:ellipsize="end"
+        android:textColor="#1A1919"/>
 
 
 </LinearLayout>

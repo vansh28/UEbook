@@ -6,6 +6,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -21,8 +22,10 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.ue.uebook.BaseActivity;
+import com.ue.uebook.Constants;
 import com.ue.uebook.Data.ApiRequest;
 import com.ue.uebook.DeatailActivity.Book_Detail_Screen;
+import com.ue.uebook.FontCache;
 import com.ue.uebook.HomeActivity.HomeFragment.Adapter.Home_recommended_Adapter;
 import com.ue.uebook.HomeActivity.HomeFragment.HomeListingFragment;
 import com.ue.uebook.HomeActivity.HomeFragment.Pojo.HomeListing;
@@ -118,6 +121,7 @@ public class BookListing extends BaseActivity implements HomeListingFragment.OnF
                         @Override
                         public void run() {
                             addTabs(viewPager);
+                           //changeTabsFont(tabLayout);
 
                         }
                     });
@@ -125,6 +129,28 @@ public class BookListing extends BaseActivity implements HomeListingFragment.OnF
             }
         });
     }
+
+
+    private void changeTabsFont(TabLayout tabLayout) {
+        ViewGroup vg = (ViewGroup) tabLayout.getChildAt(0);
+        int tabsCount = vg.getChildCount();
+        for (int j = 0; j < tabsCount; j++) {
+            ViewGroup vgTab = (ViewGroup) vg.getChildAt(j);
+            int tabChildsCount = vgTab.getChildCount();
+            for (int i = 0; i < tabChildsCount; i++) {
+                View tabViewChild = vgTab.getChildAt(i);
+                if (tabViewChild instanceof TextView) {
+                    ((TextView) tabViewChild).setTypeface(FontCache.getTypeface(Constants.FONT_BOLD, this));
+                    ((TextView) tabViewChild).setTextColor(getResources().getColor(R.color.white));
+//                    ((TextView) tabViewChild).setTextSize(getResources().getDimension(R.dimen.size_20));
+//                    ((TextView) tabViewChild).setTextSize(50);
+                }
+            }
+        }
+    }
+
+
+
     private void addTabs(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         for (int i=0;i<categoryName.size();i++){
@@ -138,7 +164,6 @@ public class BookListing extends BaseActivity implements HomeListingFragment.OnF
     public void onFragmentInteraction(Uri uri) {
 
     }
-
     @Override
     public void onItemClick(int position, String book_id) {
         Intent intent = new Intent(this, Book_Detail_Screen.class);

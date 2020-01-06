@@ -32,7 +32,7 @@ public class BookCategorywiseList extends BaseActivity implements View.OnClickLi
     private CategoryBookAdater categoryBookAdater;
     Intent intent;
     String cId,cName;
-    private TextView categoryName;
+    private TextView categoryName,noBookfoundText;
     private ImageButton backbtn;
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -48,6 +48,7 @@ public class BookCategorywiseList extends BaseActivity implements View.OnClickLi
         cName=intent.getStringExtra("categoryName");
         categoryName.setText(cName);
         categoryBookList=findViewById(R.id.categoryBookList);
+        noBookfoundText=findViewById(R.id.noBookfoundText);
         LinearLayoutManager linearLayoutManagerBookmark = new LinearLayoutManager(this);
         linearLayoutManagerBookmark.setOrientation(LinearLayoutManager.VERTICAL);
         categoryBookList.setLayoutManager(linearLayoutManagerBookmark);
@@ -100,6 +101,8 @@ public class BookCategorywiseList extends BaseActivity implements View.OnClickLi
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+                            categoryBookList.setVisibility(View.VISIBLE);
+                            noBookfoundText.setVisibility(View.GONE);
                             categoryBookAdater = new CategoryBookAdater(BookCategorywiseList.this, form.getData(), 17);
                             categoryBookList.setAdapter(categoryBookAdater);
                             categoryBookAdater.setItemClickListener(BookCategorywiseList.this);
@@ -110,6 +113,8 @@ public class BookCategorywiseList extends BaseActivity implements View.OnClickLi
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                categoryBookList.setVisibility(View.GONE);
+                                noBookfoundText.setVisibility(View.VISIBLE);
                                 hideLoadingIndicator();
                             }
                         });
