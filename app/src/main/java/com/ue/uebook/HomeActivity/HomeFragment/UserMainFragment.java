@@ -82,6 +82,7 @@ public class UserMainFragment extends Fragment implements View.OnClickListener, 
         View view = inflater.inflate(R.layout.usermaincategory, container, false);
         userInfo_container = view.findViewById(R.id.userInfo_container);
         fontsize();
+
         chat_Container = view.findViewById(R.id.chat_Container);
         userView = view.findViewById(R.id.user_info_view);
         companyView = view.findViewById(R.id.company_info_view);

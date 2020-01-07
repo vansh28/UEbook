@@ -67,6 +67,7 @@ public class Home_recommended_Adapter extends RecyclerView.Adapter<Home_recommen
         });
         holder.bookname.setText(recommendedList_book.get(position).getBook_title());
         holder.authorName.setText(recommendedList_book.get(position).getAuthor_name());
+        holder.ratingBar.setRating(Float.valueOf(recommendedList_book.get(position).getRating()));
        GlideUtils.loadImage(mctx,"http://"+recommendedList_book.get(position).getThubm_image(),holder.bookimage,R.drawable.noimage,R.drawable.noimage);
     }
     @Override

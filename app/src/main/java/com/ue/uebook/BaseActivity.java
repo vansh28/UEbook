@@ -203,7 +203,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         Double lat = 0.0;
         if (mCurrentLocation != null) {
             lat = mCurrentLocation.getLatitude();
-
         }
         return lat;
     }

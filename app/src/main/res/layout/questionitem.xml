@@ -10,7 +10,6 @@
         android:text="Question 1"
         android:id="@+id/questionNumber"
         android:layout_marginLeft="@dimen/size_15"
-        android:layout_marginTop="5dp"
         android:layout_height="wrap_content"/>
     <com.google.android.material.textfield.TextInputLayout
         style="@style/TextInputLayout"

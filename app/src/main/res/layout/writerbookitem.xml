@@ -34,8 +34,10 @@
         android:layout_gravity="center_horizontal"
         android:text="Book of Days"
         android:layout_marginTop="@dimen/size_3"
+        android:lineSpacingMultiplier="0.1"
         android:singleLine="true"
         android:ellipsize="end"
+
         android:textColor="@color/black"/>
     <com.ue.uebook.Customview.CustomTextViewMedium
         android:id="@+id/author_name"
@@ -46,6 +48,8 @@
         android:text="Author Name"
         android:singleLine="true"
         android:ellipsize="end"
+        android:layout_marginTop="-4dp"
+        android:includeFontPadding="false"
         android:textColor="#1A1919"/>
 
 

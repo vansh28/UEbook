@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -251,63 +250,6 @@ public class AuthorProfileScreen extends BaseActivity implements View.OnClickLis
     }
 
 
-    private void showDialog(){
-
-        LayoutInflater inflater = getLayoutInflater();
-        View alertLayout = inflater.inflate(R.layout.emaildialog, null);
-        Button btn= alertLayout.findViewById(R.id.send_btn);
-        final EditText subject = alertLayout.findViewById(R.id.subjectemail);
-        final EditText body = alertLayout.findViewById(R.id.body_contact);
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getApplicationContext(),"dfdf",Toast.LENGTH_SHORT);
-
-            }
-        });
-        final AlertDialog.Builder alert = new AlertDialog.Builder(this);
-        // this is set the view from XML inside AlertDialog
-        alert.setView(alertLayout);
-      alert.setCancelable(false);
-        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-
-            }
-        });
-
-        alert.setPositiveButton("Send", new DialogInterface.OnClickListener() {
-
-            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-            }
-
-        });
-        AlertDialog dialog = alert.create();
-
-        dialog.show();
-
-
-
-    }
-    private void sendEmail(){
-
-        Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
-        emailIntent.setData(Uri.parse("mailto:" + "recipient@example.com"));
-        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "My email's subject");
-        emailIntent.putExtra(Intent.EXTRA_TEXT, "My email's body");
-
-        try {
-            startActivity(Intent.createChooser(emailIntent, "Send email using..."));
-        } catch (android.content.ActivityNotFoundException ex) {
-            Toast.makeText(AuthorProfileScreen.this, "No email clients installed.", Toast.LENGTH_SHORT).show();
-        }
-
-    }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void sendMail(String from,String mailto,String subject,String msg) {
