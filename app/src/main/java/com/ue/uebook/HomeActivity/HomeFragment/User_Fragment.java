@@ -13,6 +13,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
@@ -300,11 +301,17 @@ public class User_Fragment extends Fragment implements View.OnClickListener, Use
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        String address = new SessionManager(getApplicationContext()).getUserLocation();
-        if (address.length() > 0) {
-            address_user.setText(address);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
 
-        }
+                {
+                    String address = new SessionManager(getApplicationContext()).getUserLocation();
+                    address_user.setText(address);
+                }
+            }
+        }, 2000);
+
         if (!image.isEmpty()) {
             GlideUtils.loadImage((AppCompatActivity) getActivity(), "http://dnddemo.com/ebooks/api/v1/upload/" + image, profile_image_user, R.drawable.user_default, R.drawable.user_default);
         } else {
@@ -376,6 +383,12 @@ public class User_Fragment extends Fragment implements View.OnClickListener, Use
                 textSize = 24;
                 break;
         }
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+
+
     }
 }
 

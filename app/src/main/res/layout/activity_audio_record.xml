@@ -3,17 +3,30 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="40dp"
-    android:paddingLeft="40dp"
-    android:paddingRight="40dp"
-    android:paddingTop="40dp">
+   >
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:id="@+id/header"
+        android:layout_height="wrap_content">
+
+        <ImageButton
+            android:id="@+id/cancel"
+            android:layout_width="@dimen/size_40"
+            android:src="@drawable/cancel"
+            android:layout_margin="@dimen/size_15"
+            android:background="@android:color/transparent"
+            android:scaleType="fitXY"
+            android:layout_height="@dimen/size_40"/>
+
+    </RelativeLayout>
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/imageView"
-        android:layout_alignParentTop="true"
+        android:layout_below="@id/header"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/size_50"
         android:src="@drawable/audio"/>
 
     <Button

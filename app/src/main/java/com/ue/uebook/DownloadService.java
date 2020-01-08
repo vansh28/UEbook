@@ -83,7 +83,6 @@ public class DownloadService   extends IntentService {
 
         Bundle resultData = new Bundle();
         resultData.putInt("progress", 100);
-
         receiver.send(UPDATE_PROGRESS, resultData);
     }
 

@@ -227,7 +227,9 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
                 intent.putExtra("userID", ulpoadByUserId);
                 startActivity(intent);
             }
-        } else if (view == book_asignment) {
+        }
+
+        else if (view == book_asignment) {
             Intent intent = new Intent(this, Book_Assignment.class);
             intent.putExtra("QuestionListExtra", (Serializable) assignmentList);
             intent.putExtra("answer", (Serializable) user_answers);

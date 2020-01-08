@@ -60,7 +60,7 @@ public class SignUp_screen extends BaseActivity implements View.OnClickListener 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up_scren);
-        setContentView(R.layout.activity_sign_up_scren);
+
         haveAcountBtn=findViewById(R.id.haveAcountBtn);
         faceimage_preview=findViewById(R.id.faceimage_preview);
         faceimage=findViewById(R.id.faceimage);

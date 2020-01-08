@@ -86,6 +86,7 @@ public class SplashScreenApp extends AppCompatActivity {
         switch (status) {
             case 0:
                 mainIntent = new Intent(SplashScreenApp.this, StartActivityHome.class);
+
                 break;
             case 1:
                 mainIntent = new Intent(SplashScreenApp.this, HomeScreen.class);

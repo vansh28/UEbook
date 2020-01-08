@@ -77,6 +77,7 @@ public class StartActivityHome extends AppCompatActivity implements View.OnClick
         if (v==signUp_btn_new){
             Intent intent = new Intent(this, SignUp_screen.class);
             startActivity(intent);
+            finish();
         }
     }
 }

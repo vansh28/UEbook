@@ -14,6 +14,7 @@ import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,7 +29,7 @@ import java.util.Random;
 import static android.Manifest.permission.RECORD_AUDIO;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
-public class AudioRecordActivity extends AppCompatActivity implements RecognitionListener {
+public class AudioRecordActivity extends AppCompatActivity implements RecognitionListener, View.OnClickListener {
 
     Button buttonStart, buttonStop;
     String AudioSavePathInDevice = null;
@@ -47,12 +48,15 @@ public class AudioRecordActivity extends AppCompatActivity implements Recognitio
     private Intent recognizerIntent;
     private static final int REQ_CODE_SPEECH_INPUT = 100;
     private int value=1;
+    private ImageButton cancel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_audio_record);
         speech = SpeechRecognizer.createSpeechRecognizer(this);
+        cancel=findViewById(R.id.cancel);
+        cancel.setOnClickListener(this);
         speech.setRecognitionListener(this);
         recognizerIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         recognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_PREFERENCE, "en");
@@ -238,7 +242,9 @@ public class AudioRecordActivity extends AppCompatActivity implements Recognitio
         ArrayList<String> matches = results
                 .getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
         if (matches.size() > 0) {
+
             Toast.makeText(getApplicationContext(), matches.get(0), Toast.LENGTH_SHORT);
+
         }
 
     }
@@ -301,4 +307,12 @@ public class AudioRecordActivity extends AppCompatActivity implements Recognitio
     }
 
 
+    @Override
+    public void onClick(View v) {
+        if (v==cancel)
+
+        {
+            finish();
+        }
+    }
 }

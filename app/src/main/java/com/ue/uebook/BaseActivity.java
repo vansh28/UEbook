@@ -231,7 +231,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                 .addOnSuccessListener(this, new OnSuccessListener<LocationSettingsResponse>() {
                     @Override
                     public void onSuccess(LocationSettingsResponse response) {
-//                         startUpdatingLocation(...);
+    //                     startUpdatingLocation(...);
                     }
                 })
                 .addOnFailureListener(this, new OnFailureListener() {

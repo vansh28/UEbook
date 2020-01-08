@@ -246,9 +246,7 @@
                     android:text="@string/upload_more_multimedia_file"
                     android:textColor="@color/black"
                     android:textSize="@dimen/size_16">
-
                 </TextView>
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/size_60"
@@ -294,18 +292,15 @@
                         android:layout_gravity="center_vertical"
                         android:layout_weight=".8"
                         android:src="@drawable/audio"/>
-
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight=".2">
-
                         <View
                             android:layout_width="1dp"
                             android:layout_height="match_parent"
                             android:background="@color/black"/>
                     </LinearLayout>
-
                     <ImageView
                         android:id="@+id/documents_Btn"
                         android:layout_width="0dp"
@@ -313,9 +308,7 @@
                         android:layout_gravity="center_vertical"
                         android:layout_weight=".8"
                         android:src="@drawable/document"/>
-
                 </LinearLayout>
-
                 <ProgressBar
                     android:id="@+id/upload_progress"
                     style="?android:attr/progressBarStyleHorizontal"
@@ -324,12 +317,9 @@
                     android:max="100"
                     android:progress="0"
                     android:visibility="gone" />
-
-
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
-
                 <TextView
                     android:id="@+id/filname_view"
                     android:layout_width="wrap_content"
@@ -351,10 +341,7 @@
                         android:textColor="@color/colorPrimary"
                         android:textSize="@dimen/size_17"
                         android:visibility="gone"/>
-
                 </RelativeLayout>
-
-
                 <VideoView
                     android:id="@+id/videoview"
                     android:layout_width="match_parent"
@@ -395,7 +382,6 @@
                            android:textColor="@color/white"/>
                    </LinearLayout>
             </LinearLayout>
-
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

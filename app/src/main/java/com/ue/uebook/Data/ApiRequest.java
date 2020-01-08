@@ -53,7 +53,7 @@ public class ApiRequest {
                 .addFormDataPart("about_me", about_me)
                 .addFormDataPart("device_token",device_token)
                 .addFormDataPart("device_type","android")
-                .addFormDataPart("device_token",FirebaseInstanceId.getInstance().getToken())
+                .addFormDataPart("device_token", FirebaseInstanceId.getInstance().getToken())
                 .build();
         Request request = new Request.Builder()
                 .url(url)
