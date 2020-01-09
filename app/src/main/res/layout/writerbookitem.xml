@@ -37,7 +37,6 @@
         android:lineSpacingMultiplier="0.1"
         android:singleLine="true"
         android:ellipsize="end"
-
         android:textColor="@color/black"/>
     <com.ue.uebook.Customview.CustomTextViewMedium
         android:id="@+id/author_name"

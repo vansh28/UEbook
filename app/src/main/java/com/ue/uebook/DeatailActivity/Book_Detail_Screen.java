@@ -2,6 +2,7 @@ package com.ue.uebook.DeatailActivity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -199,6 +200,8 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
         } else if (view == facebook_btn) {
 
             ShareUtils.shareFacebook(this, bookdesc, "");
+
+        //    shareFacebook(bookdesc);
 
         } else if (view == google_btn) {
 
@@ -508,6 +511,21 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
     public void onRestart() {
         super.onRestart();
         getBookDetail(book_Id);
+    }
+
+    public void shareFacebook(String text) {
+        String fullUrl = "https://m.facebook.com/sharer.php?u=..";
+        try {
+            Intent sharingIntent = new Intent(Intent.ACTION_SEND);
+            sharingIntent.setClassName("com.facebook.katana",
+                    "com.facebook.katana.ShareLinkActivity");
+            sharingIntent.putExtra(Intent.EXTRA_TEXT, text);
+            startActivity(sharingIntent);
+        } catch (Exception e) {
+            Intent i = new Intent(Intent.ACTION_VIEW);
+            i.setData(Uri.parse(fullUrl));
+            startActivity(i);
+        }
     }
 
 }

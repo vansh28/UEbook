@@ -71,10 +71,8 @@ import com.ue.uebook.UploadBook.Pojo.UploadPojo;
 import com.ue.uebook.UploadBook.Pojo.VerifyISBNPojo;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
@@ -1318,20 +1316,6 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
         } catch (IOException e) {
             e.printStackTrace();
             return null;
-        }
-    }
-    public void persistImage(Bitmap bitmap, String name) {
-        File filesDir = getFilesDir();
-        File imageFile = new File(filesDir, name + ".jpg");
-         coverimage=imageFile;
-        OutputStream os;
-        try {
-            os = new FileOutputStream(imageFile);
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, os);
-            os.flush();
-            os.close();
-        } catch (Exception e) {
-
         }
     }
 }

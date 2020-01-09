@@ -7,8 +7,6 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Paint;
-import android.graphics.PointF;
-import android.media.FaceDetector;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -102,17 +100,6 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener, 
     public static final int RequestPermissionCode = 1;
     private final int PICK_IMAGE_CAMERA = 121;
     private Bitmap bitmap;
-
-    private static final int MAX_FACES = 10;
-    private static final String IMAGE_FN = "face.jpg";
-    private Bitmap background_image;
-    private FaceDetector.Face[] faces;
-    private int face_count;
-
-    // preallocate for onDraw(...)
-    private PointF tmp_point = new PointF();
-    private Paint tmp_paint = new Paint();
-
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -460,13 +447,6 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener, 
     private void registrationUser(final String full_name, String password, String email, String publisher_type, String gender, String country, String device_token) {
         ApiRequest request = new ApiRequest();
         hideLoadingIndicator();
-//        progressDialog.setMessage("Please wait ...");
-//
-//        try {
-//            progressDialog.show();        }
-//        catch (WindowManager.BadTokenException e) {
-//            //use a log message
-//        }
         request.requestforRegistrationfb(full_name, password, email, publisher_type, gender, country, "", device_token, new okhttp3.Callback() {
             @Override
             public void onFailure(okhttp3.Call call, IOException e) {

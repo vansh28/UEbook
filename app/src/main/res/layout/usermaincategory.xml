@@ -18,7 +18,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/size_60"
                 android:paddingLeft="@dimen/size_10">
-                <TextView
+                <com.ue.uebook.Customview.CustomTextViewNormal
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:visibility="gone"
@@ -26,7 +26,7 @@
                     android:textColor="@color/black"
                     android:drawableLeft="@drawable/userinfo"
                     android:text="flkvlfv"/>
-                <TextView
+                <com.ue.uebook.Customview.CustomTextViewNormal
                     android:id="@+id/user_info_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -58,7 +58,7 @@
                 android:layout_height="@dimen/size_60"
                 android:paddingLeft="@dimen/size_10">
 
-                <TextView
+                <com.ue.uebook.Customview.CustomTextViewNormal
                     android:id="@+id/company_info_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -91,7 +91,7 @@
                 android:layout_height="@dimen/size_60"
                 android:paddingLeft="@dimen/size_10">
 
-                <TextView
+                <com.ue.uebook.Customview.CustomTextViewNormal
                     android:id="@+id/upload_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -119,7 +119,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/size_60"
                 android:paddingLeft="@dimen/size_10">
-                <TextView
+                <com.ue.uebook.Customview.CustomTextViewNormal
                     android:id="@+id/chatWithOther_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -147,7 +147,7 @@
                 android:visibility="visible"
                 android:layout_height="@dimen/size_60"
                 android:paddingLeft="@dimen/size_10">
-                <TextView
+                <com.ue.uebook.Customview.CustomTextViewNormal
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -176,7 +176,7 @@
                 android:layout_height="@dimen/size_60"
                 android:visibility="visible"
                 android:paddingLeft="@dimen/size_10">
-                <TextView
+                <com.ue.uebook.Customview.CustomTextViewNormal
                     android:id="@+id/dictionary_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -204,7 +204,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/size_60"
                 android:paddingLeft="@dimen/size_10">
-                <TextView
+                <com.ue.uebook.Customview.CustomTextViewNormal
                     android:id="@+id/logout_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

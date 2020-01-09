@@ -4,7 +4,6 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
@@ -133,8 +132,9 @@ public class NotepadFragment extends Fragment  implements  NotepadAdapter.Notepa
 
 
     }
-    @Override
-    public void onItemClick(String note_id, String description ,String title) {
+    @Override      //boOkLlistItemClick
+    public void onItemClick(String note_id, String description ,String title)
+    {
         Intent intent = new Intent(getContext(), NotepadScreen.class);
         intent.putExtra("note_id",note_id);
         intent.putExtra("description",description);
@@ -142,8 +142,9 @@ public class NotepadFragment extends Fragment  implements  NotepadAdapter.Notepa
         intent.putExtra("id",1);
         startActivity(intent);
     }
-    @Override
-    public void sharenotes(String note) {
+    @Override  //notes share
+    public void sharenotes(String note)
+    {
         ShareUtils.shareToAllApp(getActivity(),note);
     }
     public interface OnFragmentInteractionListener {
@@ -212,7 +213,6 @@ public class NotepadFragment extends Fragment  implements  NotepadAdapter.Notepa
         }
     }
     private void fontsize(){
-        SharedPreferences pref = getActivity().getSharedPreferences(getActivity().getPackageName() + "_preferences", Context.MODE_PRIVATE);
         switch(new SessionManager(getActivity().getApplicationContext()).getfontSize()) {
             case "smallest":
                 textSize = 12;

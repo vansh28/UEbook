@@ -47,7 +47,7 @@ public class PendingListAdapter extends RecyclerView.Adapter<PendingListAdapter.
     @Override
     public PendingListAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.popularlist_home_item, parent, false);
-        PendingListAdapter.MyViewHolder vh = new PendingListAdapter.MyViewHolder(v); // pass the view to View Holder
+        PendingListAdapter.MyViewHolder vh = new PendingListAdapter.MyViewHolder(v);
         vh.bookDesc.setTextSize(textsize);
         vh.authorName.setTextSize(textsize);
         vh.bookname.setTextSize(textsize);
@@ -66,7 +66,8 @@ public class PendingListAdapter extends RecyclerView.Adapter<PendingListAdapter.
         });
         holder.bookname.setText(bookList.get(position).getBook_title());
         holder.authorName.setText(bookList.get(position).getAuthor_name());
-       GlideUtils.loadImage(context, "http://" + bookList.get(position).getThubm_image(), holder.bookimage, R.drawable.noimage, R.drawable.noimage);
+        GlideUtils.loadImage(context, "http://" + bookList.get(position).getThubm_image(), holder.bookimage, R.drawable.noimage, R.drawable.noimage);
+
         if (bookList.get(position).getBook_description().length() > 11) {
             holder.bookDesc.setText(getFirst10Words(bookList.get(position).getBook_description()) + "...");
         } else {
@@ -89,7 +90,7 @@ public class PendingListAdapter extends RecyclerView.Adapter<PendingListAdapter.
     public class MyViewHolder extends RecyclerView.ViewHolder {
         LinearLayout book_container;
         ImageView bookimage;
-        TextView bookname, authorName, bookDesc;
+        TextView  bookname, authorName, bookDesc;
         RatingBar ratingBar;
 
         public MyViewHolder(@NonNull View itemView) {

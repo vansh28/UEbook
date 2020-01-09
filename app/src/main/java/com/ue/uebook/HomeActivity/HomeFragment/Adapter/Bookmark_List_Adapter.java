@@ -43,11 +43,12 @@ public class Bookmark_List_Adapter extends RecyclerView.Adapter<Bookmark_List_Ad
         bookmarkBookItemClick = clickListener;
     }
 
+
     @NonNull
     @Override
     public Bookmark_List_Adapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.popularlist_home_item, parent, false);
-        Bookmark_List_Adapter.MyViewHolder vh = new Bookmark_List_Adapter.MyViewHolder(v); // pass the view to View Holder
+        Bookmark_List_Adapter.MyViewHolder vh = new Bookmark_List_Adapter.MyViewHolder(v);
         vh.bookDesc.setTextSize(textsize);
         vh.authorName.setTextSize(textsize);
         vh.bookname.setTextSize(textsize);

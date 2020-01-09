@@ -15,7 +15,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.ue.uebook.ChatSdk.MessageScreen;
 import com.ue.uebook.Dashboard.StartActivityHome;
 import com.ue.uebook.HomeActivity.HomeScreen;
-import com.ue.uebook.LoginActivity.LoginScreen;
 import com.ue.uebook.R;
 import com.ue.uebook.SessionManager;
 
@@ -77,11 +76,10 @@ public class SplashScreenApp extends AppCompatActivity {
         myHandler.post(myRunnable);
 
     }
-
     private void showSplash() {
         final int status = new SessionManager(getApplicationContext()).getLoginStatus();
 
-        Intent mainIntent = mainIntent = new Intent(SplashScreenApp.this, LoginScreen.class);
+        Intent mainIntent = mainIntent = new Intent(SplashScreenApp.this, HomeScreen.class);
 
         switch (status) {
             case 0:
@@ -95,8 +93,6 @@ public class SplashScreenApp extends AppCompatActivity {
         SplashScreenApp.this.startActivity(mainIntent);
         SplashScreenApp.this.finish();
     }
-
-
     public void setLocale(String lang) {
         Locale myLocale = new Locale(lang);
         Resources res = getResources();

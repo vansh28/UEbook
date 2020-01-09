@@ -20,7 +20,7 @@
         android:id="@+id/notepadContainer"
         android:layout_marginRight="@dimen/size_50"
         android:orientation="vertical">
-    <TextView
+    <com.ue.uebook.Customview.CustomTextViewMedium
         android:id="@+id/notepadText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -28,7 +28,7 @@
         android:padding="@dimen/size_10"
         android:textColor="@color/black"
         android:textSize="@dimen/size_18"/>
-    <TextView
+    <com.ue.uebook.Customview.CustomTextViewNormal
         android:id="@+id/notepadTextdate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

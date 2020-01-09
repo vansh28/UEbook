@@ -110,8 +110,6 @@ public class User_Fragment extends Fragment implements View.OnClickListener, Use
         username.setText(new SessionManager(getContext().getApplicationContext()).getUserName());
         loadFragment(new UserMainFragment());
         image = new SessionManager(getApplicationContext()).getUserimage();
-
-
         return view;
     }
     public void onButtonPressed(Uri uri) {

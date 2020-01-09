@@ -22,7 +22,6 @@
             android:layout_marginRight="@dimen/size_25"
             android:background="@android:color/transparent"
             android:drawableStart="@drawable/search"
-            android:drawableLeft="@drawable/search"
             android:drawablePadding="@dimen/size_10"
             android:focusable="true"
             android:gravity="center_vertical"

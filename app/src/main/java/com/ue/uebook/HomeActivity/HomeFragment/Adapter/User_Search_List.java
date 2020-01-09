@@ -19,7 +19,6 @@ public class User_Search_List  extends RecyclerView.Adapter<User_Search_List.MyV
     private List<String> dataList;
     public User_Search_List(List<String> list) {
         this.dataList=list;
-
     }
     public interface SearchListItemClick {
         void onItemClick(String book_id);
@@ -45,10 +44,13 @@ public class User_Search_List  extends RecyclerView.Adapter<User_Search_List.MyV
             @Override
             public void onClick(View view) {
                 if (searchListItemClick != null) {
+
                     searchListItemClick.onItemClick(dataList.get(position));
+
                 }
             }
         });
+
         holder.removeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

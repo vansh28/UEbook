@@ -6,8 +6,7 @@
     tools:context=".HomeActivity.HomeFragment.CompanyInfo_Fragment">
 <ScrollView
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
+    android:layout_height="match_parent">
     <LinearLayout
         android:layout_width="match_parent"
         android:orientation="vertical"
@@ -18,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="110dp"
             android:paddingLeft="@dimen/size_10">
-            <TextView
+            <com.ue.uebook.Customview.CustomTextViewNormal
                 android:id="@+id/language_interface"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -48,7 +47,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/size_60"
             android:paddingLeft="@dimen/size_10">
-            <TextView
+            <com.ue.uebook.Customview.CustomTextViewNormal
                 android:id="@+id/shareview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -75,7 +74,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/size_60"
             android:paddingLeft="@dimen/size_10">
-            <TextView
+            <com.ue.uebook.Customview.CustomTextViewNormal
                 android:id="@+id/helpview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -103,7 +102,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/size_60"
             android:paddingLeft="@dimen/size_10">
-            <TextView
+            <com.ue.uebook.Customview.CustomTextViewNormal
                 android:id="@+id/aboutview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -130,7 +129,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/size_60"
             android:paddingLeft="@dimen/size_10">
-            <TextView
+            <com.ue.uebook.Customview.CustomTextViewNormal
                 android:id="@+id/contactview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
