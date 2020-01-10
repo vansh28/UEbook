@@ -43,7 +43,9 @@ public  class Commonutils {public static final String TICKET_DETAILS = "ticketDe
     public static final String RESPONSE_SUCCESS = "success";
     public static final String RESPONSE = "response";
     public static final long FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS = 5000;
+
     // location updates interval - 10sec
+
     public static final long UPDATE_INTERVAL_IN_MILLISECONDS = 10000;
     public static final int REQUEST_PERMISSIONS_REQUEST_CODE = 34;
     // fastest updates interval - 5 sec
@@ -55,18 +57,28 @@ public  class Commonutils {public static final String TICKET_DETAILS = "ticketDe
         return Patterns.PHONE.matcher(phone).matches();
     }
     public static boolean isValidEmail(CharSequence target) {
+
         return (!TextUtils.isEmpty(target) && Patterns.EMAIL_ADDRESS.matcher(target).matches());
+
     }
+
+
     public static String validatePhoneNumber(String phNo) {
         if (TextUtils.isEmpty(phNo))
+
             return "Enter Mobile number";
+
         else if (!isValidMobile(phNo))
+
             return "Enter Valid Mobile number";
         else if (phNo.length() != 10)
+
             return "Enter Valid Mobile number";
         else
             return null;
     }
+
+
     @SuppressLint("NewApi")
     public static String getAddressFromLocation(final double latitude, final double longitude, Context context) {
         Geocoder geocoder;
@@ -86,7 +98,7 @@ public  class Commonutils {public static final String TICKET_DETAILS = "ticketDe
                     String local =addresses.get(0).getSubLocality();
                     String knownName = addresses.get(0).getFeatureName();
                     String ff=addresses.get(0).getPremises();
-//                    locationTxt.setText(address + " " + city + " " + country);
+//                  locationTxt.setText(address + " " + city + " " + country);
                }
             } catch (IOException e) {
                 e.printStackTrace();

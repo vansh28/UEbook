@@ -141,7 +141,7 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener, 
         nothaveacountbtn.setText(blueSpannable);
         initializeGPlusSettings();
         showPasswordTv.setBackgroundResource(R.drawable.eyec);
-        forgotPasswordBtn.setPaintFlags(forgotPasswordBtn.getPaintFlags() |   Paint.UNDERLINE_TEXT_FLAG);
+        forgotPasswordBtn.setPaintFlags(forgotPasswordBtn.getPaintFlags() |  Paint.UNDERLINE_TEXT_FLAG);
 
 
     }

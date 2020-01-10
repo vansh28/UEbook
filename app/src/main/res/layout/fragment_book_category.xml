@@ -3,18 +3,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorAccent"
+    android:background="@color/white"
     tools:context=".HomeActivity.HomeFragment.BookCategoryFragment">
     <LinearLayout
         android:layout_width="match_parent"
         android:weightSum="4"
         android:id="@+id/header"
-        android:layout_margin="@dimen/size_10"
-        android:layout_height="wrap_content">
+        android:background="@color/colorAccent"
+        android:layout_height="60dp">
         <EditText
             android:id="@+id/edittext_search"
             android:layout_width="0dp"
             android:layout_height="@dimen/size_50"
+            android:visibility="gone"
             android:layout_weight="4"
             android:layout_marginTop="@dimen/size_5"
             android:background="@drawable/chatsearch"
@@ -35,12 +36,22 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight=".5"
-            android:src="@drawable/messenger"
+            android:src="@drawable/backbtn"
             android:background="@android:color/transparent"
             android:id="@+id/chatBtn"
             android:visibility="gone"
             android:layout_margin="@dimen/size_10"
             android:layout_alignParentRight="true"/>
+        <com.ue.uebook.Customview.CustomTextViewBold
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/header"
+            android:layout_margin="@dimen/size_15"
+            android:visibility="visible"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:textSize="@dimen/size_18"
+            android:text=" Categories "/>
 
     </LinearLayout>
     <com.ue.uebook.Customview.CustomTextViewBold
@@ -49,6 +60,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/header"
         android:layout_margin="@dimen/size_15"
+        android:visibility="gone"
         android:textColor="@color/white"
         android:textSize="@dimen/size_18"
         android:text="Top Categories"/>

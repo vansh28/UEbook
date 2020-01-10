@@ -190,7 +190,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             //setStringToText(text_Address, add);
             locationlongitude();
             locationlatitude();
-            Log.i(TAG, "Location" + Commonutils.getAddressFromLocation(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude(), this));
+            // Log.i(TAG, "Location" + Commonutils.getAddressFromLocation(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude(), this));
             mFusedLocationClient.removeLocationUpdates(mLocationCallback);
             hideLoadingIndicator();
         }

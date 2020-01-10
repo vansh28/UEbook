@@ -1,33 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
     android:layout_width="match_parent"
     android:id="@+id/categoryContqainer"
     android:layout_margin="@dimen/size_10"
     android:weightSum="4"
     android:background="@drawable/roundrectanglewhite"
-    android:layout_height="@dimen/size_150">
+    android:layout_height="@dimen/size_100">
+
+
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
     <ImageView
         android:id="@+id/categoryimage"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="3"
-        android:alpha="0.7"
+        android:layout_width="@dimen/size_100"
+        android:layout_height="match_parent"
         android:scaleType="fitXY"
-        android:padding="@dimen/size_5"
+        android:layout_centerVertical="true"
+        android:layout_margin="2dp"
+        android:src="@drawable/imgfive"
         android:visibility="visible"
         />
-
-    <TextView
+    <com.ue.uebook.Customview.CustomTextViewBold
         android:id="@+id/categoryName"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:text="@string/category"
-        android:layout_centerInParent="true"
-        android:gravity="center"
-        android:textColor="@color/colorAccent"
-        android:textSize="@dimen/size_18"
-        android:layout_margin="@dimen/size_10"/>
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/size_20"
+        android:layout_toRightOf="@id/categoryimage"
+        android:textColor="@color/black"
+        android:text="The Book"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="@dimen/size_15"/>
+            <com.ue.uebook.Customview.CustomTextViewMedium
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/size_14"
+                android:layout_below="@id/categoryName"
+                android:layout_toRightOf="@id/categoryimage"
+                android:text="150 Books"
+                android:layout_marginLeft="@dimen/size_14"/>
 
-</LinearLayout>
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/right"
+                android:layout_alignParentRight="true"
+                android:background="@android:color/transparent"
+                android:layout_margin="@dimen/size_10"
+                android:layout_alignParentBottom="true"/>
+        </RelativeLayout>
+</RelativeLayout>

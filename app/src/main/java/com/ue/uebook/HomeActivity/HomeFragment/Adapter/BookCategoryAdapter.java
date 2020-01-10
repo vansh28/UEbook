@@ -5,7 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -73,7 +73,7 @@ public class BookCategoryAdapter extends RecyclerView.Adapter<BookCategoryAdapte
     }
     public class MyViewHolder extends RecyclerView.ViewHolder {
         private TextView categoryName;
-        private LinearLayout categoryContqainer;
+        private RelativeLayout categoryContqainer;
         private ImageView categoryimage;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);

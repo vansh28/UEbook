@@ -13,7 +13,7 @@ import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
@@ -72,8 +72,13 @@ public class BookCategoryFragment extends Fragment implements BookCategoryAdapte
         categoryList=view.findViewById(R.id.categoryList);
         edittext_search=view.findViewById(R.id.edittext_search);
         edittext_search.setOnClickListener(this);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(),2);
-        categoryList.setLayoutManager(gridLayoutManager);
+//        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(),2);
+//        categoryList.setLayoutManager(gridLayoutManager);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
+        categoryList.setLayoutManager(linearLayoutManager);
+
+
         getBookCategory();
         edittext_search.addTextChangedListener(new TextWatcher() {
             @Override
