@@ -20,6 +20,7 @@ import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.ue.uebook.R;
 import com.ue.uebook.SplashActivity.SplashScreenApp;
+import com.ue.uebook.VideoSdk.VideoCallRecive;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -66,13 +67,19 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 Avtar =jsonObject.getString("Avtar");
                 channel_id =jsonObject.getString("channel_id");
                 Log.d("channel_id",channel_id);
-                if (taskInfo.get(0).topActivity.getClassName().equalsIgnoreCase("com.ue.uebook.ChatSdk.MessageScreen"))
-                {
-
+//                if (taskInfo.get(0).topActivity.getClassName().equalsIgnoreCase("com.ue.uebook.ChatSdk.MessageScreen"))
+//                {
+//
+//                }
+                 if (noti_msz.equalsIgnoreCase("video_call")){
+                           Intent intent = new Intent(this, VideoCallRecive.class);
+                    intent.putExtra("id",channel_id);
+                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
                 }
                 else {
-
                     sendNotification(noti_msz,getBitmapfromUrl("dnddemo.com\\/ebooks\\/api\\/v1\\/upload\\/books\\/book_1571738214.jpg"));
+
                 }
 
             } catch (JSONException e) {

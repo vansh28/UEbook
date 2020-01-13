@@ -57,6 +57,7 @@ import com.ue.uebook.GlideUtils;
 import com.ue.uebook.ImageUtils;
 import com.ue.uebook.R;
 import com.ue.uebook.SessionManager;
+import com.ue.uebook.VideoSdk.VideoCall;
 import com.ue.uebook.WebviewScreen;
 
 import java.io.File;
@@ -336,7 +337,10 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.videoCall:
-
+                       Intent intent = new Intent(MessageScreen.this, VideoCall.class);
+                       intent.putExtra("id",channelID);
+                        intent.putExtra("receiverid",sendToID);
+                       startActivity(intent);
                        return true;
                     case R.id.clearChat:
                          clearChatHistory(new SessionManager(getApplicationContext()).getUserID(),sendToID);

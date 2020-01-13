@@ -38,9 +38,10 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".HomeActivity.BookListing"></activity>
+        <activity android:name=".VideoSdk.VideoCallRecive"></activity>
+        <activity android:name=".VideoSdk.VideoCall" />
+        <activity android:name=".HomeActivity.BookListing" />
         <activity android:name=".Dashboard.StartActivityHome" />
-        <activity android:name=".faceRecognition.FaceLogin" />
         <activity
             android:name=".AudioRecordActivity"
             android:screenOrientation="portrait" />
@@ -186,6 +187,11 @@
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </receiver>
+
+        <service
+            android:name=".BackgroundSoundService"
+            android:enabled="true" />
+
     </application>
 
 </manifest>

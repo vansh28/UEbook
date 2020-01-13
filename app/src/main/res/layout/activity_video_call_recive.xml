@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:layout_height="match_parent">
+    <Button
+        android:id="@+id/answer"
+        android:layout_width="wrap_content"
+        android:text="Answer"
+        android:textSize="@dimen/size_20"
+        android:layout_height="wrap_content">
+
+    </Button>
+    <Button
+        android:id="@+id/cancel"
+        android:layout_width="wrap_content"
+        android:text="cancel"
+        android:layout_marginTop="@dimen/size_10"
+        android:textSize="@dimen/size_20"
+        android:layout_height="wrap_content">
+
+    </Button>
+
+
+</LinearLayout>

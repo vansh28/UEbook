@@ -2,7 +2,6 @@ package com.ue.uebook;
 
 public class Constants {
     public static final String PREF_NAME = "togobrasilpartner";
-
     /*Used font*/
     public static final String FONT_NORMAL = "fonts/Poppins-Regular.ttf";
     public static final String FONT_MEDIUM = "fonts/Poppins-Medium.ttf";

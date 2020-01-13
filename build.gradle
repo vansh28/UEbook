@@ -32,15 +32,14 @@ allprojects {
         maven {
             url "https://maven.google.com"
         }
-
         maven {
-            url "https://github.com/QuickBlox/quickblox-android-sdk-releases/raw/master/"
+            url "https://github.com/jitsi/jitsi-maven-repository/raw/master/releases"
         }
-
 
             maven { url 'https://jitpack.io' }
 
-    }}
+    }
+}
 
 ext.versions = [
         'java': JavaVersion.VERSION_1_8,

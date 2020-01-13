@@ -4,7 +4,7 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.ue.uebook"
-        minSdkVersion 16
+        minSdkVersion 23
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -13,11 +13,20 @@ android {
         multiDexEnabled true
     }
     buildTypes {
+        debug {
+            signingConfig signingConfigs.debug
+        }
         release {
-
-            minifyEnabled false
+            // Caution! In production, you need to generate your own keystore file.
+            // see https://facebook.github.io/react-native/docs/signed-apk-android.
+            signingConfig signingConfigs.debug
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 repositories {
@@ -26,9 +35,7 @@ repositories {
 
     }
     maven { url "https://jitpack.io" }
-    maven {
-        url "https://github.com/QuickBlox/quickblox-android-sdk-releases/raw/master/"
-    }
+
     maven { url 'https://maven.fabric.io/public' }
 }
 buildscript {
@@ -38,6 +45,9 @@ buildscript {
         maven { url 'https://maven.fabric.io/public' }
         maven {
             url "https://maven.google.com"
+        }
+        maven {
+            url "https://github.com/jitsi/jitsi-maven-repository/raw/master/releases"
         }
     }
 
@@ -87,9 +97,6 @@ dependencies {
     implementation 'com.nbsp:library:1.8'
     implementation 'com.github.mjn1369:prettydialog:1.0.4'
 
-    implementation "com.quickblox:quickblox-android-sdk-messages:3.9.1"
-    implementation "com.quickblox:quickblox-android-sdk-chat:3.9.1"
-    implementation "com.quickblox:quickblox-android-sdk-content:3.9.1"
 
     implementation 'com.google.firebase:firebase-database:11.8.0'
     implementation 'com.google.firebase:firebase-storage:11.8.0'
@@ -129,6 +136,7 @@ dependencies {
     implementation 'pub.devrel:easypermissions:2.0.1'
     implementation 'com.android.volley:volley:1.1.1'
 
+    implementation('org.jitsi.react:jitsi-meet-sdk:2.5.0') { transitive = true }
 
 }
 apply plugin: 'com.google.gms.google-services'

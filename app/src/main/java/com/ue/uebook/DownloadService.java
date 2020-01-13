@@ -18,8 +18,6 @@ public class DownloadService   extends IntentService {
 
     public static final int UPDATE_PROGRESS = 8344;
     String folder_main = "ImagesFolder";
-
-
     public DownloadService() {
         super("DownloadService");
     }
