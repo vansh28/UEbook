@@ -53,6 +53,7 @@ public class VideoCall extends AppCompatActivity {
                 defaultOptions = new JitsiMeetConferenceOptions.Builder()
                 .setServerURL(serverURL)
                 .setWelcomePageEnabled(false)
+              //  .setAudioOnly(true)
                 .build();
         JitsiMeet.setDefaultConferenceOptions(defaultOptions);
 
