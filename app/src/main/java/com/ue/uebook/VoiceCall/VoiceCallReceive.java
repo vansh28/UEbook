@@ -1,4 +1,4 @@
-package com.ue.uebook.VideoSdk;
+package com.ue.uebook.VoiceCall;
 
 import android.content.Intent;
 import android.media.MediaPlayer;
@@ -20,18 +20,16 @@ import org.jitsi.meet.sdk.JitsiMeetConferenceOptions;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class VideoCallRecive extends AppCompatActivity implements View.OnClickListener  {
-
+public class VoiceCallReceive extends AppCompatActivity implements View.OnClickListener{
     Intent intent;
     private String channeld=" ";
     private String  receiverid="";
     private ImageView videoCall_receive ,videoCall_cancel;
     private MediaPlayer mp;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_video_call_recive);
+        setContentView(R.layout.activity_voice_call_receive);
         videoCall_receive=findViewById(R.id.videoCall_receive);
         videoCall_cancel=findViewById(R.id.videoCall_cancel);
         Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
@@ -50,14 +48,14 @@ public class VideoCallRecive extends AppCompatActivity implements View.OnClickLi
             e.printStackTrace();
             throw new RuntimeException("Invalid server URL!");
         }
+
         JitsiMeetConferenceOptions defaultOptions
                 = new JitsiMeetConferenceOptions.Builder()
                 .setServerURL(serverURL)
                 .setWelcomePageEnabled(false)
-               // .setAudioOnly(true)
+                .setAudioOnly(true)
                 .build();
         JitsiMeet.setDefaultConferenceOptions(defaultOptions);
-
     }
 
     @Override
@@ -67,7 +65,6 @@ public class VideoCallRecive extends AppCompatActivity implements View.OnClickLi
             finish();
         }
         else if (v==videoCall_receive){
-            finish();
             mp.stop();
             if (channeld.length() > 0) {
                 // Build options object for joining the conference. The SDK will merge the default
@@ -79,6 +76,7 @@ public class VideoCallRecive extends AppCompatActivity implements View.OnClickLi
                 // Launch the new activity with the given options. The launch() method takes care
                 //                // of creating the required Intent and passing the options.
                 JitsiMeetActivity.launch(this, options);
+                finish();
             }
         }
     }

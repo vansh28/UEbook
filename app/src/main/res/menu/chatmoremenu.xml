@@ -5,12 +5,12 @@
         android:icon="@drawable/ic_home_black_24dp"
 
         android:title="Video Call" />
-
+    <item
+        android:id="@+id/voice_Btn"
+        android:icon="@drawable/ic_dashboard_black_24dp"
+        android:title="Voice Call" />
     <item
         android:id="@+id/clearChat"
         android:title="Clear Chat" />
-    <item
-        android:icon="@drawable/ic_dashboard_black_24dp"
-        android:visible="false"
-        android:title="Block" />
+
 </menu>

@@ -23,6 +23,7 @@ public class StartActivityHome extends AppCompatActivity implements View.OnClick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_home);
+
         title=(CustomTextViewNormal)findViewById(R.id.title);
         voiceText=(CustomTextViewNormal)findViewById(R.id.voiceText);
         typingText=(CustomTextViewNormal)findViewById(R.id.keyboardText);
@@ -33,8 +34,8 @@ public class StartActivityHome extends AppCompatActivity implements View.OnClick
         signUp_btn_new=findViewById(R.id.signUp_btn_new);
         signUp_btn_new.setOnClickListener(this);
 
-        String s= "Write your Book \n With UEbook";
 
+        String s= "Write your Book \n With UEbook";
         String s1= "Write with\nVOICE";
         String s2= "Write with\nTYPING";
         String s3= "Start\nCHATING";

@@ -279,19 +279,19 @@ public class AudioRecordActivity extends AppCompatActivity implements Recognitio
                 message = "Client side error";
                 break;
             case SpeechRecognizer.ERROR_INSUFFICIENT_PERMISSIONS:
-                message = "Insufficient permissions";
+                 message = "Insufficient permissions";
                 break;
             case SpeechRecognizer.ERROR_NETWORK:
-                message = "Network error";
+                 message = "Network error";
                 break;
             case SpeechRecognizer.ERROR_NETWORK_TIMEOUT:
-                message = "Network timeout";
+                 message = "Network timeout";
                 break;
             case SpeechRecognizer.ERROR_NO_MATCH:
-                message = "No match";
+                 message = "No match";
                 break;
             case SpeechRecognizer.ERROR_RECOGNIZER_BUSY:
-                message = "RecognitionService busy";
+                 message = "RecognitionService busy";
                 break;
             case SpeechRecognizer.ERROR_SERVER:
                 message = "error from server";

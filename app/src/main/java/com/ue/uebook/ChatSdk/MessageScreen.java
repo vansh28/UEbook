@@ -58,6 +58,7 @@ import com.ue.uebook.ImageUtils;
 import com.ue.uebook.R;
 import com.ue.uebook.SessionManager;
 import com.ue.uebook.VideoSdk.VideoCall;
+import com.ue.uebook.VoiceCall.VoiceCallActivity;
 import com.ue.uebook.WebviewScreen;
 
 import java.io.File;
@@ -345,7 +346,12 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
                     case R.id.clearChat:
                          clearChatHistory(new SessionManager(getApplicationContext()).getUserID(),sendToID);
                         return true;
-
+                    case R.id.voice_Btn:
+                        Intent intents = new Intent(MessageScreen.this, VoiceCallActivity.class);
+                        intents.putExtra("id",channelID);
+                        intents.putExtra("receiverid",sendToID);
+                        startActivity(intents);
+                         return  true;
                     default:
                         return false;
                 }

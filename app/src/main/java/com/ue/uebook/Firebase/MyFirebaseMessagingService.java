@@ -21,6 +21,7 @@ import com.google.firebase.messaging.RemoteMessage;
 import com.ue.uebook.R;
 import com.ue.uebook.SplashActivity.SplashScreenApp;
 import com.ue.uebook.VideoSdk.VideoCallRecive;
+import com.ue.uebook.VoiceCall.VoiceCallReceive;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -52,7 +53,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         ComponentName componentInfo = taskInfo.get(0).topActivity;
         componentInfo.getPackageName();
 
-
         if (remoteMessage.getData().size() > 0) {
             Log.d("RedListed", "Message data payload: " + remoteMessage.getData());
             Intent i = new Intent("android.intent.action.MAIN").putExtra("some_msg", "I will be sent!");
@@ -71,17 +71,32 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 //                {
 //
 //                }
-                 if (noti_msz.equalsIgnoreCase("video_call")){
+                 if (noti_msz.equalsIgnoreCase("videoCall")){
                            Intent intent = new Intent(this, VideoCallRecive.class);
                     intent.putExtra("id",channel_id);
                      intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
                 }
-                else {
-                    sendNotification(noti_msz,getBitmapfromUrl("dnddemo.com\\/ebooks\\/api\\/v1\\/upload\\/books\\/book_1571738214.jpg"));
-
+                else   if (noti_msz.equalsIgnoreCase("audioCall")){
+                     Intent intent = new Intent(this, VoiceCallReceive.class);
+                     intent.putExtra("id",channel_id);
+                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                     startActivity(intent);
                 }
 
+                else
+                    {
+
+                     if (taskInfo.get(0).topActivity.getClassName().equalsIgnoreCase("com.ue.uebook.ChatSdk.MessageScreen")){
+
+                     }
+
+                     else
+                         {
+
+                         sendNotification(noti_msz,getBitmapfromUrl("dnddemo.com\\/ebooks\\/api\\/v1\\/upload\\/books\\/book_1571738214.jpg"));
+                     }
+                }
             } catch (JSONException e) {
                 e.printStackTrace();
             }

@@ -1,4 +1,4 @@
-package com.ue.uebook.VideoSdk;
+package com.ue.uebook.VoiceCall;
 
 import android.content.Intent;
 import android.os.Build;
@@ -24,24 +24,24 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Random;
 
-public class VideoCall extends AppCompatActivity {
-
+public class VoiceCallActivity extends AppCompatActivity {
     Intent intent;
     private String channeld=" ";
     private String  receiverid="";
     String RandomAudioFileName = "abcdefghjklmno";
     Random random;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_video_call);
+        setContentView(R.layout.activity_voice_call);
         intent = getIntent();
         random = new Random();
         channeld=intent.getStringExtra("id");
         receiverid=intent.getStringExtra("receiverid");
-           if (channeld.isEmpty()){
-               channeld=CreateRandomAudioFileName(5);
-           }
+        if (channeld.isEmpty()){
+            channeld=CreateRandomAudioFileName(5);
+        }
         URL serverURL;
         try {
             serverURL = new URL("https://meet.jit.si");
@@ -53,7 +53,7 @@ public class VideoCall extends AppCompatActivity {
                 defaultOptions = new JitsiMeetConferenceOptions.Builder()
                 .setServerURL(serverURL)
                 .setWelcomePageEnabled(false)
-              //  .setAudioOnly(true)
+                .setAudioOnly(true)
                 .build();
         JitsiMeet.setDefaultConferenceOptions(defaultOptions);
 
@@ -85,7 +85,7 @@ public class VideoCall extends AppCompatActivity {
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void videocall(String user_id ,String receiver ,String channeld) {
         ApiRequest request = new ApiRequest();
-        request.requestforVideoCall(user_id, receiver ,channeld,"videoCall",new okhttp3.Callback() {
+        request.requestforVideoCall(user_id, receiver ,channeld,"audioCall",new okhttp3.Callback() {
             @Override
             public void onFailure(okhttp3.Call call, IOException e) {
                 Log.d("error", "error");

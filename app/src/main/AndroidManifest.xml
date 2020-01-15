@@ -26,7 +26,8 @@
     <uses-permission android:name="android.permission.READ_INTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION" />
-    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.VIBRATE" />
+
     <application
         android:allowBackup="true"
         android:exported="false"
@@ -38,7 +39,9 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".VideoSdk.VideoCallRecive"></activity>
+        <activity android:name=".VoiceCall.VoiceCallReceive"></activity>
+        <activity android:name=".VoiceCall.VoiceCallActivity" />
+        <activity android:name=".VideoSdk.VideoCallRecive" />
         <activity android:name=".VideoSdk.VideoCall" />
         <activity android:name=".HomeActivity.BookListing" />
         <activity android:name=".Dashboard.StartActivityHome" />
@@ -191,7 +194,6 @@
         <service
             android:name=".BackgroundSoundService"
             android:enabled="true" />
-
     </application>
 
 </manifest>

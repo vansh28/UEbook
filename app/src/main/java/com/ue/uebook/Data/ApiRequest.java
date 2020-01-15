@@ -627,7 +627,7 @@ public class ApiRequest {
 
     }
 
-    public void requestforVideoCall(String user_id , String sendTO ,String channelId, Callback callback) {
+    public void requestforVideoCall(String user_id , String sendTO ,String channelId,String type ,Callback callback) {
         String url = null;
         url = BaseUrl + "user_calling";
         OkHttpClient client = new OkHttpClient();
@@ -635,6 +635,8 @@ public class ApiRequest {
                 .addFormDataPart("user_id", user_id)
                 .addFormDataPart("sendTO", sendTO)
                 .addFormDataPart("channelId", channelId)
+                .addFormDataPart("type", type)
+
                 .build();
         Request request = new Request.Builder()
                 .url(url)

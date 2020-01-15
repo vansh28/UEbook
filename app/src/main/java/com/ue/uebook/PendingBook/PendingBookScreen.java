@@ -40,7 +40,6 @@ public class PendingBookScreen extends BaseActivity implements View.OnClickListe
         setContentView(R.layout.activity_pending_book_screen);
         backbtn=findViewById(R.id.back_pending);
         fontsize();
-
         booklist= new ArrayList<>();
         pending_bookTv=findViewById(R.id.pending_bookTv);
         backbtn.setOnClickListener(this);
