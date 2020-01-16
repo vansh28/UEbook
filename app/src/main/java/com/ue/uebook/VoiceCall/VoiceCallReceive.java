@@ -40,15 +40,17 @@ public class VoiceCallReceive extends AppCompatActivity implements View.OnClickL
         intent = getIntent();
         channeld=intent.getStringExtra("id");
         Glide.with(this).asGif().load(R.drawable.callrecieve).into(videoCall_receive);
-        URL serverURL;
 
+        URL serverURL;
         try {
+
             serverURL = new URL("https://meet.jit.si");
-        } catch (MalformedURLException e) {
+
+        } catch (MalformedURLException e)
+        {
             e.printStackTrace();
             throw new RuntimeException("Invalid server URL!");
         }
-
         JitsiMeetConferenceOptions defaultOptions
                 = new JitsiMeetConferenceOptions.Builder()
                 .setServerURL(serverURL)
@@ -57,7 +59,6 @@ public class VoiceCallReceive extends AppCompatActivity implements View.OnClickL
                 .build();
         JitsiMeet.setDefaultConferenceOptions(defaultOptions);
     }
-
     @Override
     public void onClick(View v) {
         if (v==videoCall_cancel){

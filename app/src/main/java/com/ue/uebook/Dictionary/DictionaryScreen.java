@@ -77,7 +77,6 @@ public class DictionaryScreen extends BaseActivity implements View.OnClickListen
                             {
                                 searchResult.append(Html.fromHtml("<p>" + form.getResponse().get(i).getDefinition() + "</p>"));
                             }
-
                             searchResult.append(Html.fromHtml("<br/><br/>"));
                         }
                         else

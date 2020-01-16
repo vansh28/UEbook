@@ -158,12 +158,11 @@ public class AuthorProfileScreen extends BaseActivity implements View.OnClickLis
             public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
                 hideLoadingIndicator();
                 String myResponse = response.body().string();
-
                 Gson gson = new GsonBuilder().create();
                 final AuthorData form = gson.fromJson(myResponse, AuthorData.class);
                 runOnUiThread(new Runnable() {
                     @Override
-                    public void run() {
+                     public void run() {
                         if (form.getData()!=null){
                         author_name.setText(form.getData().getUser_name());
                         author_desc.setText(form.getData().getAbout_me());
@@ -181,15 +180,11 @@ public class AuthorProfileScreen extends BaseActivity implements View.OnClickLis
                             post_list.setVisibility(View.GONE);
                             author_post_count.setText("0");
                         }
-
                     }}
                 });
-
             }
-
         });
     }
-
     @Override
     public void onItemClick_PopularBook(int position, String book_id) {
         Intent intent = new Intent(AuthorProfileScreen.this, Book_Detail_Screen.class);
@@ -269,7 +264,7 @@ public class AuthorProfileScreen extends BaseActivity implements View.OnClickLis
                     @Override
                     public void run() {
                         Toast.makeText(AuthorProfileScreen.this,"Successfully Send",Toast.LENGTH_SHORT).show();
-                    }
+                     }
                 });
             }
         });

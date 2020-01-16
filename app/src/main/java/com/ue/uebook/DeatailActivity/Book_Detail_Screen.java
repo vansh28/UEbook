@@ -77,11 +77,8 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
     private List<user_answer> user_answers;
     private RatingBar myRatingBar;
     private int textSize;
-
     private Handler handler;
-
     String docbaseUrl = "http://docs.google.com/gview?embedded=true&url=";
-
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -138,7 +135,6 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
         pullTorefreshswipe();
         fontsize();
     }
-
     private void fontsize() {
         switch (new SessionManager(getApplicationContext()).getfontSize()) {
             case "smallest":

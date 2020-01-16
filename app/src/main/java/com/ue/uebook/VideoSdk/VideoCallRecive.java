@@ -23,8 +23,8 @@ import java.net.URL;
 public class VideoCallRecive extends AppCompatActivity implements View.OnClickListener  {
 
     Intent intent;
-    private String channeld=" ";
-    private String  receiverid="";
+    private String channeld = " ";
+    private String  receiverid = " ";
     private ImageView videoCall_receive ,videoCall_cancel;
     private MediaPlayer mp;
 

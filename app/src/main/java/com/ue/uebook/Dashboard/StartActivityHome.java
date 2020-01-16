@@ -29,11 +29,8 @@ public class StartActivityHome extends AppCompatActivity implements View.OnClick
         typingText=(CustomTextViewNormal)findViewById(R.id.keyboardText);
         chatText=(CustomTextViewNormal)findViewById(R.id.chatText);
         bookText=(CustomTextViewNormal)findViewById(R.id.readBookText);
-
-
         signUp_btn_new=findViewById(R.id.signUp_btn_new);
         signUp_btn_new.setOnClickListener(this);
-
 
         String s= "Write your Book \n With UEbook";
         String s1= "Write with\nVOICE";

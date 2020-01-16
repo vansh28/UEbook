@@ -15,13 +15,13 @@ public class FontCache {
         if (typeface == null) {
             try {
                 typeface = Typeface.createFromAsset(context.getAssets(), fontName);
-            } catch (Exception e) {
+            } catch (Exception e)
+            {
                 return null;
             }
 
             fontCache.put(fontName, typeface);
         }
-
         return typeface;
     }
 }

@@ -1,6 +1,5 @@
 package com.ue.uebook.LoginActivity.Login_Screen;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -18,11 +17,9 @@ import android.text.method.PasswordTransformationMethod;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -552,29 +549,6 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener, 
                 result2 == PackageManager.PERMISSION_GRANTED &&
                 result3 == PackageManager.PERMISSION_GRANTED&&
                 result4 == PackageManager.PERMISSION_GRANTED ;
-    }
-    private void imagePreview(final Bitmap file,final File userFile) {
-        final Dialog previewDialog = new Dialog(this);
-        previewDialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-        previewDialog.setContentView(getLayoutInflater().inflate(R.layout.image_layout
-                , null));
-        ImageView imageView = previewDialog.findViewById(R.id.image_view);
-        imageView.setImageBitmap(file);
-//        GlideUtils.loadImage(SignInScreen.this, "http://dnddemo.com/ebooks/api/v1/upload/" + file, imageView, R.drawable.user_default, R.drawable.user_default);
-        Button ok_Btn = previewDialog.findViewById(R.id.buton_ok);
-
-        ok_Btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-//                    requestforLogin("de", "123");
-
-
-                }
-                previewDialog.dismiss();
-            }
-        });
-        previewDialog.show();
     }
     public Uri getImageUri(Context inContext, Bitmap inImage) {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
