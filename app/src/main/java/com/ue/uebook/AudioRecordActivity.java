@@ -140,7 +140,6 @@ public class AudioRecordActivity extends AppCompatActivity implements Recognitio
         while (i < string) {
             stringBuilder.append(RandomAudioFileName.
                     charAt(random.nextInt(RandomAudioFileName.length())));
-
             i++;
         }
         return stringBuilder.toString();

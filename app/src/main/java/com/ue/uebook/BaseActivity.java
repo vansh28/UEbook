@@ -6,6 +6,7 @@ import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
@@ -22,6 +23,7 @@ import android.view.inputmethod.InputMethodManager;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
@@ -324,6 +326,23 @@ public abstract class BaseActivity extends AppCompatActivity {
 //                    R.string.dialog_retry, clickListener).show();
 //        }
 //    }
-
+   public void dialog(final String value ,final String value1,final String value2 ,final String mesg ) {
+    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+    builder.setMessage(mesg)
+            .setCancelable(false)
+            .setPositiveButton(value1, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    new SessionManager(getApplicationContext()).setfontSize(value);
+                    dialog.cancel();
+                }
+            })
+            .setNegativeButton(value2, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    dialog.cancel();
+                }
+            });
+    AlertDialog alert = builder.create();
+    alert.show();
+}
 
 }

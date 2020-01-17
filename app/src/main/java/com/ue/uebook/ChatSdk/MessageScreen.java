@@ -398,7 +398,6 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
             }
             @Override
             public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
-
                 final String myResponse = response.body().string();
                 Gson gson = new GsonBuilder().create();
                 final ChatResponse form = gson.fromJson(myResponse, ChatResponse.class);

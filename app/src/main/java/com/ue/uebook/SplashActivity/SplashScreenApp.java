@@ -39,8 +39,6 @@ public class SplashScreenApp extends AppCompatActivity {
         senderName=intent.getStringExtra("name");
         senderimage=intent.getStringExtra("imageUrl");
         screenid=intent.getIntExtra("id",0);
-
-
         if (screenid==1){
             Log.d("splashchnn",channelID);
             Intent intent = new Intent(this, MessageScreen.class);

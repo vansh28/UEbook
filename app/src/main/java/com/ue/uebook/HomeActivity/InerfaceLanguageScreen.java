@@ -10,10 +10,10 @@ import android.view.View;
 import android.widget.ImageButton;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.ue.uebook.BaseActivity;
 import com.ue.uebook.HomeActivity.HomeFragment.Adapter.FontAdapter;
 import com.ue.uebook.HomeActivity.HomeFragment.Adapter.Language_adapter;
 import com.ue.uebook.R;
@@ -21,7 +21,7 @@ import com.ue.uebook.SessionManager;
 
 import java.util.Locale;
 
-public class InerfaceLanguageScreen extends AppCompatActivity implements Language_adapter.LanguageItemClick, View.OnClickListener ,FontAdapter.FontItemClick {
+public class InerfaceLanguageScreen extends BaseActivity implements Language_adapter.LanguageItemClick, View.OnClickListener ,FontAdapter.FontItemClick {
 
     private RecyclerView language_List,font_list;
     private Language_adapter language_adapter;
@@ -160,6 +160,5 @@ public class InerfaceLanguageScreen extends AppCompatActivity implements Languag
     @Override
     public void onfontItemClick(int position, String value) {
         confirmfontDialog(value);
-
     }
 }

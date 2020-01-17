@@ -71,8 +71,6 @@ public class VideoCall extends AppCompatActivity {
             finish();
         }
 
-
-
     }
 
     public void onButoonClick(View v) {

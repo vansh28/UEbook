@@ -43,7 +43,6 @@ public class VideoCallRecive extends AppCompatActivity implements View.OnClickLi
         channeld=intent.getStringExtra("id");
         Glide.with(this).asGif().load(R.drawable.callrecieve).into(videoCall_receive);
         URL serverURL;
-
         try {
             serverURL = new URL("https://meet.jit.si");
         } catch (MalformedURLException e) {
