@@ -10,7 +10,6 @@ import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.bumptech.glide.Glide;
 import com.ue.uebook.R;
 
 import org.jitsi.meet.sdk.JitsiMeet;
@@ -39,7 +38,6 @@ public class VoiceCallReceive extends AppCompatActivity implements View.OnClickL
         videoCall_receive.setOnClickListener(this);
         intent = getIntent();
         channeld=intent.getStringExtra("id");
-        Glide.with(this).asGif().load(R.drawable.callrecieve).into(videoCall_receive);
 
         URL serverURL;
         try {

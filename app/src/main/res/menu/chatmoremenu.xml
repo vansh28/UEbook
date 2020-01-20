@@ -3,10 +3,11 @@
     <item
         android:id="@+id/videoCall"
         android:icon="@drawable/ic_home_black_24dp"
-
+        android:visible="false"
         android:title="Video Call" />
     <item
         android:id="@+id/voice_Btn"
+        android:visible="false"
         android:icon="@drawable/ic_dashboard_black_24dp"
         android:title="Voice Call" />
     <item

@@ -61,10 +61,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
             try {
                 JSONObject jsonObject = new JSONObject(remoteMessage.getData());
-                name=jsonObject.getString("UserName");
+              //  name=jsonObject.getString("UserName");
                 noti_msz =jsonObject.getString("noti_msg");
-                user_id=jsonObject.getString("user_id");
-                Avtar =jsonObject.getString("Avtar");
+              //  user_id=jsonObject.getString("user_id");
+               // Avtar =jsonObject.getString("Avtar");
                 channel_id =jsonObject.getString("channel_id");
                 Log.d("channel_id",channel_id);
 //                if (taskInfo.get(0).topActivity.getClassName().equalsIgnoreCase("com.ue.uebook.ChatSdk.MessageScreen"))
@@ -74,7 +74,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                  if (noti_msz.equalsIgnoreCase("videoCall")){
                            Intent intent = new Intent(this, VideoCallRecive.class);
                     intent.putExtra("id",channel_id);
-                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
                 }
                 else   if (noti_msz.equalsIgnoreCase("audioCall")){

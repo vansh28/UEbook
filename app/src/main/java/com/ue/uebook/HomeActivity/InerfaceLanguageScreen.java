@@ -78,10 +78,7 @@ public class InerfaceLanguageScreen extends BaseActivity implements Language_ada
         fontAdapter= new FontAdapter(getApplicationContext(),fontarray ,fid);
         font_list.setAdapter(fontAdapter);
         fontAdapter.setItemClickListener(this);
-
     }
-
-
 
     @Override
     public void onClick(View view) {
@@ -89,7 +86,6 @@ public class InerfaceLanguageScreen extends BaseActivity implements Language_ada
             finish();
         }
     }
-
     private void confirmLanguageDialog(final String value) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("You sure, that you want Change Language")
@@ -110,7 +106,6 @@ public class InerfaceLanguageScreen extends BaseActivity implements Language_ada
         AlertDialog alert = builder.create();
         alert.show();
     }
-
     private void confirmfontDialog(final String value) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("You sure, that you want Change Font Size")
@@ -130,7 +125,6 @@ public class InerfaceLanguageScreen extends BaseActivity implements Language_ada
         AlertDialog alert = builder.create();
         alert.show();
     }
-
     public void setLocale(String lang) {
         Locale myLocale = new Locale(lang);
         Resources res = getResources();
@@ -143,20 +137,17 @@ public class InerfaceLanguageScreen extends BaseActivity implements Language_ada
         startActivity(refresh);
         finish();
     }
-
     private void gotohome(){
         Intent refresh = new Intent(this, HomeScreen.class);
         refresh.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(refresh);
         finish();
     }
-
     @Override
     public void onItemClick(int position, String value) {
 
         confirmLanguageDialog(value);
     }
-
     @Override
     public void onfontItemClick(int position, String value) {
         confirmfontDialog(value);

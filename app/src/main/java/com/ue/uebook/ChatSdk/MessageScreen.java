@@ -80,7 +80,7 @@ import okhttp3.RequestBody;
 public class MessageScreen extends BaseActivity implements View.OnClickListener, ImageUtils.ImageAttachmentListener, MessageAdapter.ChatImageFileClick {
     private static final int REQUEST_PICK_VIDEO = 12;
     private Intent intent;
-    private ImageButton back_btn, button_chat_attachment, morebtn, button_chat_send, gallerybtn, videobtn, audiobtn, filebtn;
+    private ImageButton back_btn, button_chat_attachment, morebtn, button_chat_send, gallerybtn, videobtn, audiobtn, filebtn ,voicebtn,videoCallbtn;
     private ImageView userProfile,previewImage;
     private RecyclerView messageList;
     private EditText chat_message;
@@ -123,6 +123,10 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message_screen);
+        voicebtn=findViewById(R.id.voicebtn);
+        videoCallbtn=findViewById(R.id.videobtn);
+        voicebtn.setOnClickListener(this);
+        videoCallbtn.setOnClickListener(this);
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setIndeterminate(true);
         // Progress dialog horizontal style
@@ -261,6 +265,19 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
             typevalue = 4;
             openFile(111);
             mBottomSheetDialog.dismiss();
+
+        }
+        else if (v==voicebtn){
+            Intent intents = new Intent(MessageScreen.this, VoiceCallActivity.class);
+            intents.putExtra("id",channelID);
+            intents.putExtra("receiverid",sendToID);
+            startActivity(intents);
+        }
+        else if (v==videoCallbtn){
+            Intent intent = new Intent(MessageScreen.this, VideoCall.class);
+            intent.putExtra("id",channelID);
+            intent.putExtra("receiverid",sendToID);
+            startActivity(intent);
 
         }
     }

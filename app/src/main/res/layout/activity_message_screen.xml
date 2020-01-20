@@ -46,6 +46,27 @@
             android:textSize="@dimen/size_18"
             />
         <ImageButton
+            android:id="@+id/videobtn"
+            android:layout_width="@dimen/size_40"
+            android:layout_height="@dimen/size_40"
+            android:src="@drawable/videoc"
+            android:background="@android:color/transparent"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/voicebtn"
+           />
+
+        <ImageButton
+            android:id="@+id/voicebtn"
+            android:layout_width="@dimen/size_40"
+            android:layout_height="@dimen/size_40"
+            android:src="@drawable/phone"
+            android:background="@android:color/transparent"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/size_10"
+            android:layout_toLeftOf="@id/morebtn"
+            android:layout_marginLeft="@dimen/size_10" />
+
+        <ImageButton
             android:id="@+id/morebtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

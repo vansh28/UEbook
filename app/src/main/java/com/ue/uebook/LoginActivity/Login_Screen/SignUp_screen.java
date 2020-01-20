@@ -109,7 +109,6 @@ public class SignUp_screen extends BaseActivity implements View.OnClickListener 
                 String label = parent.getItemAtPosition(arg2).toString();
                 userGender = label;
                 usergender=userGender;
-
             }
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
@@ -132,8 +131,9 @@ public class SignUp_screen extends BaseActivity implements View.OnClickListener 
         }
         else if (view==upload_faceDetect_image){
 
-                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(intent, PICK_IMAGE_CAMERA);
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            startActivityForResult(intent, PICK_IMAGE_CAMERA);
+
         }
     }
 
@@ -162,6 +162,7 @@ public class SignUp_screen extends BaseActivity implements View.OnClickListener 
             public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
                 String myResponse = response.body().string();
                 Gson gson = new GsonBuilder().create();
+                hideLoadingIndicator();
                 final RegistrationResponse form = gson.fromJson(myResponse, RegistrationResponse.class);
 //                new SessionManager(getApplicationContext()).storeUseruserID(form.getUser_data().getId());
 //                new SessionManager(getApplicationContext()).storeUserName(form.getUser_data().getUser_name());
@@ -174,7 +175,6 @@ public class SignUp_screen extends BaseActivity implements View.OnClickListener 
                         @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                         @Override
                         public void run() {
-//
                             Toast.makeText(SignUp_screen.this,"Successfully User Created",Toast.LENGTH_SHORT).show();
                             gotoHome();
                         }

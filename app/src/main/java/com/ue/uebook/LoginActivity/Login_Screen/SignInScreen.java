@@ -161,7 +161,6 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener, 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                     showLoadingIndicator();
                 }
-
             } else {
 
                 showSnackBar(signinscreen, getString(R.string.no_internet));

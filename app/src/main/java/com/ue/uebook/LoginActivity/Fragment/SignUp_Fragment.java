@@ -77,6 +77,7 @@ public class SignUp_Fragment extends Fragment implements View.OnClickListener {
     private static final int UNAUTHORIZED = 401;
     private String androidID;
     public SignUp_Fragment() {
+
         // Required empty public constructor
     }
 
@@ -108,8 +109,6 @@ public class SignUp_Fragment extends Fragment implements View.OnClickListener {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -160,7 +159,6 @@ public class SignUp_Fragment extends Fragment implements View.OnClickListener {
                     case R.id.radioF:
                         gender = "female";
                         break;
-
                 }
             }
         });

@@ -26,7 +26,6 @@ public class ApiRequest {
                 .addFormDataPart("gender", gender)
                 .addFormDataPart("country", country)
                 .addFormDataPart("about_me", about_me)
-                .addFormDataPart("device_token", device_token)
                 .addFormDataPart("device_type", "android")
 //                .addFormDataPart("face_detect_image", face_detect_image.getName(), RequestBody.create(MEDIA_TYPE_PNG, face_detect_image))
                 .addFormDataPart("device_token", FirebaseInstanceId.getInstance().getToken())
@@ -51,7 +50,6 @@ public class ApiRequest {
                 .addFormDataPart("gender", gender)
                 .addFormDataPart("country", country)
                 .addFormDataPart("about_me", about_me)
-                .addFormDataPart("device_token", device_token)
                 .addFormDataPart("device_type", "android")
                 .addFormDataPart("device_token", FirebaseInstanceId.getInstance().getToken())
                 .build();

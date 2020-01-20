@@ -166,7 +166,7 @@ public class HomeNewFragment extends Fragment implements View.OnClickListener ,B
 
     }
     private void loadFragment(Fragment fragment) {
-        // load fragment
+
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.frame_container, fragment);
         transaction.addToBackStack(null);
@@ -209,13 +209,9 @@ public class HomeNewFragment extends Fragment implements View.OnClickListener ,B
             @Override
             public void onFailure(Call call, IOException e) {
                 Log.e("error", e.getLocalizedMessage());
-
-
             }
-
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-
                 String myresponse = response.body().string();
                 Gson gson = new GsonBuilder().create();
                 final HomeListingResponse form = gson.fromJson(myresponse, HomeListingResponse.class);

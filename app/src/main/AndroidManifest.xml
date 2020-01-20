@@ -39,12 +39,18 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".VoiceCall.VoiceCallReceive"></activity>
-        <activity android:name=".VoiceCall.VoiceCallActivity" />
-        <activity android:name=".VideoSdk.VideoCallRecive" />
-        <activity android:name=".VideoSdk.VideoCall" />
-        <activity android:name=".HomeActivity.BookListing" />
-        <activity android:name=".Dashboard.StartActivityHome" />
+        <activity android:name=".VoiceCall.VoiceCallReceive"
+            android:screenOrientation="portrait"></activity>
+        <activity android:name=".VoiceCall.VoiceCallActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".VideoSdk.VideoCallRecive"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".VideoSdk.VideoCall"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".HomeActivity.BookListing"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Dashboard.StartActivityHome"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".AudioRecordActivity"
             android:screenOrientation="portrait" />
@@ -154,8 +160,8 @@
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
+            tools:replace="android:value"
             android:value="@string/facebook_app_id" />
-
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.provider"
@@ -184,16 +190,26 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-
         <receiver android:name=".MyBroadcastReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </receiver>
-
         <service
             android:name=".BackgroundSoundService"
             android:enabled="true" />
+        <activity
+            android:configChanges="keyboard|orientation"
+            android:launchMode="singleTask"
+            android:name="com.dropbox.core.android.AuthActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="4eohrrjgc6n4s5v" />
+            </intent-filter>
+        </activity>
+
     </application>
 
 </manifest>

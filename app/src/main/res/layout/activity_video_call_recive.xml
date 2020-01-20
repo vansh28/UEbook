@@ -48,7 +48,7 @@
             android:id="@+id/videoCall_receive"
             android:layout_width="@dimen/size_100"
             android:layout_marginLeft="@dimen/size_20"
-            android:src="@drawable/callrecieve"
+            android:src="@drawable/videocall"
             android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
             android:layout_height="@dimen/size_120"/>

@@ -146,9 +146,7 @@ public class Bookmark_Fragment extends Fragment implements Bookmark_List_Adapter
             public void onFailure(okhttp3.Call call, IOException e) {
                 Log.d("error", "error");
                 hideLoadingIndicator();
-
             }
-
             @Override
             public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
                 hideLoadingIndicator();
@@ -156,7 +154,6 @@ public class Bookmark_Fragment extends Fragment implements Bookmark_List_Adapter
                 Gson gson = new GsonBuilder().create();
                 final UserBookmarkResponse form = gson.fromJson(myResponse, UserBookmarkResponse.class);
              if (form.getData()!=null&&form.getError().equalsIgnoreCase("false")){
-
                  if (getActivity()!=null) {
                      getActivity().runOnUiThread(new Runnable() {
                          @Override
@@ -180,15 +177,11 @@ public class Bookmark_Fragment extends Fragment implements Bookmark_List_Adapter
                              bookmark_Book_list.setVisibility(View.GONE);
                          }
                      });
-
                  }
-
              }
-
             }
         });
     }
-
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void showLoadingIndicator() {
         mdialog = new Dialog(getContext());
@@ -224,8 +217,5 @@ public class Bookmark_Fragment extends Fragment implements Bookmark_List_Adapter
                     textSize = 24;
                     break;
             }
-
-
         }
-
 }

@@ -81,7 +81,6 @@ public class BookListing extends BaseActivity implements HomeListingFragment.OnF
             @Override
             public void onTabSelected(TabLayout.Tab tab){
                 int  position = tab.getPosition();
-                Log.d("position", String.valueOf(position));
                 if (getInstance(BookListing.this).isConnectingToInternet()) {
                     getRecommenedBookList(categoryID.get(position));
                 }
@@ -122,10 +121,8 @@ public class BookListing extends BaseActivity implements HomeListingFragment.OnF
                         public void run() {
                             addTabs(viewPager);
                            //changeTabsFont(tabLayout);
-
                         }
                     });
-
             }
         });
     }
