@@ -21,6 +21,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.ue.uebook.AuthorProfileActivity.AuthorProfileScreen;
+import com.ue.uebook.AuthorProfileActivity.PendingRequestScreen;
 import com.ue.uebook.ChatSdk.ChatListScreen;
 import com.ue.uebook.Dashboard.StartActivityHome;
 import com.ue.uebook.Dictionary.DictionaryScreen;
@@ -47,7 +48,7 @@ public class UserMainFragment extends Fragment implements View.OnClickListener, 
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    private RelativeLayout userInfo_container, companyInfo_Container, uploadBook_Container, logOut, chat_Container, author_Container, pendingbook_Container;
+    private RelativeLayout userInfo_container, companyInfo_Container, uploadBook_Container, logOut, chat_Container, author_Container, pendingbook_Container,request_Container;
     private OnFragmentInteractionListener mListener;
     private View view_uploadBook, pendingRequest_view;
     private Dialog mdialog;
@@ -89,6 +90,8 @@ public class UserMainFragment extends Fragment implements View.OnClickListener, 
         chatView = view.findViewById(R.id.chatWithOther_view);
         dictionaryView = view.findViewById(R.id.dictionary_view);
         logoutView = view.findViewById(R.id.logout_view);
+        request_Container=view.findViewById(R.id.request_Container);
+        request_Container.setOnClickListener(this);
         userView.setTextSize(textSize);
         companyView.setTextSize(textSize);
         uploadView.setTextSize(textSize);
@@ -176,6 +179,10 @@ public class UserMainFragment extends Fragment implements View.OnClickListener, 
             getContext().startActivity(intent);
         } else if (view == pendingbook_Container) {
             Intent intent = new Intent(getContext(), PendingBookScreen.class);
+            getContext().startActivity(intent);
+        }
+        else if (view==request_Container){
+            Intent intent = new Intent(getContext(), PendingRequestScreen.class);
             getContext().startActivity(intent);
         }
     }

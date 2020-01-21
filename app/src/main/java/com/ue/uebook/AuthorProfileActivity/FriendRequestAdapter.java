@@ -50,7 +50,6 @@ public class FriendRequestAdapter   extends RecyclerView.Adapter<FriendRequestAd
 
     @Override
     public void onBindViewHolder(@NonNull FriendRequestAdapter.MyViewHolder holder, final int position) {
-
         holder.usertype.setText(data.get(position).getPublisher_type());
         holder.name.setText(data.get(position).getUser_name());
         GlideUtils.loadImage(mtx,"http://"+data.get(position).getUrl(),holder.profile,R.drawable.user_default,R.drawable.user_default);

@@ -25,15 +25,10 @@
             android:textColor="@color/white"
             android:textSize="@dimen/size_18"/>
     </RelativeLayout>
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/swipe_refresh_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/pendinglist"
         android:layout_width="match_parent"
         android:layout_margin="@dimen/size_10"
+        android:visibility="gone"
         android:layout_height="match_parent"/>
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </LinearLayout>

@@ -31,6 +31,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
+import java.util.Random;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
@@ -61,10 +62,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
             try {
                 JSONObject jsonObject = new JSONObject(remoteMessage.getData());
-              //  name=jsonObject.getString("UserName");
+                    name=jsonObject.getString("UserName");
                 noti_msz =jsonObject.getString("noti_msg");
-              //  user_id=jsonObject.getString("user_id");
-               // Avtar =jsonObject.getString("Avtar");
+                user_id=jsonObject.getString("user_id");
+                Avtar =jsonObject.getString("Avtar");
                 channel_id =jsonObject.getString("channel_id");
                 Log.d("channel_id",channel_id);
 //                if (taskInfo.get(0).topActivity.getClassName().equalsIgnoreCase("com.ue.uebook.ChatSdk.MessageScreen"))
@@ -207,7 +208,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         intent.putExtra("imageUrl",Avtar);
         intent.putExtra("id",1);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
+
+        int randomRequestCode = new Random().nextInt(54325);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, randomRequestCode /* Request code */, intent,
                 PendingIntent.FLAG_ONE_SHOT);
         String channelId = getString(R.string.app_name);
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
@@ -217,12 +220,13 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         .setContentTitle(name)
                         .setContentText(msg)
                         .setAutoCancel(true)
-                        .setLargeIcon(imageurl)
+                       // .setLargeIcon(imageurl)
                         .setSound(defaultSoundUri)
                         .setContentIntent(pendingIntent)
                         .setPriority(NotificationManager.IMPORTANCE_HIGH);
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);// Since android Oreo notification channel is needed.
         createNotificationChannel();
+
         notificationManager.notify(value /* ID of notification */, notificationBuilder.build());
     }
     public Bitmap getBitmapfromUrl(String imageUrl) {

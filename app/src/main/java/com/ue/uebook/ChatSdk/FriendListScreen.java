@@ -72,7 +72,7 @@ public class FriendListScreen extends BaseActivity implements View.OnClickListen
         previewDialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         previewDialog.setContentView(getLayoutInflater().inflate(R.layout.image_layout ,null));
         ImageView imageView = previewDialog.findViewById(R.id.image_view);
-        GlideUtils.loadImage(FriendListScreen.this, "http://dnddemo.com/ebooks/api/v1/upload/" + file, imageView, R.drawable.user_default, R.drawable.user_default);
+        GlideUtils.loadImage(FriendListScreen.this, ApiRequest.BaseUrl+"upload/" + file, imageView, R.drawable.user_default, R.drawable.user_default);
         Button ok_Btn = previewDialog.findViewById(R.id.buton_ok);
         ok_Btn.setOnClickListener(new View.OnClickListener() {
             @Override

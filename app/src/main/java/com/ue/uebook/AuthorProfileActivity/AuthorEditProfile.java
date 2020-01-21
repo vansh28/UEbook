@@ -79,6 +79,7 @@ public class AuthorEditProfile extends BaseActivity implements View.OnClickListe
         usernameview.setText(new SessionManager(getApplicationContext()).getUserName());
         String address = new SessionManager(getApplicationContext()).getUserLocation();
         if (address.length() > 0) {
+
             address_user.setText(address);
         }
         if (!image.isEmpty()) {

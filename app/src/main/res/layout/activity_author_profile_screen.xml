@@ -188,14 +188,14 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textSize="@dimen/size_15"
-                android:visibility="gone"
+                android:visibility="visible"
                 android:textColor="@color/colorAccent"
-                android:text="Message"/>
+                android:text="Follow"/>
             <Button
                 android:id="@+id/email_btn"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="2"
+                android:layout_weight="1"
                 android:textSize="@dimen/size_15"
                 android:textColor="@color/colorAccent"
                 android:text="@string/email"/>

@@ -137,10 +137,53 @@
                     android:paddingRight="@dimen/size_10"
                     android:src="@drawable/rightarrow"/>
             </RelativeLayout>
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/black"/>
+
+
+
+
+
+
+            <RelativeLayout
+                android:id="@+id/request_Container"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/size_60"
+                android:paddingLeft="@dimen/size_10">
+                <com.ue.uebook.Customview.CustomTextViewNormal
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="Pending Request"
+                    android:textColor="@color/black"
+                    android:drawableLeft="@drawable/chat_icon"
+                    android:drawablePadding="@dimen/size_20"
+                    android:textSize="@dimen/size_18"/>
+                <ImageView
+                    android:layout_width="@dimen/size_30"
+                    android:layout_height="30dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:paddingRight="@dimen/size_10"
+                    android:src="@drawable/rightarrow"/>
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/black"/>
+
+
+
+
+
+
+
+
+
             <RelativeLayout
                 android:id="@+id/pendingbook_Container"
                 android:layout_width="match_parent"

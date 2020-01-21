@@ -197,8 +197,6 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
             startActivity(intent);
             finish();
         } else if (v == userProfile) {
-
-
             imagePreview(imageUrl);
         } else if (v == button_chat_attachment) {
             showBottomSheet();
@@ -213,7 +211,6 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
                        chat_message.requestFocus();
                 } else {
                     sendMesaage(new SessionManager(getApplication()).getUserID(), "", sendToID, "text", chanelID, chat_message.getText().toString(), 0);
-
                 }
             } else if (typevalue == 1) {
                 previewImage.setVisibility(View.GONE);
@@ -355,19 +352,19 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.videoCall:
-                       Intent intent = new Intent(MessageScreen.this, VideoCall.class);
-                       intent.putExtra("id",channelID);
-                        intent.putExtra("receiverid",sendToID);
-                       startActivity(intent);
+//                       Intent intent = new Intent(MessageScreen.this, VideoCall.class);
+//                       intent.putExtra("id",channelID);
+//                        intent.putExtra("receiverid",sendToID);
+//                       startActivity(intent);
                        return true;
                     case R.id.clearChat:
                          clearChatHistory(new SessionManager(getApplicationContext()).getUserID(),sendToID);
                         return true;
                     case R.id.voice_Btn:
-                        Intent intents = new Intent(MessageScreen.this, VoiceCallActivity.class);
-                        intents.putExtra("id",channelID);
-                        intents.putExtra("receiverid",sendToID);
-                        startActivity(intents);
+//                        Intent intents = new Intent(MessageScreen.this, VoiceCallActivity.class);
+//                        intents.putExtra("id",channelID);
+//                        intents.putExtra("receiverid",sendToID);
+//                        startActivity(intents);
                          return  true;
                     default:
                         return false;

@@ -39,6 +39,7 @@ public class StartActivityHome extends AppCompatActivity implements View.OnClick
         String s4= "Read The\n BOOK";
 
 
+
         SpannableString ss1=  new SpannableString(s);
         ss1.setSpan(new RelativeSizeSpan(2f), 16,s.length(), 0); // set size
 //        ss1.setSpan(new ForegroundColorSpan(Color.WHITE), 0, 5, 0);// set color

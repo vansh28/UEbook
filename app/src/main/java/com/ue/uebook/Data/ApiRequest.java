@@ -30,7 +30,7 @@ public class ApiRequest {
 //                .addFormDataPart("face_detect_image", face_detect_image.getName(), RequestBody.create(MEDIA_TYPE_PNG, face_detect_image))
                 .addFormDataPart("device_token", FirebaseInstanceId.getInstance().getToken())
                 .build();
-        Request request = new Request.Builder()
+                 Request request = new Request.Builder()
                 .url(url)
                 .post(requestBody)
                 .build();

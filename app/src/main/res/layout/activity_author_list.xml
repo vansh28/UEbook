@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".AuthorProfileActivity.AuthorList">
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/size_50"

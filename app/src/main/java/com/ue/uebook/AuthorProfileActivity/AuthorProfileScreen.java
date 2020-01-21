@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -121,9 +122,7 @@ public class AuthorProfileScreen extends BaseActivity implements View.OnClickLis
             finish();
         } else if (view == follow_To_author) {
 
-//            sendRequest(new SessionManager(getApplicationContext()).getUserID(),userID);
-
-
+            sendRequest(new SessionManager(getApplicationContext()).getUserID(),userID);
 
         } else if (view == emailToAuthor) {
 
@@ -214,6 +213,8 @@ public class AuthorProfileScreen extends BaseActivity implements View.OnClickLis
             public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
                 hideLoadingIndicator();
                 String myResponse = response.body().string();
+                Gson gson = new GsonBuilder().create();
+                Log.d("djhfkj",myResponse);
 
             }
 

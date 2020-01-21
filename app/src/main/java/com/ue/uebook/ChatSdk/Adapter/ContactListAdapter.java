@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.ue.uebook.ChatSdk.Pojo.OponentData;
 import com.ue.uebook.ChatSdk.Pojo.UserData;
+import com.ue.uebook.Data.ApiRequest;
 import com.ue.uebook.GlideUtils;
 import com.ue.uebook.R;
 
@@ -48,7 +49,7 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
     public void onBindViewHolder(@NonNull ContactListAdapter.MyViewHolder holder, final int position) {
           holder.name.setText(oponentListdata.get(position).getName());
           holder.userchat.setText(oponentListdata.get(position).publisher_type);
-          GlideUtils.loadImage(mctx, "http://dnddemo.com/ebooks/api/v1/upload/" + oponentListdata.get(position).getUrl(), holder.profile, R.drawable.user_default, R.drawable.user_default);
+          GlideUtils.loadImage(mctx, ApiRequest.BaseUrl+"upload/" + oponentListdata.get(position).getUrl(), holder.profile, R.drawable.user_default, R.drawable.user_default);
 
           holder.chatContainer.setOnClickListener(new View.OnClickListener() {
             @Override

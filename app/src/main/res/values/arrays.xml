@@ -5,6 +5,7 @@
         <item>Reader</item>
         <item>Writer</item>
         <item>Publish House</item>
+        <item>Reader and Writer</item>
     </string-array>
     <string-array name="gender_array">
         <item>Select gender</item>
@@ -32,7 +33,7 @@
         <item>Dark / serif</item>
         <item>Dark / monospace</item>
     </string-array>
-    <string-array name="theme_list_values" >
+    <string-array name="theme_list_values">
         <item>light-sans</item>
         <item>light-serif</item>
         <item>light-monospace</item>

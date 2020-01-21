@@ -66,15 +66,28 @@ public class PendingRequestScreen extends BaseActivity implements View.OnClickLi
                 Gson gson = new GsonBuilder().create();
                 final FrirndRequestData form = gson.fromJson(myResponse, FrirndRequestData.class);
                 data=form.getData();
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        friendRequestAdapter = new FriendRequestAdapter(PendingRequestScreen.this, data);
-                        pendinglist.setAdapter(friendRequestAdapter);
-                        friendRequestAdapter.notifyDataSetChanged();
-                        friendRequestAdapter.setItemClickListener(PendingRequestScreen.this);
-                    }
-                }); }
+                if (form.getError().equals("false")){
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            pendinglist.setVisibility(View.VISIBLE);
+                            friendRequestAdapter = new FriendRequestAdapter(PendingRequestScreen.this, form.getData());
+                            pendinglist.setAdapter(friendRequestAdapter);
+                            friendRequestAdapter.notifyDataSetChanged();
+                            friendRequestAdapter.setItemClickListener(PendingRequestScreen.this);
+                        }
+                    });
+                }
+                else {
+
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            pendinglist.setVisibility(View.GONE);
+                        }
+                    });
+                }
+ }
         });
     }
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
