@@ -77,8 +77,6 @@ public class BookCategoryFragment extends Fragment implements BookCategoryAdapte
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
         categoryList.setLayoutManager(linearLayoutManager);
-
-
         getBookCategory();
         edittext_search.addTextChangedListener(new TextWatcher() {
             @Override

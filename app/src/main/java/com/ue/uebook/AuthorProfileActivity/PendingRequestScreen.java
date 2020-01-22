@@ -66,7 +66,8 @@ public class PendingRequestScreen extends BaseActivity implements View.OnClickLi
                 Gson gson = new GsonBuilder().create();
                 final FrirndRequestData form = gson.fromJson(myResponse, FrirndRequestData.class);
                 data=form.getData();
-                if (form.getError().equals("false")){
+                if (form.getData()!=null)
+                {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -79,7 +80,6 @@ public class PendingRequestScreen extends BaseActivity implements View.OnClickLi
                     });
                 }
                 else {
-
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -119,7 +119,7 @@ public class PendingRequestScreen extends BaseActivity implements View.OnClickLi
         pendingRequestConfirm(frndId,"1");
     }
     @Override
-    public void ondeleteclick(int position, String book_id) {
-
+    public void ondeleteclick(int position, String frndId) {
+        pendingRequestConfirm(frndId,"2");
     }
 }

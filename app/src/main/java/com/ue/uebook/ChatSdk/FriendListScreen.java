@@ -99,18 +99,21 @@ public class FriendListScreen extends BaseActivity implements View.OnClickListen
                 hideLoadingIndicator();
                 final String myResponse = response.body().string();
                 Gson gson = new GsonBuilder().create();
-                final ContactListResponse form = gson.fromJson(myResponse, ContactListResponse.class);
+              final ContactListResponse form = gson.fromJson(myResponse, ContactListResponse.class);
+
+                if (form.error==false && form.getUserList()!=null){
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        if (form.error==false){
+
                             contactListAdapter = new ContactListAdapter(FriendListScreen.this,form.getUserList(),form.getData());
                             contactList.setAdapter(contactListAdapter);
                             contactListAdapter.setItemClickListener(FriendListScreen.this);
                             contactListAdapter.notifyDataSetChanged();
-                        }
+
                     }
                 });
+            }
             }
         });
     }

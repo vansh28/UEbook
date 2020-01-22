@@ -27,7 +27,9 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.ue.uebook.AuthorProfileActivity.pojo.AuthorData;
+import com.ue.uebook.AuthorProfileActivity.pojo.StatusPojo;
 import com.ue.uebook.BaseActivity;
+import com.ue.uebook.ChatSdk.MessageScreen;
 import com.ue.uebook.Data.ApiRequest;
 import com.ue.uebook.DeatailActivity.Book_Detail_Screen;
 import com.ue.uebook.GlideUtils;
@@ -35,6 +37,8 @@ import com.ue.uebook.R;
 import com.ue.uebook.SessionManager;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AuthorProfileScreen extends BaseActivity implements View.OnClickListener ,Author_BookListAdapter.BookItemClick{
     private ImageView backbtn, author_profile;
@@ -49,6 +53,9 @@ public class AuthorProfileScreen extends BaseActivity implements View.OnClickLis
     private int id;
     private String authorEmail=" ";
     private int textSize;
+    private int followStatusvalue = 0;
+    private List<StatusPojo>detailList;
+    private List<AuthorData>authorDataList;
 
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -58,6 +65,8 @@ public class AuthorProfileScreen extends BaseActivity implements View.OnClickLis
         setContentView(R.layout.activity_author_profile_screen);
         intent = getIntent();
         fontsize();
+        detailList= new ArrayList<>();
+        authorDataList = new ArrayList<>();
         userID=intent.getStringExtra("userID");
         editt_profile_view=findViewById(R.id.editt_profile_view);
         sendRequest_view=findViewById(R.id.sendRequest_view);
@@ -94,6 +103,7 @@ public class AuthorProfileScreen extends BaseActivity implements View.OnClickLis
 
         backbtn.setOnClickListener(this);
         follow_To_author.setOnClickListener(this);
+       // follow_To_author.setText("Message");
         emailToAuthor.setOnClickListener(this);
         LinearLayoutManager linearLayoutManagerPopularList = new LinearLayoutManager(this);
         linearLayoutManagerPopularList.setOrientation(LinearLayoutManager.VERTICAL);
@@ -101,7 +111,7 @@ public class AuthorProfileScreen extends BaseActivity implements View.OnClickLis
        pullTorefreshswipe();
         post_list.setNestedScrollingEnabled(false);
         AuthorInfo(userID);
-
+          checkStatus(new SessionManager(getApplicationContext()).getUserID(),userID);
 
     }
     private void pullTorefreshswipe(){
@@ -110,6 +120,7 @@ public class AuthorProfileScreen extends BaseActivity implements View.OnClickLis
             @Override
             public void onRefresh() {
                 AuthorInfo(userID);
+                checkStatus(new SessionManager(getApplicationContext()).getUserID(),userID);
                 pullTorfrsh.setRefreshing(false);
             }
         });
@@ -121,8 +132,20 @@ public class AuthorProfileScreen extends BaseActivity implements View.OnClickLis
         if (view == backbtn) {
             finish();
         } else if (view == follow_To_author) {
+                if (followStatusvalue==1){
+                    Intent intent = new Intent(this, MessageScreen.class);
+                    intent.putExtra("sendTo",userID);
+                    intent.putExtra("channelID",detailList.get(0).getChannelId());
+                    intent.putExtra("name",authorDataList.get(0).getData().getUser_name());
+                    intent.putExtra("imageUrl",authorDataList.get(0).getData().getUrl());
+                    intent.putExtra("id",1);
+                    startActivity(intent);
+                    finish();
+                }
+                else if (followStatusvalue==0){
+                    sendRequest(new SessionManager(getApplicationContext()).getUserID(),userID);
+                }
 
-            sendRequest(new SessionManager(getApplicationContext()).getUserID(),userID);
 
         } else if (view == emailToAuthor) {
 
@@ -136,12 +159,12 @@ public class AuthorProfileScreen extends BaseActivity implements View.OnClickLis
         }
 
     }
-    private void loadFragment(Fragment fragment) {
+       private void loadFragment(Fragment fragment) {
         // load fragment
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.frame_container, fragment);
         transaction.commit();
-    }
+       }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void AuthorInfo(String userID) {
@@ -159,10 +182,12 @@ public class AuthorProfileScreen extends BaseActivity implements View.OnClickLis
                 String myResponse = response.body().string();
                 Gson gson = new GsonBuilder().create();
                 final AuthorData form = gson.fromJson(myResponse, AuthorData.class);
+
                 runOnUiThread(new Runnable() {
                     @Override
                      public void run() {
                         if (form.getData()!=null){
+                            authorDataList.add(form);
                         author_name.setText(form.getData().getUser_name());
                         author_desc.setText(form.getData().getAbout_me());
                         publisher_type.setText(form.getData().getPublisher_type());
@@ -215,7 +240,12 @@ public class AuthorProfileScreen extends BaseActivity implements View.OnClickLis
                 String myResponse = response.body().string();
                 Gson gson = new GsonBuilder().create();
                 Log.d("djhfkj",myResponse);
-
+                 runOnUiThread(new Runnable() {
+                     @Override
+                     public void run() {
+                         follow_To_author.setText("Pending");
+                     }
+                 });
             }
 
         });
@@ -321,5 +351,53 @@ public class AuthorProfileScreen extends BaseActivity implements View.OnClickLis
                 textSize = 24;
                 break;
         }
+}
 
-}}
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private void checkStatus(String user_id ,String frndID ) {
+        ApiRequest request = new ApiRequest();
+        request.requestforCheckFollowStatus(user_id, frndID ,new okhttp3.Callback() {
+            @Override
+            public void onFailure(okhttp3.Call call, IOException e) {
+                Log.d("error", "error");
+
+            }
+
+            @Override
+            public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
+
+                final String myResponse = response.body().string();
+                Gson gson = new GsonBuilder().create();
+                final StatusPojo form = gson.fromJson(myResponse, StatusPojo.class);
+               if (form.getError()==false && form.getData()!=null){
+                   detailList.add(form);
+                   runOnUiThread(new Runnable() {
+                       @Override
+                       public void run() {
+                          if (form.getData().get(0).getStatus().equalsIgnoreCase("1")){
+                              follow_To_author.setText("Message");
+                              followStatusvalue=1;
+                          }
+                          else  if (form.getData().get(0).getStatus().equalsIgnoreCase("0")){
+                              follow_To_author.setText("Pending");
+                              followStatusvalue=0;
+                          }
+
+                       }
+                   });
+
+
+               }
+            }
+        });
+    }
+
+
+
+
+
+
+
+
+}

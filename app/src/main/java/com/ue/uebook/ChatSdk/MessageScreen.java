@@ -177,15 +177,28 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
             }
         }
         else if (screenID==1){
+
+
+
             String sendTo=intent.getStringExtra("sendTo");
              channelID=intent.getStringExtra("channelID");
             String name=intent.getStringExtra("name");
             oponent_name.setText(name);
             sendToID=sendTo;
-            chanelID=channelID;
-            getChatHistory(new SessionManager(getApplication()).getUserID(), sendToID, channelID, "text");
-            GlideUtils.loadImage(MessageScreen.this, "http://dnddemo.com/ebooks/api/v1/upload/" + imageUrl, userProfile, R.drawable.user_default, R.drawable.user_default);
-            imageProfile=imageUrl;
+
+            if (channelID!=null){
+                chanelID=channelID;
+                getChatHistory(new SessionManager(getApplication()).getUserID(), sendToID, channelID, "text");
+                GlideUtils.loadImage(MessageScreen.this, "http://dnddemo.com/ebooks/api/v1/upload/" + imageUrl, userProfile, R.drawable.user_default, R.drawable.user_default);
+                imageProfile=imageUrl;
+            }
+            else {
+
+                getChatHistory(new SessionManager(getApplication()).getUserID(), sendToID, "", "text");
+                GlideUtils.loadImage(MessageScreen.this, "http://dnddemo.com/ebooks/api/v1/upload/" + imageUrl, userProfile, R.drawable.user_default, R.drawable.user_default);
+                imageProfile=imageUrl;
+            }
+
         }
     }
 

@@ -30,7 +30,7 @@ public class FriendRequestAdapter   extends RecyclerView.Adapter<FriendRequestAd
     }
     public interface ItemClick {
         void onConfirmclick(int position ,String frndId);
-        void ondeleteclick(int position ,String book_id);
+        void ondeleteclick(int position ,String frndId);
     }
 
     public void setItemClickListener(ItemClick clickListener) {
@@ -61,6 +61,14 @@ public class FriendRequestAdapter   extends RecyclerView.Adapter<FriendRequestAd
                  }
              }
          });
+        holder.delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (itemClick != null) {
+                    itemClick.ondeleteclick(position,data.get(position).getId());
+                }
+            }
+        });
 
     }
     public String getFirst10Words(String arg) {

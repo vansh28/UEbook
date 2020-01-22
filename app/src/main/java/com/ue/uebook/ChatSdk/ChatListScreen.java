@@ -119,7 +119,6 @@ public class ChatListScreen extends BaseActivity implements View.OnClickListener
         intent.putExtra("id",1);
         startActivity(intent);
         finish();
-
        }
 
     @Override
