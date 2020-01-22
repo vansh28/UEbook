@@ -125,7 +125,6 @@ public class AuthorProfileScreen extends BaseActivity implements View.OnClickLis
             }
         });
     }
-
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void onClick(View view) {
