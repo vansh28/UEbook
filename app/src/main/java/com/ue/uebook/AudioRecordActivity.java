@@ -94,18 +94,17 @@ public class AudioRecordActivity extends AppCompatActivity implements Recognitio
                  customHandler.postDelayed(updateTimerThread, 0);
                  Toast.makeText(AudioRecordActivity.this, "Recording started",
                          Toast.LENGTH_LONG).show();
-
-
              }
              else {
 
 
-             }
 
-                } else {
+             }
+                }
+                else
+                    {
                     requestPermission();
                 }
-
             }
         });
         buttonStop.setOnClickListener(new View.OnClickListener() {

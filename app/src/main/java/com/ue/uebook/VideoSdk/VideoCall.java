@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -18,19 +17,21 @@ import com.ue.uebook.SessionManager;
 import org.jitsi.meet.sdk.JitsiMeet;
 import org.jitsi.meet.sdk.JitsiMeetActivity;
 import org.jitsi.meet.sdk.JitsiMeetConferenceOptions;
+import org.jitsi.meet.sdk.JitsiMeetView;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Random;
 
-public class VideoCall extends AppCompatActivity {
+public class VideoCall extends JitsiMeetActivity  {
 
     Intent intent;
     private String channeld=" ";
     private String  receiverid="";
     String RandomAudioFileName = "abcdefghjklmno";
     Random random;
+    JitsiMeetView viewf ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +39,7 @@ public class VideoCall extends AppCompatActivity {
         intent = getIntent();
         random = new Random();
         channeld=intent.getStringExtra("id");
+
         receiverid=intent.getStringExtra("receiverid");
            if (channeld.isEmpty()){
                channeld=CreateRandomAudioFileName(5);
@@ -116,5 +118,10 @@ public class VideoCall extends AppCompatActivity {
         }
         return stringBuilder.toString();
     }
+
+
+
+
+
 
 }

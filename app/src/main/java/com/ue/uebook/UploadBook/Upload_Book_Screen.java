@@ -362,9 +362,7 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
                 AudioSavePathInDevice =
                         Environment.getExternalStorageDirectory().getAbsolutePath() + "/" +
                                 CreateRandomAudioFileName(5) + "UebookRecord.3gp";
-
                 MediaRecorderReady();
-
                 try {
                     mediaRecorder.prepare();
                     mediaRecorder.start();
@@ -403,7 +401,6 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
             returnIntent.putExtra("result",AudioSavePathInDevice);
             setResult(Activity.RESULT_OK,returnIntent);
             mBottomSheetDialog.dismiss();
-
         }
     }
     private void stopRecording() {
@@ -851,7 +848,7 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
 
                     for (int i = 0; i < form.getResponse().size(); i++){
                         categoryName.add(form.getResponse().get(i).getCategory_name());
-                    categoryId.add(form.getResponse().get(i).getId());
+                         categoryId.add(form.getResponse().get(i).getId());
                 }}
                 runOnUiThread(new Runnable() {
                     @Override

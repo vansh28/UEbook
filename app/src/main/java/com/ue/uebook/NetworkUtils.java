@@ -25,8 +25,7 @@ public class NetworkUtils {
     }
     public boolean isConnectingToInternet() {
         if (mCtx != null) {
-            ConnectivityManager connectivityManager = (ConnectivityManager) mCtx
-                    .getSystemService(CONNECTIVITY_SERVICE);
+            ConnectivityManager connectivityManager = (ConnectivityManager) mCtx.getSystemService(CONNECTIVITY_SERVICE);
             NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
             return networkInfo != null && networkInfo.isConnected();
         }

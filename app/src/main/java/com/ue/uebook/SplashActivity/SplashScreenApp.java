@@ -7,7 +7,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.DisplayMetrics;
-import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -40,7 +39,6 @@ public class SplashScreenApp extends AppCompatActivity {
         senderimage=intent.getStringExtra("imageUrl");
         screenid=intent.getIntExtra("id",0);
         if (screenid==1){
-
             Intent intent = new Intent(this, MessageScreen.class);
             intent.putExtra("sendTo",senderId);
             intent.putExtra("channelID",channelID);

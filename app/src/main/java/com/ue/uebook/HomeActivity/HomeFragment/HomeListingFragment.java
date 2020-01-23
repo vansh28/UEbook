@@ -45,7 +45,6 @@ public class HomeListingFragment extends Fragment implements OnCategorydata {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -53,9 +52,9 @@ public class HomeListingFragment extends Fragment implements OnCategorydata {
     private OnFragmentInteractionListener mListener;
     private List<HomeListing> recommendedList_book, newBookList, popularBook_List;
     private RecyclerView homelistTv;
-
     public HomeListingFragment() {
         // Required empty public constructor
+
     }
 
     /**
@@ -75,7 +74,6 @@ public class HomeListingFragment extends Fragment implements OnCategorydata {
         fragment.setArguments(args);
         return fragment;
     }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,10 +82,7 @@ public class HomeListingFragment extends Fragment implements OnCategorydata {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-
-
     }
-
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -100,14 +95,12 @@ public class HomeListingFragment extends Fragment implements OnCategorydata {
         getPopularList();
         return view;
     }
-
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
         }
     }
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);

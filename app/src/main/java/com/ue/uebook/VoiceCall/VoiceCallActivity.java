@@ -70,9 +70,6 @@ public class VoiceCallActivity extends AppCompatActivity {
             JitsiMeetActivity.launch(this, options);
             finish();
         }
-
-
-
     }
 
     public void onButoonClick(View v) {

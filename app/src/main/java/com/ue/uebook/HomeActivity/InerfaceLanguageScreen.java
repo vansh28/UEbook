@@ -33,7 +33,6 @@ public class InerfaceLanguageScreen extends BaseActivity implements Language_ada
     private FontAdapter fontAdapter;
     private int id= 0;
     private int fid= 0;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

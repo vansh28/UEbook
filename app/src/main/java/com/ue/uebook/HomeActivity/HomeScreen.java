@@ -182,20 +182,11 @@ public class HomeScreen extends BaseActivity implements Home_Fragment.OnFragment
             PermissionRequest(34);
 
         }
-
-
         else{
 
         }
-
        // write your logic here
-
-
-
-
             getCurrentLocation();
-
-
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

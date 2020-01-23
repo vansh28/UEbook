@@ -56,7 +56,7 @@ public class DownloadService   extends IntentService {
 
             FileOutputStream output = new FileOutputStream(inerDire);
 
-            byte data[] = new byte[1024];
+            byte data [] = new byte[1024];
             long total = 0;
             int count;
             while ((count = input.read(data)) != -1) {
@@ -74,9 +74,9 @@ public class DownloadService   extends IntentService {
             output.close();
             input.close();
 
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             e.printStackTrace();
-
         }
 
         Bundle resultData = new Bundle();

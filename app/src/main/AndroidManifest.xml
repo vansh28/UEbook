@@ -8,7 +8,6 @@
     <uses-feature
         android:glEsVersion="0x00020000"
         android:required="true" />
-
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -27,7 +26,6 @@
     <uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION" />
     <uses-permission android:name="android.permission.VIBRATE" />
-
     <application
         android:allowBackup="true"
         android:exported="false"
@@ -138,7 +136,6 @@
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -157,7 +154,6 @@
         <activity
             android:name=".NotepadScreen"
             android:screenOrientation="portrait" />
-
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             tools:replace="android:value"
@@ -171,7 +167,6 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths" />
         </provider>
-
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="4b96a3f33893a42103eae91d2166d0c517b833d3" />
@@ -209,7 +204,5 @@
                 <data android:scheme="4eohrrjgc6n4s5v" />
             </intent-filter>
         </activity>
-
     </application>
-
 </manifest>

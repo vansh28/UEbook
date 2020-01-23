@@ -32,13 +32,12 @@ public class StartActivityHome extends AppCompatActivity implements View.OnClick
         signUp_btn_new=findViewById(R.id.signUp_btn_new);
         signUp_btn_new.setOnClickListener(this);
 
+
         String s= "Write your Book \n With UEbook";
         String s1= "Write with\nVOICE";
         String s2= "Write with\nTYPING";
         String s3= "Start\nCHATING";
         String s4= "Read The\n BOOK";
-
-
 
         SpannableString ss1=  new SpannableString(s);
         ss1.setSpan(new RelativeSizeSpan(2f), 16,s.length(), 0); // set size

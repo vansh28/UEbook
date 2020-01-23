@@ -38,7 +38,6 @@ public class VoiceCallReceive extends AppCompatActivity implements View.OnClickL
         videoCall_receive.setOnClickListener(this);
         intent = getIntent();
         channeld=intent.getStringExtra("id");
-
         URL serverURL;
         try {
 

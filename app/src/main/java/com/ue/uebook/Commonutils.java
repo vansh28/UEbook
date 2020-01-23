@@ -13,46 +13,6 @@ import java.util.Locale;
 import java.util.Objects;
 
 public  class Commonutils {public static final String TICKET_DETAILS = "ticketDetails";
-    public static final String SCREEN_TITLE = "screenTitle";
-
-    public static final String SELECTED_CIRCLE = "selectedCircle";
-    public static final String SELECTED_SITE = "selectedSite";
-    public static final String SELECTED_SSA = "selectedSSA";
-    public static final String SELECTED_CIRCLE_ID = "selectedCircleId";
-    public static final String SELECTED_SITE_ID = "selectedSiteId";
-    public static final String SELECTED_SSA_ID = "selectedSSAId";
-    public static final String USER_ROLE = "userRole";
-    public static final String ADMIN = "admin";
-    public static final String ENGINEER = "engineer";
-
-    public static final String PENDING = "Pending";
-    public static final String APPROVED = "Approved";
-    public static final String CLOSED = "closed";
-    public static final String ISSUE_OTHER = "Other";
-    public static final String ISSUE_OTHER_ID = "6";
-    public static final String TICKET_STATUS_RAISED = "0";
-    public static final String TICKET_STATUS_ASSIGNED = "1";
-    public static final String TICKET_STATUS_SERVING = "2";
-    public static final String TICKET_STATUS_REQUEST_TO_CLOSE = "3";
-    public static final String TICKET_STATUS_CLOSED = "4";
-
-    public static final String HYPHEN = "-";
-    public static final String INDIA_COUNTRY_CODE = "+91";
-
-    public static final String RESPONSE_FAILED = "failed";
-    public static final String RESPONSE_SUCCESS = "success";
-    public static final String RESPONSE = "response";
-    public static final long FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS = 5000;
-
-    // location updates interval - 10sec
-
-    public static final long UPDATE_INTERVAL_IN_MILLISECONDS = 10000;
-    public static final int REQUEST_PERMISSIONS_REQUEST_CODE = 34;
-    // fastest updates interval - 5 sec
-    // location updates will be received if another app is requesting the locations
-    // than your app can handle
-    public static final int REQUEST_GPS_CHECK_SETTINGS = 2;
-
     private static boolean isValidMobile(String phone) {
         return Patterns.PHONE.matcher(phone).matches();
     }
