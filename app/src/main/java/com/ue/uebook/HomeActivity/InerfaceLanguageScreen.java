@@ -93,7 +93,6 @@ public class InerfaceLanguageScreen extends BaseActivity implements Language_ada
                     public void onClick(DialogInterface dialog, int id) {
                         new SessionManager(getApplicationContext()).setCurrentLanguage(value);
                         setLocale(value);
-
                         dialog.cancel();
                     }
                 })

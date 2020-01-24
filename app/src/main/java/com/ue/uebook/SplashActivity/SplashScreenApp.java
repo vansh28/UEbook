@@ -28,7 +28,8 @@ public class SplashScreenApp extends AppCompatActivity {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
 
@@ -38,7 +39,8 @@ public class SplashScreenApp extends AppCompatActivity {
         senderName=intent.getStringExtra("name");
         senderimage=intent.getStringExtra("imageUrl");
         screenid=intent.getIntExtra("id",0);
-        if (screenid==1){
+        if (screenid==1)
+        {
             Intent intent = new Intent(this, MessageScreen.class);
             intent.putExtra("sendTo",senderId);
             intent.putExtra("channelID",channelID);
@@ -51,8 +53,6 @@ public class SplashScreenApp extends AppCompatActivity {
         else {
             showSplashimage();
         }
-
-
     }
     private void showSplashimage() {
         myHandler = new Handler();

@@ -92,12 +92,12 @@ public class HomeScreen extends BaseActivity implements Home_Fragment.OnFragment
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         loadFragment(new HomeNewFragment());
+
     }
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
         @SuppressLint("RestrictedApi")
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
             switch (item.getItemId()) {
                 case R.id.home_bottom:
                     fragment = new HomeNewFragment();
@@ -108,7 +108,6 @@ public class HomeScreen extends BaseActivity implements Home_Fragment.OnFragment
                     addnotes_fab.setVisibility(View.GONE);
                     fragment = new BookCategoryFragment();
                     loadFragment(fragment);
-
                     return true;
                 case R.id.bookmark_bottom:
                     addnotes_fab.setVisibility(View.GONE);
@@ -188,6 +187,27 @@ public class HomeScreen extends BaseActivity implements Home_Fragment.OnFragment
        // write your logic here
             getCurrentLocation();
     }
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+
+        new java.util.Timer().schedule(
+                new java.util.TimerTask() {
+                    @Override
+                    public void run() {
+                        if (getInstance(HomeScreen.this).isConnectingToInternet()) {
+
+
+                        }
+                        else {
+                            Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content),"No Internet Connection",Snackbar.LENGTH_LONG);
+                            snackbar.show();
+                        }                    }
+                },
+                2000);
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

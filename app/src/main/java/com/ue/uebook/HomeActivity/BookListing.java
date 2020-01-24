@@ -127,7 +127,6 @@ public class BookListing extends BaseActivity implements HomeListingFragment.OnF
         });
     }
 
-
     private void changeTabsFont(TabLayout tabLayout) {
         ViewGroup vg = (ViewGroup) tabLayout.getChildAt(0);
         int tabsCount = vg.getChildCount();
@@ -145,9 +144,6 @@ public class BookListing extends BaseActivity implements HomeListingFragment.OnF
             }
         }
     }
-
-
-
     private void addTabs(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         for (int i=0;i<categoryName.size();i++){
@@ -210,7 +206,6 @@ public class BookListing extends BaseActivity implements HomeListingFragment.OnF
     }
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void getRecommenedBookList(String categoryId) {
-
         ApiRequest request = new ApiRequest();
         if (recommendedList_book.size() > 0)
             recommendedList_book.clear();

@@ -27,7 +27,8 @@ public class SessionManager {
     private SharedPreferences.Editor editor;
     @SuppressLint("CommitPrefEdits")
     public SessionManager(Context mCtx) {
-        if (sharedPreference == null) {
+        if (sharedPreference == null)
+        {
             sharedPreference = mCtx.getSharedPreferences(SHARED_PREFERENCE_NAME, MODE_PRIVATE);
             editor = sharedPreference.edit();
         }
@@ -54,7 +55,8 @@ public class SessionManager {
         return sharedPreference.getString(Publish, "");
     }
 
-    public void storeUserLoginStatus(final int type) {
+    public void storeUserLoginStatus(final int type)
+    {
         editor.putInt(LoginStatus, type);
         editor.commit();
     }

@@ -53,5 +53,4 @@
             android:layout_alignParentBottom="true"
             android:layout_height="@dimen/size_120"/>
     </RelativeLayout>
-
 </RelativeLayout>

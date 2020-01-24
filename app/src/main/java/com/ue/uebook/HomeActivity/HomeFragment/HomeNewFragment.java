@@ -116,14 +116,12 @@ public class HomeNewFragment extends Fragment implements View.OnClickListener ,B
         getPopularList();
         return  view;
     }
-
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
         }
     }
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -166,7 +164,6 @@ public class HomeNewFragment extends Fragment implements View.OnClickListener ,B
 
     }
     private void loadFragment(Fragment fragment) {
-
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.frame_container, fragment);
         transaction.addToBackStack(null);

@@ -32,7 +32,6 @@ public class StartActivityHome extends AppCompatActivity implements View.OnClick
         signUp_btn_new=findViewById(R.id.signUp_btn_new);
         signUp_btn_new.setOnClickListener(this);
 
-
         String s= "Write your Book \n With UEbook";
         String s1= "Write with\nVOICE";
         String s2= "Write with\nTYPING";
@@ -41,7 +40,7 @@ public class StartActivityHome extends AppCompatActivity implements View.OnClick
 
         SpannableString ss1=  new SpannableString(s);
         ss1.setSpan(new RelativeSizeSpan(2f), 16,s.length(), 0); // set size
-//        ss1.setSpan(new ForegroundColorSpan(Color.WHITE), 0, 5, 0);// set color
+//      ss1.setSpan(new ForegroundColorSpan(Color.WHITE), 0, 5, 0);// set color
         ss1.setSpan(new StyleSpan( android.graphics.Typeface.BOLD),16,s.length(),0);
         title.setText(ss1);
 

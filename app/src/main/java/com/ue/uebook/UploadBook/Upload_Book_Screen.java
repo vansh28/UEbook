@@ -1032,7 +1032,6 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
         if (isvalidate()) {
             for (int i = 0; i < allEds.size(); i++) {
                 if (!allEds.get(i).getText().toString().isEmpty()) {
-
                     questionList.add(allEds.get(i).getText().toString());
                 }
             }

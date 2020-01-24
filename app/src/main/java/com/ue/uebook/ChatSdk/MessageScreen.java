@@ -18,6 +18,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.ResultReceiver;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -42,6 +43,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.ue.uebook.BaseActivity;
@@ -76,6 +78,8 @@ import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
+
+import static com.ue.uebook.NetworkUtils.getInstance;
 
 public class MessageScreen extends BaseActivity implements View.OnClickListener, ImageUtils.ImageAttachmentListener, MessageAdapter.ChatImageFileClick {
     private static final int REQUEST_PICK_VIDEO = 12;
@@ -699,6 +703,20 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
         };
         //registering our receiver
         this.registerReceiver(mReceiver, intentFilter);
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                //Do something here
+                if (getInstance(MessageScreen.this).isConnectingToInternet()) {
+
+
+                }
+                else {
+                    Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content),"No Internet Connection",Snackbar.LENGTH_LONG);
+                    snackbar.show();
+                }
+            }
+        }, 3000);
     }
     @Override
     protected void onPause() {
@@ -889,4 +907,5 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
             }
         });
     }
+
 }

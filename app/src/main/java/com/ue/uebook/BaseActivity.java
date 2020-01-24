@@ -149,10 +149,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder();
         builder.addLocationRequest(mLocationRequest);
         mLocationSettingsRequest = builder.build();
-
         startLocationUpdates();
-
-
     }
 
     @SuppressLint("MissingPermission")

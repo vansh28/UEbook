@@ -132,7 +132,7 @@ public class LoginScreen extends BaseActivity implements View.OnClickListener, S
                 hideLoadingIndicator();
             } else
                 hideLoadingIndicator();
-            loadUserProfile(currentAccessToken);
+                loadUserProfile(currentAccessToken);
         }
     };
 

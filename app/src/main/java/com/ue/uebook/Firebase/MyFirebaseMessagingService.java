@@ -58,8 +58,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             Log.d("RedListed", "Message data payload: " + remoteMessage.getData());
             Intent i = new Intent("android.intent.action.MAIN").putExtra("some_msg", "I will be sent!");
             this.sendBroadcast(i);
-
-
             try {
                 JSONObject jsonObject = new JSONObject(remoteMessage.getData());
                     name=jsonObject.getString("UserName");

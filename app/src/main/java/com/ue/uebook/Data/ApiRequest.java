@@ -59,8 +59,6 @@ public class ApiRequest {
                 .build();
         client.newCall(request).enqueue(callback);
     }
-
-
     public void requestforgetUserInfo(String user_id, Callback callback) {
         String url = null;
         url = BaseUrl + "getUserInfo";
@@ -74,7 +72,6 @@ public class ApiRequest {
                 .build();
         client.newCall(request).enqueue(callback);
     }
-
     public void requestforforgotPassword(final String email, Callback callback) {
         String url = null;
         url = BaseUrl + "forgetPassword";
@@ -101,13 +98,11 @@ public class ApiRequest {
                 .addFormDataPart("country", country)
                 .addFormDataPart("about_me", about_me)
                 .build();
-
         Request request = new Request.Builder()
                 .url(url)
                 .post(requestBody)
                 .build();
         client.newCall(request).enqueue(callback);
-
     }
 
     public void requestforUpdateProfilePic(final String user_id, File profile_image, Callback callback) {
@@ -125,9 +120,7 @@ public class ApiRequest {
                 .post(requestBody)
                 .build();
         client.newCall(request).enqueue(callback);
-
     }
-
     public void requestforUploadBook(final String user_id, File video, String category_id, String book_title, Callback callback) {
         String url = null;
         url = BaseUrl + "addNewBook";
@@ -146,7 +139,6 @@ public class ApiRequest {
                 .build();
         client.newCall(request).enqueue(callback);
     }
-
     public void requestforGetbookCategory(Callback callback) {
         String url = null;
         url = BaseUrl + "getAllCategory";
@@ -159,7 +151,6 @@ public class ApiRequest {
                 .build();
         client.newCall(request).enqueue(callback);
     }
-
     public void requestforgetBookList(final String category_id, Callback callback) {
         String url = null;
         url = BaseUrl + "getBooksByTypes";
@@ -174,9 +165,7 @@ public class ApiRequest {
                 .post(requestBody)
                 .build();
         client.newCall(request).enqueue(callback);
-
     }
-
     public void requestforgetBookDetail(final String book_id, final String user_id, Callback callback) {
         String url = null;
         url = BaseUrl + "getBookDetail";
@@ -191,7 +180,6 @@ public class ApiRequest {
                 .build();
         client.newCall(request).enqueue(callback);
     }
-
     public void requestforaddBookmark(final String book_id, final String bookmark_status, final String userId, Callback callback) {
         String url = null;
         url = BaseUrl + "bookMark";
@@ -206,7 +194,6 @@ public class ApiRequest {
                 .build();
         client.newCall(request).enqueue(callback);
     }
-
     public void requestforgetBookmarkList(final String userId, Callback callback) {
         String url = null;
         url = BaseUrl + "getAllbookMarkByUser";
@@ -220,7 +207,6 @@ public class ApiRequest {
                 .build();
         client.newCall(request).enqueue(callback);
     }
-
     public void requestforAddNotes(final String userId, final String description, final String title, Callback callback) {
         String url = null;
         url = BaseUrl + "addNote";

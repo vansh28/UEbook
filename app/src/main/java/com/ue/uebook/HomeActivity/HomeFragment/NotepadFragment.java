@@ -230,8 +230,6 @@ public class NotepadFragment extends Fragment  implements  NotepadAdapter.Notepa
                 textSize = 24;
                 break;
         }
-
-
     }
 
 }

@@ -137,8 +137,7 @@ public class AudioRecordActivity extends AppCompatActivity implements Recognitio
         StringBuilder stringBuilder = new StringBuilder(string);
         int i = 0;
         while (i < string) {
-            stringBuilder.append(RandomAudioFileName.
-                    charAt(random.nextInt(RandomAudioFileName.length())));
+            stringBuilder.append(RandomAudioFileName.charAt(random.nextInt(RandomAudioFileName.length())));
             i++;
         }
         return stringBuilder.toString();
@@ -173,7 +172,10 @@ public class AudioRecordActivity extends AppCompatActivity implements Recognitio
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     speech.startListening(recognizerIntent);
 
-                } else {
+                }
+                else
+                    {
+
 
                 }
         }
@@ -202,41 +204,33 @@ public class AudioRecordActivity extends AppCompatActivity implements Recognitio
             customHandler.postDelayed(this, 0);
         }
     };
-
     @Override
     public void onReadyForSpeech(Bundle params) {
 
     }
-
     @Override
     public void onBeginningOfSpeech() {
 
     }
-
     @Override
     public void onRmsChanged(float rmsdB) {
 
     }
-
     @Override
     public void onBufferReceived(byte[] buffer) {
 
     }
-
     @Override
     public void onEndOfSpeech() {
 
     }
-
     @Override
     public void onError(int error) {
         String errorText = getErrorText(error);
         Toast.makeText(this, errorText, Toast.LENGTH_SHORT).show();
     }
-
     @Override
     public void onResults(Bundle results) {
-
         ArrayList<String> matches = results
                 .getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
         if (matches.size() > 0) {
@@ -244,9 +238,7 @@ public class AudioRecordActivity extends AppCompatActivity implements Recognitio
             Toast.makeText(getApplicationContext(), matches.get(0), Toast.LENGTH_SHORT);
 
         }
-
     }
-
     @Override
     public void onPartialResults(Bundle partialResults) {
 

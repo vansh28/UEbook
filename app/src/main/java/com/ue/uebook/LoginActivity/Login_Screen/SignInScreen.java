@@ -365,7 +365,7 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener, 
     public void requestforLogin(final String user_name, final String password) {
         String url = null;
         showLoadingIndicator();
-        url = "http://dnddemo.com/ebooks/api/v1/userLogin";
+        url = ApiRequest.BaseUrl+"userLogin";
         OkHttpClient client = new OkHttpClient();
         RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
                 .addFormDataPart("user_name", user_name)
