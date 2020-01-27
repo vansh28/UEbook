@@ -12,12 +12,21 @@
         <de.hdodenhof.circleimageview.CircleImageView
             xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/image_user"
-            android:layout_width="@dimen/size_70"
-            android:layout_height="@dimen/size_70"
+            android:layout_width="@dimen/size_50"
+            android:layout_height="@dimen/size_50"
             android:src="@drawable/user_default"
             android:layout_centerVertical="true"
             app:civ_border_width="2dp"
             app:civ_border_color="#ffffff"/>
+        <ImageView
+            android:id="@+id/checkboxSelcted"
+            android:layout_width="@dimen/size_25"
+            android:layout_height="@dimen/size_25"
+            android:layout_marginLeft="@dimen/size_30"
+            android:visibility="gone"
+            android:layout_marginTop="@dimen/size_30"
+            android:src="@drawable/ic_error"/>
+
         <ImageView
             android:id="@+id/activeUnactiveTv"
             android:layout_width="@dimen/size_10"

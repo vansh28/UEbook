@@ -381,7 +381,7 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
 //                        Intent intents = new Intent(MessageScreen.this, VoiceCallActivity.class);
 //                        intents.putExtra("id",channelID);
 //                        intents.putExtra("receiverid",sendToID);
-//                        startActivity(intents);
+//                        startActivity(intents)
                          return  true;
                     default:
                         return false;
@@ -420,12 +420,10 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void getChatHistory(String user_id, String sendTO, String channelId, String type) {
         ApiRequest request = new ApiRequest();
-
         request.requestforgetChathistory(user_id, sendTO, channelId, type, new okhttp3.Callback() {
             @Override
             public void onFailure(okhttp3.Call call, IOException e) {
                 Log.d("error", "error");
-
             }
             @Override
             public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
@@ -447,10 +445,8 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
             }
         });
     }
-
     private void showBottomSheet() {
         final View bottomSheetLayout = getLayoutInflater().inflate(R.layout.bottomlayoutchat, null);
-
         mBottomSheetDialog = new BottomSheetDialog(this);
         mBottomSheetDialog.setContentView(bottomSheetLayout);
         gallerybtn = mBottomSheetDialog.findViewById(R.id.galleryBtn);
@@ -463,15 +459,12 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
         videobtn.setOnClickListener(this);
         mBottomSheetDialog.show();
     }
-
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         imageUtils.onActivityResult(requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
-
         if (resultCode == RESULT_OK) {
-
             if (requestCode == REQUEST_PICK_VIDEO) {
                 Uri selectedVideo = data.getData();
                 try {
@@ -485,7 +478,6 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
                 }
             } else if (requestCode == 111) {
                 Uri selectedfile = data.getData();
-
                 try {
                     docfile = FileUtil.from(MessageScreen.this, selectedfile);
                     sendMesaage(new SessionManager(getApplication()).getUserID(), "", sendToID, "docfile", chanelID, chat_message.getText().toString(), 4);
@@ -493,7 +485,6 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
                     e.printStackTrace();
                     Toast.makeText(this, "Please Select Again", Toast.LENGTH_SHORT).show();
                 }
-
             } else if (requestCode == 132) {
 
                 Uri selectedaudio = data.getData();

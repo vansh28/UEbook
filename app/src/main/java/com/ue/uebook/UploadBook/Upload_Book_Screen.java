@@ -129,13 +129,13 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
     private ImageView profile_image_user_upload, verifyImageview;
     private VideoView videoview;
     private int mCurrentPosition = 0;
-
     private List<String>categoryId;
     Handler handler = new Handler();
     int status = 0;
     private NotificationCompat.Builder mBuilder;
     int id = 1;
     public int numberOfLines = 1;
+
     private List<String> questionList;
     List<EditText> allEds;
     EditText isbnTV;
@@ -1006,8 +1006,6 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
     public void onEvent(int eventType, Bundle params) {
 
     }
-
-
     private void fontsize() {
         switch (new SessionManager(getApplicationContext()).getfontSize()) {
             case "smallest":
@@ -1027,7 +1025,6 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
                 break;
         }
     }
-
     private void uploadBook(String isbnNumber, String status ,String book_id) {
         if (isvalidate()) {
             for (int i = 0; i < allEds.size(); i++) {
@@ -1045,23 +1042,15 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
             } else if (audioUrl != null && videofile != null && docfile != null) {
                 requestforUploadBook(uploadurl,1, new SessionManager(getApplicationContext()).getUserID(), String.valueOf(categorytype), bookTitle.getText().toString(), coverimage, bookDesc.getText().toString(), docfile, authorName.getText().toString(), json, isbnNumber, status,book_id);
             }
-
             else if (audioUrl == null && videofile == null && docfile == null && coverimage==null) {
-
                 requestforUploadBook(uploadurl,8, new SessionManager(getApplicationContext()).getUserID(), String.valueOf(categorytype), bookTitle.getText().toString(), coverimage, bookDesc.getText().toString(), docfile, authorName.getText().toString(), json, isbnNumber, status,book_id);
-
-            }else if (audioUrl == null && videofile == null && docfile == null) {
-
+            }
+            else if (audioUrl == null && videofile == null && docfile == null) {
                 requestforUploadBook(uploadurl,4, new SessionManager(getApplicationContext()).getUserID(), String.valueOf(categorytype), bookTitle.getText().toString(), coverimage, bookDesc.getText().toString(), docfile, authorName.getText().toString(), json, isbnNumber, status,book_id);
-
             } else if (audioUrl == null && videofile == null && docfile != null) {
-
                 requestforUploadBook(uploadurl,5, new SessionManager(getApplicationContext()).getUserID(), String.valueOf(categorytype), bookTitle.getText().toString(), coverimage, bookDesc.getText().toString(), docfile, authorName.getText().toString(), json, isbnNumber, status,book_id);
-
             } else if (audioUrl != null && videofile == null && docfile != null) {
-
                 requestforUploadBook(uploadurl,6, new SessionManager(getApplicationContext()).getUserID(), String.valueOf(categorytype), bookTitle.getText().toString(), coverimage, bookDesc.getText().toString(), docfile, authorName.getText().toString(), json, isbnNumber, status,book_id);
-
             } else if (audioUrl == null && videofile != null && docfile != null) {
                 requestforUploadBook(uploadurl,7, new SessionManager(getApplicationContext()).getUserID(), String.valueOf(categorytype), bookTitle.getText().toString(), coverimage, bookDesc.getText().toString(), docfile, authorName.getText().toString(), json, isbnNumber, status,book_id);
             }

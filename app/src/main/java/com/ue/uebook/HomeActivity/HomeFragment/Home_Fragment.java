@@ -343,6 +343,7 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
                                     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                                     @Override
                                     public void run() {
+
                                     }
                                 });
                             }
@@ -455,7 +456,6 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
                 hideLoadingIndicator();
 
             }
-
             @Override
             public void onResponse(Call call, Response response) throws IOException {
 
@@ -611,7 +611,6 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
                 new com.android.volley.Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-
                         Log.e("bookresponse", response);
                         try {
                             JSONObject jsonObject = new JSONObject(String.valueOf(response));

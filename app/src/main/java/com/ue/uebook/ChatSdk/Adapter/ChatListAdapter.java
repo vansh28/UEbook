@@ -99,14 +99,10 @@ public class ChatListAdapter  extends RecyclerView.Adapter<ChatListAdapter.MyVie
         });
         if (dataList.get(position).getType().equalsIgnoreCase("text"))
         {
-            if (dataList.get(position).getRead_msg().equalsIgnoreCase("1")){
-                holder.userchat.setText(getFirst4Words(dataList.get(position).getMessage()+".."));
-            }
-            else {
-                holder.userchat.setTextColor(Color.parseColor("#000000"));
-                holder.userchat.setTypeface( holder.userchat.getTypeface(), Typeface.BOLD);
-                holder.userchat.setText(getFirst4Words(dataList.get(position).getMessage()+".."));
-            }
+
+            holder.userchat.setText(getFirst4Words(dataList.get(position).getMessage()+".."));
+
+
         }
         else if (dataList.get(position).getType().equalsIgnoreCase("image")){
             holder.userchat.setText("Image");
@@ -123,14 +119,21 @@ public class ChatListAdapter  extends RecyclerView.Adapter<ChatListAdapter.MyVie
         String str= dataList.get(position).getCreated();
         String[] arrOfStr = str.split(" ");
         holder.timeTv.setText(arrOfStr[1]);
-        if (Integer.valueOf(dataList.get(position).getMess_count().getTotalMessagecount())>0){
-            holder.unreadMszCounterTv.setVisibility(View.VISIBLE);
-            holder.unreadMszCounterTv.setText(dataList.get(position).getMess_count().getTotalMessagecount());
+        if (dataList.get(position).getSender().equalsIgnoreCase(userID)) {
+
         }
         else {
-            holder.unreadMszCounterTv.setVisibility(View.GONE);
+            if (Integer.valueOf(dataList.get(position).getMess_count().getTotalMessagecount()) > 0) {
+                holder.unreadMszCounterTv.setVisibility(View.VISIBLE);
+                holder.userchat.setTextColor(Color.parseColor("#000000"));
+                holder.userchat.setTypeface( holder.userchat.getTypeface(), Typeface.BOLD);
+                holder.unreadMszCounterTv.setText(dataList.get(position).getMess_count().getTotalMessagecount());
+            } else {
+                holder.unreadMszCounterTv.setVisibility(View.GONE);
+            }
         }
         }
+
 
     @Override
     public int getItemCount() {

@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ChatSdk.FriendListScreen">
+    tools:context=".ChatSdk.GroupFriendList">
     <RelativeLayout
         android:layout_width="match_parent"
         android:background="@color/colorAccent"
         android:id="@+id/header"
         android:layout_height="@dimen/size_50">
         <ImageButton
-            android:id="@+id/backbtnContact"
+            android:id="@+id/backbtngroup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/backbtn"
@@ -22,38 +22,42 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Contact List"
+            android:text="Create Group"
             android:textColor="@color/white"
             android:textSize="@dimen/size_18"
             android:layout_centerInParent="true"/>
     </RelativeLayout>
 
-    <LinearLayout
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/groupList"
+        android:layout_below="@+id/header"
         android:layout_width="match_parent"
-        android:layout_margin="@dimen/size_10"
-        android:id="@+id/creategroupBtn"
-        android:layout_height="wrap_content">
+        android:visibility="gone"
+        android:layout_height="@dimen/size_100"/>
 
-        <ImageView
-            android:layout_width="@dimen/size_50"
-            android:layout_height="50dp"
-            android:src="@drawable/user_default"/>
-        <com.ue.uebook.Customview.CustomTextViewBold
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:textSize="@dimen/size_16"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="@dimen/size_20"
-            android:text="Create new group"/>
-
-    </LinearLayout>
-
+    <ListView
+        android:id="@+id/userlist"
+        android:layout_width="match_parent"
+        android:layout_below="@+id/groupList"
+        android:layout_height="match_parent">
+    </ListView>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/contactList"
         android:layout_margin="@dimen/size_10"
-        android:layout_below="@+id/header"
+        android:layout_below="@+id/groupList"
         android:layout_width="match_parent"
+        android:visibility="gone"
         android:layout_height="match_parent"/>
-</LinearLayout>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:id="@+id/createGroup"
+        android:src="@drawable/checknote"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:visibility="gone"
+        android:layout_marginBottom="@dimen/size_30"
+        android:layout_marginRight="@dimen/size_20"
+        android:layout_height="wrap_content"/>
+
+</RelativeLayout>

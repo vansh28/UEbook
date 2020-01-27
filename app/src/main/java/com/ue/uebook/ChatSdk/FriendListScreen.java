@@ -10,6 +10,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -32,10 +33,13 @@ public class FriendListScreen extends BaseActivity implements View.OnClickListen
     private ImageButton back_btn;
     private ContactListAdapter contactListAdapter;
    private  RecyclerView contactList;
+   private LinearLayout creategroupBtn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friend_list_screen2);
+        creategroupBtn = findViewById(R.id.creategroupBtn);
+        creategroupBtn.setOnClickListener(this);
         back_btn =findViewById(R.id.backbtnContact);
         contactList=findViewById(R.id.contactList);
         back_btn.setOnClickListener(this);
@@ -53,9 +57,14 @@ public class FriendListScreen extends BaseActivity implements View.OnClickListen
             startActivity(intent);
             finish();
         }
+        else if (v==creategroupBtn){
+            Intent intent = new Intent(this,GroupFriendList.class);
+            startActivity(intent);
+        }
     }
     @Override
-    public void onContactListItemClick(OponentData oponentData , UserData userData) {
+    public void onContactListItemClick(OponentData oponentData , UserData userData)
+    {
         Intent intent = new Intent(this,MessageScreen.class);
         intent.putExtra("oponentdata",oponentData);
         intent.putExtra("userData",userData);
