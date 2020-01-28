@@ -21,28 +21,21 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class PendingListAdapter extends RecyclerView.Adapter<PendingListAdapter.MyViewHolder> {
-
-
     private BookItemClick bookItemClick;
     private AppCompatActivity context;
     private List<BookResponse> bookList;
     private int textsize;
-
-
     public PendingListAdapter(AppCompatActivity context, List<BookResponse> data, int textSize) {
         this.bookList = data;
         this.context = context;
         this.textsize = textSize;
     }
-
     public interface BookItemClick {
         void onItemClick(int position, String bookid);
     }
-
     public void setItemClickListener(BookItemClick clickListener) {
         bookItemClick = clickListener;
     }
-
     @NonNull
     @Override
     public PendingListAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -67,7 +60,6 @@ public class PendingListAdapter extends RecyclerView.Adapter<PendingListAdapter.
         holder.bookname.setText(bookList.get(position).getBook_title());
         holder.authorName.setText(bookList.get(position).getAuthor_name());
         GlideUtils.loadImage(context, "http://" + bookList.get(position).getThubm_image(), holder.bookimage, R.drawable.noimage, R.drawable.noimage);
-
         if (bookList.get(position).getBook_description().length() > 11) {
             holder.bookDesc.setText(getFirst10Words(bookList.get(position).getBook_description()) + "...");
         } else {

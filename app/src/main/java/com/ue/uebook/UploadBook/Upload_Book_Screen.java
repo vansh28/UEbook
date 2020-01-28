@@ -725,7 +725,6 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
         super.onActivityResult(requestCode, resultCode, data);
 
         if (resultCode == RESULT_OK) {
-
             if (requestCode == REQUEST_PICK_VIDEO) {
                 Uri selectedVideo = data.getData();
                 try {
@@ -763,10 +762,8 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
             if(requestCode == RQS_RECORDING){
 
                 if(resultCode == Activity.RESULT_OK){
-
                     // Great! User has recorded and saved the audio file
                     String result=data.getStringExtra("result");
-
                     Toast.makeText(Upload_Book_Screen.this,
                             "Saved: " + result,
                             Toast.LENGTH_LONG).show();
@@ -787,8 +784,7 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
                 }
         }
         if (requestCode == VOICE_RECOGNITION_REQUEST_CODE && resultCode == RESULT_OK) {
-            ArrayList<String> result = data
-                    .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+            ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
             speechString = bookDesc.getText().toString() + result.get(0);
             bookDesc.setText(speechString);
             bookDesc.setSelection(bookDesc.getText().length());
@@ -1202,10 +1198,6 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
         stopvoiceRecord.setOnClickListener(this);
         mBottomSheetDialog.show();
     }
-
-
-
-
     public void MediaRecorderReady(){
         mediaRecorder=new MediaRecorder();
         mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);

@@ -93,6 +93,7 @@ public class CompanyInfo_Fragment extends Fragment implements View.OnClickListen
         language_container.setOnClickListener(this);
         share_container.setOnClickListener(this);
         String lang = new SessionManager(getActivity().getApplicationContext()).getCurrentLanguage();
+
         if (lang.equalsIgnoreCase("en")) {
             langName(1);
         } else if (lang.equalsIgnoreCase("fr")) {
@@ -102,9 +103,6 @@ public class CompanyInfo_Fragment extends Fragment implements View.OnClickListen
         } else if (lang.equalsIgnoreCase("es")) {
             langName(4);
         }
-
-
-
         return view;
     }
     public void onButtonPressed(Uri uri) {

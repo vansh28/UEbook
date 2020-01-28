@@ -34,7 +34,6 @@ public class Search_History_Adapter   extends RecyclerView.Adapter<Search_Histor
         this.textsize=textSize;
         this.mctx=mctx;
     }
-
     public interface SearchHistoryItemClick {
         void onItemClick(int position,String book_id);
     }

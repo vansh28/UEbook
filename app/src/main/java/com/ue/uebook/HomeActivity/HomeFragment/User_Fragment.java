@@ -204,7 +204,7 @@ public class User_Fragment extends Fragment implements View.OnClickListener, Use
         previewDialog.setContentView(getLayoutInflater().inflate(R.layout.image_layout
                 , null));
         ImageView imageView = previewDialog.findViewById(R.id.image_view);
-        GlideUtils.loadImage((AppCompatActivity) getActivity(), "http://dnddemo.com/ebooks/api/v1/upload/" + file, imageView, R.drawable.user_default, R.drawable.user_default);
+        GlideUtils.loadImage((AppCompatActivity) getActivity(), ApiRequest.BaseUrl+"upload/" + file, imageView, R.drawable.user_default, R.drawable.user_default);
         Button ok_Btn = previewDialog.findViewById(R.id.buton_ok);
         ok_Btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -311,7 +311,7 @@ public class User_Fragment extends Fragment implements View.OnClickListener, Use
         }, 2000);
 
         if (!image.isEmpty()) {
-            GlideUtils.loadImage((AppCompatActivity) getActivity(), "http://dnddemo.com/ebooks/api/v1/upload/" + image, profile_image_user, R.drawable.user_default, R.drawable.user_default);
+            GlideUtils.loadImage((AppCompatActivity) getActivity(), ApiRequest.BaseUrl+"upload/" + image, profile_image_user, R.drawable.user_default, R.drawable.user_default);
         } else {
 
             profile_image_user.setImageResource(R.drawable.user_default);

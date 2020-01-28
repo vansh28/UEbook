@@ -84,8 +84,8 @@ import static com.ue.uebook.NetworkUtils.getInstance;
 public class MessageScreen extends BaseActivity implements View.OnClickListener, ImageUtils.ImageAttachmentListener, MessageAdapter.ChatImageFileClick {
     private static final int REQUEST_PICK_VIDEO = 12;
     private Intent intent;
-    private ImageButton back_btn, button_chat_attachment, morebtn, button_chat_send, gallerybtn, videobtn, audiobtn, filebtn ,voicebtn,videoCallbtn;
-    private ImageView userProfile,previewImage;
+    private ImageButton back_btn, button_chat_attachment, morebtn, button_chat_send, gallerybtn, videobtn, audiobtn, filebtn, voicebtn, videoCallbtn;
+    private ImageView userProfile, previewImage;
     private RecyclerView messageList;
     private EditText chat_message;
     private TextView oponent_name;
@@ -107,28 +107,29 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
     //gallery=1,video=2,audio=3,doc=4//
     private BottomSheetDialog mBottomSheetDialog;
     BroadcastReceiver receiver;
-    private String imageUrl="df";
-    public String imageProfile="c";
+    private String imageUrl = "df";
+    public String imageProfile = "c";
     private ProgressDialog progressDialog;
     private BroadcastReceiver mReceiver;
-    private String channelID="";
+    private String channelID = "";
     private VideoView videoview;
     private ProgressDialog mProgressDialog;
     private static final int MY_PERMISSIONS_REQUEST_CAMERA = 99;
     private AsyncTask mMyTask;
-    String docbaseUrl="http://docs.google.com/gview?embedded=true&url=";
+    String docbaseUrl = "http://docs.google.com/gview?embedded=true&url=";
     ProgressBar pb;
     Dialog dialog;
     int downloadedSize = 0;
     int totalSize = 0;
     TextView cur_val;
+
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message_screen);
-        voicebtn=findViewById(R.id.voicebtn);
-        videoCallbtn=findViewById(R.id.videobtn);
+        voicebtn = findViewById(R.id.voicebtn);
+        videoCallbtn = findViewById(R.id.videobtn);
         voicebtn.setOnClickListener(this);
         videoCallbtn.setOnClickListener(this);
         mProgressDialog = new ProgressDialog(this);
@@ -141,12 +142,12 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
         mProgressDialog.setMessage("Please wait, we are downloading your image file...");
         back_btn = findViewById(R.id.backbtnMessage);
         oponent_name = findViewById(R.id.oponent_name);
-        previewImage=findViewById(R.id.previewImage);
+        previewImage = findViewById(R.id.previewImage);
         intent = getIntent();
         videoview = findViewById(R.id.videoview);
         imageUtils = new ImageUtils(this);
         screenID = intent.getIntExtra("id", 0);
-        imageUrl=intent.getStringExtra("imageUrl");
+        imageUrl = intent.getStringExtra("imageUrl");
         userProfile = findViewById(R.id.image_user_chat);
         chat_message = findViewById(R.id.edit_chat_message);
         messageList = findViewById(R.id.messageList);
@@ -167,42 +168,40 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
         if (screenID == 2) {
             oponentData = (OponentData) intent.getSerializableExtra("oponentdata");
             userData = (UserData) intent.getSerializableExtra("userData");
+
             if (oponentData != null) {
                 oponent_name.setText(oponentData.getName());
-                sendToID=oponentData.userId;
+                sendToID = oponentData.userId;
                 oponent_name.setText(oponentData.getName());
-                GlideUtils.loadImage(MessageScreen.this, "http://dnddemo.com/ebooks/api/v1/upload/" + oponentData.getUrl(), userProfile, R.drawable.user_default, R.drawable.user_default);
-                imageProfile=oponentData.getUrl();
+                GlideUtils.loadImage(MessageScreen.this, ApiRequest.BaseUrl+"upload/" + oponentData.getUrl(), userProfile, R.drawable.user_default, R.drawable.user_default);
+                imageProfile = oponentData.getUrl();
             }
+
             if (oponentData.channelId != null) {
                 chanelID = oponentData.channelId;
-                sendToID=oponentData.userId;
+                sendToID = oponentData.userId;
                 getChatHistory(new SessionManager(getApplication()).getUserID(), sendToID, chanelID, "text");
             }
-        }
-        else if (screenID==1){
 
+        } else if (screenID == 1) {
 
-
-            String sendTo=intent.getStringExtra("sendTo");
-             channelID=intent.getStringExtra("channelID");
-            String name=intent.getStringExtra("name");
+            String sendTo = intent.getStringExtra("sendTo");
+            channelID = intent.getStringExtra("channelID");
+            String name = intent.getStringExtra("name");
             oponent_name.setText(name);
-            sendToID=sendTo;
+            sendToID = sendTo;
 
-            if (channelID!=null){
-                chanelID=channelID;
+            if (channelID != null) {
+                chanelID = channelID;
                 getChatHistory(new SessionManager(getApplication()).getUserID(), sendToID, channelID, "text");
-                GlideUtils.loadImage(MessageScreen.this, "http://dnddemo.com/ebooks/api/v1/upload/" + imageUrl, userProfile, R.drawable.user_default, R.drawable.user_default);
-                imageProfile=imageUrl;
-            }
-            else {
+                GlideUtils.loadImage(MessageScreen.this, ApiRequest.BaseUrl+"upload/" + imageUrl, userProfile, R.drawable.user_default, R.drawable.user_default);
+                imageProfile = imageUrl;
+            } else {
 
                 getChatHistory(new SessionManager(getApplication()).getUserID(), sendToID, "", "text");
-                GlideUtils.loadImage(MessageScreen.this, "http://dnddemo.com/ebooks/api/v1/upload/" + imageUrl, userProfile, R.drawable.user_default, R.drawable.user_default);
-                imageProfile=imageUrl;
+                GlideUtils.loadImage(MessageScreen.this, ApiRequest.BaseUrl+"upload/" + imageUrl, userProfile, R.drawable.user_default, R.drawable.user_default);
+                imageProfile = imageUrl;
             }
-
         }
     }
 
@@ -210,7 +209,7 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
     @Override
     public void onClick(View v) {
         if (v == back_btn) {
-            Intent intent = new Intent(this,ChatListScreen.class);
+            Intent intent = new Intent(this, ChatListScreen.class);
             startActivity(intent);
             finish();
         } else if (v == userProfile) {
@@ -224,8 +223,8 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
 //                Intent intent=new Intent("com.local.receiver");
 //                sendBroadcast(intent);
                 if (chat_message.getText().toString().isEmpty()) {
-                       chat_message.setError("Enter your Message");
-                       chat_message.requestFocus();
+                    chat_message.setError("Enter your Message");
+                    chat_message.requestFocus();
                 } else {
                     sendMesaage(new SessionManager(getApplication()).getUserID(), "", sendToID, "text", chanelID, chat_message.getText().toString(), 0);
                 }
@@ -233,12 +232,11 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
                 previewImage.setVisibility(View.GONE);
                 sendMesaage(new SessionManager(getApplication()).getUserID(), "", sendToID, "image", chanelID, chat_message.getText().toString(), 1);
             } else if (typevalue == 2) {
-                if (videofile!=null){
+                if (videofile != null) {
 
                     videoview.setVisibility(View.GONE);
                     sendMesaage(new SessionManager(getApplication()).getUserID(), "", sendToID, "video", chanelID, chat_message.getText().toString(), 2);
-                }
-                else {
+                } else {
                     Toast.makeText(this, "Please Select Again", Toast.LENGTH_SHORT).show();
                 }
             } else if (typevalue == 3) {
@@ -258,8 +256,7 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
                 typevalue = 1;
                 mBottomSheetDialog.dismiss();
                 imageUtils.imagepicker(1);
-            }
-            else {
+            } else {
                 ActivityCompat.requestPermissions(this,
                         new String[]{Manifest.permission.CAMERA},
                         MY_PERMISSIONS_REQUEST_CAMERA);
@@ -280,17 +277,15 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
             openFile(111);
             mBottomSheetDialog.dismiss();
 
-        }
-        else if (v==voicebtn){
+        } else if (v == voicebtn) {
             Intent intents = new Intent(MessageScreen.this, VoiceCallActivity.class);
-            intents.putExtra("id",channelID);
-            intents.putExtra("receiverid",sendToID);
+            intents.putExtra("id", channelID);
+            intents.putExtra("receiverid", sendToID);
             startActivity(intents);
-        }
-        else if (v==videoCallbtn){
+        } else if (v == videoCallbtn) {
             Intent intent = new Intent(MessageScreen.this, VideoCall.class);
-            intent.putExtra("id",channelID);
-            intent.putExtra("receiverid",sendToID);
+            intent.putExtra("id", channelID);
+            intent.putExtra("receiverid", sendToID);
             startActivity(intent);
 
         }
@@ -348,7 +343,7 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
         previewDialog.setContentView(getLayoutInflater().inflate(R.layout.image_layout
                 , null));
         ImageView imageView = previewDialog.findViewById(R.id.image_view);
-        GlideUtils.loadImage(MessageScreen.this, "http://dnddemo.com/ebooks/api/v1/upload/" + file, imageView, R.drawable.user_default, R.drawable.user_default);
+        GlideUtils.loadImage(MessageScreen.this, ApiRequest.BaseUrl+"upload/"+ file, imageView, R.drawable.user_default, R.drawable.user_default);
         Button ok_Btn = previewDialog.findViewById(R.id.buton_ok);
         ok_Btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -373,16 +368,16 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
 //                       intent.putExtra("id",channelID);
 //                        intent.putExtra("receiverid",sendToID);
 //                       startActivity(intent);
-                       return true;
+                        return true;
                     case R.id.clearChat:
-                         clearChatHistory(new SessionManager(getApplicationContext()).getUserID(),sendToID);
+                        clearChatHistory(new SessionManager(getApplicationContext()).getUserID(), sendToID);
                         return true;
                     case R.id.voice_Btn:
 //                        Intent intents = new Intent(MessageScreen.this, VoiceCallActivity.class);
 //                        intents.putExtra("id",channelID);
 //                        intents.putExtra("receiverid",sendToID);
 //                        startActivity(intents)
-                         return  true;
+                        return true;
                     default:
                         return false;
                 }
@@ -425,6 +420,7 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
             public void onFailure(okhttp3.Call call, IOException e) {
                 Log.d("error", "error");
             }
+
             @Override
             public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
                 final String myResponse = response.body().string();
@@ -445,6 +441,7 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
             }
         });
     }
+
     private void showBottomSheet() {
         final View bottomSheetLayout = getLayoutInflater().inflate(R.layout.bottomlayoutchat, null);
         mBottomSheetDialog = new BottomSheetDialog(this);
@@ -459,6 +456,7 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
         videobtn.setOnClickListener(this);
         mBottomSheetDialog.show();
     }
+
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -518,7 +516,7 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void sendMesaage(String user_id, String tokenKey, String sendTO, String type, final String channelId, String message, int typeval) {
         OkHttpClient client = new OkHttpClient();
-        String url = "http://dnddemo.com/ebooks/api/v1/user_chat";
+        String url = ApiRequest.BaseUrl+"user_chat/";
         final MediaType MEDIA_TYPE_PNG = MediaType.parse("image/png");
         showLoadingIndicator();
         RequestBody requestBody;
@@ -598,14 +596,14 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
                 hideLoadingIndicator();
                 final String myResponse = response.body().string();
                 Gson gson = new GsonBuilder().create();
-                Log.e("chatresponse",myResponse);
+                Log.e("chatresponse", myResponse);
                 final ChatResponse form = gson.fromJson(myResponse, ChatResponse.class);
                 runOnUiThread(new Runnable() {
                     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                     @Override
                     public void run() {
                         chat_message.setText("");
-                        typevalue=0;
+                        typevalue = 0;
                         chanelID = form.getChat_list().get(0).getChannelId();
                         getChatHistory(new SessionManager(getApplication()).getUserID(), sendToID, chanelID, "text");
                     }
@@ -616,26 +614,21 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
 
 
     @Override
-    public void onImageClick(String url ,String type) {
+    public void onImageClick(String url, String type) {
 //        Log.d("shdjsjhd", url);
-    if (type.equalsIgnoreCase("image"))
-    {
-        showfullImage(url);
+        if (type.equalsIgnoreCase("image")) {
+            showfullImage(url);
 //        mMyTask = new DownloadTask()
 
-    }
-
-    else   if (type.equalsIgnoreCase("video")){
-        Intent intent = new Intent(this,VideoScreen.class);
-        intent.putExtra("url",url);
-        startActivity(intent);
-    }
-    else   if (type.equalsIgnoreCase("audio")){
-        gotoWebview(url);
-    }
-    else   if (type.equalsIgnoreCase("file")){
-        gotoWebview(docbaseUrl+url);
-    }
+        } else if (type.equalsIgnoreCase("video")) {
+            Intent intent = new Intent(this, VideoScreen.class);
+            intent.putExtra("url", url);
+            startActivity(intent);
+        } else if (type.equalsIgnoreCase("audio")) {
+            gotoWebview(url);
+        } else if (type.equalsIgnoreCase("file")) {
+            gotoWebview(docbaseUrl + url);
+        }
 
 //        Intent intent = new Intent(this, DownloadService.class);
 //        intent.putExtra("url", "https://images5.alphacoders.com/609/609173.jpg");
@@ -647,13 +640,13 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
-    public void onDownloadClick(final String url, String type , final String name) {
+    public void onDownloadClick(final String url, String type, final String name) {
 //
 //
         showProgress(url);
         new Thread(new Runnable() {
             public void run() {
-                downloadFiles(url , name);
+                downloadFiles(url, name);
             }
         }).start();
     }
@@ -701,14 +694,14 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
                 if (getInstance(MessageScreen.this).isConnectingToInternet()) {
 
 
-                }
-                else {
-                    Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content),"No Internet Connection",Snackbar.LENGTH_LONG);
+                } else {
+                    Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), "No Internet Connection", Snackbar.LENGTH_LONG);
                     snackbar.show();
                 }
             }
         }, 3000);
     }
+
     @Override
     protected void onPause() {
         // TODO Auto-generated method stub
@@ -716,12 +709,14 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
         //unregister our receiver
         this.unregisterReceiver(this.mReceiver);
     }
+
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(this,ChatListScreen.class);
+        Intent intent = new Intent(this, ChatListScreen.class);
         startActivity(intent);
         finish();
     }
+
     private class DownloadReceiver extends ResultReceiver {
 
         public DownloadReceiver(Handler handler) {
@@ -747,6 +742,7 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
             }
         }
     }
+
     private void initializePlayer(Uri uri) {
         if (uri != null) {
             videoview.setVideoURI(uri);
@@ -757,8 +753,7 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
                     public void onPrepared(MediaPlayer mediaPlayer) {
                         if (mCurrentPosition > 0) {
                             videoview.seekTo(mCurrentPosition);
-                        }
-                        else {
+                        } else {
                             videoview.seekTo(1);
                         }
                         // Start playing!
@@ -766,19 +761,21 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
                     }
                 });
     }
+
     private void releasePlayer() {
         videoview.stopPlayback();
     }
 
-    private  void  gotoWebview(String url){
+    private void gotoWebview(String url) {
         Intent intent = new Intent(this, WebviewScreen.class);
-        intent.putExtra("url",url);
+        intent.putExtra("url", url);
         startActivity(intent);
     }
+
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
 
 
-          public  void downloadFiles(String dwnload_file_path ,String name){
+    public void downloadFiles(String dwnload_file_path, String name) {
 
         try {
             URL url = new URL(dwnload_file_path);
@@ -793,7 +790,7 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
             //set the path where we want to save the file
             File SDCardRoot = Environment.getExternalStorageDirectory();
             //create a new file, to save the downloaded file
-            File file = new File(SDCardRoot,name);
+            File file = new File(SDCardRoot, name);
 
             FileOutputStream fileOutput = new FileOutputStream(file);
 
@@ -813,15 +810,15 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
             byte[] buffer = new byte[1024];
             int bufferLength = 0;
 
-            while ( (bufferLength = inputStream.read(buffer)) > 0 ) {
+            while ((bufferLength = inputStream.read(buffer)) > 0) {
                 fileOutput.write(buffer, 0, bufferLength);
                 downloadedSize += bufferLength;
                 // update the progressbar //
                 runOnUiThread(new Runnable() {
                     public void run() {
                         pb.setProgress(downloadedSize);
-                        float per = ((float)downloadedSize/totalSize) * 100;
-                        cur_val.setText("Downloaded " + downloadedSize + "KB / " + totalSize + "KB (" + (int)per + "%)" );
+                        float per = ((float) downloadedSize / totalSize) * 100;
+                        cur_val.setText("Downloaded " + downloadedSize + "KB / " + totalSize + "KB (" + (int) per + "%)");
 
                     }
                 });
@@ -830,9 +827,9 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
             fileOutput.close();
             runOnUiThread(new Runnable() {
                 public void run() {
-                    Toast.makeText(MessageScreen.this,"Download Successfully",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MessageScreen.this, "Download Successfully", Toast.LENGTH_SHORT).show();
                     dialog.dismiss();
-                      // if you want close it..
+                    // if you want close it..
                 }
             });
 
@@ -842,13 +839,12 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
         } catch (final IOException e) {
             showError("Error : IOException " + e);
             e.printStackTrace();
-        }
-        catch (final Exception e) {
+        } catch (final Exception e) {
             showError("Error : Please check your internet connection " + e);
         }
     }
 
-    void showError(final String err){
+    void showError(final String err) {
         runOnUiThread(new Runnable() {
             public void run() {
                 Toast.makeText(MessageScreen.this, err, Toast.LENGTH_LONG).show();
@@ -856,25 +852,26 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
         });
     }
 
-   public void showProgress(String file_path){
+    public void showProgress(String file_path) {
         dialog = new Dialog(MessageScreen.this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.myprogressdialog);
         dialog.setTitle("Download Progress");
-        TextView text = (TextView) dialog.findViewById(R.id.tv1);
+        TextView text = dialog.findViewById(R.id.tv1);
         text.setText("Downloading file from ... " + file_path);
-        cur_val = (TextView) dialog.findViewById(R.id.cur_pg_tv);
+        cur_val = dialog.findViewById(R.id.cur_pg_tv);
         cur_val.setText("Starting download...");
         dialog.show();
-        pb = (ProgressBar)dialog.findViewById(R.id.progress_bar);
+        pb = dialog.findViewById(R.id.progress_bar);
         pb.setIndeterminate(true);
 //        pb.setProgressDrawable(getResources().getDrawable(R.drawable.green_progress));
     }
+
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    private void clearChatHistory(String user_id ,String receiver) {
+    private void clearChatHistory(String user_id, String receiver) {
         ApiRequest request = new ApiRequest();
         showLoadingIndicator();
-        request.requestforgetClearChatHistory(user_id, receiver,new okhttp3.Callback() {
+        request.requestforgetClearChatHistory(user_id, receiver, new okhttp3.Callback() {
             @Override
             public void onFailure(okhttp3.Call call, IOException e) {
                 Log.d("error", "error");

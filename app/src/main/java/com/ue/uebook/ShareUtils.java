@@ -128,8 +128,7 @@ public class ShareUtils {
         activity.startActivity(Intent.createChooser(emailIntent, "Send Email..."));
     }
     public static  void showToastMessage(Activity activity ,String message) {
-
-        Toast.makeText(activity, message, Toast.LENGTH_LONG).show();
+        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
     }
     public static void shareToAllApp(Activity activity ,String body) {
         Intent txtIntent = new Intent(android.content.Intent.ACTION_SEND);

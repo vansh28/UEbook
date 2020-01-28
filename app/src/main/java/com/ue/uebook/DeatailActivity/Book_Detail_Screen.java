@@ -1,6 +1,7 @@
 package com.ue.uebook.DeatailActivity;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -26,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -378,8 +380,10 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
                         if (videourl != null) {
                             gotoWebview("http://" + videourl);
                         } else {
+                          //  Toast.makeText(Book_Detail_Screen.this, "No Video for this Book", Toast.LENGTH_SHORT).show();
 
-                            Toast.makeText(Book_Detail_Screen.this, "No Video for this Book", Toast.LENGTH_SHORT).show();
+                            dialog("ok","No Video for this Book");
+
                         }
                         return true;
                     case R.id.audiotv:
@@ -387,7 +391,10 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
                             gotoWebview("http://" + audiourl);
                         } else {
 
-                            Toast.makeText(Book_Detail_Screen.this, "No Audio for this Book", Toast.LENGTH_SHORT).show();
+                           // Toast.makeText(Book_Detail_Screen.this, "No Audio for this Book", Toast.LENGTH_SHORT).show();
+                            dialog("ok","No Audio for this Book");
+
+
                         }
                         return true;
                     case R.id.doctv:
@@ -397,7 +404,8 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
                             gotoWebview(docbaseUrl + docurl);
                         } else {
 
-                            Toast.makeText(Book_Detail_Screen.this, "No Document File", Toast.LENGTH_SHORT).show();
+                          //  Toast.makeText(Book_Detail_Screen.this, "No Document File", Toast.LENGTH_SHORT).show();
+                            dialog("ok","No Document File for this Book");
                         }
 
                         return true;
@@ -523,5 +531,18 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
             startActivity(i);
         }
     }
+    public void dialog(final String value1,final String mesg ) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(mesg)
+                .setCancelable(false)
+                .setPositiveButton(value1, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+
 
 }

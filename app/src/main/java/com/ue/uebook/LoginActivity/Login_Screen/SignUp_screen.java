@@ -108,7 +108,7 @@ public class SignUp_screen extends BaseActivity implements View.OnClickListener 
                                        int arg2, long arg3) {
                 String label = parent.getItemAtPosition(arg2).toString();
                 userGender = label;
-                usergender=userGender;
+                usergender = userGender;
             }
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {

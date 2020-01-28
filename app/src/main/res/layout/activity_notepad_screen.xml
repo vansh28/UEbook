@@ -63,7 +63,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
         <EditText
             android:id="@+id/notes_title"
             android:layout_width="match_parent"
@@ -78,8 +77,6 @@
             android:background="@color/white"
             android:hint="Note Title"
             />
-
-
         <EditText
             android:id="@+id/notes_view"
             android:layout_width="match_parent"

@@ -2,7 +2,6 @@ package com.ue.uebook.ChatSdk;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,7 +11,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -77,9 +75,8 @@ public class GroupFriendList extends BaseActivity implements View.OnClickListene
             finish();
         }
         else if (v==createGroup){
-
-          //  showPopUp();
-          Toast.makeText(GroupFriendList.this,"Coming Soon!",Toast.LENGTH_SHORT).show();
+          showPopUp();
+         // Toast.makeText(GroupFriendList.this,"Coming Soon!",Toast.LENGTH_SHORT).show();
         }
     }
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -180,13 +177,13 @@ public class GroupFriendList extends BaseActivity implements View.OnClickListene
         groupname=customView.findViewById(R.id.groupname);
         Button okbtn=customView.findViewById(R.id.popupbtn);
         final AlertDialog alertDialog =builder.create();
-        builder.setPositiveButton("ok",new DialogInterface.OnClickListener() { // define the 'Cancel' button
-            public void onClick(DialogInterface dialog, int which) {
-
-                dialog.cancel();
-
-            }
-        });
+//        builder.setPositiveButton("ok",new DialogInterface.OnClickListener() { // define the 'Cancel' button
+//            public void onClick(DialogInterface dialog, int which) {
+//
+//
+//                dialog.cancel();
+//            }
+//        });
         okbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

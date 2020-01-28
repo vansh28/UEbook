@@ -26,8 +26,7 @@
             android:layout_height="wrap_content"
             android:textSize="@dimen/size_15"
             android:textColor="@color/black"
-            android:layout_marginTop="@dimen/size_10"
-            android:text="Which is the best app for the books"/>
+            android:layout_marginTop="@dimen/size_10" />
       <RelativeLayout
           android:layout_width="match_parent"
           android:layout_height="wrap_content">

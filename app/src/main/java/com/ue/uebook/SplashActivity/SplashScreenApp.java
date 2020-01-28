@@ -89,12 +89,12 @@ public class SplashScreenApp extends AppCompatActivity {
         SplashScreenApp.this.startActivity(mainIntent);
         SplashScreenApp.this.finish();
     }
-    public void setLocale(String lang) {
+          public void setLocale(String lang) {
         Locale myLocale = new Locale(lang);
         Resources res = getResources();
         DisplayMetrics dm = res.getDisplayMetrics();
         Configuration conf = res.getConfiguration();
         conf.locale = myLocale;
         res.updateConfiguration(conf, dm);
-    }
+         }
 }

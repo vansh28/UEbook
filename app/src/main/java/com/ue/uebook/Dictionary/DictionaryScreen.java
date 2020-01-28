@@ -47,8 +47,6 @@ public class DictionaryScreen extends BaseActivity implements View.OnClickListen
         else if (view==seachbtn){
 
           getwordDetails(word.getText().toString());
-
-
         }
     }
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -70,7 +68,7 @@ public class DictionaryScreen extends BaseActivity implements View.OnClickListen
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        searchResult.setText("");
+                        searchResult.setText(" ");
                         if(form.getResponse()!=null)
                         { searchResult.append(Html.fromHtml("<p><b>Source: Wikipedia</b></p>"));
                             for(int i = 0; i < form.getResponse().size(); i++)
