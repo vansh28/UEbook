@@ -196,6 +196,7 @@ public class HomeScreen extends BaseActivity implements Home_Fragment.OnFragment
                 new java.util.TimerTask() {
                     @Override
                     public void run() {
+
                         if (getInstance(HomeScreen.this).isConnectingToInternet()) {
 
 

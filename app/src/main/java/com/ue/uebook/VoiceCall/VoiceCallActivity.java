@@ -56,7 +56,6 @@ public class VoiceCallActivity extends AppCompatActivity {
                 .setAudioOnly(true)
                 .build();
         JitsiMeet.setDefaultConferenceOptions(defaultOptions);
-
         videocall(new SessionManager(getApplicationContext()).getUserID(),receiverid,channeld);
         if (channeld.length() > 0) {
             // Build options object for joining the conference. The SDK will merge the default

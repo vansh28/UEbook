@@ -53,7 +53,9 @@ public class BookCategorywiseList extends BaseActivity implements View.OnClickLi
         linearLayoutManagerBookmark.setOrientation(LinearLayoutManager.VERTICAL);
         categoryBookList.setLayoutManager(linearLayoutManagerBookmark);
         getRecommenedBookList(cId);
+
     }
+
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void getPopularList() {
         ApiRequest request = new ApiRequest();

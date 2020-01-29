@@ -370,7 +370,7 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
 //                       startActivity(intent);
                         return true;
                     case R.id.clearChat:
-                        clearChatHistory(new SessionManager(getApplicationContext()).getUserID(), sendToID);
+                       clearChatHistory(new SessionManager(getApplicationContext()).getUserID(), sendToID);
                         return true;
                     case R.id.voice_Btn:
 //                        Intent intents = new Intent(MessageScreen.this, VoiceCallActivity.class);

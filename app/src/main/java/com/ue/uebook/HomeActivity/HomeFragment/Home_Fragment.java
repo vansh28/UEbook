@@ -121,7 +121,6 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
         fragment.setArguments(args);
         return fragment;
     }
-
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -401,22 +400,17 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
             }
         });
     }
-
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void getnewBookList(String categoryId) {
-
         ApiRequest request = new ApiRequest();
         if (newBookList.size() > 0)
             newBookList.clear();
-
         request.requestforgetBookList(categoryId, new okhttp3.Callback() {
             @Override
             public void onFailure(okhttp3.Call call, IOException e) {
                 Log.d("error", "error");
                 hideLoadingIndicator();
-
             }
-
             @Override
             public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
                 String myResponse = response.body().string();
@@ -443,7 +437,6 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
             }
         });
     }
-
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void getPopularList() {
         if (popularBook_List.size() > 0)
@@ -636,7 +629,6 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
                                             popularList_home_adapter.setItemClickListener(Home_Fragment.this);
                                         }
                                     });
-
                                     if (popularListData.size() > 3) {
                                         popularListData.add(popularListData.get(0));
                                         popularListData.add(popularListData.get(1));
@@ -645,8 +637,6 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
                                         popularListData.addAll(popularListData);
                                     }
                                 }
-
-
                             }
                         }
                         catch (Exception e) {
@@ -664,7 +654,6 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
                         } catch (Exception ex) {
                             ex.printStackTrace();
                         }
-
                     }
                 }) {
             @Override
@@ -675,7 +664,6 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
         };
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         requestQueue.add(stringRequest);
-
         stringRequest.setRetryPolicy(new DefaultRetryPolicy(
                 30000,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,

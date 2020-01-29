@@ -87,12 +87,10 @@ public class FriendListScreen extends BaseActivity implements View.OnClickListen
             @Override
             public void onClick(View view) {
                 previewDialog.dismiss();
-
             }
         });
         previewDialog.show();
     }
-
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void getContactList(String  user_id) {
         ApiRequest request = new ApiRequest();
@@ -110,16 +108,14 @@ public class FriendListScreen extends BaseActivity implements View.OnClickListen
                 Gson gson = new GsonBuilder().create();
               final ContactListResponse form = gson.fromJson(myResponse, ContactListResponse.class);
 
-                if (form.error==false && form.getUserList()!=null){
+                if ( form.error == false && form.getUserList()!=null){
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-
                             contactListAdapter = new ContactListAdapter(FriendListScreen.this,form.getUserList(),form.getData());
                             contactList.setAdapter(contactListAdapter);
                             contactListAdapter.setItemClickListener(FriendListScreen.this);
                             contactListAdapter.notifyDataSetChanged();
-
                     }
                 });
             }

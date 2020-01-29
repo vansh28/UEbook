@@ -2,8 +2,11 @@ package com.ue.uebook.ChatSdk;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -44,6 +48,7 @@ public class GroupFriendList extends BaseActivity implements View.OnClickListene
     private ListView userlist;
     private CreategroupAdapter contactList;
     private EditText groupname;
+    private  TextWatcher mTextEditorWatcher;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,6 +72,8 @@ public class GroupFriendList extends BaseActivity implements View.OnClickListene
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             getContactList(new SessionManager(getApplication()).getUserID());
         }
+
+
     }
 
     @Override
@@ -176,6 +183,24 @@ public class GroupFriendList extends BaseActivity implements View.OnClickListene
         View customView = layoutInflater.inflate(R.layout.groupnameitem, null);
         groupname=customView.findViewById(R.id.groupname);
         Button okbtn=customView.findViewById(R.id.popupbtn);
+        TextView charaterCount = customView.findViewById(R.id.charaterCount);
+        groupname.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    charaterCount.setText(String.valueOf(s.length()));
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+
         final AlertDialog alertDialog =builder.create();
 //        builder.setPositiveButton("ok",new DialogInterface.OnClickListener() { // define the 'Cancel' button
 //            public void onClick(DialogInterface dialog, int which) {
@@ -200,6 +225,9 @@ public class GroupFriendList extends BaseActivity implements View.OnClickListene
         alertDialog.show();
 
     }
-
+    private void disableEditText(EditText editText) {
+        editText.setKeyListener(null);
+        editText.setBackgroundColor(Color.TRANSPARENT);
+    }
 
 }

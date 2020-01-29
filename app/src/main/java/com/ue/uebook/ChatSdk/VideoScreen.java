@@ -21,7 +21,7 @@ public class VideoScreen extends AppCompatActivity implements View.OnClickListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_screen);
-        intent =getIntent();
+        intent = getIntent();
         String url = intent.getStringExtra("url");
         videoView=findViewById(R.id.videoView);
         backbtn=findViewById(R.id.back_video);

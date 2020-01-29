@@ -167,6 +167,7 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
     MediaRecorder mediaRecorder ;
     Random random ;
     String RandomAudioFileName = "ABCDEFGHIJKLMNOP";
+    private Uri audioUri;
     private String coverimaqgeURL=" ";
     public static final int RequestPermissionCode = 1;
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
@@ -200,6 +201,7 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
         addQuestion = findViewById(R.id.add_question);
         question_layout = findViewById(R.id.question_layout);
         audioname_view = findViewById(R.id.audioname_view);
+        audioname_view.setOnClickListener(this);
         addQuestion.setOnClickListener(this);
         cover_image_layout = findViewById(R.id.cover_image_layout);
 
@@ -401,7 +403,12 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
             returnIntent.putExtra("result",AudioSavePathInDevice);
             setResult(Activity.RESULT_OK,returnIntent);
             mBottomSheetDialog.dismiss();
+        } else if (view == audioname_view) {
+//             Log.e("audiourl",audioUrl.toString());
+
+
         }
+
     }
     private void stopRecording() {
         try{
@@ -775,6 +782,7 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
 //                            e.printStackTrace();
 //                        }
                     }
+                    audioUri=data.getData();
                     audioUrl = new File(result);
                     audioname_view.setVisibility(View.VISIBLE);
                     audioname_view.setText(audioUrl.getName());
@@ -790,7 +798,8 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
             bookDesc.setSelection(bookDesc.getText().length());
             bookDesc.requestFocus();
             bookDesc.setEnabled(true);
-        }}
+        }
+        }
     }
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -1293,6 +1302,20 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
         } catch (IOException e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+
+    public void audioPlayer(String path, String fileName){
+        //set up MediaPlayer
+        MediaPlayer mp = new MediaPlayer();
+
+        try {
+            mp.setDataSource(path + File.separator + fileName);
+            mp.prepare();
+            mp.start();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }
