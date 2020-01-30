@@ -129,8 +129,6 @@ public class NotepadFragment extends Fragment  implements  NotepadAdapter.Notepa
     public void onStart(){
         super.onStart();
         getnotePadList(new SessionManager(getActivity().getApplicationContext()).getUserID());
-
-
     }
     @Override      //boOkLlistItemClick
     public void onItemClick(String note_id, String description ,String title)

@@ -516,7 +516,7 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void sendMesaage(String user_id, String tokenKey, String sendTO, String type, final String channelId, String message, int typeval) {
         OkHttpClient client = new OkHttpClient();
-        String url = ApiRequest.BaseUrl+"user_chat/";
+        String url = ApiRequest.BaseUrl+"user_chat";
         final MediaType MEDIA_TYPE_PNG = MediaType.parse("image/png");
         showLoadingIndicator();
         RequestBody requestBody;

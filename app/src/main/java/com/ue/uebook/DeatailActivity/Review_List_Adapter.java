@@ -33,7 +33,7 @@ public class Review_List_Adapter  extends RecyclerView.Adapter<Review_List_Adapt
     }
     @Override
     public void onBindViewHolder(@NonNull Review_List_Adapter.MyViewHolder holder, int position) {
-        GlideUtils.loadImage(mtc,"http://"+data.get(position).getUrl(),holder.profileTv,R.drawable.user_default,R.drawable.user_default);
+        GlideUtils.loadImage(mtc,"http://" + data.get(position).getUrl(),holder.profileTv,R.drawable.user_default,R.drawable.user_default);
         holder.usernameTv.setText(data.get(position).getUser_name());
         holder.dateandtimeTv.setText(data.get(position).getCreated_at());
         holder.commentTv.setText(data.get(position).getComment());

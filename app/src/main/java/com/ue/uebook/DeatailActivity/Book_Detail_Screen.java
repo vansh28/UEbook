@@ -276,7 +276,6 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
             public void onFailure(okhttp3.Call call, IOException e) {
                 Log.d("error", "error");
                 hideLoadingIndicator();
-
             }
 
             @Override
@@ -294,10 +293,10 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
                         bookAuthor.setText(form.getData().getAuthor_name());
                         ulpoadByUserId = form.getData().getUser_id();
                         if (form.getData().getUser_name() != null) {
-//                            SpannableString content = new SpannableString(form.getData().getUser_name());
-//                            content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
-                            book_uploadBy.setText((form.getData().getUser_name()));
-//                            GlideUtils.loadImage(Book_Detail_Screen.this,"http://"+form.getData().get,book_coverTv,R.drawable.noimage,R.drawable.noimage);
+//                       SpannableString content = new SpannableString(form.getData().getUser_name());
+//                       content.setSpan(new UnderlineSpan(), 0, content.length(), 0)
+//                       book_uploadBy.setText((form.getData().getUser_name()));
+//                       GlideUtils.loadImage(Book_Detail_Screen.this,"http://"+form.getData().get,book_coverTv,R.drawable.noimage,R.drawable.noimage);
                         } else {
                             profile_user.setVisibility(View.GONE);
                         }

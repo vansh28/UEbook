@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.ue.uebook.Data.ApiRequest;
 import com.ue.uebook.GlideUtils;
 import com.ue.uebook.R;
 import com.ue.uebook.UploadBook.Pojo.BookCategoryPojo;
@@ -60,7 +61,7 @@ public class BookCategoryAdapter extends RecyclerView.Adapter<BookCategoryAdapte
          });
          if (response.get(position).getThum_image()!=null)
          {
-             GlideUtils.loadImage(mtx, "http://dnddemo.com/ebooks/uploads/category/" + response.get(position).getThum_image(), holder.categoryimage, R.drawable.bookbglist, R.drawable.bookbglist);
+             GlideUtils.loadImage(mtx, ApiRequest.BaseUrl+"uploads/category/" + response.get(position).getThum_image(), holder.categoryimage, R.drawable.bookbglist, R.drawable.bookbglist);
          }
          else {
              holder.categoryimage.setImageResource(R.drawable.bookbglist);

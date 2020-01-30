@@ -162,7 +162,6 @@ public class HomeListingFragment extends Fragment implements OnCategorydata {
                             public void run() {
                                 popularList_home_adapter = new Home_recommended_Adapter((AppCompatActivity) getActivity(), popularBook_List, 17);
                                 homelistTv.setAdapter(popularList_home_adapter);
-
                             }
                         });
                     }

@@ -38,7 +38,6 @@ public class FileUtil {
             copy(inputStream, out);
             inputStream.close();
         }
-
         if (out != null) {
             out.close();
         }

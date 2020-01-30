@@ -78,7 +78,7 @@ public class Bookmark_Fragment extends Fragment implements Bookmark_List_Adapter
                              Bundle savedInstanceState) {
         View view= inflater.inflate(R.layout.fragment_bookmark_, container, false);
         bookmark_Book_list = view.findViewById(R.id.bookmark_Book_list);
-         dialog = new ProgressDialog(getContext());
+        dialog = new ProgressDialog(getContext());
         swipe_refresh_layout=view.findViewById(R.id.swipe_refresh_layout);
         LinearLayoutManager linearLayoutManagerBookmark = new LinearLayoutManager(getContext());
         linearLayoutManagerBookmark.setOrientation(LinearLayoutManager.VERTICAL);

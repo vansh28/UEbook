@@ -89,7 +89,8 @@ public class BookCategorywiseList extends BaseActivity implements View.OnClickLi
         ApiRequest request = new ApiRequest();
         request.requestforgetBookList(categoryId, new okhttp3.Callback() {
             @Override
-            public void onFailure(okhttp3.Call call, IOException e) {
+            public void onFailure(okhttp3.Call call, IOException e)
+            {
                 Log.d("error", "error");
                 hideLoadingIndicator();
             }

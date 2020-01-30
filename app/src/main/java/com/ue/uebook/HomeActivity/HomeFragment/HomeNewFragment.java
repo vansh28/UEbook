@@ -235,10 +235,10 @@ public class HomeNewFragment extends Fragment implements View.OnClickListener ,B
                         popularBook_List.add(form.getData().get(3));
                         popularBook_List.add(form.getData().get(4));
                         popularBook_List.add(form.getData().get(5));
-                    } else {
+                    }
+                    else {
                         popularBook_List.addAll(form.getData());
                     }
-
                 }
                 else {
                     getActivity().runOnUiThread(new Runnable() {

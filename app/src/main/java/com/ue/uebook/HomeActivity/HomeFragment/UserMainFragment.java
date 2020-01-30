@@ -55,7 +55,7 @@ public class UserMainFragment extends Fragment implements View.OnClickListener, 
     private int textSize;
     private TextView userView, companyView, uploadView, chatView, dictionaryView, logoutView;
 
-    public UserMainFragment() {
+    public UserMainFragment ( ){
         // Required empty public constructor
     }
     public static UserMainFragment newInstance(String param1, String param2) {

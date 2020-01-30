@@ -264,7 +264,6 @@ public class Search_Fragment extends Fragment implements View.OnClickListener, S
                     });
                 }
             }
-
         });
     }
     private void promptSpeechInput() {

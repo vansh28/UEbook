@@ -27,7 +27,8 @@ public class Search_History_Adapter   extends RecyclerView.Adapter<Search_Histor
     private List<HomeListing> arraylist=null;
     private AppCompatActivity mctx;
     private int textsize;
-    public Search_History_Adapter(AppCompatActivity mctx, List<HomeListing> data, int textSize) {
+    public Search_History_Adapter(AppCompatActivity mctx, List<HomeListing> data, int textSize)
+    {
         this.dataList=data;
         this.arraylist = new ArrayList<HomeListing>();
         this.arraylist.addAll(data);

@@ -19,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ue.uebook.ChatSdk.Pojo.Chathistory;
+import com.ue.uebook.Data.ApiRequest;
 import com.ue.uebook.GlideUtils;
 import com.ue.uebook.R;
 
@@ -49,6 +50,9 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyviewHo
     @NonNull
     @Override
     public MyviewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
+        Log.e("viewtype",String.valueOf(viewType));
+
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.lefttext, parent, false);
         MessageAdapter.MyviewHolder vh = new MessageAdapter.MyviewHolder(v); // pass the view to View Holder
         return vh;
@@ -61,7 +65,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyviewHo
                 holder.senderlayoutimage.setVisibility(View.VISIBLE);
                 holder.playbtnOponent.setVisibility(View.GONE);
                 holder.playbtnSender.setVisibility(View.GONE);
-                GlideUtils.loadImage(mtx, "http://dnddemo.com/ebooks/api/v1/" + chatData.get(position).getMessage(), holder.senderimage, R.drawable.noimage, R.drawable.noimage);
+                GlideUtils.loadImage(mtx, ApiRequest.BaseUrl + chatData.get(position).getMessage(), holder.senderimage, R.drawable.noimage, R.drawable.noimage);
             }
             else if (chatData.get(position).getType().equalsIgnoreCase("text")) {
                 holder.sendermsz.setText(chatData.get(position).getMessage());
@@ -77,7 +81,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyviewHo
                 holder.playbtnOponent.setVisibility(View.VISIBLE);
                 holder.oponentlayoutimage.setVisibility(View.GONE);
                 holder.playbtnSender.setVisibility(View.VISIBLE);
-                mediaMetadataRetriever .setDataSource("http://dnddemo.com/ebooks/api/v1/" + chatData.get(position).getMessage(), new HashMap<String, String>());
+                mediaMetadataRetriever .setDataSource(ApiRequest.BaseUrl + chatData.get(position).getMessage(), new HashMap<String, String>());
                 Bitmap bmFrame = mediaMetadataRetriever.getFrameAtTime(1000); //unit in microsecond
                 holder.senderimage.setImageBitmap(bmFrame);
             }
@@ -97,7 +101,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyviewHo
                 holder.oponentlayoutimage.setVisibility(View.VISIBLE);
                 holder.playbtnOponent.setVisibility(View.VISIBLE);
                 holder.playbtnSender.setVisibility(View.GONE);
-                GlideUtils.loadImage(mtx, "http://dnddemo.com/ebooks/api/v1/" + chatData.get(position).getMessage(), holder.oponentimage, R.drawable.noimage, R.drawable.noimage);
+                GlideUtils.loadImage(mtx, ApiRequest.BaseUrl + chatData.get(position).getMessage(), holder.oponentimage, R.drawable.noimage, R.drawable.noimage);
 
             }
             else if (chatData.get(position).getType().equalsIgnoreCase("text")) {
@@ -114,7 +118,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyviewHo
                 holder.playbtnOponent.setVisibility(View.VISIBLE);
                 holder.oponentlayoutimage.setVisibility(View.VISIBLE);
                 holder.playbtnSender.setVisibility(View.GONE);
-                mediaMetadataRetriever .setDataSource("http://dnddemo.com/ebooks/api/v1/" + chatData.get(position).getMessage(), new HashMap<String, String>());
+                mediaMetadataRetriever .setDataSource(ApiRequest.BaseUrl + chatData.get(position).getMessage(), new HashMap<String, String>());
                 Bitmap bmFrame = mediaMetadataRetriever.getFrameAtTime(1000); //unit in microsecond
                 holder.oponentimage.setImageBitmap(bmFrame);
             }
@@ -132,11 +136,11 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyviewHo
             @Override
             public void onClick(View v) {
                 if (chatData.get(position).getType().equalsIgnoreCase("image")){
-                    chatImageFileClick.onImageClick("http://dnddemo.com/ebooks/api/v1/" + chatData.get(position).getMessage(),"image");
+                    chatImageFileClick.onImageClick(ApiRequest.BaseUrl+ chatData.get(position).getMessage(),"image");
 
                 }
                 else {
-                    chatImageFileClick.onImageClick("http://dnddemo.com/ebooks/api/v1/" + chatData.get(position).getMessage(),"video");
+                    chatImageFileClick.onImageClick(ApiRequest.BaseUrl + chatData.get(position).getMessage(),"video");
 
                 }
             }
@@ -145,10 +149,10 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyviewHo
             @Override
             public void onClick(View v) {
                 if (chatData.get(position).getType().equalsIgnoreCase("image")) {
-                    chatImageFileClick.onImageClick("http://dnddemo.com/ebooks/api/v1/" + chatData.get(position).getMessage(),"image");
+                    chatImageFileClick.onImageClick(ApiRequest.BaseUrl + chatData.get(position).getMessage(),"image");
                 }
                 else {
-                    chatImageFileClick.onImageClick("http://dnddemo.com/ebooks/api/v1/" + chatData.get(position).getMessage(),"video");
+                    chatImageFileClick.onImageClick(ApiRequest.BaseUrl + chatData.get(position).getMessage(),"video");
                 }
             }
         });
@@ -156,11 +160,11 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyviewHo
             @Override
             public void onClick(View v) {
                 if (chatData.get(position).getType().equalsIgnoreCase("image")){
-                    chatImageFileClick.onImageClick("http://dnddemo.com/ebooks/api/v1/" + chatData.get(position).getMessage(),"image");
+                    chatImageFileClick.onImageClick(ApiRequest.BaseUrl+ chatData.get(position).getMessage(),"image");
 
                 }
                 else {
-                    chatImageFileClick.onImageClick("http://dnddemo.com/ebooks/api/v1/" + chatData.get(position).getMessage(),"video");
+                    chatImageFileClick.onImageClick(ApiRequest.BaseUrl + chatData.get(position).getMessage(),"video");
 
                 }
             }
@@ -169,24 +173,24 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyviewHo
             @Override
             public void onClick(View v) {
                 if (chatData.get(position).getType().equalsIgnoreCase("image")) {
-                    chatImageFileClick.onImageClick("http://dnddemo.com/ebooks/api/v1/" + chatData.get(position).getMessage(),"image");
+                    chatImageFileClick.onImageClick(ApiRequest.BaseUrl + chatData.get(position).getMessage(),"image");
                 }
                 else {
-                    chatImageFileClick.onImageClick("http://dnddemo.com/ebooks/api/v1/" + chatData.get(position).getMessage(),"video");
+                    chatImageFileClick.onImageClick(ApiRequest.BaseUrl+ chatData.get(position).getMessage(),"video");
                 }
             }
         });
         holder.fileviewoponent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                chatImageFileClick.onImageClick("http://dnddemo.com/ebooks/api/v1/" + chatData.get(position).getMessage(),"file");
+                chatImageFileClick.onImageClick(ApiRequest.BaseUrl + chatData.get(position).getMessage(),"file");
 
             }
         });
         holder.fileviewSender.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                chatImageFileClick.onImageClick("http://dnddemo.com/ebooks/api/v1/" + chatData.get(position).getMessage(),"file");
+                chatImageFileClick.onImageClick(ApiRequest.BaseUrl + chatData.get(position).getMessage(),"file");
 
             }
         });
@@ -210,7 +214,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyviewHo
                 String str= chatData.get(position).getMessage();
                 String[] arrOfStr = str.split("/");
                 Log.d("finsl",arrOfStr[3]);
-                chatImageFileClick.onDownloadClick("http://dnddemo.com/ebooks/api/v1/" + chatData.get(position).getMessage(),"file",arrOfStr[3]);
+                chatImageFileClick.onDownloadClick(ApiRequest.BaseUrl + chatData.get(position).getMessage(),"file",arrOfStr[3]);
 
             }
         });
@@ -220,13 +224,13 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyviewHo
                   String str= chatData.get(position).getMessage();
                 String[] arrOfStr = str.split("/");
                 Log.d("finsl",arrOfStr[3]);
-                chatImageFileClick.onDownloadClick("http://dnddemo.com/ebooks/api/v1/" + chatData.get(position).getMessage(),"image",arrOfStr[3]);
+                chatImageFileClick.onDownloadClick(ApiRequest.BaseUrl + chatData.get(position).getMessage(),"image",arrOfStr[3]);
             }
         });
         holder.downloadaudio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                chatImageFileClick.onDownloadClick("http://dnddemo.com/ebooks/api/v1/" + chatData.get(position).getMessage(),"audio",chatData.get(position).getMessage());
+                chatImageFileClick.onDownloadClick(ApiRequest.BaseUrl + chatData.get(position).getMessage(),"audio",chatData.get(position).getMessage());
 
             }
         });
@@ -235,7 +239,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyviewHo
             @Override
             public void onClick(View v) {
                 try {
-                    String url="http://dnddemo.com/ebooks/api/v1/" + chatData.get(position).getMessage();
+                    String url=ApiRequest.BaseUrl + chatData.get(position).getMessage();
                     Log.d("urllll",url);
                     mediaPlayer.setDataSource(url); // setup
                     mediaPlayer.prepare();
@@ -262,7 +266,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyviewHo
             @Override
             public void onClick(View v) {
                 try {
-                    mediaPlayer.setDataSource("http://dnddemo.com/ebooks/api/v1/" + chatData.get(position).getMessage()); // setup
+                    mediaPlayer.setDataSource(ApiRequest.BaseUrl + chatData.get(position).getMessage()); // setup
                     mediaPlayer.prepare();
                 } catch (Exception e) {
                     e.printStackTrace();

@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.ue.uebook.ChatSdk.Pojo.Data;
 import com.ue.uebook.ChatSdk.Pojo.UserList;
+import com.ue.uebook.Data.ApiRequest;
 import com.ue.uebook.GlideUtils;
 import com.ue.uebook.R;
 
@@ -61,12 +62,12 @@ public class ChatListAdapter  extends RecyclerView.Adapter<ChatListAdapter.MyVie
         if (userID.equalsIgnoreCase(dataList.get(position).getSend_detail().getId())){
             reciverName=dataList.get(position).getRec_detail().getUser_name();
             holder.name.setText(dataList.get(position).getRec_detail().getUser_name());
-            GlideUtils.loadImage(mtx, "http://dnddemo.com/ebooks/api/v1/upload/" + dataList.get(position).getRec_detail().getUrl(), holder.profile, R.drawable.user_default, R.drawable.user_default);
+            GlideUtils.loadImage(mtx, ApiRequest.BaseUrl+"upload/" + dataList.get(position).getRec_detail().getUrl(), holder.profile, R.drawable.user_default, R.drawable.user_default);
         }
         else {
             reciverName=dataList.get(position).getSend_detail().getUser_name();
             holder.name.setText(dataList.get(position).getSend_detail().getUser_name());
-            GlideUtils.loadImage(mtx, "http://dnddemo.com/ebooks/api/v1/upload/" + dataList.get(position).getSend_detail().getUrl(), holder.profile, R.drawable.user_default, R.drawable.user_default);
+            GlideUtils.loadImage(mtx, ApiRequest.BaseUrl+"upload/" + dataList.get(position).getSend_detail().getUrl(), holder.profile, R.drawable.user_default, R.drawable.user_default);
 
         }
        holder.chatContainer.setOnClickListener(new View.OnClickListener() {
