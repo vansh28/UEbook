@@ -5,7 +5,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".HomeActivity.HomeFragment.HomeNewFragment">
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:background="@color/colorAccent"
@@ -18,9 +17,7 @@
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/size_15"
         android:layout_height="wrap_content"/>
-
     </RelativeLayout>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:orientation="horizontal"
@@ -30,12 +27,14 @@
         android:id="@+id/uploadBookBtn"
         android:background="@drawable/homeitembg"
         android:layout_height="@dimen/size_45">
+
         <ImageView
             android:layout_width="@dimen/size_40"
             android:src="@drawable/writehome"
             android:padding="2dp"
             android:layout_height="match_parent"
             />
+
         <com.ue.uebook.Customview.CustomTextViewBold
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -52,7 +51,6 @@
             android:layout_marginLeft="@dimen/size_10"
             android:layout_height="wrap_content"
             />
-
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -85,7 +83,6 @@
             android:layout_marginLeft="@dimen/size_10"
             android:layout_height="wrap_content"
             />
-
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"

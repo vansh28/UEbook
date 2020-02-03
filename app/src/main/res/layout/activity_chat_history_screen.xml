@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ChatSdk.ChatHistoryScreen">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:background="@color/colorAccent"
+        android:id="@+id/header"
+        android:layout_height="@dimen/size_90">
+        <ImageButton
+            android:id="@+id/backbtnChat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/backbtn"
+            android:background="@android:color/transparent"
+            android:layout_marginTop="@dimen/size_10"
+            android:layout_marginStart="@dimen/size_10"
+            android:layout_marginLeft="@dimen/size_10" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/size_10"
+            android:text="UEbook Chat"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:textSize="@dimen/size_20"
+            />
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabLayout"
+            android:layout_width="match_parent"
+            android:layout_below="@+id/backbtnChat"
+            app:tabTextColor="@color/white"
+            app:tabGravity="fill"
+            app:tabRippleColor="@color/black"
+            app:tabIndicatorColor="@color/red"
+            android:layout_height="wrap_content"
+            />
+    </RelativeLayout>
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/header"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="10dp"
+        tools:layout_editor_absoluteX="8dp" />
+
+
+
+</RelativeLayout>

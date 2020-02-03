@@ -21,7 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.ue.uebook.ChatSdk.ChatListScreen;
+import com.ue.uebook.ChatSdk.ChatHistoryScreen;
 import com.ue.uebook.Data.ApiRequest;
 import com.ue.uebook.DeatailActivity.Book_Detail_Screen;
 import com.ue.uebook.HomeActivity.BookListing;
@@ -157,7 +157,7 @@ public class HomeNewFragment extends Fragment implements View.OnClickListener ,B
         else if (v==chatBtn)
         {
 
-            Intent intent = new Intent(getContext(), ChatListScreen.class);
+            Intent intent = new Intent(getContext(), ChatHistoryScreen.class);
             startActivity(intent);
 
         }

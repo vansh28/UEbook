@@ -2,6 +2,7 @@ package com.ue.uebook.ChatSdk;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -49,6 +51,7 @@ public class GroupFriendList extends BaseActivity implements View.OnClickListene
     private CreategroupAdapter contactList;
     private EditText groupname;
     private  TextWatcher mTextEditorWatcher;
+    private List<String>userIDForChat;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,7 +63,8 @@ public class GroupFriendList extends BaseActivity implements View.OnClickListene
         createGroup=findViewById(R.id.createGroup);
         userlist = findViewById(R.id.userlist);
         createGroup.setOnClickListener(this);
-        groupPopleList= new ArrayList<>();
+        groupPopleList = new ArrayList<>();
+        userIDForChat = new ArrayList<>();
         LinearLayoutManager linearLayoutManagerPopularList = new LinearLayoutManager(this);
         linearLayoutManagerPopularList.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(linearLayoutManagerPopularList);
@@ -139,6 +143,7 @@ public class GroupFriendList extends BaseActivity implements View.OnClickListene
             groupList.setAdapter(groupItemListAdapter);
             groupItemListAdapter.setItemClickListener(GroupFriendList.this);
             groupItemListAdapter.notifyDataSetChanged();
+
         }
         else {
             createGroup.setVisibility(View.GONE);
@@ -165,18 +170,19 @@ public class GroupFriendList extends BaseActivity implements View.OnClickListene
             if (id==1){
                 groupPopleList.add(oponentData);
                 addKist(groupPopleList);
+                userIDForChat.add(oponentData.getUserId());
             }
             else if (id==2){
                 if (groupPopleList.size()>0){
                     groupPopleList.remove(oponentData);
                     addKist(groupPopleList);
+                    userIDForChat.remove(oponentData.getUserId());
                 }
 
             }
 
         }
     }
-
     public void showPopUp() {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater layoutInflater = getLayoutInflater();
@@ -189,7 +195,6 @@ public class GroupFriendList extends BaseActivity implements View.OnClickListene
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
             }
-
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                     charaterCount.setText(String.valueOf(s.length()));
@@ -213,6 +218,8 @@ public class GroupFriendList extends BaseActivity implements View.OnClickListene
             @Override
             public void onClick(View v) {
                 if(!groupname.getText().toString().isEmpty()){
+                    createGroup(new SessionManager(getApplicationContext()).getUserID(),userIDForChat.toString(),groupname.getText().toString());
+
                     alertDialog.dismiss();
 
                 }
@@ -229,5 +236,39 @@ public class GroupFriendList extends BaseActivity implements View.OnClickListene
         editText.setKeyListener(null);
         editText.setBackgroundColor(Color.TRANSPARENT);
     }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private void createGroup(String user_id ,String groupId , String groupName ) {
+        ApiRequest request = new ApiRequest();
+        request.requestforCreateGroup(user_id, groupId,groupName ,new okhttp3.Callback() {
+            @Override
+            public void onFailure(okhttp3.Call call, IOException e) {
+                Log.d("error", "error");
+
+            }
+
+            @Override
+            public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
+
+                final String myResponse = response.body().string();
+                Gson gson = new GsonBuilder().create();
+               // final StatusPojo form = gson.fromJson(myResponse, StatusPojo.class);
+//                if (form.getError()==false && form.getData()!=null){
+//
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(getApplicationContext(),"Successfully Group Created",Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(GroupFriendList.this,ChatListScreen.class));
+                             finish();
+                        }
+                    });
+//
+//
+//                }
+            }
+        });
+    }
+
 
 }

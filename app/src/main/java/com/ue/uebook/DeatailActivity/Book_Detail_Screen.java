@@ -295,8 +295,8 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
                         if (form.getData().getUser_name() != null) {
 //                       SpannableString content = new SpannableString(form.getData().getUser_name());
 //                       content.setSpan(new UnderlineSpan(), 0, content.length(), 0)
-//                       book_uploadBy.setText((form.getData().getUser_name()));
-//                       GlideUtils.loadImage(Book_Detail_Screen.this,"http://"+form.getData().get,book_coverTv,R.drawable.noimage,R.drawable.noimage);
+                       book_uploadBy.setText((form.getData().getUser_name()));
+            //          GlideUtils.loadImage(Book_Detail_Screen.this,"http://"+form.getData().getProfile_pic(),book_coverTv,R.drawable.user_default,R.drawable.user_default);
                         } else {
                             profile_user.setVisibility(View.GONE);
                         }
@@ -325,10 +325,7 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
                             makeTextViewResizable(bookDesc, 5, "See More", true);
                         }
                         GlideUtils.loadImage(Book_Detail_Screen.this, "http://" + form.getData().getThubm_image(), book_coverTv, R.drawable.noimage, R.drawable.noimage);
-
                         GlideUtils.loadImage(Book_Detail_Screen.this, "http://dnddemo.com/ebooks/api/v1/upload/" + form.getData().getProfile_pic(), profile_user, R.drawable.user_default, R.drawable.user_default);
-
-
                         if (form.getReview() != null) {
                             review_list_adapter = new Review_List_Adapter(Book_Detail_Screen.this, form.getReview());
                             review_List.setAdapter(review_list_adapter);

@@ -25,9 +25,11 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
     private UserData userData;
    private AppCompatActivity mctx;
     public ContactListAdapter(AppCompatActivity mctx,List<OponentData> userList, UserData data) {
+
         this.oponentListdata=userList;
         this.userData=data;
         this.mctx=mctx;
+
     }
 
     public interface ItemClick {

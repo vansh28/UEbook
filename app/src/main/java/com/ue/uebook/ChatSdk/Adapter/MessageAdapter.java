@@ -74,6 +74,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyviewHo
                 holder.senderlayoutimage.setVisibility(View.GONE);
                 holder.playbtnOponent.setVisibility(View.GONE);
                 holder.playbtnSender.setVisibility(View.GONE);
+
             }
             else if (chatData.get(position).getType().equalsIgnoreCase("video")){
                 MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
@@ -313,7 +314,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyviewHo
         }
     }
     public class MyviewHolder extends RecyclerView.ViewHolder {
-        TextView sendermsz,oponentmsz;
+        TextView sendermsz,oponentmsz ,nameUser;
         ImageView senderimage,oponentimage ,videoviewSender,VideoViewOponent;
         SeekBar senderSeekBarTestPlay,oponentsenderSeekBarTestPlay;
 
@@ -327,7 +328,6 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyviewHo
             senderButtonTestPlayPause=itemView.findViewById(R.id.ButtonTestPlayPause);
 
             oponentButtonTestPlayPause=itemView.findViewById(R.id.oponentButtonTestPlayPause);
-
             sendermsz=itemView.findViewById(R.id.userMessage);
             oponentmsz=itemView.findViewById(R.id.oPonentMessage);
             senderlayout=itemView.findViewById(R.id.senderlayout);

@@ -121,12 +121,11 @@ public class User_Fragment extends Fragment implements View.OnClickListener, Use
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+                    +  " must implement OnFragmentInteractionListener");
         }
     }
 
@@ -247,7 +246,6 @@ public class User_Fragment extends Fragment implements View.OnClickListener, Use
                     bitmap.compress(Bitmap.CompressFormat.JPEG, 50, bytes);
                     profile_image_user.setImageBitmap(bitmap);
                     UpdateUser(new File(getPath(selectedImage)));
-
                 } catch (Exception e) {
 
                     e.printStackTrace();

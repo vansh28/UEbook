@@ -12,7 +12,6 @@
         android:layout_marginTop="@dimen/size_8"
         android:layout_marginRight="@dimen/size_150"
         android:background="@drawable/rounded_rect"
-        android:padding="@dimen/size_10"
         android:visibility="gone">
 
         <TextView
@@ -23,8 +22,18 @@
             android:minHeight="@dimen/size_40"
             android:minWidth="@dimen/size_70"
             android:text="Hello"
-            android:gravity="start"
+            android:gravity="center_vertical"
             android:textColor="@color/black" />
+
+        <TextView
+            android:id="@+id/nameUser"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:gravity="start"
+            android:visibility="gone"
+            android:textSize="@dimen/size_10"
+            />
 
         <TextView
             android:id="@+id/oponentMessageTime"

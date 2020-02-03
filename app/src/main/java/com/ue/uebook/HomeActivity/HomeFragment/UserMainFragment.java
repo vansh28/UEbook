@@ -267,8 +267,6 @@ public class UserMainFragment extends Fragment implements View.OnClickListener, 
                 textSize = 24;
                 break;
         }
-
-
     }
 
 

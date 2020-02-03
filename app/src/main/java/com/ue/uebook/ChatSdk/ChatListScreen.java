@@ -99,7 +99,8 @@ public class ChatListScreen extends BaseActivity implements View.OnClickListener
     }
     @Override
     public void onClick(View v) {
-        if (v==backbtn){
+        if (v==backbtn)
+        {
             finish();
         }
         else if (v==newChatbtn){
@@ -108,7 +109,6 @@ public class ChatListScreen extends BaseActivity implements View.OnClickListener
             finish();
         }
     }
-
     @Override
     public void onUserChatClick(String channelID,String sendTo ,String name ,String image) {
         Intent intent = new Intent(this,MessageScreen.class);
@@ -131,7 +131,7 @@ public class ChatListScreen extends BaseActivity implements View.OnClickListener
         previewDialog.setContentView(getLayoutInflater().inflate(R.layout.image_layout
                 , null));
         ImageView imageView = previewDialog.findViewById(R.id.image_view);
-        GlideUtils.loadImage(ChatListScreen.this, "http://dnddemo.com/ebooks/api/v1/upload/" + file, imageView, R.drawable.user_default, R.drawable.user_default);
+        GlideUtils.loadImage(ChatListScreen.this, ApiRequest.BaseUrl+"upload/" + file, imageView, R.drawable.user_default, R.drawable.user_default);
         Button ok_Btn = previewDialog.findViewById(R.id.buton_ok);
         ok_Btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -163,12 +163,13 @@ public class ChatListScreen extends BaseActivity implements View.OnClickListener
                     @Override
                     public void run() {
                         if (form.getUserList()!= null) {
+                            noHistoryView.setVisibility(View.GONE);
                             userListList=form.getUserList();
                             data=form.getData();
                             chatAdapter = new ChatListAdapter(data,userListList,ChatListScreen.this,new SessionManager(getApplicationContext()).getUserID());
                             chatList.setAdapter(chatAdapter);
                             chatAdapter.setItemClickListener(ChatListScreen.this);
-                            noHistoryView.setVisibility(View.GONE);
+
                         }
                         else {
                             noHistoryView.setVisibility(View.VISIBLE);
@@ -206,6 +207,7 @@ public class ChatListScreen extends BaseActivity implements View.OnClickListener
                             chatList.setAdapter(chatAdapter);
                             chatAdapter.setItemClickListener(ChatListScreen.this);
                             noHistoryView.setVisibility(View.GONE);
+
                         }
                         else {
                             noHistoryView.setVisibility(View.VISIBLE);
@@ -225,7 +227,6 @@ public class ChatListScreen extends BaseActivity implements View.OnClickListener
             }
         });
     }
-
     @Override
     public void onResume() {
         super.onResume();

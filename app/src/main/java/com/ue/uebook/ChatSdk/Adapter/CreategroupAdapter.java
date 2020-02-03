@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.ue.uebook.ChatSdk.Pojo.OponentData;
+import com.ue.uebook.Data.ApiRequest;
 import com.ue.uebook.GlideUtils;
 import com.ue.uebook.R;
 
@@ -44,7 +45,7 @@ public class   CreategroupAdapter   extends BaseSelectableListAdapter<OponentDat
 
         if (user != null) {
             holder.opponentName.setText(user.getName());
-            GlideUtils.loadImage(context,user.getUrl(), holder.selectimage, R.drawable.user_default,  R.drawable.user_default);
+            GlideUtils.loadImage(context, ApiRequest.BaseUrl+"upload/"+user.getUrl(), holder.selectimage, R.drawable.user_default,  R.drawable.user_default);
             holder.timeTv.setVisibility(View.GONE);
             if (selectedItems.contains(user)) {
 //                convertView.setBackgroundColor(Color.parseColor("#98A0EE"));
