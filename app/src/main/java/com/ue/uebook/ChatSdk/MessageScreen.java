@@ -209,7 +209,7 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
     @Override
     public void onClick(View v) {
         if (v == back_btn) {
-            Intent intent = new Intent(this, ChatListScreen.class);
+            Intent intent = new Intent(this, ChatHistoryScreen.class);
             startActivity(intent);
             finish();
         } else if (v == userProfile) {
@@ -712,7 +712,7 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(this, ChatListScreen.class);
+        Intent intent = new Intent(this, ChatHistoryScreen.class);
         startActivity(intent);
         finish();
     }

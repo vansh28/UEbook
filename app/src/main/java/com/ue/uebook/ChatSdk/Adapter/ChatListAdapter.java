@@ -43,6 +43,7 @@ public class ChatListAdapter  extends RecyclerView.Adapter<ChatListAdapter.MyVie
         this.userID=userID;
     }
 
+
     public interface ItemClick {
         void onUserChatClick(String channelID,String sendTo ,String name ,String imageUrl);
         void  onUserProfileClick(String imageURl);

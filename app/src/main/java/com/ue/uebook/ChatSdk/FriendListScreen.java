@@ -53,7 +53,7 @@ public class FriendListScreen extends BaseActivity implements View.OnClickListen
     @Override
     public void onClick(View v) {
         if (v== back_btn){
-            Intent intent = new Intent(this,ChatListScreen.class);
+            Intent intent = new Intent(this,ChatHistoryScreen.class);
             startActivity(intent);
             finish();
         }
@@ -124,7 +124,7 @@ public class FriendListScreen extends BaseActivity implements View.OnClickListen
     }
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(this,ChatListScreen.class);
+        Intent intent = new Intent(this,ChatHistoryScreen.class);
         startActivity(intent);
         finish();
     }

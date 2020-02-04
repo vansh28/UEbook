@@ -2,14 +2,29 @@ package com.ue.uebook.ChatSdk;
 
 import android.content.Context;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.ue.uebook.ChatSdk.Adapter.GroupListAdapter;
+import com.ue.uebook.ChatSdk.Pojo.GrouplistResponse;
+import com.ue.uebook.Data.ApiRequest;
 import com.ue.uebook.R;
+import com.ue.uebook.SessionManager;
+
+import java.io.IOException;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -28,8 +43,10 @@ public class GroupChatFrag extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
+    private RecyclerView groupList;
+     private GroupListAdapter groupListAdapter;
     private OnFragmentInteractionListener mListener;
+    private SwipeRefreshLayout swipe_refresh_layout;
 
     public GroupChatFrag() {
         // Required empty public constructor
@@ -66,7 +83,16 @@ public class GroupChatFrag extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_group_chat, container, false);
+        View view= inflater.inflate(R.layout.fragment_group_chat, container, false);
+        groupList=view.findViewById(R.id.groupList);
+        swipe_refresh_layout=view.findViewById(R.id.swipe_refresh_layout);
+        LinearLayoutManager linearLayoutManagerPopularList = new LinearLayoutManager(getContext());
+        linearLayoutManagerPopularList.setOrientation(LinearLayoutManager.VERTICAL);
+        groupList.setLayoutManager(linearLayoutManagerPopularList);
+        groupList.setNestedScrollingEnabled(false);
+        getGroupList(new SessionManager(getActivity().getApplicationContext()).getUserID());
+        pullTorefreshswipe();
+        return  view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -107,4 +133,53 @@ public class GroupChatFrag extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private void getGroupList(String user_id   ) {
+        ApiRequest request = new ApiRequest();
+        request.requestforgetGroupList(user_id ,new okhttp3.Callback() {
+            @Override
+            public void onFailure(okhttp3.Call call, IOException e) {
+                Log.d("error", "error");
+
+            }
+
+            @Override
+            public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
+
+                final String myResponse = response.body().string();
+                Gson gson = new GsonBuilder().create();
+                final GrouplistResponse form = gson.fromJson(myResponse, GrouplistResponse.class);
+                if (form.getError()==false && form.getGroup_details()!=null){
+//
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        groupListAdapter = new GroupListAdapter((AppCompatActivity)getActivity(),form.getGroup_details());
+                        groupList.setAdapter(groupListAdapter);
+
+
+
+                    }
+                });
+//
+//
+                }
+            }
+        });
+    }
+
+    private void pullTorefreshswipe(){
+        swipe_refresh_layout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void onRefresh() {
+                 getGroupList(new SessionManager(getActivity().getApplicationContext()).getUserID());
+                swipe_refresh_layout.setRefreshing(false);
+            }
+        });
+    }
+
+
+
 }

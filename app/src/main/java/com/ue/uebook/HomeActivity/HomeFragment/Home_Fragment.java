@@ -40,7 +40,7 @@ import com.android.volley.toolbox.Volley;
 import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.ue.uebook.ChatSdk.ChatListScreen;
+import com.ue.uebook.ChatSdk.ChatHistoryScreen;
 import com.ue.uebook.Constants;
 import com.ue.uebook.Data.ApiRequest;
 import com.ue.uebook.DeatailActivity.Book_Detail_Screen;
@@ -277,7 +277,7 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
         }
         else if (view==chatBtn){
 
-            Intent intent = new Intent(getContext(), ChatListScreen.class);
+            Intent intent = new Intent(getContext(), ChatHistoryScreen.class);
             getContext().startActivity(intent);
         }
     }

@@ -22,7 +22,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.ue.uebook.AuthorProfileActivity.AuthorProfileScreen;
 import com.ue.uebook.AuthorProfileActivity.PendingRequestScreen;
-import com.ue.uebook.ChatSdk.ChatListScreen;
+import com.ue.uebook.ChatSdk.ChatHistoryScreen;
 import com.ue.uebook.Dashboard.StartActivityHome;
 import com.ue.uebook.Dictionary.DictionaryScreen;
 import com.ue.uebook.PendingBook.PendingBookScreen;
@@ -171,7 +171,7 @@ public class UserMainFragment extends Fragment implements View.OnClickListener, 
         } else if (view == logOut) {
             confirmLogoutDialog();
         } else if (view == chat_Container) {
-            Intent intent = new Intent(getContext(), ChatListScreen.class);
+            Intent intent = new Intent(getContext(), ChatHistoryScreen.class);
             getContext().startActivity(intent);
 
         } else if (view == author_Container) {

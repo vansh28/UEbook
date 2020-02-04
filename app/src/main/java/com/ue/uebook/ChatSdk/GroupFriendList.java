@@ -259,7 +259,7 @@ public class GroupFriendList extends BaseActivity implements View.OnClickListene
                         @Override
                         public void run() {
                             Toast.makeText(getApplicationContext(),"Successfully Group Created",Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(GroupFriendList.this,ChatListScreen.class));
+                            startActivity(new Intent(GroupFriendList.this,ChatHistoryScreen.class));
                              finish();
                         }
                     });
