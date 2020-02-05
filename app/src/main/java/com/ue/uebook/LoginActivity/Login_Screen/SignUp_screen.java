@@ -60,7 +60,6 @@ public class SignUp_screen extends BaseActivity implements View.OnClickListener 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up_scren);
-
         haveAcountBtn=findViewById(R.id.haveAcountBtn);
         faceimage_preview=findViewById(R.id.faceimage_preview);
         faceimage=findViewById(R.id.faceimage);
@@ -95,7 +94,7 @@ public class SignUp_screen extends BaseActivity implements View.OnClickListener 
                                        int arg2, long arg3) {
                 String label = parent.getItemAtPosition(arg2).toString();
                 actorName = label;
-                actorname=actorName;
+                actorname = actorName;
             }
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {

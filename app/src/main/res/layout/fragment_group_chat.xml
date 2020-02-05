@@ -24,6 +24,16 @@
             android:layout_marginRight="@dimen/size_10"
             android:layout_marginBottom="9dp" />
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+    <TextView
+        android:id="@+id/noHistoryView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="No History Found"
+        android:layout_gravity="center"
+        android:textSize="@dimen/size_15"
+        android:textColor="@color/black"
+        android:visibility="gone"
+        android:layout_centerInParent="true"/>
 
 
 </FrameLayout>

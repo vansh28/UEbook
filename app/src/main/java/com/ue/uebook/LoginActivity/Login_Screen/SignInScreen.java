@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Build;
@@ -35,6 +36,8 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
+import com.facebook.Profile;
+import com.facebook.ProfileTracker;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.google.android.gms.auth.api.Auth;
@@ -65,6 +68,9 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.Arrays;
 
 import libs.mjn.prettydialog.PrettyDialog;
@@ -97,11 +103,28 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener, 
     public static final int RequestPermissionCode = 1;
     private final int PICK_IMAGE_CAMERA = 121;
     private Bitmap bitmap;
+    private AccessTokenTracker accessTokenTracker;
+    private ProfileTracker profileTracker;
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in_screen);
+        accessTokenTracker= new AccessTokenTracker() {
+            @Override
+            protected void onCurrentAccessTokenChanged(AccessToken oldToken, AccessToken newToken) {
+            }
+        };
+
+        profileTracker = new ProfileTracker() {
+            @Override
+            protected void onCurrentProfileChanged(Profile oldProfile, Profile newProfile) {
+
+            }
+        };
+
+        accessTokenTracker.startTracking();
+        profileTracker.startTracking();
         intent = getIntent();
         if (!checkPermission()){
             requestPermission();
@@ -224,17 +247,37 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener, 
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
-    AccessTokenTracker tokenTracker = new AccessTokenTracker() {
+//    AccessTokenTracker tokenTracker = new AccessTokenTracker() {
+//        @Override
+//        protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken currentAccessToken) {
+//            if (currentAccessToken == null) {
+//                showSnackBar(signinscreen, "Login Error");
+//                hideLoadingIndicator();
+//            } else
+//                hideLoadingIndicator();
+//
+//        }
+//    };
+
+    private FacebookCallback<LoginResult> callback = new FacebookCallback<LoginResult>() {
         @Override
-        protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken currentAccessToken) {
-            if (currentAccessToken == null) {
-                showSnackBar(signinscreen, "Login Error");
-                hideLoadingIndicator();
-            } else
-                hideLoadingIndicator();
-            loadUserProfile(currentAccessToken);
+        public void onSuccess(LoginResult loginResult) {
+            AccessToken accessToken = loginResult.getAccessToken();
+            loadUserProfile(accessToken);
+        }
+
+        @Override
+        public void onCancel() {
+            Toast.makeText(SignInScreen.this, "User Cancelled login", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onError(FacebookException e) {
+            Toast.makeText(SignInScreen.this, "Error occurred while login", Toast.LENGTH_SHORT).show();
         }
     };
+
+
     private void loadUserProfile(AccessToken newAccessToken) {
         GraphRequest request = GraphRequest.newMeRequest(newAccessToken, new GraphRequest.GraphJSONObjectCallback() {
             @Override
@@ -261,32 +304,34 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener, 
             }
         });
         Bundle parameters = new Bundle();
-        parameters.putString("fields", "first_name,last_name,email,gender,id,taggable_friends");
+        parameters.putString("fields", "first_name,last_name,email,gender,id");
         request.setParameters(parameters);
         request.executeAsync();
     }
+
+    public Bitmap getBitmapfromUrl(String imageUrl) {
+        try {
+            URL url = new URL(imageUrl);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setDoInput(true);
+            connection.connect();
+            InputStream input = connection.getInputStream();
+            Bitmap bitmap = BitmapFactory.decodeStream(input);
+            return bitmap;
+
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     private void Fblogin() {
         callbackManager = CallbackManager.Factory.create();
         // Set permissions
         LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("email", "public_profile"));
-        LoginManager.getInstance().registerCallback(callbackManager,
-                new FacebookCallback<LoginResult>() {
-                    @Override
-                    public void onSuccess(LoginResult loginResult) {
-                        hideLoadingIndicator();
+        LoginManager.getInstance().registerCallback(callbackManager,callback);
 
-                    }
-                    @Override
-                    public void onCancel() {
-                        Log.d("error", "On cancel");
-                        hideLoadingIndicator();
-                    }
-                    @Override
-                    public void onError(FacebookException error) {
-                        Log.d("error", error.toString());
-                        hideLoadingIndicator();
-                    }
-                });
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -447,8 +492,6 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener, 
             @Override
             public void onFailure(okhttp3.Call call, IOException e) {
                 Log.e("error", e.getLocalizedMessage());
-
-
             }
 
             @Override
@@ -634,6 +677,18 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener, 
             }
         });
     }
+    @Override
+    public void onStop() {
+        super.onStop();
+        accessTokenTracker.stopTracking();
+        profileTracker.stopTracking();
+    }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        Profile profile = Profile.getCurrentProfile();
+
+    }
 
 }

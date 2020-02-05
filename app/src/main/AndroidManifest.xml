@@ -39,7 +39,9 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".ChatSdk.ChatHistoryScreen"></activity>
+        <activity android:name=".ChatSdk.GroupMessageScreen"></activity>
+        <activity android:name=".ChatSdk.ContactListScreen" />
+        <activity android:name=".ChatSdk.ChatHistoryScreen" />
         <activity android:name=".ChatSdk.GroupFriendList" />
         <activity
             android:name=".VoiceCall.VoiceCallReceive"

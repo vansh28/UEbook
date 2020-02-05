@@ -1,6 +1,5 @@
 package com.ue.uebook.ChatSdk;
 
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -9,31 +8,28 @@ import android.widget.ImageButton;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
-import com.ue.uebook.ChatSdk.Adapter.MyAdapter;
-import com.ue.uebook.HomeActivity.HomeScreen;
+import com.ue.uebook.ChatSdk.Adapter.ConactListTabChanger;
 import com.ue.uebook.R;
 
-public class ChatHistoryScreen extends AppCompatActivity implements ChatHistoryFrag.OnFragmentInteractionListener, GroupChatFrag.OnFragmentInteractionListener, View.OnClickListener {
+public class ContactListScreen extends AppCompatActivity implements View.OnClickListener ,TelephonebookFrag.OnFragmentInteractionListener,FriendListFrag.OnFragmentInteractionListener{
     TabLayout tabLayout;
     ViewPager viewPager;
     private ImageButton backbtnChat;
-    private FloatingActionButton newChatbtn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_chat_history_screen);
+        setContentView(R.layout.activity_contact_list_screen);
+
+
         tabLayout = findViewById(R.id.tabLayout);
         backbtnChat=findViewById(R.id.backbtnChat);
         backbtnChat.setOnClickListener(this);
-        newChatbtn= findViewById(R.id.newChatbtn);
-        newChatbtn.setOnClickListener(this);
         viewPager = findViewById(R.id.viewPager);
-        tabLayout.addTab(tabLayout.newTab().setText("Chat"));
-        tabLayout.addTab(tabLayout.newTab().setText("Group Chat"));
+        tabLayout.addTab(tabLayout.newTab().setText("Friend List"));
+        tabLayout.addTab(tabLayout.newTab().setText("Telephone Book"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-        final MyAdapter adapter = new MyAdapter(this,getSupportFragmentManager(),
+        final ConactListTabChanger adapter = new ConactListTabChanger(this,getSupportFragmentManager(),
                 tabLayout.getTabCount());
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
@@ -49,33 +45,35 @@ public class ChatHistoryScreen extends AppCompatActivity implements ChatHistoryF
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
 
+
             }
         });
     }
 
-    @Override
-    public void onFragmentInteraction(Uri uri) {
 
-    }
 
     @Override
     public void onClick(View v) {
         if (v== backbtnChat){
-            Intent intent = new Intent(this , HomeScreen.class);
-            startActivity(intent);
+
             finish();
-        }
-       else if (v==newChatbtn){
-            Intent intent = new Intent(this,ContactListScreen.class);
-              startActivity(intent);
         }
     }
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(this,HomeScreen.class);
-        startActivity(intent);
+
         finish();
+    }
+
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
     }
 }
 

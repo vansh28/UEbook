@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -65,6 +66,7 @@ public class ChatHistoryFrag extends Fragment implements View.OnClickListener ,C
     private Data data;
     private List<UserList> userListList;
     private BroadcastReceiver mReceiver;
+    private TextView noHistoryView;
     ProgressDialog progressDialog ;
     public ChatHistoryFrag() {
         // Required empty public constructor
@@ -108,7 +110,7 @@ public class ChatHistoryFrag extends Fragment implements View.OnClickListener ,C
         swipe_refresh_layout=view.findViewById(R.id.swipe_refresh_layout);
         newChatbtn=view.findViewById(R.id.newChatbtn);
         newChatbtn.setOnClickListener(this);
-
+        noHistoryView =view.findViewById(R.id.noHistoryView);
         LinearLayoutManager linearLayoutManagerPopularList = new LinearLayoutManager(getContext());
         linearLayoutManagerPopularList.setOrientation(LinearLayoutManager.VERTICAL);
         chatList.setLayoutManager(linearLayoutManagerPopularList);
@@ -184,7 +186,7 @@ public class ChatHistoryFrag extends Fragment implements View.OnClickListener ,C
     @Override
     public void onClick(View v) {
                  if (v==newChatbtn){
-                     Intent intent = new Intent(getContext(),FriendListScreen.class);
+                     Intent intent = new Intent(getContext(),ContactListScreen.class);
                      getContext().startActivity(intent);
                  }
     }
@@ -229,13 +231,17 @@ public class ChatHistoryFrag extends Fragment implements View.OnClickListener ,C
                     @Override
                     public void run() {
                         if (form.getUserList()!= null) {
+                            noHistoryView.setVisibility(View.INVISIBLE);
                             userListList=form.getUserList();
                             data=form.getData();
                             chatAdapter = new ChatListAdapter(form.getData(),form.getUserList(), (AppCompatActivity) getContext(),new SessionManager(getActivity().getApplicationContext()).getUserID());
                             chatList.setAdapter(chatAdapter);
                             chatAdapter.setItemClickListener(ChatHistoryFrag.this);
                         }
-                        else {
+
+                        else
+                            {
+                                noHistoryView.setVisibility(View.VISIBLE);
 
                         }
                     }
@@ -270,12 +276,13 @@ public class ChatHistoryFrag extends Fragment implements View.OnClickListener ,C
 
                             userListList=form.getUserList();
                             data=form.getData();
-                            chatAdapter = new ChatListAdapter(data,userListList, (AppCompatActivity) getContext(),new SessionManager(getActivity().getApplicationContext()).getUserID());
+                            chatAdapter = new ChatListAdapter(form.getData(),form.getUserList(), (AppCompatActivity) getContext(),new SessionManager(getActivity().getApplicationContext()).getUserID());
                             chatList.setAdapter(chatAdapter);
                             chatAdapter.setItemClickListener(ChatHistoryFrag.this);
-
                         }
-                        else {
+
+                        else
+                            {
 
                         }
                     }

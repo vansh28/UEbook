@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -32,13 +33,15 @@ import java.io.IOException;
 public class FriendListScreen extends BaseActivity implements View.OnClickListener  ,ContactListAdapter.ItemClick{
     private ImageButton back_btn;
     private ContactListAdapter contactListAdapter;
-   private  RecyclerView contactList;
-   private LinearLayout creategroupBtn;
+    private  RecyclerView contactList;
+    private LinearLayout creategroupBtn;
+    private TextView noView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friend_list_screen2);
         creategroupBtn = findViewById(R.id.creategroupBtn);
+        noView=findViewById(R.id.noView);
         creategroupBtn.setOnClickListener(this);
         back_btn =findViewById(R.id.backbtnContact);
         contactList=findViewById(R.id.contactList);
@@ -112,13 +115,24 @@ public class FriendListScreen extends BaseActivity implements View.OnClickListen
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                             creategroupBtn.setVisibility(View.VISIBLE);
                             contactListAdapter = new ContactListAdapter(FriendListScreen.this,form.getUserList(),form.getData());
                             contactList.setAdapter(contactListAdapter);
                             contactListAdapter.setItemClickListener(FriendListScreen.this);
                             contactListAdapter.notifyDataSetChanged();
+                        noView.setVisibility(View.INVISIBLE);
                     }
                 });
             }
+                else {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            creategroupBtn.setVisibility(View.INVISIBLE);
+                            noView.setVisibility(View.VISIBLE);
+                        }
+                    });
+                }
             }
         });
     }

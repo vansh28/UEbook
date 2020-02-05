@@ -12,6 +12,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ue.uebook.ChatSdk.Pojo.Grouplist;
+import com.ue.uebook.Data.ApiRequest;
+import com.ue.uebook.GlideUtils;
 import com.ue.uebook.R;
 
 import java.util.List;
@@ -21,11 +23,19 @@ import java.util.regex.Pattern;
 public class GroupListAdapter  extends RecyclerView.Adapter<GroupListAdapter.MyViewHolder>{
     private List<Grouplist>grouplist;
     private AppCompatActivity mtx;
+    private ItemClick itemClick;
 
     public GroupListAdapter(AppCompatActivity activity, List<Grouplist> group_details) {
         this.grouplist=group_details;
         this.mtx=activity;
 
+    }
+
+    public interface ItemClick {
+        void ongroupListItemClick(Grouplist grouplist);
+    }
+    public void setItemClickListener(ItemClick clickListener) {
+        itemClick = clickListener;
     }
 
     @NonNull
@@ -38,7 +48,15 @@ public class GroupListAdapter  extends RecyclerView.Adapter<GroupListAdapter.MyV
     @Override
     public void onBindViewHolder(@NonNull GroupListAdapter.MyViewHolder holder, final int position) {
                holder.name.setText(grouplist.get(position).getName());
-
+        GlideUtils.loadImage(mtx, ApiRequest.BaseUrl+"upload/" + grouplist.get(position).getGroup_image(), holder.profile, R.drawable.user_default, R.drawable.user_default);
+           holder.chatContainer.setOnClickListener(new View.OnClickListener() {
+               @Override
+               public void onClick(View v) {
+                   if (itemClick!=null){
+                       itemClick.ongroupListItemClick(grouplist.get(position));
+                   }
+               }
+           });
     }
 
 

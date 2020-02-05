@@ -93,7 +93,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                      else
                          {
 
-                         sendNotification(noti_msz,getBitmapfromUrl("dnddemo.com\\/ebooks\\/api\\/v1\\/upload\\/books\\/book_1571738214.jpg"));
+                         sendNotification(noti_msz,getBitmapfromUrl("http://dnddemo.com/ebooks/api/v1/upload/book_1571040310.jpg"));
                      }
                 }
             } catch (JSONException e) {

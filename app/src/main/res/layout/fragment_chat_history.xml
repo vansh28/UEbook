@@ -33,6 +33,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_marginBottom="@dimen/size_30"
+        android:visibility="gone"
         android:layout_marginRight="@dimen/size_20"
         android:layout_height="wrap_content"/>
     <TextView

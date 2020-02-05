@@ -13,7 +13,7 @@
     <string name="commnt">Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia</string>
     <string name="share_intent_title">Share</string>
 
-    <string name="facebook_app_id">559094584629511</string>
+    <string name="facebook_app_id">538544260345778</string>
     <!--    <string name="facebook_app_id">448806012448420</string>-->
     <string name="fb_login_protocol_scheme">fb559094584629511</string>
     <string name="no_internet" translatable="false">No internet connection!</string>

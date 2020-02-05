@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ChatSdk.ChatHistoryScreen">
+    tools:context=".ChatSdk.ChatListScreen">
     <RelativeLayout
         android:layout_width="match_parent"
         android:background="@color/colorAccent"
@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/size_10"
-            android:text="UEbook Chat"
+            android:text="Contact List"
             android:textStyle="bold"
             android:textColor="@color/white"
             android:textSize="@dimen/size_20"
@@ -36,7 +36,7 @@
             app:tabTextColor="@color/white"
             app:tabGravity="fill"
             app:tabRippleColor="@color/black"
-            app:tabTextAppearance="@style/MyCustomTextAppearance"
+          app:tabTextAppearance="@style/MyCustomTextAppearance"
             app:tabIndicatorColor="@color/red"
             android:layout_height="wrap_content"
             />
@@ -49,13 +49,7 @@
         android:layout_centerInParent="true"
         android:layout_marginTop="10dp"
         tools:layout_editor_absoluteX="8dp" />
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:layout_width="wrap_content"
-        android:id="@+id/newChatbtn"
-        android:src="@drawable/chat"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginBottom="@dimen/size_50"
-        android:layout_marginRight="@dimen/size_30"
-        android:layout_height="wrap_content"/>
+
+
+
 </RelativeLayout>

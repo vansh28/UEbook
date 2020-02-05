@@ -27,10 +27,7 @@ public class GroupItemListAdapter  extends RecyclerView.Adapter<GroupItemListAda
     public GroupItemListAdapter(AppCompatActivity mctx, List<OponentData> userList) {
         this.oponentListdata=userList;
         this.mctx=mctx;
-
     }
-
-
     public interface ItemClick {
         void ongroupListItemClick(OponentData oponentData ,int position);
     }
@@ -41,7 +38,6 @@ public class GroupItemListAdapter  extends RecyclerView.Adapter<GroupItemListAda
     @Override
     public GroupItemListAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.grouplistitem, parent, false);
-
         GroupItemListAdapter.MyViewHolder vh = new GroupItemListAdapter.MyViewHolder(v); // pass the view to View Holder
         return vh;
     }

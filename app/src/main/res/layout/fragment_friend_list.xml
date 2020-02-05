@@ -3,31 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".ChatSdk.FriendListScreen">
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:background="@color/colorAccent"
-        android:id="@+id/header"
-        android:layout_height="@dimen/size_50">
-        <ImageButton
-            android:id="@+id/backbtnContact"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/backbtn"
-            android:background="@android:color/transparent"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="@dimen/size_10"
-            android:layout_marginLeft="@dimen/size_10" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Contact List"
-            android:textColor="@color/white"
-            android:textSize="@dimen/size_18"
-            android:layout_centerInParent="true"/>
-    </RelativeLayout>
-
+    tools:context=".ChatSdk.FriendListFrag">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_margin="@dimen/size_10"
@@ -50,11 +26,10 @@
 
     </LinearLayout>
 
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/contactList"
         android:layout_margin="@dimen/size_10"
-        android:layout_below="@+id/header"
+        android:layout_below="@+id/creategroupBtn"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
     <TextView
@@ -66,4 +41,5 @@
         android:visibility="gone"
         android:textColor="@color/black"
         android:text="No Friend Found"/>
+
 </RelativeLayout>
