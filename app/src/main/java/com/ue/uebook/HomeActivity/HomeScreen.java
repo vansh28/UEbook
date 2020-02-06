@@ -92,7 +92,6 @@ public class HomeScreen extends BaseActivity implements Home_Fragment.OnFragment
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         loadFragment(new HomeNewFragment());
-
     }
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
         @SuppressLint("RestrictedApi")

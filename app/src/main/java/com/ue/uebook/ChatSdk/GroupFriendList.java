@@ -52,6 +52,7 @@ public class GroupFriendList extends BaseActivity implements View.OnClickListene
     private EditText groupname;
     private  TextWatcher mTextEditorWatcher;
     private List<String>userIDForChat;
+    private String groupID="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -171,6 +172,7 @@ public class GroupFriendList extends BaseActivity implements View.OnClickListene
                 groupPopleList.add(oponentData);
                 addKist(groupPopleList);
                 userIDForChat.add(oponentData.getUserId());
+
             }
             else if (id==2){
                 if (groupPopleList.size()>0){
@@ -184,6 +186,17 @@ public class GroupFriendList extends BaseActivity implements View.OnClickListene
         }
     }
     public void showPopUp() {
+
+
+        for(String s:userIDForChat){
+            if (groupID == ""){
+                groupID = s;
+            }
+            else {
+                groupID =   groupID + "," + s;
+            }
+        }
+        Log.e("sring",groupID);
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater layoutInflater = getLayoutInflater();
         View customView = layoutInflater.inflate(R.layout.groupnameitem, null);
@@ -218,7 +231,7 @@ public class GroupFriendList extends BaseActivity implements View.OnClickListene
             @Override
             public void onClick(View v) {
                 if(!groupname.getText().toString().isEmpty()){
-                    createGroup(new SessionManager(getApplicationContext()).getUserID(),userIDForChat.toString(),groupname.getText().toString());
+                    createGroup(new SessionManager(getApplicationContext()).getUserID(),groupID,groupname.getText().toString());
 
                     alertDialog.dismiss();
 
@@ -252,6 +265,7 @@ public class GroupFriendList extends BaseActivity implements View.OnClickListene
 
                 final String myResponse = response.body().string();
                 Gson gson = new GsonBuilder().create();
+                Log.e("array",myResponse);
                // final StatusPojo form = gson.fromJson(myResponse, StatusPojo.class);
 //                if (form.getError()==false && form.getData()!=null){
 //

@@ -173,7 +173,7 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
                 oponent_name.setText(oponentData.getName());
                 sendToID = oponentData.userId;
                 oponent_name.setText(oponentData.getName());
-                GlideUtils.loadImage(MessageScreen.this, ApiRequest.BaseUrl+"upload/" + oponentData.getUrl(), userProfile, R.drawable.user_default, R.drawable.user_default);
+                GlideUtils.loadImage(MessageScreen.this, ApiRequest.BaseUrl + "upload/" + oponentData.getUrl(), userProfile, R.drawable.user_default, R.drawable.user_default);
                 imageProfile = oponentData.getUrl();
             }
 
@@ -194,12 +194,12 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
             if (channelID != null) {
                 chanelID = channelID;
                 getChatHistory(new SessionManager(getApplication()).getUserID(), sendToID, channelID, "text");
-                GlideUtils.loadImage(MessageScreen.this, ApiRequest.BaseUrl+"upload/" + imageUrl, userProfile, R.drawable.user_default, R.drawable.user_default);
+                GlideUtils.loadImage(MessageScreen.this, ApiRequest.BaseUrl + "upload/" + imageUrl, userProfile, R.drawable.user_default, R.drawable.user_default);
                 imageProfile = imageUrl;
             } else {
 
                 getChatHistory(new SessionManager(getApplication()).getUserID(), sendToID, "", "text");
-                GlideUtils.loadImage(MessageScreen.this, ApiRequest.BaseUrl+"upload/" + imageUrl, userProfile, R.drawable.user_default, R.drawable.user_default);
+                GlideUtils.loadImage(MessageScreen.this, ApiRequest.BaseUrl + "upload/" + imageUrl, userProfile, R.drawable.user_default, R.drawable.user_default);
                 imageProfile = imageUrl;
             }
         }
@@ -343,7 +343,7 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
         previewDialog.setContentView(getLayoutInflater().inflate(R.layout.image_layout
                 , null));
         ImageView imageView = previewDialog.findViewById(R.id.image_view);
-        GlideUtils.loadImage(MessageScreen.this, ApiRequest.BaseUrl+"upload/"+ file, imageView, R.drawable.user_default, R.drawable.user_default);
+        GlideUtils.loadImage(MessageScreen.this, ApiRequest.BaseUrl + "upload/" + file, imageView, R.drawable.user_default, R.drawable.user_default);
         Button ok_Btn = previewDialog.findViewById(R.id.buton_ok);
         ok_Btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -370,7 +370,7 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
 //                       startActivity(intent);
                         return true;
                     case R.id.clearChat:
-                       clearChatHistory(new SessionManager(getApplicationContext()).getUserID(), sendToID);
+                        clearChatHistory(new SessionManager(getApplicationContext()).getUserID(), sendToID);
                         return true;
                     case R.id.voice_Btn:
 //                        Intent intents = new Intent(MessageScreen.this, VoiceCallActivity.class);
@@ -516,7 +516,7 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void sendMesaage(String user_id, String tokenKey, String sendTO, String type, final String channelId, String message, int typeval) {
         OkHttpClient client = new OkHttpClient();
-        String url = ApiRequest.BaseUrl+"user_chat";
+        String url = ApiRequest.BaseUrl + "user_chat";
         final MediaType MEDIA_TYPE_PNG = MediaType.parse("image/png");
         showLoadingIndicator();
         RequestBody requestBody;
@@ -590,7 +590,6 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
             public void onFailure(Call call, IOException e) {
                 call.cancel();
             }
-
             @Override
             public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
                 hideLoadingIndicator();

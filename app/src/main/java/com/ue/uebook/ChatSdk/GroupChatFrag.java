@@ -42,7 +42,6 @@ public class GroupChatFrag extends Fragment implements GroupListAdapter.ItemClic
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -123,16 +122,15 @@ public class GroupChatFrag extends Fragment implements GroupListAdapter.ItemClic
         super.onDetach();
         mListener = null;
     }
-
     @Override
     public void ongroupListItemClick(Grouplist grouplist) {
         Intent intent = new Intent(getContext(),GroupMessageScreen.class);
         intent.putExtra("groupid",grouplist.getId());
         intent.putExtra("name",grouplist.getName());
         getContext().startActivity(intent);
+        Log.e("groupid",grouplist.getId());
+        Log.e("groupid",grouplist.getGroupuserid());
     }
-
-
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated

@@ -50,7 +50,7 @@ public class FontAdapter   extends RecyclerView.Adapter<FontAdapter.MyViewHolder
             @Override
             public void onClick(View view) {
                 if (fontItemClick != null) {
-                    fontItemClick.onfontItemClick(position,val[position]);
+                    fontItemClick.onfontItemClick(position , val[position]);
                     if (position == id) {
                         holder.selected_language.setChecked(true);
                         id = -1;

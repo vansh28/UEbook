@@ -53,7 +53,6 @@ public class BookListing extends BaseActivity implements HomeListingFragment.OnF
     private RecyclerView homelist;
     private ImageView back_iv,search_iv;
     private TextView noBookfoundText;
-
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
