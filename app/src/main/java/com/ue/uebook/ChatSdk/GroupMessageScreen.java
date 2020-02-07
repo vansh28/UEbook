@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
@@ -35,7 +36,10 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.ue.uebook.BaseActivity;
 import com.ue.uebook.ChatSdk.Adapter.GroupChatAdapter;
+import com.ue.uebook.ChatSdk.Adapter.GroupMemberListAdapter;
 import com.ue.uebook.ChatSdk.Pojo.GroupHistoryResponse;
+import com.ue.uebook.ChatSdk.Pojo.GroupMemberList;
+import com.ue.uebook.ChatSdk.Pojo.MemberListResponse;
 import com.ue.uebook.Data.ApiRequest;
 import com.ue.uebook.FilePath;
 import com.ue.uebook.FileUtil;
@@ -47,6 +51,8 @@ import com.ue.uebook.WebviewScreen;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -56,12 +62,12 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 
-public class GroupMessageScreen extends BaseActivity implements View.OnClickListener, ImageUtils.ImageAttachmentListener {
+public class GroupMessageScreen extends BaseActivity implements View.OnClickListener, ImageUtils.ImageAttachmentListener ,GroupMemberListAdapter.GroupMemberItemClick{
     private Intent intent;
     private static final int REQUEST_PICK_VIDEO = 12;
     private String groupID;
     private EditText edit_chat_message;
-    private ImageButton button_chat_send, backbtnMessage, button_chat_attachment, gallerybtn, audiobtn, videobtn, filebtn;
+    private ImageButton    videobtncall , voicebtn, button_chat_send, backbtnMessage, button_chat_attachment, gallerybtn, audiobtn, videobtn, filebtn;
     private TextView group_name;
     private RecyclerView messageList;
     private BottomSheetDialog mBottomSheetDialog;
@@ -77,6 +83,12 @@ public class GroupMessageScreen extends BaseActivity implements View.OnClickList
     private Bitmap bitmap;
     private int typevalue = 0;
     private VideoView videoview;
+    private Button callBtn;
+    private ListView listView;
+    private  GroupMemberListAdapter groupMemberListAdapter;
+    private List<String>memberForcall;
+    private String userid="";
+    private List<GroupMemberList>groupMemberLists;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,7 +96,13 @@ public class GroupMessageScreen extends BaseActivity implements View.OnClickList
         button_chat_attachment = findViewById(R.id.button_chat_attachment);
         intent = getIntent();
         imageUtils = new ImageUtils(this);
+        memberForcall = new ArrayList<>();
+        groupMemberLists = new ArrayList<>();
         previewImage = findViewById(R.id.previewImage);
+        videobtncall=findViewById(R.id.videobtn);
+        videobtncall.setOnClickListener(this);
+        voicebtn=findViewById(R.id.voicebtn);
+        voicebtn.setOnClickListener(this);
         videoview =findViewById(R.id.videoview);
         groupID = intent.getStringExtra("groupid");
         backbtnMessage = findViewById(R.id.backbtnMessage);
@@ -101,7 +119,7 @@ public class GroupMessageScreen extends BaseActivity implements View.OnClickList
         messageList.setLayoutManager(linearLayoutManagerPopularList);
         messageList.setNestedScrollingEnabled(false);
         getGroupHistory(new SessionManager(getApplicationContext()).getUserID(), groupID);
-
+        getGroupMember(new SessionManager(getApplicationContext()).getUserID(), groupID);
     }
 
     @Override
@@ -167,6 +185,25 @@ public class GroupMessageScreen extends BaseActivity implements View.OnClickList
             mBottomSheetDialog.dismiss();
 
         }
+        else if (v==voicebtn){
+            showBottomListSheet("audiocall");
+        }
+        else if (v==videobtncall){
+            showBottomListSheet("videocall");
+        }
+        else if (v==callBtn){
+
+//            for(String s:memberForcall){
+//                if (userid == ""){
+//                    userid = s;
+//                }
+//                else {
+//                    userid =   groupID + "," + s;
+//                }
+//            }
+//            Log.e("useris",userid);
+        }
+
     }
 
     private void showBottomSheet() {
@@ -460,4 +497,136 @@ public class GroupMessageScreen extends BaseActivity implements View.OnClickList
         intent.putExtra("url", url);
         startActivity(intent);
     }
+
+
+
+
+
+
+    private void showBottomListSheet(String calltype) {
+        final View bottomSheetLayout = getLayoutInflater().inflate(R.layout.bottomsheetgroup, null);
+        mBottomSheetDialog = new BottomSheetDialog(this);
+        mBottomSheetDialog.setContentView(bottomSheetLayout);
+         listView = mBottomSheetDialog.findViewById(R.id.groupmemberList);
+
+        callBtn=mBottomSheetDialog.findViewById(R.id.callBtn);
+
+
+        groupMemberListAdapter = new GroupMemberListAdapter(GroupMessageScreen.this,groupMemberLists);
+        groupMemberListAdapter.setItemClickListener(GroupMessageScreen.this);
+        listView.setAdapter(groupMemberListAdapter);
+
+
+        callBtn.setOnClickListener(this);
+
+//        listView.setOnTouchListener(new ListView.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                int action = event.getAction();
+//                switch (action) {
+//                    case MotionEvent.ACTION_DOWN:
+//                        // Disallow NestedScrollView to intercept touch events.
+//                        v.getParent().requestDisallowInterceptTouchEvent(true);
+//                        break;
+//
+//                    case MotionEvent.ACTION_UP:
+//                        // Allow NestedScrollView to intercept touch events.
+//                        v.getParent().requestDisallowInterceptTouchEvent(false);
+//                        break;
+//                }
+//
+//
+//                // Handle ListView touch events.
+//                v.onTouchEvent(event);
+//                return true;
+//            }
+//        });
+
+
+
+
+        mBottomSheetDialog.show();
+    }
+
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private void getGroupMember(String user_id, String groupID) {
+        ApiRequest request = new ApiRequest();
+            showLoadingIndicator();
+              if (groupMemberLists.size()>0)
+                  groupMemberLists.clear();
+        request.requestforgetGroupMember(user_id, groupID, new okhttp3.Callback() {
+            @Override
+            public void onFailure(okhttp3.Call call, IOException e) {
+                Log.d("error", "error");
+                hideLoadingIndicator();
+
+            }
+
+            @Override
+            public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
+               hideLoadingIndicator();
+                final String myResponse = response.body().string();
+                Gson gson = new GsonBuilder().create();
+                final MemberListResponse form = gson.fromJson(myResponse, MemberListResponse.class);
+                if (form.getError() == false && form.getUser_list() != null) {
+//
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                                 groupMemberLists.addAll(form.getUser_list());
+
+                        }
+                    });
+//
+//
+                } else {
+
+                }
+            }
+        });
+    }
+
+
+    @Override
+    public void ontItemClick(GroupMemberList groupMemberList, int position, int id) {
+        if (groupMemberList!=null){
+            Log.e("pod",String.valueOf(position));
+            if (id==1){
+                memberForcall.add(groupMemberList.getId());
+
+
+            }
+            else if (id==2){
+                if (memberForcall.size()>0){
+                    memberForcall.remove(groupMemberList.getId());
+                }
+
+            }
+
+        }
+    }
 }
+
+
+//_listView.setOnTouchListener(new ListView.OnTouchListener() {
+//@Override
+//public boolean onTouch(View v, MotionEvent event) {
+//        int action = event.getAction();
+//        switch (action) {
+//        case MotionEvent.ACTION_DOWN:
+//        // Disallow NestedScrollView to intercept touch events.
+//        v.getParent().requestDisallowInterceptTouchEvent(true);
+//        break;
+//
+//        case MotionEvent.ACTION_UP:
+//        // Allow NestedScrollView to intercept touch events.
+//        v.getParent().requestDisallowInterceptTouchEvent(false);
+//        break;
+//        }
+//
+//        // Handle ListView touch events.
+//        v.onTouchEvent(event);
+//        return true;
+//        }
+//        });

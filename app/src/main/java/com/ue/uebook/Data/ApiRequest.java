@@ -1,8 +1,7 @@
 package com.ue.uebook.Data;
 
-import com.google.firebase.iid.FirebaseInstanceId;
-
 import java.io.File;
+
 import okhttp3.Callback;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -28,7 +27,11 @@ public class ApiRequest {
                 .addFormDataPart("about_me", about_me)
                 .addFormDataPart("device_type", "android")
 //                .addFormDataPart("face_detect_image", face_detect_image.getName(), RequestBody.create(MEDIA_TYPE_PNG, face_detect_image))
-                .addFormDataPart("device_token", FirebaseInstanceId.getInstance().getToken())
+                .addFormDataPart("device_token", device_token)
+                .addFormDataPart("login_type", "normal")
+
+
+
                 .build();
                  Request request = new Request.Builder()
                 .url(url)
@@ -37,10 +40,12 @@ public class ApiRequest {
         client.newCall(request).enqueue(callback);
     }
 
-    public void requestforRegistrationfb(final String full_name, final String password, final String email, final String publisher_type, final String gender, final String country, final String about_me, final String device_token, Callback callback) {
+    public void requestforRegistrationfb(final String full_name, final String password, final String email, final String publisher_type, final String gender, final String country, final String about_me, final String device_token,final  String type ,Callback callback) {
         String url = null;
         url = BaseUrl + "createUser";
         OkHttpClient client = new OkHttpClient();
+
+
         final MediaType MEDIA_TYPE_PNG = MediaType.parse("image/png");
         RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
                 .addFormDataPart("user_name", full_name)
@@ -51,7 +56,9 @@ public class ApiRequest {
                 .addFormDataPart("country", country)
                 .addFormDataPart("about_me", about_me)
                 .addFormDataPart("device_type", "android")
-                .addFormDataPart("device_token", FirebaseInstanceId.getInstance().getToken())
+                .addFormDataPart("device_token", device_token)
+                .addFormDataPart("login_type", type)
+
                 .build();
         Request request = new Request.Builder()
                 .url(url)
@@ -690,6 +697,19 @@ public class ApiRequest {
                 .build();
         client.newCall(request).enqueue(callback);
     }
-
+    public void requestforgetGroupMember(String user_id ,String groupID  ,Callback callback) {
+        String url = null;
+        url = BaseUrl + "groupMemberList";
+        OkHttpClient client = new OkHttpClient();
+        RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
+                .addFormDataPart("user_id", user_id)
+                .addFormDataPart("group_id", groupID)
+                .build();
+        Request request = new Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .build();
+        client.newCall(request).enqueue(callback);
+    }
 
 }

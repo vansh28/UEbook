@@ -27,6 +27,7 @@ import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 
 import com.facebook.CallbackManager;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.ue.uebook.BaseActivity;
@@ -125,7 +126,7 @@ public class SignUp_screen extends BaseActivity implements View.OnClickListener 
         else if (view==signUpBtn){
             if (isvalidate())
             {
-                registrationUser(usernameTv.getText().toString(), passwordTv.getText().toString(), emailTv.getText().toString(), actorName, userGender, "",briefDescption.getText().toString(),"",faceFile);
+                registrationUser(usernameTv.getText().toString(), passwordTv.getText().toString(), emailTv.getText().toString(), actorName, userGender, "",briefDescption.getText().toString(), FirebaseInstanceId.getInstance().getToken(),faceFile);
             }
         }
         else if (view==upload_faceDetect_image){
@@ -150,7 +151,7 @@ public class SignUp_screen extends BaseActivity implements View.OnClickListener 
     private void registrationUser(String full_name, String password, String email, String publisher_type, String gender, String country, String about_me , String device_token,File face_detect_image) {
         ApiRequest request = new ApiRequest();
           showLoadingIndicator();
-        request.requestforRegistration(full_name, password, email, publisher_type, gender, country, about_me, "SDHDHDD",new okhttp3.Callback() {
+        request.requestforRegistration(full_name, password, email, publisher_type, gender, country, about_me, device_token,new okhttp3.Callback() {
             @Override
             public void onFailure(okhttp3.Call call, IOException e) {
                 Log.e("error", e.getLocalizedMessage());

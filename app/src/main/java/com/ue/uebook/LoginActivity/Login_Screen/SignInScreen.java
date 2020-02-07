@@ -175,7 +175,7 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener, 
             if (isvalidate()) {
                 String user = emailTv.getText().toString().trim();
                 String userpass = passwordTv.getText().toString().trim();
-                requestforLogin(user, userpass);
+                requestforLogin(user, userpass,FirebaseInstanceId.getInstance().getToken());
             }
 
         } else if (v == fbloginBtn) {
@@ -294,7 +294,7 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener, 
                             @Override
                             public void run() {
 //                                showDialog(first_name, last_name, email, image_url);
-                                registrationUser(first_name, " ", email, "Reader", "", "", "");
+                                registrationUser(first_name, " ", email, "Reader", "", "", FirebaseInstanceId.getInstance().getToken(),"facebook");
                             }
                         });
                     } catch (JSONException e) {
@@ -383,7 +383,7 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener, 
             String familyName = acct.getFamilyName();
             Uri uri = acct.getPhotoUrl();
 //            showDialogGP(personName, "", email, acct.getPhotoUrl());
-            registrationUser(personName, " ", email, "Reader", "", "", "");
+            registrationUser(personName, " ", email, "Reader", "", "", FirebaseInstanceId.getInstance().getToken(),"google");
         }
     }
     private Boolean isvalidate() {
@@ -407,7 +407,7 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener, 
         }
     }
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    public void requestforLogin(final String user_name, final String password) {
+    public void requestforLogin(final String user_name, final String password,final  String deviceToken) {
         String url = null;
         showLoadingIndicator();
         url = ApiRequest.BaseUrl+"userLogin";
@@ -416,7 +416,7 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener, 
                 .addFormDataPart("user_name", user_name)
                 .addFormDataPart("password", password)
                 .addFormDataPart("device_type", "android")
-                .addFormDataPart("device_token", FirebaseInstanceId.getInstance().getToken())
+                .addFormDataPart("device_token", deviceToken)
                 .build();
         Request request = new Request.Builder()
                 .url(url)
@@ -485,10 +485,10 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener, 
         startActivity(intent);
         finish();
     }
-    private void registrationUser(final String full_name, String password, String email, String publisher_type, String gender, String country, String device_token) {
+    private void registrationUser(final String full_name, String password, String email, String publisher_type, String gender, String country, String device_token ,String type) {
         ApiRequest request = new ApiRequest();
         hideLoadingIndicator();
-        request.requestforRegistrationfb(full_name, password, email, publisher_type, gender, country, "", device_token, new okhttp3.Callback() {
+        request.requestforRegistrationfb(full_name, password, email, publisher_type, gender, country, "", device_token,type, new okhttp3.Callback() {
             @Override
             public void onFailure(okhttp3.Call call, IOException e) {
                 Log.e("error", e.getLocalizedMessage());
