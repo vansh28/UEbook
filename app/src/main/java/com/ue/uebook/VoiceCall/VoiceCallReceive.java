@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -25,12 +26,14 @@ public class VoiceCallReceive extends AppCompatActivity implements View.OnClickL
     private String  receiverid="";
     private ImageView videoCall_receive ,videoCall_cancel;
     private MediaPlayer mp;
+    private TextView name;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_voice_call_receive);
         videoCall_receive=findViewById(R.id.videoCall_receive);
         videoCall_cancel=findViewById(R.id.videoCall_cancel);
+        name=findViewById(R.id.name);
         Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
         mp = MediaPlayer.create(getApplicationContext(), notification);
         mp.start();
@@ -38,6 +41,7 @@ public class VoiceCallReceive extends AppCompatActivity implements View.OnClickL
         videoCall_receive.setOnClickListener(this);
         intent = getIntent();
         channeld=intent.getStringExtra("id");
+        name.setText(intent.getStringExtra("name"));
         URL serverURL;
         try {
 

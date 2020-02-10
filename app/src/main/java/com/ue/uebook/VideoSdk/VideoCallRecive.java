@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -27,6 +28,7 @@ public class VideoCallRecive extends AppCompatActivity implements View.OnClickLi
     private String  receiverid = " ";
     private ImageView videoCall_receive ,videoCall_cancel;
     private MediaPlayer mp;
+    private TextView name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +36,7 @@ public class VideoCallRecive extends AppCompatActivity implements View.OnClickLi
         setContentView(R.layout.activity_video_call_recive);
         videoCall_receive=findViewById(R.id.videoCall_receive);
         videoCall_cancel=findViewById(R.id.videoCall_cancel);
+        name=findViewById(R.id.name);
         Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
         mp = MediaPlayer.create(getApplicationContext(), notification);
         mp.start();
@@ -41,6 +44,7 @@ public class VideoCallRecive extends AppCompatActivity implements View.OnClickLi
         videoCall_receive.setOnClickListener(this);
         intent = getIntent();
         channeld=intent.getStringExtra("id");
+        name.setText(intent.getStringExtra("name"));
         Glide.with(this).asGif().load(R.drawable.videocall).into(videoCall_receive);
         URL serverURL;
         try {

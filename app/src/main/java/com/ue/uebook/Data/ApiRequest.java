@@ -712,4 +712,23 @@ public class ApiRequest {
         client.newCall(request).enqueue(callback);
     }
 
+    public void requestforCallGroupMemberNotification(String user_id ,String groupID ,String group_call_users_id, String type  ,Callback callback) {
+        String url = null;
+        url = BaseUrl + "groupMemberCallingNotification";
+        OkHttpClient client = new OkHttpClient();
+        RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
+                .addFormDataPart("user_id", user_id)
+                .addFormDataPart("group_id", groupID)
+                .addFormDataPart("group_call_users_id", group_call_users_id)
+                .addFormDataPart("type", type)
+                .build();
+        Request request = new Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .build();
+        client.newCall(request).enqueue(callback);
+    }
+
 }
+
+

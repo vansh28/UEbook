@@ -73,12 +73,14 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                  if (noti_msz.equalsIgnoreCase("videoCall")){
                            Intent intent = new Intent(this, VideoCallRecive.class);
                     intent.putExtra("id",channel_id);
+                     intent.putExtra("name",name);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
                 }
                 else   if (noti_msz.equalsIgnoreCase("audioCall")){
                      Intent intent = new Intent(this, VoiceCallReceive.class);
                      intent.putExtra("id",channel_id);
+                     intent.putExtra("name",name);
                      intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                      startActivity(intent);
                 }

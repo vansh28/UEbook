@@ -3,13 +3,37 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:minHeight="300dp"
     android:layout_height="wrap_content">
-    <Button
+
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <ImageButton
         android:id="@+id/callBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/size_30"
+        android:layout_height="@dimen/size_30"
         android:text="Call"
         android:layout_gravity="end"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="@dimen/size_10"
+        android:layout_marginBottom="@dimen/size_10"
+        android:background="@android:color/transparent"
         android:layout_marginRight="@dimen/size_18"/>
+    <ImageButton
+        android:id="@+id/cancelBtn"
+        android:layout_width="@dimen/size_30"
+        android:layout_height="@dimen/size_30"
+        android:text="Call"
+        android:src="@drawable/cancel"
+        android:layout_marginTop="@dimen/size_10"
+        android:layout_marginLeft="@dimen/size_10"
+        android:layout_marginBottom="@dimen/size_10"
+        android:background="@android:color/transparent"
+        android:layout_marginRight="@dimen/size_18"/>
+
+
+</RelativeLayout>
+
+
     <ListView
         android:id="@+id/groupmemberList"
         android:layout_width="match_parent"

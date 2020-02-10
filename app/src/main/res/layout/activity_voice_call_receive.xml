@@ -36,6 +36,15 @@
         android:layout_gravity="bottom"
         android:orientation="horizontal">
 
+        <com.ue.uebook.Customview.CustomTextViewNormal
+            android:id="@+id/name"
+            android:layout_width="match_parent"
+            android:gravity="center_horizontal"
+            android:layout_marginTop="@dimen/size_10"
+            android:textColor="@color/black"
+            android:textSize="@dimen/size_17"
+            android:layout_height="wrap_content"/>
+
         <ImageView
             android:id="@+id/videoCall_cancel"
             android:layout_width="@dimen/size_100"

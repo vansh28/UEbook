@@ -95,11 +95,11 @@ public class FriendListFrag extends Fragment implements ContactListAdapter.ItemC
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view= inflater.inflate(R.layout.fragment_friend_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_friend_list, container, false);
         creategroupBtn = view.findViewById(R.id.creategroupBtn);
-        noView=view.findViewById(R.id.noView);
+        noView = view.findViewById(R.id.noView);
         creategroupBtn.setOnClickListener(this);
-        contactList=view.findViewById(R.id.contactList);
+        contactList = view.findViewById(R.id.contactList);
 
         LinearLayoutManager linearLayoutManagerPopularList = new LinearLayoutManager(getContext());
         linearLayoutManagerPopularList.setOrientation(LinearLayoutManager.VERTICAL);
@@ -135,25 +135,26 @@ public class FriendListFrag extends Fragment implements ContactListAdapter.ItemC
     }
 
     @Override
-    public void onContactListItemClick(OponentData oponentData , UserData userData)
-    {
-        Intent intent = new Intent(getContext(),MessageScreen.class);
-        intent.putExtra("oponentdata",oponentData);
-        intent.putExtra("userData",userData);
-        intent.putExtra("id",2);
+    public void onContactListItemClick(OponentData oponentData, UserData userData) {
+        Intent intent = new Intent(getContext(), MessageScreen.class);
+        intent.putExtra("oponentdata", oponentData);
+        intent.putExtra("userData", userData);
+        intent.putExtra("id", 2);
         startActivity(intent);
         getActivity().finish();
     }
+
     @Override
     public void onProfileClick(String url) {
         imagePreview(url);
     }
+
     private void imagePreview(String file) {
         final Dialog previewDialog = new Dialog(getContext());
         previewDialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-        previewDialog.setContentView(getLayoutInflater().inflate(R.layout.image_layout ,null));
+        previewDialog.setContentView(getLayoutInflater().inflate(R.layout.image_layout, null));
         ImageView imageView = previewDialog.findViewById(R.id.image_view);
-        GlideUtils.loadImage((AppCompatActivity) getActivity(), ApiRequest.BaseUrl+"upload/" + file, imageView, R.drawable.user_default, R.drawable.user_default);
+        GlideUtils.loadImage((AppCompatActivity) getActivity(), ApiRequest.BaseUrl + "upload/" + file, imageView, R.drawable.user_default, R.drawable.user_default);
         Button ok_Btn = previewDialog.findViewById(R.id.buton_ok);
         ok_Btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -166,9 +167,9 @@ public class FriendListFrag extends Fragment implements ContactListAdapter.ItemC
 
     @Override
     public void onClick(View v) {
-        if (v==creategroupBtn){
+        if (v == creategroupBtn) {
 
-            Intent intent = new Intent(getContext(),GroupFriendList.class);
+            Intent intent = new Intent(getContext(), GroupFriendList.class);
             startActivity(intent);
         }
     }
@@ -187,37 +188,35 @@ public class FriendListFrag extends Fragment implements ContactListAdapter.ItemC
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    private void getContactList(String  user_id) {
-        ApiRequest request = new ApiRequest();
 
-        request.requestforgetContactList( user_id,new okhttp3.Callback() {
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private void getContactList(String user_id) {
+        ApiRequest request = new ApiRequest();
+        request.requestforgetContactList(user_id, new okhttp3.Callback() {
             @Override
             public void onFailure(okhttp3.Call call, IOException e) {
                 Log.d("error", "error");
 
             }
+
             @Override
             public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
-
                 final String myResponse = response.body().string();
                 Gson gson = new GsonBuilder().create();
                 final ContactListResponse form = gson.fromJson(myResponse, ContactListResponse.class);
-
-                if ( form.error == false && form.getUserList()!=null){
-                   getActivity().runOnUiThread(new Runnable() {
+                if (form.error == false && form.getUserList() != null) {
+                    getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             creategroupBtn.setVisibility(View.VISIBLE);
-                            contactListAdapter = new ContactListAdapter((AppCompatActivity) getActivity(),form.getUserList(),form.getData());
+                            contactListAdapter = new ContactListAdapter((AppCompatActivity) getActivity(), form.getUserList(), form.getData());
                             contactList.setAdapter(contactListAdapter);
                             contactListAdapter.setItemClickListener(FriendListFrag.this);
                             contactListAdapter.notifyDataSetChanged();
                             noView.setVisibility(View.INVISIBLE);
                         }
                     });
-                }
-                else {
+                } else {
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {

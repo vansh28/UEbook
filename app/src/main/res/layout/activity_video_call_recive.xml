@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:orientation="vertical"
     android:gravity="bottom"
-
     android:layout_height="match_parent">
     <FrameLayout
         android:id="@+id/camera_preview"
@@ -13,6 +12,14 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         />
+    <com.ue.uebook.Customview.CustomTextViewBold
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/size_25"
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:layout_marginTop="@dimen/size_20"
+        android:text="Video Call"/>
     <de.hdodenhof.circleimageview.CircleImageView
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/profilePic"
@@ -23,7 +30,7 @@
         android:layout_marginTop="@dimen/size_100"
         android:layout_centerHorizontal="true"
         app:civ_border_width="2dp"
-        android:visibility="gone"
+        android:visibility="visible"
         app:civ_border_color="#ffffff"/>
 
     <RelativeLayout
@@ -31,9 +38,19 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/size_50"
         android:layout_marginRight="@dimen/size_50"
+        android:layout_below="@+id/profilePic"
         android:layout_marginBottom="@dimen/size_50"
         android:layout_gravity="bottom"
         android:orientation="horizontal">
+
+        <com.ue.uebook.Customview.CustomTextViewNormal
+            android:id="@+id/name"
+            android:layout_width="match_parent"
+            android:gravity="center_horizontal"
+            android:layout_marginTop="@dimen/size_10"
+            android:textColor="@color/black"
+            android:textSize="@dimen/size_17"
+            android:layout_height="wrap_content"/>
 
         <ImageView
             android:id="@+id/videoCall_cancel"
