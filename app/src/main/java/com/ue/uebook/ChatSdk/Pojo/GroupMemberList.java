@@ -1,6 +1,8 @@
 package com.ue.uebook.ChatSdk.Pojo;
 
-public class GroupMemberList {
+import java.io.Serializable;
+
+public class GroupMemberList implements Serializable {
     public  String id;
     public  String user_name;
     public  String url;

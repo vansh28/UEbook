@@ -55,6 +55,7 @@ import org.jitsi.meet.sdk.JitsiMeetConferenceOptions;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -79,7 +80,7 @@ public class GroupMessageScreen extends BaseActivity implements View.OnClickList
     private BottomSheetDialog mBottomSheetDialog;
     private GroupChatAdapter groupChatAdapter;
     ImageUtils imageUtils;
-    private ImageView previewImage;
+    private ImageView previewImage , image_user_chat;
     private static final int MY_PERMISSIONS_REQUEST_CAMERA = 99;
     private File videofile, audioUrl, docfile;
     private int mCurrentPosition = 0;
@@ -95,12 +96,15 @@ public class GroupMessageScreen extends BaseActivity implements View.OnClickList
     private List<String>memberForcall;
     private String userid="";
     private String memberid="";
+    private String groupname="";
     private List<GroupMemberList>groupMemberLists;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_message_screen);
         button_chat_attachment = findViewById(R.id.button_chat_attachment);
+        image_user_chat=findViewById(R.id.image_user_chat);
+        image_user_chat.setOnClickListener(this);
         intent = getIntent();
         imageUtils = new ImageUtils(this);
         memberForcall = new ArrayList<>();
@@ -114,7 +118,9 @@ public class GroupMessageScreen extends BaseActivity implements View.OnClickList
         groupID = intent.getStringExtra("groupid");
         backbtnMessage = findViewById(R.id.backbtnMessage);
         group_name = findViewById(R.id.group_name);
+        group_name.setOnClickListener(this);
         messageList = findViewById(R.id.messageList);
+        groupname=intent.getStringExtra("name");
         group_name.setText(intent.getStringExtra("name"));
         backbtnMessage.setOnClickListener(this);
         edit_chat_message = findViewById(R.id.edit_chat_message);
@@ -126,7 +132,9 @@ public class GroupMessageScreen extends BaseActivity implements View.OnClickList
         messageList.setLayoutManager(linearLayoutManagerPopularList);
         messageList.setNestedScrollingEnabled(false);
         getGroupHistory(new SessionManager(getApplicationContext()).getUserID(), groupID);
-        getGroupMember(new SessionManager(getApplicationContext()).getUserID(), groupID);
+        getGroupMember(new SessionManager(getApplicationContext()).getUserID(), groupID,"");
+
+
     }
 
     @Override
@@ -198,8 +206,20 @@ public class GroupMessageScreen extends BaseActivity implements View.OnClickList
         else if (v==videobtncall){
             showBottomListSheet("videocall");
         }
-
-
+        else if (v==group_name){
+            Intent intent = new Intent(this,GroupDetailScreen.class);
+            intent.putExtra("name",groupname);
+            intent.putExtra("member", (Serializable) groupMemberLists);
+            intent.putExtra("groupid",groupID);
+            startActivity(intent);
+        }
+        else if (v==image_user_chat){
+            Intent intent = new Intent(this,GroupDetailScreen.class);
+            intent.putExtra("name",groupname);
+            intent.putExtra("member", (Serializable) groupMemberLists);
+            intent.putExtra("groupid",groupID);
+            startActivity(intent);
+        }
     }
 
     private void showBottomSheet() {
@@ -563,12 +583,12 @@ public class GroupMessageScreen extends BaseActivity implements View.OnClickList
 
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    private void getGroupMember(String user_id, String groupID) {
+    private void getGroupMember(String user_id, String groupID,String add_mem_id_in_group) {
         ApiRequest request = new ApiRequest();
             showLoadingIndicator();
               if (groupMemberLists.size()>0)
                   groupMemberLists.clear();
-        request.requestforgetGroupMember(user_id, groupID, new okhttp3.Callback() {
+        request.requestforgetGroupMember(user_id, groupID,add_mem_id_in_group, new okhttp3.Callback() {
             @Override
             public void onFailure(okhttp3.Call call, IOException e) {
                 Log.d("error", "error");
@@ -665,8 +685,7 @@ public class GroupMessageScreen extends BaseActivity implements View.OnClickList
 
         }
 
-
-        if (memberForcall.size() > 0) {
+        if (memberForcall.size() > 0 ) {
             // Build options object for joining the conference. The SDK will merge the default
             // one we set earlier and this one when joining.
             JitsiMeetConferenceOptions options

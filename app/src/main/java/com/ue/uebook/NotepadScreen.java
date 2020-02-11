@@ -58,12 +58,10 @@ public class NotepadScreen extends AppCompatActivity implements View.OnClickList
             delete_btn.setVisibility(View.VISIBLE);
              notes_view.setText(description);
              notes_title.setText(title);
-
         }
         else {
             delete_btn.setVisibility(View.GONE);
         }
-
     }
 
     @Override
@@ -123,8 +121,6 @@ public class NotepadScreen extends AppCompatActivity implements View.OnClickList
                 }
         )
                 .show();
-
-
     }
     private void AddNotes(String user_id,String desc,String title) {
         ApiRequest request = new ApiRequest();

@@ -697,13 +697,14 @@ public class ApiRequest {
                 .build();
         client.newCall(request).enqueue(callback);
     }
-    public void requestforgetGroupMember(String user_id ,String groupID  ,Callback callback) {
+    public void requestforgetGroupMember(String user_id ,String groupID ,String add_mem_id_in_group ,Callback callback) {
         String url = null;
         url = BaseUrl + "groupMemberList";
         OkHttpClient client = new OkHttpClient();
         RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
                 .addFormDataPart("user_id", user_id)
                 .addFormDataPart("group_id", groupID)
+                .addFormDataPart("add_mem_id_in_group", add_mem_id_in_group)
                 .build();
         Request request = new Request.Builder()
                 .url(url)
