@@ -16,18 +16,27 @@ import com.ue.uebook.ChatSdk.Pojo.UserData;
 import com.ue.uebook.Data.ApiRequest;
 import com.ue.uebook.GlideUtils;
 import com.ue.uebook.R;
+import com.ue.uebook.SessionManager;
 
 import java.util.List;
 
 public class MemberListDetails  extends RecyclerView.Adapter<MemberListDetails.MyViewHolder>{
-    private ContactListAdapter.ItemClick itemClick;
+    private ItemClick itemClick;
     private List<GroupMemberList> oponentListdata;
     private UserData userData;
     private AppCompatActivity mctx;
+    private String groupAdminID;
     public MemberListDetails(AppCompatActivity mctx, List<GroupMemberList> userList) {
         this.oponentListdata=userList;
         this.mctx=mctx;
 
+    }
+
+    public interface ItemClick {
+        void onMemberItemClick(View v,String memberID,String admin);
+    }
+    public void setItemClickListener(ItemClick clickListener) {
+        itemClick = clickListener;
     }
 
     @NonNull
@@ -40,18 +49,43 @@ public class MemberListDetails  extends RecyclerView.Adapter<MemberListDetails.M
     }
     @Override
     public void onBindViewHolder(@NonNull MemberListDetails.MyViewHolder holder, final int position) {
-        holder.name.setText(oponentListdata.get(position).getUser_name());
-        holder.timeTv.setVisibility(View.GONE);
+
+
+        if (oponentListdata.get(position).getIs_admin().equalsIgnoreCase("yes")){
+            holder.timeTv.setVisibility(View.VISIBLE);
+            holder.timeTv.setText("Group Admin");
+            groupAdminID=oponentListdata.get(position).getId();
+        }
+        else {
+            holder.timeTv.setVisibility(View.GONE);
+
+        }
+        if (oponentListdata.get(position).getId().equalsIgnoreCase(new SessionManager(mctx).getUserID())){
+            holder.name.setText("You");
+
+        }
+        else {
+            holder.name.setText(oponentListdata.get(position).getUser_name());
+        }
+
+
+
         GlideUtils.loadImage(mctx, ApiRequest.BaseUrl+"upload/" + oponentListdata.get(position).getUrl(), holder.profile, R.drawable.user_default, R.drawable.user_default);
 
-//        holder.chatContainer.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (itemClick!=null){
-//                    itemClick.onContactListItemClick(oponentListdata.get(position),userData);
-//                }
-//            }
-//        });
+
+        holder.chatContainer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (groupAdminID.equalsIgnoreCase(new SessionManager(mctx).getUserID()))
+                {
+                    if (itemClick!=null){
+                        itemClick.onMemberItemClick(v,oponentListdata.get(position).getId(),oponentListdata.get(position).getIs_admin());
+                    }
+                }
+
+            }
+        });
 //        holder.profile.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {

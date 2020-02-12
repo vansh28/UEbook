@@ -39,7 +39,8 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".ChatSdk.GroupDetailScreen"></activity>
+        <activity android:name=".ChatSdk.AddMemberToGroupScreen"></activity>
+        <activity android:name=".ChatSdk.GroupDetailScreen" />
         <activity android:name=".ChatSdk.GroupMessageScreen" />
         <activity android:name=".ChatSdk.ContactListScreen" />
         <activity android:name=".ChatSdk.ChatHistoryScreen" />

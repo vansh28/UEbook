@@ -12,6 +12,8 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
@@ -132,8 +134,7 @@ public class GroupMessageScreen extends BaseActivity implements View.OnClickList
         messageList.setLayoutManager(linearLayoutManagerPopularList);
         messageList.setNestedScrollingEnabled(false);
         getGroupHistory(new SessionManager(getApplicationContext()).getUserID(), groupID);
-        getGroupMember(new SessionManager(getApplicationContext()).getUserID(), groupID,"");
-
+        getGroupMember(new SessionManager(getApplicationContext()).getUserID(), groupID,"","");
 
     }
 
@@ -272,7 +273,6 @@ public class GroupMessageScreen extends BaseActivity implements View.OnClickList
                         .addFormDataPart(" message_type", message_type)
                         .addFormDataPart(" message", message)
                         .addFormDataPart(" sender_name", new SessionManager(getApplicationContext()).getUserName())
-
                         .addFormDataPart("video_file", videofile.getName(), RequestBody.create(MediaType.parse("video/mp4"), videofile))
                         .build();
                 break;
@@ -502,7 +502,7 @@ public class GroupMessageScreen extends BaseActivity implements View.OnClickList
         final View bottomSheetLayout = getLayoutInflater().inflate(R.layout.bottomsheetgroup, null);
         mBottomSheetDialog = new BottomSheetDialog(this);
         mBottomSheetDialog.setContentView(bottomSheetLayout);
-         listView = mBottomSheetDialog.findViewById(R.id.groupmemberList);
+        listView = mBottomSheetDialog.findViewById(R.id.groupmemberList);
 
         callBtn=mBottomSheetDialog.findViewById(R.id.callBtn);
         cancelBtn=mBottomSheetDialog.findViewById(R.id.cancelBtn);
@@ -583,12 +583,12 @@ public class GroupMessageScreen extends BaseActivity implements View.OnClickList
 
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    private void getGroupMember(String user_id, String groupID,String add_mem_id_in_group) {
+    private void getGroupMember(String user_id, String groupID,String add_mem_id_in_group ,String action) {
         ApiRequest request = new ApiRequest();
             showLoadingIndicator();
               if (groupMemberLists.size()>0)
                   groupMemberLists.clear();
-        request.requestforgetGroupMember(user_id, groupID,add_mem_id_in_group, new okhttp3.Callback() {
+        request.requestforgetGroupMember(user_id, groupID,add_mem_id_in_group,action, new okhttp3.Callback() {
             @Override
             public void onFailure(okhttp3.Call call, IOException e) {
                 Log.d("error", "error");
@@ -613,7 +613,9 @@ public class GroupMessageScreen extends BaseActivity implements View.OnClickList
                     });
 //
 //
-                } else {
+
+              }
+                else {
 
                 }
             }
@@ -698,7 +700,27 @@ public class GroupMessageScreen extends BaseActivity implements View.OnClickList
             finish();
         }
     }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d("lifecycle","onResume invoked");
 
+    }
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.d("lifecycle","onRestart invoked");
+
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                //Do something here
+                getGroupMember(new SessionManager(getApplicationContext()).getUserID(), groupID,"","");
+
+            }
+        }, 1000);
+
+    }
 
 }
 

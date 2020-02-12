@@ -6,6 +6,15 @@ public class GroupMemberList implements Serializable {
     public  String id;
     public  String user_name;
     public  String url;
+    public  String is_admin;
+
+    public String getIs_admin() {
+        return is_admin;
+    }
+
+    public void setIs_admin(String is_admin) {
+        this.is_admin = is_admin;
+    }
 
     public String getId() {
         return id;

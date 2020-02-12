@@ -103,7 +103,6 @@ public class UserProfile_Fragment extends Fragment implements View.OnClickListen
 
                 actortype = label;
 
-
             }
 
             @Override

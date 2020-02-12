@@ -1,17 +1,23 @@
 package com.ue.uebook.ChatSdk;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -31,7 +37,7 @@ import com.ue.uebook.SessionManager;
 import java.io.IOException;
 import java.util.List;
 
-public class GroupDetailScreen extends BaseActivity implements AppBarLayout.OnOffsetChangedListener, View.OnClickListener {
+public class GroupDetailScreen extends BaseActivity implements AppBarLayout.OnOffsetChangedListener, View.OnClickListener ,MemberListDetails.ItemClick {
 
     private static final float PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR  = 0.9f;
     private static final float PERCENTAGE_TO_HIDE_TITLE_DETAILS     = 0.3f;
@@ -40,7 +46,7 @@ public class GroupDetailScreen extends BaseActivity implements AppBarLayout.OnOf
     private boolean mIsTheTitleVisible          = false;
     private boolean mIsTheTitleContainerVisible = true;
 
-    private LinearLayout mTitleContainer ,addMember;
+    private LinearLayout mTitleContainer ,addMember ,exitGroup;
     private TextView mTitle ,groupname ,memberCount;
     private AppBarLayout mAppBarLayout;
     private Toolbar mToolbar;
@@ -53,8 +59,6 @@ public class GroupDetailScreen extends BaseActivity implements AppBarLayout.OnOf
     private ImageView  imageGroup;
     private String groupID;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,7 +66,6 @@ public class GroupDetailScreen extends BaseActivity implements AppBarLayout.OnOf
         bindActivity();
         mAppBarLayout.addOnOffsetChangedListener(this);
         startAlphaAnimation(mTitle, 0, View.INVISIBLE);
-
     }
     private void bindActivity() {
         intent = getIntent();
@@ -70,6 +73,8 @@ public class GroupDetailScreen extends BaseActivity implements AppBarLayout.OnOf
         mTitle          = (TextView) findViewById(R.id.main_textview_title);
         mTitleContainer = (LinearLayout) findViewById(R.id.main_linearlayout_title);
         mAppBarLayout   = (AppBarLayout) findViewById(R.id.main_appbar);
+        exitGroup =findViewById(R.id.exitGroup);
+        exitGroup.setOnClickListener(this);
         addMember=findViewById(R.id.addMember);
         addMember.setOnClickListener(this);
         imageGroup= findViewById(R.id.imageGroup);
@@ -84,9 +89,8 @@ public class GroupDetailScreen extends BaseActivity implements AppBarLayout.OnOf
         LinearLayoutManager linearLayoutManagerPopularList = new LinearLayoutManager(this);
         linearLayoutManagerPopularList.setOrientation(LinearLayoutManager.VERTICAL);
         memberList.setLayoutManager(linearLayoutManagerPopularList);
-            memberCount=findViewById(R.id.memberCount);
-            getGroupMember(new SessionManager(getApplicationContext()).getUserID(),groupID);
-
+        memberCount=findViewById(R.id.memberCount);
+        getGroupMember(new SessionManager(getApplicationContext()).getUserID(),groupID);
     }
 
     @Override
@@ -148,21 +152,47 @@ public class GroupDetailScreen extends BaseActivity implements AppBarLayout.OnOf
             finish();
         }
         else if (v==addMember){
-
+            Intent intent = new Intent(this, AddMemberToGroupScreen.class);
+            intent.putExtra("groupid",groupID);
+            startActivity(intent);
+        }
+        else if (v==exitGroup)
+        {
+            confirmUser(new SessionManager(getApplicationContext()).getUserID());
         }
     }
+
+    public void confirmUser(final String userId ) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Do you want to exit this group")
+                .setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+
+
+
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void getGroupMember(String user_id, String groupID) {
         ApiRequest request = new ApiRequest();
         showLoadingIndicator();
         if (groupMemberLists.size()>0)
             groupMemberLists.clear();
-        request.requestforgetGroupMember(user_id, groupID,"", new okhttp3.Callback() {
+        request.requestforgetGroupMember(user_id, groupID,"","", new okhttp3.Callback() {
             @Override
             public void onFailure(okhttp3.Call call, IOException e) {
                 Log.d("error", "error");
                 hideLoadingIndicator();
-
             }
 
             @Override
@@ -179,7 +209,21 @@ public class GroupDetailScreen extends BaseActivity implements AppBarLayout.OnOf
                             groupMemberLists.addAll(form.getUser_list());
                             memberListDetails = new MemberListDetails(GroupDetailScreen.this,form.getUser_list());
                             memberList.setAdapter(memberListDetails);
+                             memberListDetails.setItemClickListener(GroupDetailScreen.this);
                             memberCount.setText(String.valueOf(groupMemberLists.size())+" "+ "participants");
+
+                            for (int i = 0 ; i< groupMemberLists.size(); i++){
+                                if (groupMemberLists.get(i).getId().equalsIgnoreCase(new SessionManager(getApplicationContext()).getUserID())){
+                                    if (groupMemberLists.get(i).getIs_admin().equalsIgnoreCase("yes")){
+                                        addMember.setVisibility(View.VISIBLE);
+                                    }
+                                    else {
+                                        addMember.setVisibility(View.GONE);
+                                    }
+                                }
+
+                            }
+
 
                         }
                     });
@@ -187,9 +231,80 @@ public class GroupDetailScreen extends BaseActivity implements AppBarLayout.OnOf
 //
                 } else {
 
+
                 }
             }
         });
     }
+
+    @Override
+    public void onMemberItemClick(View v,String memberID ,String admin) {
+
+                  if(memberID.equalsIgnoreCase(new SessionManager(getApplicationContext()).getUserID())){
+
+                  }
+                  else {
+                      showFilterPopup(v,memberID);
+                  }
+
+    }
+
+
+    private void showFilterPopup(View v , String memberID) {
+        PopupMenu popup = new PopupMenu(this, v);
+        popup.inflate(R.menu.groupdetail);
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.removeFriend:
+
+
+                        return true;
+                    case R.id.makeGroupAdmin:
+
+
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+        });
+        popup.show();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d("lifecycle","onResume invoked");
+
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d("lifecycle","onPause invoked");
+    }
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d("lifecycle","onStop invoked");
+    }
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.d("lifecycle","onRestart invoked");
+
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                //Do something here
+                getGroupMember(new SessionManager(getApplicationContext()).getUserID(),groupID);
+
+            }
+        }, 1000);
+
+    }
+
+
+
 
 }

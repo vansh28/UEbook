@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/removeFriend"
+        android:enabled="true"
+        android:title="Remove"
+        android:visible="true"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/makeGroupAdmin"
+        android:enabled="true"
+        android:title="Make Group Admin"
+        android:visible="true"
+        app:showAsAction="never" />
+</menu>
