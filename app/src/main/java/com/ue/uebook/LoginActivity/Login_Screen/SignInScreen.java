@@ -113,6 +113,7 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener, 
         accessTokenTracker= new AccessTokenTracker() {
             @Override
             protected void onCurrentAccessTokenChanged(AccessToken oldToken, AccessToken newToken) {
+
             }
         };
 

@@ -74,7 +74,6 @@ public class BookListing extends BaseActivity implements HomeListingFragment.OnF
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         homelist.setLayoutManager(linearLayoutManager);
         getBookCategory();
-
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener(){
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override

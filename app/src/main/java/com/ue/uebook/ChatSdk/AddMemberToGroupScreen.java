@@ -130,6 +130,7 @@ public class AddMemberToGroupScreen extends BaseActivity implements View.OnClick
     private void getGroupMember(String user_id, String groupID ,String memberId) {
         ApiRequest request = new ApiRequest();
         showLoadingIndicator();
+
         request.requestforgetGroupMember(user_id, groupID,memberId,"add_member", new okhttp3.Callback() {
             @Override
             public void onFailure(okhttp3.Call call, IOException e) {

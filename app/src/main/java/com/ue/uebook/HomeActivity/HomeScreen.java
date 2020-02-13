@@ -253,7 +253,7 @@ public class HomeScreen extends BaseActivity implements Home_Fragment.OnFragment
                     .setCancelable(false)
                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            finish();
+                            ActivityCompat.finishAffinity(HomeScreen.this);
                         }
                     })
                     .setNegativeButton("No", null)

@@ -731,7 +731,21 @@ public class ApiRequest {
                 .build();
         client.newCall(request).enqueue(callback);
     }
-
+    public void requestforexitGroup(String user_id ,String groupID ,String tomake_admin_id  ,Callback callback) {
+        String url = null;
+        url = BaseUrl + "exitMemberFromGroup";
+        OkHttpClient client = new OkHttpClient();
+        RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
+                .addFormDataPart("group_id", groupID)
+                .addFormDataPart("user_id", user_id)
+                .addFormDataPart("tomake_admin_id", tomake_admin_id)
+                .build();
+        Request request = new Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .build();
+        client.newCall(request).enqueue(callback);
+    }
 }
 
 

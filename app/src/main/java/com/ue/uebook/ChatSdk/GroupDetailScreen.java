@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
@@ -35,6 +36,7 @@ import com.ue.uebook.R;
 import com.ue.uebook.SessionManager;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class GroupDetailScreen extends BaseActivity implements AppBarLayout.OnOffsetChangedListener, View.OnClickListener ,MemberListDetails.ItemClick {
@@ -58,12 +60,17 @@ public class GroupDetailScreen extends BaseActivity implements AppBarLayout.OnOf
     private ImageButton backbtn;
     private ImageView  imageGroup;
     private String groupID;
+    private String  groupAdminID="";
+    private  List<String> memberListForAdmin  ;
+    private  List<String> memberListForAdminID  ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_detail_screen);
         bindActivity();
+        memberListForAdmin= new ArrayList<>();
+        memberListForAdminID = new ArrayList<>();
         mAppBarLayout.addOnOffsetChangedListener(this);
         startAlphaAnimation(mTitle, 0, View.INVISIBLE);
     }
@@ -90,7 +97,7 @@ public class GroupDetailScreen extends BaseActivity implements AppBarLayout.OnOf
         linearLayoutManagerPopularList.setOrientation(LinearLayoutManager.VERTICAL);
         memberList.setLayoutManager(linearLayoutManagerPopularList);
         memberCount=findViewById(R.id.memberCount);
-        getGroupMember(new SessionManager(getApplicationContext()).getUserID(),groupID);
+        getGroupMember(new SessionManager(getApplicationContext()).getUserID(),groupID,"","");
     }
 
     @Override
@@ -158,8 +165,29 @@ public class GroupDetailScreen extends BaseActivity implements AppBarLayout.OnOf
         }
         else if (v==exitGroup)
         {
-            confirmUser(new SessionManager(getApplicationContext()).getUserID());
+            if (groupAdminID.equalsIgnoreCase(new SessionManager(getApplicationContext()).getUserID())){
+                showMemberToMakeAdmin();
+            }
+            else {
+                confirmUser(new SessionManager(getApplicationContext()).getUserID());
+            }
         }
+    }
+
+    private void showMemberToMakeAdmin(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Select a member for Admin");
+        builder.setItems(memberListForAdmin.toArray(new String[memberListForAdmin.size()]), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int item) {
+                Toast.makeText(getApplicationContext(), String.valueOf(memberListForAdminID.get(item)), Toast.LENGTH_SHORT).show();
+                exitGroup(new SessionManager(getApplicationContext()).getUserID(),groupID,memberListForAdminID.get(item));
+
+            }
+        });
+
+        AlertDialog alert = builder.create();
+
+        alert.show();
     }
 
     public void confirmUser(final String userId ) {
@@ -169,6 +197,7 @@ public class GroupDetailScreen extends BaseActivity implements AppBarLayout.OnOf
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.cancel();
+                        exitGroup(new SessionManager(getApplicationContext()).getUserID(),groupID,"");
                     }
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -183,12 +212,21 @@ public class GroupDetailScreen extends BaseActivity implements AppBarLayout.OnOf
 
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    private void getGroupMember(String user_id, String groupID) {
+    private void getGroupMember(String user_id, String groupID,String memberid ,String action) {
         ApiRequest request = new ApiRequest();
-        showLoadingIndicator();
         if (groupMemberLists.size()>0)
             groupMemberLists.clear();
-        request.requestforgetGroupMember(user_id, groupID,"","", new okhttp3.Callback() {
+
+
+//        if (memberListForAdmin.size()>0){
+//            memberListForAdmin.clear();
+//        }
+//
+//        if (memberListForAdminID.size()>0)
+//        {
+//            memberListForAdminID.clear();
+//        }
+        request.requestforgetGroupMember(user_id, groupID,memberid,action, new okhttp3.Callback() {
             @Override
             public void onFailure(okhttp3.Call call, IOException e) {
                 Log.d("error", "error");
@@ -213,16 +251,23 @@ public class GroupDetailScreen extends BaseActivity implements AppBarLayout.OnOf
                             memberCount.setText(String.valueOf(groupMemberLists.size())+" "+ "participants");
 
                             for (int i = 0 ; i< groupMemberLists.size(); i++){
+                                memberListForAdmin.add(groupMemberLists.get(i).getUser_name());
+                                memberListForAdminID.add(groupMemberLists.get(i).getId());
                                 if (groupMemberLists.get(i).getId().equalsIgnoreCase(new SessionManager(getApplicationContext()).getUserID())){
                                     if (groupMemberLists.get(i).getIs_admin().equalsIgnoreCase("yes")){
                                         addMember.setVisibility(View.VISIBLE);
+                                        groupAdminID=groupMemberLists.get(i).getId();
+                                        memberListForAdmin.remove(groupMemberLists.get(i).getUser_name());
+                                        memberListForAdminID.remove(groupMemberLists.get(i).getId());
                                     }
                                     else {
                                         addMember.setVisibility(View.GONE);
+
                                     }
                                 }
 
                             }
+                            Log.e("sizxe",String.valueOf(memberListForAdmin.size()));
 
 
                         }
@@ -257,8 +302,7 @@ public class GroupDetailScreen extends BaseActivity implements AppBarLayout.OnOf
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.removeFriend:
-
-
+                        getGroupMember(new SessionManager(getApplicationContext()).getUserID(),groupID,memberID,"delete_member");
                         return true;
                     case R.id.makeGroupAdmin:
 
@@ -297,11 +341,36 @@ public class GroupDetailScreen extends BaseActivity implements AppBarLayout.OnOf
             @Override
             public void run() {
                 //Do something here
-                getGroupMember(new SessionManager(getApplicationContext()).getUserID(),groupID);
+                getGroupMember(new SessionManager(getApplicationContext()).getUserID(),groupID,"","");
 
             }
         }, 1000);
 
+    }
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private void exitGroup(String user_id, String groupID  ,String memberid) {
+        ApiRequest request = new ApiRequest();
+        request.requestforexitGroup(user_id, groupID , memberid, new okhttp3.Callback() {
+            @Override
+            public void onFailure(okhttp3.Call call, IOException e) {
+                Log.d("error", "error");
+                hideLoadingIndicator();
+
+            }
+
+            @Override
+            public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
+                hideLoadingIndicator();
+                final String myResponse = response.body().string();
+                Gson gson = new GsonBuilder().create();
+//                getGroupMember(new SessionManager(getApplicationContext()).getUserID(),groupID,"","");
+
+
+                Intent intent = new Intent(GroupDetailScreen.this , ChatHistoryScreen.class);
+                startActivity(intent);
+                finish();
+            }
+        });
     }
 
 

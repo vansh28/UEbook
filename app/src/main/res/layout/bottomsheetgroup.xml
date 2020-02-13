@@ -38,6 +38,7 @@
         android:id="@+id/groupmemberList"
         android:layout_width="match_parent"
         android:paddingBottom="@dimen/size_50"
+        android:divider="@null"
         android:layout_height="wrap_content">
     </ListView>
 </LinearLayout>

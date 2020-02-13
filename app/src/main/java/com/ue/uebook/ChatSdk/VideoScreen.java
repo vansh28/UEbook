@@ -32,7 +32,6 @@ public class VideoScreen extends AppCompatActivity implements View.OnClickListen
         videoView.setVideoPath(url);
         videoView.requestFocus();
         videoView.start();
-
     }
 
     @Override

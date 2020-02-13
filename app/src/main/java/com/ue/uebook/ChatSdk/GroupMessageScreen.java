@@ -237,7 +237,6 @@ public class GroupMessageScreen extends BaseActivity implements View.OnClickList
         videobtn.setOnClickListener(this);
         mBottomSheetDialog.show();
     }
-
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void sendMesaage(String group_id, String send_by, String message_type, String message, int typeval) {
         OkHttpClient client = new OkHttpClient();
@@ -503,7 +502,6 @@ public class GroupMessageScreen extends BaseActivity implements View.OnClickList
         mBottomSheetDialog = new BottomSheetDialog(this);
         mBottomSheetDialog.setContentView(bottomSheetLayout);
         listView = mBottomSheetDialog.findViewById(R.id.groupmemberList);
-
         callBtn=mBottomSheetDialog.findViewById(R.id.callBtn);
         cancelBtn=mBottomSheetDialog.findViewById(R.id.cancelBtn);
         if (calltype.equalsIgnoreCase("audiocall")){
@@ -585,20 +583,19 @@ public class GroupMessageScreen extends BaseActivity implements View.OnClickList
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void getGroupMember(String user_id, String groupID,String add_mem_id_in_group ,String action) {
         ApiRequest request = new ApiRequest();
-            showLoadingIndicator();
               if (groupMemberLists.size()>0)
                   groupMemberLists.clear();
         request.requestforgetGroupMember(user_id, groupID,add_mem_id_in_group,action, new okhttp3.Callback() {
             @Override
             public void onFailure(okhttp3.Call call, IOException e) {
                 Log.d("error", "error");
-                hideLoadingIndicator();
+
 
             }
 
             @Override
             public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
-               hideLoadingIndicator();
+
                 final String myResponse = response.body().string();
                 Gson gson = new GsonBuilder().create();
                 final MemberListResponse form = gson.fromJson(myResponse, MemberListResponse.class);
@@ -607,7 +604,15 @@ public class GroupMessageScreen extends BaseActivity implements View.OnClickList
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                                 groupMemberLists.addAll(form.getUser_list());
+                             for (int i = 0; i<form.getUser_list().size();i++){
+                                 if (form.getUser_list().get(i).getId().equalsIgnoreCase(new SessionManager(getApplicationContext()).getUserID())){
+
+                                 }
+                                 else {
+                                     groupMemberLists.add(form.getUser_list().get(i));
+                                 }
+                             }
+
 
                         }
                     });
@@ -684,9 +689,7 @@ public class GroupMessageScreen extends BaseActivity implements View.OnClickList
         }
         else {
             sendNotificationForCall(new SessionManager(getApplicationContext()).getUserID(),groupID,"videoCall", membersId);
-
         }
-
         if (memberForcall.size() > 0 ) {
             // Build options object for joining the conference. The SDK will merge the default
             // one we set earlier and this one when joining.

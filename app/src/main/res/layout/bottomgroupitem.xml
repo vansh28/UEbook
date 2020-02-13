@@ -42,15 +42,16 @@
             android:layout_marginLeft="@dimen/size_25"
             android:layout_toRightOf="@+id/image_user"
             android:layout_marginTop="@dimen/size_5"
-            android:gravity="center_vertical"
-            android:layout_height="wrap_content">
+            android:layout_height="@dimen/size_40">
             <TextView
                 android:id="@+id/name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:textSize="@dimen/size_17"
+                android:gravity="center_vertical"
                 android:layout_marginLeft="@dimen/size_5"
                 android:textColor="@color/black"
+                android:text="dfdfdfdf"
                 android:textStyle="bold"/>
         </LinearLayout>
     </RelativeLayout>

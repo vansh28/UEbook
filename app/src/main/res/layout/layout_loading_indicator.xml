@@ -14,7 +14,7 @@
         android:layout_centerInParent="true"
         android:visibility="visible"
         android:background="@android:color/transparent"
-        app:indicatorColor="@color/red"
+        app:indicatorColor="@color/colorPrimary"
         app:indicatorName="BallClipRotatePulseIndicator"
          />
 
