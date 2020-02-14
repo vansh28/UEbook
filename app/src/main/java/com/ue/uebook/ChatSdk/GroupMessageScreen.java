@@ -41,6 +41,7 @@ import com.ue.uebook.ChatSdk.Adapter.GroupChatAdapter;
 import com.ue.uebook.ChatSdk.Adapter.GroupMemberListAdapter;
 import com.ue.uebook.ChatSdk.Pojo.GroupHistoryResponse;
 import com.ue.uebook.ChatSdk.Pojo.GroupMemberList;
+import com.ue.uebook.ChatSdk.Pojo.Grouplist;
 import com.ue.uebook.ChatSdk.Pojo.MemberListResponse;
 import com.ue.uebook.Data.ApiRequest;
 import com.ue.uebook.FilePath;
@@ -100,6 +101,8 @@ public class GroupMessageScreen extends BaseActivity implements View.OnClickList
     private String memberid="";
     private String groupname="";
     private List<GroupMemberList>groupMemberLists;
+    private List<Grouplist>grouplists;
+    private String groupImg="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -111,6 +114,7 @@ public class GroupMessageScreen extends BaseActivity implements View.OnClickList
         imageUtils = new ImageUtils(this);
         memberForcall = new ArrayList<>();
         groupMemberLists = new ArrayList<>();
+        grouplists = new ArrayList<>();
         previewImage = findViewById(R.id.previewImage);
         videobtncall=findViewById(R.id.videobtn);
         videobtncall.setOnClickListener(this);
@@ -118,6 +122,7 @@ public class GroupMessageScreen extends BaseActivity implements View.OnClickList
         voicebtn.setOnClickListener(this);
         videoview =findViewById(R.id.videoview);
         groupID = intent.getStringExtra("groupid");
+        groupImg = intent.getStringExtra("groupimg");
         backbtnMessage = findViewById(R.id.backbtnMessage);
         group_name = findViewById(R.id.group_name);
         group_name.setOnClickListener(this);
@@ -133,11 +138,11 @@ public class GroupMessageScreen extends BaseActivity implements View.OnClickList
         linearLayoutManagerPopularList.setOrientation(LinearLayoutManager.VERTICAL);
         messageList.setLayoutManager(linearLayoutManagerPopularList);
         messageList.setNestedScrollingEnabled(false);
+        GlideUtils.loadImage(GroupMessageScreen.this, "http:/dnddemo.com/ebooks/api/v1/" + groupImg, image_user_chat, R.drawable.user_default, R.drawable.user_default);
+
         getGroupHistory(new SessionManager(getApplicationContext()).getUserID(), groupID);
         getGroupMember(new SessionManager(getApplicationContext()).getUserID(), groupID,"","");
-
     }
-
     @Override
     public void onClick(View v) {
         if (v == backbtnMessage) {
@@ -212,6 +217,7 @@ public class GroupMessageScreen extends BaseActivity implements View.OnClickList
             intent.putExtra("name",groupname);
             intent.putExtra("member", (Serializable) groupMemberLists);
             intent.putExtra("groupid",groupID);
+            intent.putExtra("groupimg",groupImg);
             startActivity(intent);
         }
         else if (v==image_user_chat){
@@ -219,6 +225,7 @@ public class GroupMessageScreen extends BaseActivity implements View.OnClickList
             intent.putExtra("name",groupname);
             intent.putExtra("member", (Serializable) groupMemberLists);
             intent.putExtra("groupid",groupID);
+            intent.putExtra("groupimg",groupImg);
             startActivity(intent);
         }
     }
@@ -592,7 +599,6 @@ public class GroupMessageScreen extends BaseActivity implements View.OnClickList
 
 
             }
-
             @Override
             public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
 

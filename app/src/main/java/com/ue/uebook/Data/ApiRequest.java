@@ -706,7 +706,6 @@ public class ApiRequest {
                 .addFormDataPart("group_id", groupID)
                 .addFormDataPart("add_mem_id_in_group", add_mem_id_in_group)
                 .addFormDataPart("action", action)
-
                 .build();
         Request request = new Request.Builder()
                 .url(url)
@@ -739,6 +738,39 @@ public class ApiRequest {
                 .addFormDataPart("group_id", groupID)
                 .addFormDataPart("user_id", user_id)
                 .addFormDataPart("tomake_admin_id", tomake_admin_id)
+                .build();
+        Request request = new Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .build();
+        client.newCall(request).enqueue(callback);
+    }
+    public void requestforuploadGroupIcon(String user_id ,String groupID ,String action  ,File group_image  ,Callback callback) {
+        String url = null;
+        url = BaseUrl + "uploadGroupPic";
+        OkHttpClient client = new OkHttpClient();
+        final MediaType MEDIA_TYPE_PNG = MediaType.parse("image/png");
+        RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
+                .addFormDataPart("group_id", groupID)
+                .addFormDataPart("user_id", user_id)
+                .addFormDataPart("action ", action)
+                .addFormDataPart("group_image", group_image.getName(), RequestBody.create(MEDIA_TYPE_PNG, group_image))
+                .build();
+        Request request = new Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .build();
+        client.newCall(request).enqueue(callback);
+    }
+
+    public void requestforEditGroupName(String user_id , String group_id ,String group_name ,Callback callback) {
+        String url = null;
+        url = BaseUrl + "addEditGroups";
+        OkHttpClient client = new OkHttpClient();
+        RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
+                .addFormDataPart("user_id", user_id)
+                .addFormDataPart("group_name", group_name)
+                .addFormDataPart("group_id", group_id)
                 .build();
         Request request = new Request.Builder()
                 .url(url)

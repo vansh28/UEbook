@@ -2,20 +2,28 @@ package com.ue.uebook.ChatSdk;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
+import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
@@ -23,6 +31,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -32,14 +41,17 @@ import com.ue.uebook.ChatSdk.Adapter.MemberListDetails;
 import com.ue.uebook.ChatSdk.Pojo.GroupMemberList;
 import com.ue.uebook.ChatSdk.Pojo.MemberListResponse;
 import com.ue.uebook.Data.ApiRequest;
+import com.ue.uebook.GlideUtils;
+import com.ue.uebook.ImageUtils;
 import com.ue.uebook.R;
 import com.ue.uebook.SessionManager;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GroupDetailScreen extends BaseActivity implements AppBarLayout.OnOffsetChangedListener, View.OnClickListener ,MemberListDetails.ItemClick {
+public class GroupDetailScreen extends BaseActivity implements AppBarLayout.OnOffsetChangedListener, View.OnClickListener ,MemberListDetails.ItemClick ,ImageUtils.ImageAttachmentListener {
 
     private static final float PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR  = 0.9f;
     private static final float PERCENTAGE_TO_HIDE_TITLE_DETAILS     = 0.3f;
@@ -47,7 +59,9 @@ public class GroupDetailScreen extends BaseActivity implements AppBarLayout.OnOf
 
     private boolean mIsTheTitleVisible          = false;
     private boolean mIsTheTitleContainerVisible = true;
-
+    private String filePath;
+    private String fileName;
+    private Bitmap bitmap;
     private LinearLayout mTitleContainer ,addMember ,exitGroup;
     private TextView mTitle ,groupname ,memberCount;
     private AppBarLayout mAppBarLayout;
@@ -63,7 +77,10 @@ public class GroupDetailScreen extends BaseActivity implements AppBarLayout.OnOf
     private String  groupAdminID="";
     private  List<String> memberListForAdmin  ;
     private  List<String> memberListForAdminID  ;
-
+    private ImageUtils imageUtils;
+    private ImageButton chnageGroupImageBtn;
+    private File coverimage;
+    private String groupImg="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,6 +90,7 @@ public class GroupDetailScreen extends BaseActivity implements AppBarLayout.OnOf
         memberListForAdminID = new ArrayList<>();
         mAppBarLayout.addOnOffsetChangedListener(this);
         startAlphaAnimation(mTitle, 0, View.INVISIBLE);
+        imageUtils = new ImageUtils(this);
     }
     private void bindActivity() {
         intent = getIntent();
@@ -80,6 +98,9 @@ public class GroupDetailScreen extends BaseActivity implements AppBarLayout.OnOf
         mTitle          = (TextView) findViewById(R.id.main_textview_title);
         mTitleContainer = (LinearLayout) findViewById(R.id.main_linearlayout_title);
         mAppBarLayout   = (AppBarLayout) findViewById(R.id.main_appbar);
+        chnageGroupImageBtn= findViewById(R.id.uploadgroupImage);
+        chnageGroupImageBtn.setOnClickListener(this);
+
         exitGroup =findViewById(R.id.exitGroup);
         exitGroup.setOnClickListener(this);
         addMember=findViewById(R.id.addMember);
@@ -92,11 +113,13 @@ public class GroupDetailScreen extends BaseActivity implements AppBarLayout.OnOf
         groupname.setText(intent.getStringExtra("name"));
         mTitle.setText(intent.getStringExtra("name"));
         groupID=intent.getStringExtra("groupid");
+        groupImg=intent.getStringExtra("groupimg");
         groupMemberLists= (List<GroupMemberList>) intent.getSerializableExtra("member");
         LinearLayoutManager linearLayoutManagerPopularList = new LinearLayoutManager(this);
         linearLayoutManagerPopularList.setOrientation(LinearLayoutManager.VERTICAL);
         memberList.setLayoutManager(linearLayoutManagerPopularList);
         memberCount=findViewById(R.id.memberCount);
+        GlideUtils.loadImage(GroupDetailScreen.this, "http:/dnddemo.com/ebooks/api/v1/" + groupImg, imageGroup, R.drawable.user_default, R.drawable.user_default);
         getGroupMember(new SessionManager(getApplicationContext()).getUserID(),groupID,"","");
     }
 
@@ -172,6 +195,34 @@ public class GroupDetailScreen extends BaseActivity implements AppBarLayout.OnOf
                 confirmUser(new SessionManager(getApplicationContext()).getUserID());
             }
         }
+        else if (v==chnageGroupImageBtn){
+
+            showOption();
+
+        }
+    }
+
+    private void showOption() {
+        String [] options ={"Edit Name" , "Edit Profile" ,"Cancel"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Select a option");
+        builder.setItems(options, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int item) {
+                  if (options[item].equalsIgnoreCase("Edit Profile")){
+                      imageUtils.imagepicker(1);
+                      dialog.dismiss();
+                  }
+                  else   if (options[item].equalsIgnoreCase("Edit Name")){
+                      showPopUp();
+                   dialog.dismiss();
+                  }
+                  else {
+                      dialog.dismiss();
+                  }
+            }
+        });
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 
     private void showMemberToMakeAdmin(){
@@ -179,7 +230,6 @@ public class GroupDetailScreen extends BaseActivity implements AppBarLayout.OnOf
         builder.setTitle("Select a member for Admin");
         builder.setItems(memberListForAdmin.toArray(new String[memberListForAdmin.size()]), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int item) {
-                Toast.makeText(getApplicationContext(), String.valueOf(memberListForAdminID.get(item)), Toast.LENGTH_SHORT).show();
                 exitGroup(new SessionManager(getApplicationContext()).getUserID(),groupID,memberListForAdminID.get(item));
 
             }
@@ -364,15 +414,135 @@ public class GroupDetailScreen extends BaseActivity implements AppBarLayout.OnOf
                 final String myResponse = response.body().string();
                 Gson gson = new GsonBuilder().create();
 //                getGroupMember(new SessionManager(getApplicationContext()).getUserID(),groupID,"","");
-
-
                 Intent intent = new Intent(GroupDetailScreen.this , ChatHistoryScreen.class);
                 startActivity(intent);
                 finish();
             }
         });
     }
+    @Override
+    public void image_attachment(int from, String filename, Bitmap file, Uri uri) {
+        this.bitmap = file;
+        this.fileName = filename;
+        String path = Environment.getExternalStorageDirectory() + File.separator + "ImageAttach" + File.separator;
+        imageUtils.createImage(file, filename, path, false);
+        filePath = getRealPathFromURI(uri.getPath());
+        coverimage = (new File(imageUtils.getPath(uri)));
+        imageGroup.setImageBitmap(file);
+        Glide.with(this)
+                .load(coverimage) // Uri of the picture
+                .into(imageGroup);
 
+        uploadGroupIcon(new SessionManager(getApplicationContext()).getUserID(),groupID,"",coverimage);
+    }
+
+    private String getRealPathFromURI(String contentURI) {
+        Uri contentUri = Uri.parse(contentURI);
+        Cursor cursor = this.getApplicationContext().getContentResolver().query(contentUri, null, null, null, null);
+        if (cursor == null) {
+            return contentUri.getPath();
+        } else {
+            cursor.moveToFirst();
+            int index = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+            return cursor.getString(index);
+        }
+    }
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        imageUtils.onActivityResult(requestCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+    public void showPopUp() {
+        final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
+        LayoutInflater layoutInflater = getLayoutInflater();
+        View customView = layoutInflater.inflate(R.layout.groupnameitem, null);
+        groupname=customView.findViewById(R.id.groupname);
+        Button okbtn=customView.findViewById(R.id.popupbtn);
+        TextView charaterCount = customView.findViewById(R.id.charaterCount);
+        groupname.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                charaterCount.setText(String.valueOf(s.length()));
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+
+        final android.app.AlertDialog alertDialog =builder.create();
+//        builder.setPositiveButton("ok",new DialogInterface.OnClickListener() { // define the 'Cancel' button
+//            public void onClick(DialogInterface dialog, int which) {
+//
+//
+//                dialog.cancel();
+//            }
+//        });
+        okbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!groupname.getText().toString().isEmpty()){
+                    editGroupName(new SessionManager(getApplicationContext()).getUserID(),groupID,groupname.getText().toString());
+                    alertDialog.dismiss();
+
+                }
+                else {
+                    groupname.setError("Enter group name");
+                }
+            }
+        });
+        alertDialog.setView(customView);
+        alertDialog.show();
+
+    }
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private void uploadGroupIcon(String user_id, String groupID  ,String action ,File group_image) {
+        ApiRequest request = new ApiRequest();
+        request.requestforuploadGroupIcon(user_id, groupID , action ,group_image, new okhttp3.Callback() {
+            @Override
+            public void onFailure(okhttp3.Call call, IOException e) {
+                Log.d("error", "error");
+                hideLoadingIndicator();
+
+            }
+
+            @Override
+            public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
+                hideLoadingIndicator();
+                final String myResponse = response.body().string();
+                Gson gson = new GsonBuilder().create();
+//                getGroupMember(new SessionManager(getApplicationContext()).getUserID(),groupID,"","");
+
+            }
+        });
+    }
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private void editGroupName(String user_id, String groupID  ,String groupName ) {
+        ApiRequest request = new ApiRequest();
+        request.requestforEditGroupName(user_id, groupID , groupName, new okhttp3.Callback() {
+            @Override
+            public void onFailure(okhttp3.Call call, IOException e) {
+                Log.d("error", "error");
+                hideLoadingIndicator();
+
+            }
+
+            @Override
+            public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
+                hideLoadingIndicator();
+                final String myResponse = response.body().string();
+                Gson gson = new GsonBuilder().create();
+//                getGroupMember(new SessionManager(getApplicationContext()).getUserID(),groupID,"","");
+
+            }
+        });
+    }
 
 
 

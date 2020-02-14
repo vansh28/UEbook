@@ -12,7 +12,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ue.uebook.ChatSdk.Pojo.Grouplist;
-import com.ue.uebook.Data.ApiRequest;
 import com.ue.uebook.GlideUtils;
 import com.ue.uebook.R;
 
@@ -48,8 +47,8 @@ public class GroupListAdapter  extends RecyclerView.Adapter<GroupListAdapter.MyV
     @Override
     public void onBindViewHolder(@NonNull GroupListAdapter.MyViewHolder holder, final int position) {
                holder.name.setText(grouplist.get(position).getName());
-        GlideUtils.loadImage(mtx, ApiRequest.BaseUrl+"upload/" + grouplist.get(position).getGroup_image(), holder.profile, R.drawable.user_default, R.drawable.user_default);
-           holder.chatContainer.setOnClickListener(new View.OnClickListener() {
+            GlideUtils.loadImage(mtx, "http:/dnddemo.com/ebooks/api/v1/" + grouplist.get(position).getGroup_image(),holder.profile, R.drawable.user_default, R.drawable.user_default);
+             holder.chatContainer.setOnClickListener(new View.OnClickListener() {
                @Override
                public void onClick(View v) {
                    if (itemClick!=null){

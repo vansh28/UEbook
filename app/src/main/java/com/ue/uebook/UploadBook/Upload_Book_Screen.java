@@ -108,10 +108,11 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
     private RelativeLayout cover_image_layout;
     private String filePath;
     private String fileName;
+    private Bitmap bitmap;
     private CountDownTimer countDownTimer;
     private long currentMillis=10;
     private String coverimageurl="";
-    private Bitmap bitmap;
+
     ImageUtils imageUtils;
     private Spinner book_category;
     ArrayList<String> categoryName;

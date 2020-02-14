@@ -18,46 +18,53 @@
             android:id="@+id/main.collapsing"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+
             app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
             >
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
+                <ImageView
+                    android:id="@+id/imageGroup"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/user_default"
+                    android:tint="#11000000"
+                    android:background="@android:color/transparent"
+                    app:layout_collapseMode="parallax"
+                    app:layout_collapseParallaxMultiplier="0.9"
+                    />
+                <ImageButton
+                    android:id="@+id/backbtn"
+                    android:layout_width="@dimen/size_50"
+                    android:src="@drawable/backbtn"
+                    android:layout_margin="@dimen/size_5"
+                    android:background="@color/transparent"
+                    android:layout_height="@dimen/size_50"/>
+            </RelativeLayout>
+
 
             <ImageButton
-                android:id="@+id/backbtn"
-                android:layout_width="@dimen/size_50"
-                android:src="@drawable/back_black"
-                android:layout_margin="@dimen/size_5"
-                android:background="@android:color/transparent"
-                android:layout_height="@dimen/size_50"/>
-
-
-
-            <ImageView
-                android:id="@+id/imageGroup"
-                android:layout_width="match_parent"
-                android:layout_height="300dp"
-                android:scaleType="fitXY"
-                android:src="@drawable/user_default"
-                android:tint="#11000000"
-                app:layout_collapseMode="parallax"
-                app:layout_collapseParallaxMultiplier="0.9"
-                />
-            <TextView
-                android:id="@+id/groupname"
+                android:id="@+id/uploadgroupImage"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="visible"
-                android:layout_marginTop="@dimen/size_10"
-                android:layout_gravity="center_horizontal"
-                android:textColor="@android:color/black"
-                android:textSize="17sp"
-                />
+                android:layout_height="@dimen/size_50"
+                android:layout_gravity="bottom|end"
+                android:layout_marginRight="@dimen/size_20"
+                android:layout_marginBottom="@dimen/size_100"
+                android:background="@android:color/transparent"
+
+                android:src="@drawable/edit" />
             <FrameLayout
                 android:id="@+id/main.framelayout.title"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="50dp"
                 android:layout_gravity="bottom|center_horizontal"
                 android:background="@color/white"
                 android:orientation="vertical"
+
                 app:layout_collapseMode="parallax"
                 app:layout_collapseParallaxMultiplier="0.3"
                 >
@@ -92,6 +99,24 @@
             android:layout_width="match_parent"
             android:orientation="vertical"
             android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
+            </RelativeLayout>
+            <com.ue.uebook.Customview.CustomTextViewBold
+                android:id="@+id/groupname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="visible"
+                android:text="fdfdfdfdf"
+                android:layout_marginTop="@dimen/size_10"
+                android:layout_gravity="center_horizontal"
+                android:textColor="@android:color/black"
+                android:textSize="17sp"
+                />
             <com.ue.uebook.Customview.CustomTextViewMedium
                 android:id="@+id/memberCount"
                 android:layout_width="wrap_content"

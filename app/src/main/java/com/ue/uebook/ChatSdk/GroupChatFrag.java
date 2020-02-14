@@ -127,6 +127,7 @@ public class GroupChatFrag extends Fragment implements GroupListAdapter.ItemClic
         Intent intent = new Intent(getContext(),GroupMessageScreen.class);
         intent.putExtra("groupid",grouplist.getId());
         intent.putExtra("name",grouplist.getName());
+        intent.putExtra("groupimg", grouplist.getGroup_image());
         getContext().startActivity(intent);
         Log.e("groupid",grouplist.getId());
         Log.e("groupid",grouplist.getGroupuserid());
