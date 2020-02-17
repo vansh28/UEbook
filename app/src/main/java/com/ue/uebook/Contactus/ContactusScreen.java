@@ -122,7 +122,7 @@ public class ContactusScreen extends BaseActivity implements View.OnClickListene
 
 //                            showDialogWithOkButton("Login Error", form.getMessage());
                 final PrettyDialog pDialog=  new PrettyDialog(this);
-                pDialog  .setTitle("Team UeBook");
+                pDialog  .setTitle("Team UEBook");
                 pDialog.setIcon(R.drawable.applogo);
                 pDialog.setMessage("Thanks for contacting us , we will get back to you soon !");
                 pDialog   .addButton(

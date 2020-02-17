@@ -197,8 +197,7 @@ public class HomeScreen extends BaseActivity implements Home_Fragment.OnFragment
                     public void run() {
 
                         if (getInstance(HomeScreen.this).isConnectingToInternet()) {
-
-
+                            
                         }
                         else {
                             Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content),"No Internet Connection",Snackbar.LENGTH_LONG);

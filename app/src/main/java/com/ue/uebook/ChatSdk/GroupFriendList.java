@@ -95,7 +95,7 @@ public class GroupFriendList extends BaseActivity implements View.OnClickListene
     private void getContactList(String  user_id) {
         ApiRequest request = new ApiRequest();
         showLoadingIndicator();
-        request.requestforgetContactList( user_id,new okhttp3.Callback() {
+        request.requestforgetContactList( user_id,"No",new okhttp3.Callback() {
             @Override
             public void onFailure(okhttp3.Call call, IOException e) {
                 Log.d("error", "error");

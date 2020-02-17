@@ -4,10 +4,13 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -141,9 +144,13 @@ public class NotepadFragment extends Fragment  implements  NotepadAdapter.Notepa
         startActivity(intent);
     }
     @Override  //notes share
-    public void sharenotes(String note)
+    public void sharenotes(String Title,String note)
     {
-        ShareUtils.shareToAllApp(getActivity(),note);
+
+        SpannableString redSpannable= new SpannableString(Title);
+        redSpannable.setSpan(new ForegroundColorSpan(Color.BLACK), 0, Title.length(), 0);
+        String notes=redSpannable+"\n"+note;
+        ShareUtils.shareToAllApp(getActivity(),notes);
     }
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name

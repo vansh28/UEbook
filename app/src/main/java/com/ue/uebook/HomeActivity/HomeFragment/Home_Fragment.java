@@ -182,6 +182,7 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
 
+
             }
 
             @Override
@@ -359,18 +360,15 @@ public class Home_Fragment extends Fragment implements View.OnClickListener, Hom
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void getRecommenedBookList(String categoryId) {
-
         ApiRequest request = new ApiRequest();
         if (recommendedList_book.size() > 0)
             recommendedList_book.clear();
-
         request.requestforgetBookList(categoryId, new okhttp3.Callback() {
             @Override
             public void onFailure(okhttp3.Call call, IOException e) {
                 Log.d("error", "error");
                 hideLoadingIndicator();
             }
-
             @Override
             public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
                 String myResponse = response.body().string();

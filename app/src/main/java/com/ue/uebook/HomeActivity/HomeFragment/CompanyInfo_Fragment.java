@@ -39,7 +39,6 @@ public class CompanyInfo_Fragment extends Fragment implements View.OnClickListen
     private String mParam1;
     private String mParam2;
     private RelativeLayout share_container, language_container, contactUs_container, help_container, aboutUs_container;
-
     private OnFragmentInteractionListener mListener;
     private TextView language_name,language_interface,shareview,helpview,aboutview,contactview;
     private int textSize;

@@ -79,7 +79,6 @@ public class User_Fragment extends Fragment implements View.OnClickListener, Use
     public User_Fragment() {
         // Required empty public constructor
     }
-
     public static User_Fragment newInstance(String param1, String param2) {
         User_Fragment fragment = new User_Fragment();
         Bundle args = new Bundle();

@@ -7,12 +7,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
-
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.ue.uebook.BaseActivity;
@@ -20,9 +18,7 @@ import com.ue.uebook.Data.ApiRequest;
 import com.ue.uebook.DeatailActivity.Book_Detail_Screen;
 import com.ue.uebook.HomeActivity.HomeFragment.Pojo.HomeListingResponse;
 import com.ue.uebook.R;
-
 import java.io.IOException;
-
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;

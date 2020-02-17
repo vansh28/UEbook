@@ -50,7 +50,7 @@ public class NotepadScreen extends AppCompatActivity implements View.OnClickList
         notes_view.setOnClickListener(this);
         layoutmain=findViewById(R.id.layoutmain);
         layoutmain.setOnClickListener(this);
-         id = intent.getIntExtra("id",0);
+        id = intent.getIntExtra("id",0);
         description=intent.getStringExtra("description");
         note_id=intent.getStringExtra("note_id");
         title=intent.getStringExtra("title");
@@ -63,7 +63,6 @@ public class NotepadScreen extends AppCompatActivity implements View.OnClickList
             delete_btn.setVisibility(View.GONE);
         }
     }
-
     @Override
     public void onClick(View view) {
         if (view==back_btn)
@@ -74,10 +73,8 @@ public class NotepadScreen extends AppCompatActivity implements View.OnClickList
             confirmDeleteDialog();
         }
         else if (view==save_Post) {
-
             if (id == 1) {
                 if (isvalidate()){
-
                     updateNotes(note_id, notes_view.getText().toString(),notes_title.getText().toString());
                 }
             } else {

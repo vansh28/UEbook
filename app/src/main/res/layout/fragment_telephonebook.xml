@@ -1,9 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ChatSdk.TelephonebookFrag">
+    tools:context=".ChatSdk.FriendListFrag">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_margin="@dimen/size_10"
+        android:visibility="gone"
+        android:id="@+id/creategroupBtn"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_width="@dimen/size_50"
+            android:layout_height="50dp"
+            android:src="@drawable/user_default"/>
+        <com.ue.uebook.Customview.CustomTextViewBold
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textSize="@dimen/size_16"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/size_20"
+            android:text="Create new group"/>
+    </LinearLayout>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/contactList"
         android:layout_margin="@dimen/size_10"
@@ -19,5 +38,4 @@
         android:visibility="gone"
         android:textColor="@color/black"
         android:text="No Friend Found"/>
-
-</FrameLayout>
+</RelativeLayout>

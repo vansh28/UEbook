@@ -25,7 +25,7 @@ public class NotepadAdapter  extends RecyclerView.Adapter<NotepadAdapter.MyViewH
     }
     public interface NotepadItemClick {
         void onItemClick(String note_id,String description,String title);
-        void sharenotes(String note);
+        void sharenotes(String title,String note);
     }
     public void setItemClickListener(NotepadItemClick clickListener) {
         notepadItemClickl = clickListener;
@@ -59,7 +59,7 @@ public class NotepadAdapter  extends RecyclerView.Adapter<NotepadAdapter.MyViewH
             @Override
             public void onClick(View v) {
                 if (notepadItemClickl!=null){
-                    notepadItemClickl.sharenotes(data.get(position).getDescription());
+                    notepadItemClickl.sharenotes(data.get(position).getTitle(),data.get(position).getDescription());
                 }
             }
         });

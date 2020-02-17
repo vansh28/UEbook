@@ -151,7 +151,6 @@ public class HomeListingFragment extends Fragment implements OnCategorydata {
             }
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-
                 String myresponse = response.body().string();
                 Gson gson = new GsonBuilder().create();
                 final HomeListingResponse form = gson.fromJson(myresponse, HomeListingResponse.class);

@@ -60,7 +60,7 @@ public class AddMemberToGroupScreen extends BaseActivity implements View.OnClick
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void getContactList(String user_id) {
         ApiRequest request = new ApiRequest();
-        request.requestforgetContactList(user_id, new okhttp3.Callback() {
+        request.requestforgetContactList(user_id,"No", new okhttp3.Callback() {
             @Override
             public void onFailure(okhttp3.Call call, IOException e) {
                 Log.d("error", "error");

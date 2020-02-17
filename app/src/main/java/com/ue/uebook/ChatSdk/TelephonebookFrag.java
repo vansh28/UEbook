@@ -1,17 +1,39 @@
 package com.ue.uebook.ChatSdk;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.ue.uebook.ChatSdk.Adapter.ContactListAdapter;
+import com.ue.uebook.ChatSdk.Pojo.ContactListResponse;
+import com.ue.uebook.ChatSdk.Pojo.OponentData;
+import com.ue.uebook.ChatSdk.Pojo.UserData;
+import com.ue.uebook.Data.ApiRequest;
+import com.ue.uebook.GlideUtils;
 import com.ue.uebook.R;
+import com.ue.uebook.SessionManager;
+
+import java.io.IOException;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -21,7 +43,7 @@ import com.ue.uebook.R;
  * Use the {@link TelephonebookFrag#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class TelephonebookFrag extends Fragment {
+public class TelephonebookFrag extends Fragment implements ContactListAdapter.ItemClick, View.OnClickListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -32,9 +54,10 @@ public class TelephonebookFrag extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+    private ContactListAdapter contactListAdapter;
     private RecyclerView contactList;
-    private TextView noview;
-
+    private LinearLayout creategroupBtn;
+    private TextView noView;
     public TelephonebookFrag() {
         // Required empty public constructor
     }
@@ -70,9 +93,17 @@ public class TelephonebookFrag extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.fragment_telephonebook, container, false);
-         contactList =view.findViewById(R.id.contactList);
-         noview=view.findViewById(R.id.noView);
-         noview.setVisibility(View.VISIBLE);
+        creategroupBtn = view.findViewById(R.id.creategroupBtn);
+        noView = view.findViewById(R.id.noView);
+        creategroupBtn.setOnClickListener(this);
+        contactList = view.findViewById(R.id.contactList);
+
+        LinearLayoutManager linearLayoutManagerPopularList = new LinearLayoutManager(getContext());
+        linearLayoutManagerPopularList.setOrientation(LinearLayoutManager.VERTICAL);
+        contactList.setLayoutManager(linearLayoutManagerPopularList);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            getContactList(new SessionManager(getActivity().getApplicationContext()).getUserID());
+        }
         return  view;
     }
 
@@ -100,6 +131,46 @@ public class TelephonebookFrag extends Fragment {
         mListener = null;
     }
 
+    @Override
+    public void onContactListItemClick(OponentData oponentData, UserData userData) {
+        Intent intent = new Intent(getContext(), MessageScreen.class);
+        intent.putExtra("oponentdata", oponentData);
+        intent.putExtra("userData", userData);
+        intent.putExtra("id", 2);
+        startActivity(intent);
+        getActivity().finish();
+    }
+
+    @Override
+    public void onProfileClick(String url) {
+        imagePreview(url);
+    }
+
+    private void imagePreview(String file) {
+        final Dialog previewDialog = new Dialog(getContext());
+        previewDialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        previewDialog.setContentView(getLayoutInflater().inflate(R.layout.image_layout, null));
+        ImageView imageView = previewDialog.findViewById(R.id.image_view);
+        GlideUtils.loadImage((AppCompatActivity) getActivity(), ApiRequest.BaseUrl + "upload/" + file, imageView, R.drawable.user_default, R.drawable.user_default);
+        Button ok_Btn = previewDialog.findViewById(R.id.buton_ok);
+        ok_Btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                previewDialog.dismiss();
+            }
+        });
+        previewDialog.show();
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v == creategroupBtn) {
+
+            Intent intent = new Intent(getContext(), GroupFriendList.class);
+            startActivity(intent);
+        }
+    }
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -114,4 +185,46 @@ public class TelephonebookFrag extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private void getContactList(String user_id) {
+        ApiRequest request = new ApiRequest();
+        request.requestforgetContactList(user_id,"Yes", new okhttp3.Callback() {
+            @Override
+            public void onFailure(okhttp3.Call call, IOException e) {
+                Log.d("error", "error");
+
+            }
+            @Override
+            public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
+                final String myResponse = response.body().string();
+                Gson gson = new GsonBuilder().create();
+                final ContactListResponse form = gson.fromJson(myResponse, ContactListResponse.class);
+                if (form.error == false && form.getUserList() != null) {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            creategroupBtn.setVisibility(View.GONE);
+                            contactListAdapter = new ContactListAdapter((AppCompatActivity) getActivity(), form.getUserList(), form.getData());
+                            contactList.setAdapter(contactListAdapter);
+                            contactListAdapter.setItemClickListener(TelephonebookFrag.this);
+                            contactListAdapter.notifyDataSetChanged();
+                            noView.setVisibility(View.INVISIBLE);
+                        }
+                    });
+                }
+                else {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            creategroupBtn.setVisibility(View.GONE);
+                            noView.setVisibility(View.VISIBLE);
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+
 }

@@ -32,7 +32,6 @@ public class SplashScreenApp extends AppCompatActivity {
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
-
         intent = getIntent();
         senderId=intent.getStringExtra("sendTo");
         channelID=intent.getStringExtra("channel_id");
