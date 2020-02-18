@@ -146,7 +146,6 @@ public class GroupChatFrag extends Fragment implements GroupListAdapter.ItemClic
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
-
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void getGroupList(String user_id   ) {
         ApiRequest request = new ApiRequest();
@@ -156,15 +155,12 @@ public class GroupChatFrag extends Fragment implements GroupListAdapter.ItemClic
                 Log.d("error", "error");
 
             }
-
             @Override
             public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
-
                 final String myResponse = response.body().string();
                 Gson gson = new GsonBuilder().create();
                 final GrouplistResponse form = gson.fromJson(myResponse, GrouplistResponse.class);
                 if (form.getError()==false && form.getGroup_details()!=null){
-//
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -174,8 +170,6 @@ public class GroupChatFrag extends Fragment implements GroupListAdapter.ItemClic
                         noHistoryView.setVisibility(View.INVISIBLE);
                     }
                 });
-//
-//
                 }
                 else {
                     getActivity().runOnUiThread(new Runnable() {

@@ -142,6 +142,7 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
         mProgressDialog.setMessage("Please wait, we are downloading your image file...");
         back_btn = findViewById(R.id.backbtnMessage);
         oponent_name = findViewById(R.id.oponent_name);
+        oponent_name.setOnClickListener(this);
         previewImage = findViewById(R.id.previewImage);
         intent = getIntent();
         videoview = findViewById(R.id.videoview);
@@ -170,9 +171,17 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
             userData = (UserData) intent.getSerializableExtra("userData");
 
             if (oponentData != null) {
-                oponent_name.setText(oponentData.getName());
+
+                if (oponentData.getName().length()>10){
+                    oponent_name.setText(oponentData.getName().substring(0,10)+"..");
+                }
+                else {
+                    oponent_name.setText(oponentData.getName());
+                }
+
+
+
                 sendToID = oponentData.userId;
-                oponent_name.setText(oponentData.getName());
                 GlideUtils.loadImage(MessageScreen.this, ApiRequest.BaseUrl + "upload/" + oponentData.getUrl(), userProfile, R.drawable.user_default, R.drawable.user_default);
                 imageProfile = oponentData.getUrl();
             }
@@ -188,7 +197,16 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
             String sendTo = intent.getStringExtra("sendTo");
             channelID = intent.getStringExtra("channelID");
             String name = intent.getStringExtra("name");
-            oponent_name.setText(name);
+
+            if (name.length()>10){
+                oponent_name.setText(name.substring(0,10)+"..");
+            }
+            else {
+                oponent_name.setText(name);
+            }
+
+
+
             sendToID = sendTo;
 
             if (channelID != null) {
@@ -287,6 +305,10 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
             intent.putExtra("id", channelID);
             intent.putExtra("receiverid", sendToID);
             startActivity(intent);
+
+        }
+        else if (v==oponent_name){
+
 
         }
     }

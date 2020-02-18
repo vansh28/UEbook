@@ -38,10 +38,11 @@
             android:id="@+id/group_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Group Name"
             android:layout_toRightOf="@+id/image_user_chat"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/size_20"
+            android:maxLength="13"
+            android:maxLines="1"
             android:textColor="@color/white"
             android:textSize="@dimen/size_18"
             />

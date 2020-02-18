@@ -41,6 +41,7 @@ import com.ue.uebook.ChatSdk.Adapter.GroupChatAdapter;
 import com.ue.uebook.ChatSdk.Adapter.GroupMemberListAdapter;
 import com.ue.uebook.ChatSdk.Pojo.GroupHistoryResponse;
 import com.ue.uebook.ChatSdk.Pojo.GroupMemberList;
+import com.ue.uebook.ChatSdk.Pojo.GroupNameProfileResponse;
 import com.ue.uebook.ChatSdk.Pojo.Grouplist;
 import com.ue.uebook.ChatSdk.Pojo.MemberListResponse;
 import com.ue.uebook.Data.ApiRequest;
@@ -63,6 +64,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -122,13 +125,13 @@ public class GroupMessageScreen extends BaseActivity implements View.OnClickList
         voicebtn.setOnClickListener(this);
         videoview =findViewById(R.id.videoview);
         groupID = intent.getStringExtra("groupid");
-        groupImg = intent.getStringExtra("groupimg");
+       // groupImg = intent.getStringExtra("groupimg");
         backbtnMessage = findViewById(R.id.backbtnMessage);
         group_name = findViewById(R.id.group_name);
         group_name.setOnClickListener(this);
         messageList = findViewById(R.id.messageList);
-        groupname=intent.getStringExtra("name");
-        group_name.setText(intent.getStringExtra("name"));
+      //  groupname=intent.getStringExtra("name");
+     //   group_name.setText(intent.getStringExtra("name"));
         backbtnMessage.setOnClickListener(this);
         edit_chat_message = findViewById(R.id.edit_chat_message);
         button_chat_send = findViewById(R.id.button_chat_send);
@@ -138,8 +141,7 @@ public class GroupMessageScreen extends BaseActivity implements View.OnClickList
         linearLayoutManagerPopularList.setOrientation(LinearLayoutManager.VERTICAL);
         messageList.setLayoutManager(linearLayoutManagerPopularList);
         messageList.setNestedScrollingEnabled(false);
-        GlideUtils.loadImage(GroupMessageScreen.this, "http:/dnddemo.com/ebooks/api/v1/" + groupImg, image_user_chat, R.drawable.user_default, R.drawable.user_default);
-
+        getGroupNameImage(groupID ,new SessionManager(getApplicationContext()).getUserID());
         getGroupHistory(new SessionManager(getApplicationContext()).getUserID(), groupID);
         getGroupMember(new SessionManager(getApplicationContext()).getUserID(), groupID,"","");
     }
@@ -725,9 +727,65 @@ public class GroupMessageScreen extends BaseActivity implements View.OnClickList
             public void run() {
                 //Do something here
                 getGroupMember(new SessionManager(getApplicationContext()).getUserID(), groupID,"","");
-
+                   getGroupNameImage(groupID ,new SessionManager(getApplicationContext()).getUserID());
             }
         }, 1000);
+
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private void getGroupNameImage( String groupID ,String user_id) {
+        ApiRequest request = new ApiRequest();
+        request.requestforGetGroupNameImage( groupID ,user_id, new okhttp3.Callback() {
+            @Override
+            public void onFailure(okhttp3.Call call, IOException e) {
+                Log.d("error", "error");
+                hideLoadingIndicator();
+
+            }
+
+            @Override
+            public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
+                hideLoadingIndicator();
+                final String myResponse = response.body().string();
+                Gson gson = new GsonBuilder().create();
+                final GroupNameProfileResponse form = gson.fromJson(myResponse, GroupNameProfileResponse.class);
+                if (form.getError() == false && form.getGroup_detail() != null) {
+
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (!GroupMessageScreen.this.isFinishing()) {
+                                GlideUtils.loadImage(GroupMessageScreen.this, "http://" + form.getGroup_detail().getGroup_image(), image_user_chat, R.drawable.user_default, R.drawable.user_default);
+
+                            }
+                            if (form.getGroup_detail().getName().length() > 10){
+
+
+                                group_name.setText(form.getGroup_detail().getName().substring(0, 10) + "...");
+
+                            }
+
+                            else {
+                                group_name.setText(form.getGroup_detail().getName());
+                            }
+                            groupImg= "http://"+ form.getGroup_detail().getGroup_image();
+                            groupname=form.getGroup_detail().getName();
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+    public String getFirst10Words(String arg) {
+        Pattern pattern = Pattern.compile("([\\S]+\\s*){1,3}");
+        Matcher matcher = pattern.matcher(arg);
+        matcher.find();
+        return matcher.group();
+    }
+    protected void onDestroy() {
+        super.onDestroy();
 
     }
 

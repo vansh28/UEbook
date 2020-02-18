@@ -19,11 +19,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
@@ -38,7 +40,9 @@ import com.google.gson.GsonBuilder;
 import com.ue.uebook.BaseActivity;
 import com.ue.uebook.ChatSdk.Adapter.GroupMemberListAdapter;
 import com.ue.uebook.ChatSdk.Adapter.MemberListDetails;
+import com.ue.uebook.ChatSdk.Pojo.DefaultPojo;
 import com.ue.uebook.ChatSdk.Pojo.GroupMemberList;
+import com.ue.uebook.ChatSdk.Pojo.GroupNameProfileResponse;
 import com.ue.uebook.ChatSdk.Pojo.MemberListResponse;
 import com.ue.uebook.Data.ApiRequest;
 import com.ue.uebook.GlideUtils;
@@ -63,7 +67,7 @@ public class GroupDetailScreen extends BaseActivity implements AppBarLayout.OnOf
     private String fileName;
     private Bitmap bitmap;
     private LinearLayout mTitleContainer ,addMember ,exitGroup;
-    private TextView mTitle ,groupname ,memberCount;
+    private TextView mTitle ,group_name ,memberCount;
     private AppBarLayout mAppBarLayout;
     private Toolbar mToolbar;
     private RecyclerView memberList;
@@ -81,6 +85,7 @@ public class GroupDetailScreen extends BaseActivity implements AppBarLayout.OnOf
     private ImageButton chnageGroupImageBtn;
     private File coverimage;
     private String groupImg="";
+    private EditText groupname;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -109,9 +114,9 @@ public class GroupDetailScreen extends BaseActivity implements AppBarLayout.OnOf
         backbtn=findViewById(R.id.backbtn);
         backbtn.setOnClickListener(this);
         memberList=findViewById(R.id.recyclerList);
-        groupname=findViewById(R.id.groupname);
-        groupname.setText(intent.getStringExtra("name"));
-        mTitle.setText(intent.getStringExtra("name"));
+        group_name=findViewById(R.id.groupname);
+      //  group_name.setText(intent.getStringExtra("name"));
+      //  mTitle.setText(intent.getStringExtra("name"));
         groupID=intent.getStringExtra("groupid");
         groupImg=intent.getStringExtra("groupimg");
         groupMemberLists= (List<GroupMemberList>) intent.getSerializableExtra("member");
@@ -119,7 +124,9 @@ public class GroupDetailScreen extends BaseActivity implements AppBarLayout.OnOf
         linearLayoutManagerPopularList.setOrientation(LinearLayoutManager.VERTICAL);
         memberList.setLayoutManager(linearLayoutManagerPopularList);
         memberCount=findViewById(R.id.memberCount);
-        GlideUtils.loadImage(GroupDetailScreen.this, "http:/dnddemo.com/ebooks/api/v1/" + groupImg, imageGroup, R.drawable.user_default, R.drawable.user_default);
+       // GlideUtils.loadImage(GroupDetailScreen.this, "http:/dnddemo.com/ebooks/api/v1/" + groupImg, imageGroup, R.drawable.user_default, R.drawable.user_default);
+        getGroupNameImage(groupID,new SessionManager(getApplicationContext()).getUserID());
+
         getGroupMember(new SessionManager(getApplicationContext()).getUserID(),groupID,"","");
     }
 
@@ -504,6 +511,7 @@ public class GroupDetailScreen extends BaseActivity implements AppBarLayout.OnOf
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void uploadGroupIcon(String user_id, String groupID  ,String action ,File group_image) {
         ApiRequest request = new ApiRequest();
+        showLoadingIndicator();
         request.requestforuploadGroupIcon(user_id, groupID , action ,group_image, new okhttp3.Callback() {
             @Override
             public void onFailure(okhttp3.Call call, IOException e) {
@@ -517,6 +525,24 @@ public class GroupDetailScreen extends BaseActivity implements AppBarLayout.OnOf
                 hideLoadingIndicator();
                 final String myResponse = response.body().string();
                 Gson gson = new GsonBuilder().create();
+
+                final DefaultPojo form = gson.fromJson(myResponse, DefaultPojo.class);
+                 runOnUiThread(new Runnable() {
+                     @Override
+                     public void run() {
+                         if (form.getError()==false){
+                             getGroupNameImage(groupID,new SessionManager(getApplicationContext()).getUserID());
+
+                             Toast.makeText(getApplicationContext(),"Successfully Updated",Toast.LENGTH_SHORT).show();
+                         }
+                         else {
+                             Toast.makeText(getApplicationContext(),"Try Again",Toast.LENGTH_SHORT).show();
+
+                         }
+                     }
+                 });
+
+
 //                getGroupMember(new SessionManager(getApplicationContext()).getUserID(),groupID,"","");
 
             }
@@ -525,6 +551,7 @@ public class GroupDetailScreen extends BaseActivity implements AppBarLayout.OnOf
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void editGroupName(String user_id, String groupID  ,String groupName ) {
         ApiRequest request = new ApiRequest();
+        showLoadingIndicator();
         request.requestforEditGroupName(user_id, groupID , groupName, new okhttp3.Callback() {
             @Override
             public void onFailure(okhttp3.Call call, IOException e) {
@@ -538,8 +565,54 @@ public class GroupDetailScreen extends BaseActivity implements AppBarLayout.OnOf
                 hideLoadingIndicator();
                 final String myResponse = response.body().string();
                 Gson gson = new GsonBuilder().create();
+                final DefaultPojo form = gson.fromJson(myResponse, DefaultPojo.class);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (form.getError()==false){
+                 getGroupNameImage(groupID,new SessionManager(getApplicationContext()).getUserID());
+                            Toast.makeText(getApplicationContext(),"Successfully Updated",Toast.LENGTH_SHORT).show();
+                        }
+                        else {
+                            Toast.makeText(getApplicationContext(),"Try Again",Toast.LENGTH_SHORT).show();
+
+                        }
+                    }
+                });
 //                getGroupMember(new SessionManager(getApplicationContext()).getUserID(),groupID,"","");
 
+            }
+        });
+    }
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private void getGroupNameImage( String groupID ,String user_id) {
+        ApiRequest request = new ApiRequest();
+        request.requestforGetGroupNameImage( groupID ,user_id, new okhttp3.Callback() {
+            @Override
+            public void onFailure(okhttp3.Call call, IOException e) {
+                Log.d("error", "error");
+                hideLoadingIndicator();
+
+            }
+
+            @Override
+            public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
+                hideLoadingIndicator();
+                final String myResponse = response.body().string();
+                Gson gson = new GsonBuilder().create();
+                final GroupNameProfileResponse form = gson.fromJson(myResponse, GroupNameProfileResponse.class);
+                if (form.getError() == false && form.getGroup_detail() != null) {
+
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            GlideUtils.loadImage(GroupDetailScreen.this, "http://"+ form.getGroup_detail().getGroup_image(), imageGroup, R.drawable.user_default, R.drawable.user_default);
+                            group_name.setText(form.getGroup_detail().getName());
+                            mTitle.setText(form.getGroup_detail().getName());
+
+                        }
+                    });
+                }
             }
         });
     }

@@ -18,6 +18,7 @@ import androidx.core.app.NotificationCompat;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.ue.uebook.AuthorProfileActivity.PendingRequestScreen;
 import com.ue.uebook.R;
 import com.ue.uebook.SplashActivity.SplashScreenApp;
 import com.ue.uebook.VideoSdk.VideoCallRecive;
@@ -84,6 +85,12 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                      intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                      startActivity(intent);
                 }
+
+                else if (noti_msz.equalsIgnoreCase("friend_req")){
+                     sendFrmdRequestNotification(noti_msz,getBitmapfromUrl("http://dnddemo.com/ebooks/api/v1/upload/book_1571040310.jpg"));
+
+                 }
+
 
                 else
                     {
@@ -185,7 +192,37 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     /**
      * Create and show a simple notification containing the received FCM message.
      *
-     */
+     */    private void sendFrmdRequestNotification(String msg ,Bitmap imageurl) {
+        value++;
+        Intent intent = new Intent(this, PendingRequestScreen.class);
+        intent.putExtra("sendTo",user_id);
+        intent.putExtra("channel_id",channel_id);
+        intent.putExtra("name",name);
+        intent.putExtra("imageUrl",Avtar);
+        intent.putExtra("id",1);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+        int randomRequestCode = new Random().nextInt(54325);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, randomRequestCode /* Request code */, intent,
+                PendingIntent.FLAG_ONE_SHOT);
+        String channelId = getString(R.string.app_name);
+        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        NotificationCompat.Builder notificationBuilder =
+                new NotificationCompat.Builder(this, channelId)
+                        .setSmallIcon(R.drawable.applogo)
+                        .setContentTitle("UEBook")
+                        .setContentText(name + " sent you a friend request")
+                        .setAutoCancel(true)
+                        .addAction(R.drawable.user_default, "View",pendingIntent)                       // .setLargeIcon(imageurl)
+                        .setSound(defaultSoundUri)
+                        .setContentIntent(pendingIntent)
+                        .setPriority(NotificationManager.IMPORTANCE_HIGH);
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);// Since android Oreo notification channel is needed.
+        createNotificationChannel();
+
+        notificationManager.notify(value /* ID of notification */, notificationBuilder.build());
+    }
+
     private void sendNotification(String msg ,Bitmap imageurl) {
         value++;
         Intent intent = new Intent(this, SplashScreenApp.class);
@@ -207,7 +244,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         .setContentTitle(name)
                         .setContentText(msg)
                         .setAutoCancel(true)
-                       // .setLargeIcon(imageurl)
+                        .addAction(R.drawable.receive, "Reply",pendingIntent)                       // .setLargeIcon(imageurl)
                         .setSound(defaultSoundUri)
                         .setContentIntent(pendingIntent)
                         .setPriority(NotificationManager.IMPORTANCE_HIGH);
