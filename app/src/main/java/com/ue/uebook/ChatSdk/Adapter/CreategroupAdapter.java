@@ -20,7 +20,7 @@ public class   CreategroupAdapter   extends BaseSelectableListAdapter<OponentDat
 //    private SelectedItemsCountsChangedListener selectedItemsCountChangedListener;
     private ItemClick itemClick;
 
-    public CreategroupAdapter(AppCompatActivity context, List<OponentData> users) {
+    public  CreategroupAdapter(AppCompatActivity context, List<OponentData> users) {
         super(context, users);
     }
 

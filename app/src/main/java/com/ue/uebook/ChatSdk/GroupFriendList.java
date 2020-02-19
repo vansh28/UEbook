@@ -118,7 +118,6 @@ public class GroupFriendList extends BaseActivity implements View.OnClickListene
 //                            groupAdapter.setItemClickListener(GroupFriendList.this);
 //                            groupAdapter.notifyDataSetChanged();
 
-
                             contactList = new CreategroupAdapter(GroupFriendList.this,form.getUserList());
                              contactList.setItemClickListener(GroupFriendList.this);
                             userlist.setAdapter(contactList);
@@ -144,7 +143,6 @@ public class GroupFriendList extends BaseActivity implements View.OnClickListene
             groupList.setAdapter(groupItemListAdapter);
             groupItemListAdapter.setItemClickListener(GroupFriendList.this);
             groupItemListAdapter.notifyDataSetChanged();
-
         }
         else {
             createGroup.setVisibility(View.GONE);

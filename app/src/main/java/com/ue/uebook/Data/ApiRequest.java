@@ -535,7 +535,6 @@ public class ApiRequest {
                 .build();
         client.newCall(request).enqueue(callback);
     }
-
     public void requestforChat(String user_id, String tokenKey, String sendTO, String type, String channelId, String message, Callback callback) {
         String url = null;
         url = BaseUrl + "user_chat";
