@@ -122,6 +122,8 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
     int downloadedSize = 0;
     int totalSize = 0;
     TextView cur_val;
+    private String oponentName="";
+    private String oponentImage="";
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
@@ -171,9 +173,10 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
             userData = (UserData) intent.getSerializableExtra("userData");
 
             if (oponentData != null) {
-
+                     oponentName=oponentData.getName();
                 if (oponentData.getName().length()>10){
                     oponent_name.setText(oponentData.getName().substring(0,10)+"..");
+
                 }
                 else {
                     oponent_name.setText(oponentData.getName());
@@ -184,6 +187,7 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
                 sendToID = oponentData.userId;
                 GlideUtils.loadImage(MessageScreen.this, ApiRequest.BaseUrl + "upload/" + oponentData.getUrl(), userProfile, R.drawable.user_default, R.drawable.user_default);
                 imageProfile = oponentData.getUrl();
+                oponentImage=oponentData.getUrl();
             }
 
             if (oponentData.channelId != null) {
@@ -197,7 +201,7 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
             String sendTo = intent.getStringExtra("sendTo");
             channelID = intent.getStringExtra("channelID");
             String name = intent.getStringExtra("name");
-
+            oponentName= intent.getStringExtra("name");
             if (name.length()>10){
                 oponent_name.setText(name.substring(0,10)+"..");
             }
@@ -214,11 +218,13 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
                 getChatHistory(new SessionManager(getApplication()).getUserID(), sendToID, channelID, "text");
                 GlideUtils.loadImage(MessageScreen.this, ApiRequest.BaseUrl + "upload/" + imageUrl, userProfile, R.drawable.user_default, R.drawable.user_default);
                 imageProfile = imageUrl;
+                  oponentImage=imageUrl;
             } else {
 
                 getChatHistory(new SessionManager(getApplication()).getUserID(), sendToID, "", "text");
                 GlideUtils.loadImage(MessageScreen.this, ApiRequest.BaseUrl + "upload/" + imageUrl, userProfile, R.drawable.user_default, R.drawable.user_default);
                 imageProfile = imageUrl;
+                oponentImage=imageUrl;
             }
         }
     }
@@ -231,7 +237,13 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
             startActivity(intent);
             finish();
         } else if (v == userProfile) {
-            imagePreview(imageUrl);
+            //imagePreview(imageUrl);
+
+            Intent intent = new Intent (MessageScreen.this,OponentUserDetailsScren.class);
+            intent.putExtra("name",oponentName);
+            intent.putExtra("image",oponentImage);
+            startActivity(intent);
+
         } else if (v == button_chat_attachment) {
             showBottomSheet();
         } else if (v == morebtn) {
@@ -308,7 +320,10 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
 
         }
         else if (v==oponent_name){
-
+             Intent intent = new Intent (MessageScreen.this,OponentUserDetailsScren.class);
+              intent.putExtra("name",oponentName);
+              intent.putExtra("image",oponentImage);
+             startActivity(intent);
 
         }
     }

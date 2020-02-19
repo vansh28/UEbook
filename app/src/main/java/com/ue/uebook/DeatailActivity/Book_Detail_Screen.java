@@ -156,6 +156,7 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
                 textSize = 24;
                 break;
         }
+
         bookDesc.setTextSize(textSize);
         bookTitle.setTextSize(textSize);
         bookAuthor.setTextSize(textSize);

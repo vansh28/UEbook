@@ -122,7 +122,7 @@ public class ChatListScreen extends BaseActivity implements View.OnClickListener
        }
 
     @Override
-    public void onUserProfileClick(String imageurl) {
+    public void onUserProfileClick(String imageurl ,String name) {
         imagePreview(imageurl);
     }
     private void imagePreview(String file) {

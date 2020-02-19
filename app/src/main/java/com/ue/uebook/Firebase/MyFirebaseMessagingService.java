@@ -37,7 +37,7 @@ import java.util.Random;
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     private static final String TAG = "MyFirebaseMsgService";
-    private String name,noti_msz,user_id,Avtar,channel_id;
+    private String name,noti_msz,user_id,Avtar,channel_id,noti_type;
     Bitmap bmp = null;
     private static  int value=0;
 
@@ -66,6 +66,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 user_id=jsonObject.getString("user_id");
                 Avtar =jsonObject.getString("Avtar");
                 channel_id =jsonObject.getString("channel_id");
+                noti_type=jsonObject.getString("noti_type");
                 Log.d("channel_id",channel_id);
 //                if (taskInfo.get(0).topActivity.getClassName().equalsIgnoreCase("com.ue.uebook.ChatSdk.MessageScreen"))
 //                {
@@ -101,8 +102,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
                      else
                          {
-
-                         sendNotification(noti_msz,getBitmapfromUrl("http://dnddemo.com/ebooks/api/v1/upload/book_1571040310.jpg"));
+                                 sendNotification(noti_msz,getBitmapfromUrl("http://dnddemo.com/ebooks/api/v1/upload/book_1571040310.jpg"));
                      }
                 }
             } catch (JSONException e) {
@@ -231,6 +231,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         intent.putExtra("name",name);
         intent.putExtra("imageUrl",Avtar);
         intent.putExtra("id",1);
+        intent.putExtra("noti_type",noti_type);
+
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
         int randomRequestCode = new Random().nextInt(54325);

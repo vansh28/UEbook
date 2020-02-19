@@ -1,5 +1,6 @@
 package com.ue.uebook.ChatSdk.Adapter;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,6 +49,9 @@ public class GroupListAdapter  extends RecyclerView.Adapter<GroupListAdapter.MyV
     public void onBindViewHolder(@NonNull GroupListAdapter.MyViewHolder holder, final int position) {
                holder.name.setText(grouplist.get(position).getName());
             GlideUtils.loadImage(mtx, "http:/dnddemo.com/ebooks/api/v1/" + grouplist.get(position).getGroup_image(),holder.profile, R.drawable.user_default, R.drawable.user_default);
+        Log.e("imahge","http:/dnddemo.com/ebooks/api/v1/" + grouplist.get(position).getGroup_image());
+
+
              holder.chatContainer.setOnClickListener(new View.OnClickListener() {
                @Override
                public void onClick(View v) {
@@ -56,6 +60,17 @@ public class GroupListAdapter  extends RecyclerView.Adapter<GroupListAdapter.MyV
                    }
                }
            });
+               if (grouplist.get(position).getUnreadmessage()!=null) {
+                   if (grouplist.get(position).getUnreadmessage().equalsIgnoreCase("0")) {
+                       holder.unreadMszCounterTv.setVisibility(View.GONE);
+                       holder.userchat.setText(grouplist.get(position).getMessage());
+                   } else {
+                       holder.unreadMszCounterTv.setVisibility(View.VISIBLE);
+                       holder.unreadMszCounterTv.setText(grouplist.get(position).getUnreadmessage());
+                   }
+               }
+
+
     }
 
 

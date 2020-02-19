@@ -304,10 +304,10 @@ public class ChatHistoryFrag extends Fragment implements View.OnClickListener ,C
     }
 
     @Override
-    public void onUserProfileClick(String imageurl) {
-        imagePreview(imageurl);
+    public void onUserProfileClick(String imageurl ,String oponentName) {
+        imagePreview(imageurl ,oponentName);
     }
-    private void imagePreview(String file) {
+    private void imagePreview(String file , String oponentName) {
         final Dialog previewDialog = new Dialog(getContext());
         previewDialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         previewDialog.setContentView(getLayoutInflater().inflate(R.layout.image_layout
@@ -315,6 +315,19 @@ public class ChatHistoryFrag extends Fragment implements View.OnClickListener ,C
         ImageView imageView = previewDialog.findViewById(R.id.image_view);
         GlideUtils.loadImage((AppCompatActivity) getActivity(), ApiRequest.BaseUrl+"upload/" + file, imageView, R.drawable.user_default, R.drawable.user_default);
         Button ok_Btn = previewDialog.findViewById(R.id.buton_ok);
+        ok_Btn.setVisibility(View.GONE);
+
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent (getContext(),OponentUserDetailsScren.class);
+                intent.putExtra("name",oponentName);
+                intent.putExtra("image",file);
+                intent.putExtra("id",0);
+                getActivity().startActivity(intent);
+                previewDialog.dismiss();
+            }
+        });
         ok_Btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

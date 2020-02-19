@@ -93,7 +93,7 @@ public class GroupMemberListAdapter  extends BaseSelectableListAdapter<GroupMemb
 
     public static class ViewHolder {
         ImageView opponentIcon,selectimage;
-        TextView opponentName ,timeTv;
+        TextView opponentName ,timeTv ,lastmsz;
     }
     public interface GroupMemberItemClick {
         void ontItemClick(GroupMemberList groupMemberList, int position , int id);

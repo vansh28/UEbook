@@ -75,18 +75,18 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 
-public class GroupMessageScreen extends BaseActivity implements View.OnClickListener, ImageUtils.ImageAttachmentListener ,GroupMemberListAdapter.GroupMemberItemClick{
+public class GroupMessageScreen extends BaseActivity implements View.OnClickListener, ImageUtils.ImageAttachmentListener, GroupMemberListAdapter.GroupMemberItemClick {
     private Intent intent;
     private static final int REQUEST_PICK_VIDEO = 12;
-    private String groupID ;
+    private String groupID;
     private EditText edit_chat_message;
-    private ImageButton    videobtncall , voicebtn, button_chat_send, backbtnMessage, button_chat_attachment, gallerybtn, audiobtn, videobtn, filebtn;
+    private ImageButton videobtncall, voicebtn, button_chat_send, backbtnMessage, button_chat_attachment, gallerybtn, audiobtn, videobtn, filebtn;
     private TextView group_name;
     private RecyclerView messageList;
     private BottomSheetDialog mBottomSheetDialog;
     private GroupChatAdapter groupChatAdapter;
     ImageUtils imageUtils;
-    private ImageView previewImage , image_user_chat;
+    private ImageView previewImage, image_user_chat;
     private static final int MY_PERMISSIONS_REQUEST_CAMERA = 99;
     private File videofile, audioUrl, docfile;
     private int mCurrentPosition = 0;
@@ -96,22 +96,25 @@ public class GroupMessageScreen extends BaseActivity implements View.OnClickList
     private Bitmap bitmap;
     private int typevalue = 0;
     private VideoView videoview;
-    private ImageButton callBtn ,cancelBtn;
+    private ImageButton callBtn, cancelBtn;
     private ListView listView;
-    private  GroupMemberListAdapter groupMemberListAdapter;
-    private List<String>memberForcall;
-    private String userid="";
-    private String memberid="";
-    private String groupname="";
-    private List<GroupMemberList>groupMemberLists;
-    private List<Grouplist>grouplists;
-    private String groupImg="";
+    private GroupMemberListAdapter groupMemberListAdapter;
+    private List<String> memberForcall;
+    private String userid = "";
+    private String memberid = "";
+    private String groupname = "";
+    private List<GroupMemberList> groupMemberLists;
+    private List<Grouplist> grouplists;
+    private String groupImg = "";
+    private String  channelID ="";
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_message_screen);
         button_chat_attachment = findViewById(R.id.button_chat_attachment);
-        image_user_chat=findViewById(R.id.image_user_chat);
+        image_user_chat = findViewById(R.id.image_user_chat);
         image_user_chat.setOnClickListener(this);
         intent = getIntent();
         imageUtils = new ImageUtils(this);
@@ -119,19 +122,20 @@ public class GroupMessageScreen extends BaseActivity implements View.OnClickList
         groupMemberLists = new ArrayList<>();
         grouplists = new ArrayList<>();
         previewImage = findViewById(R.id.previewImage);
-        videobtncall=findViewById(R.id.videobtn);
+        videobtncall = findViewById(R.id.videobtn);
         videobtncall.setOnClickListener(this);
-        voicebtn=findViewById(R.id.voicebtn);
+        voicebtn = findViewById(R.id.voicebtn);
         voicebtn.setOnClickListener(this);
-        videoview =findViewById(R.id.videoview);
+        videoview = findViewById(R.id.videoview);
         groupID = intent.getStringExtra("groupid");
-       // groupImg = intent.getStringExtra("groupimg");
+        channelID=intent.getStringExtra("channelID");
+        // groupImg = intent.getStringExtra("groupimg");
         backbtnMessage = findViewById(R.id.backbtnMessage);
         group_name = findViewById(R.id.group_name);
         group_name.setOnClickListener(this);
         messageList = findViewById(R.id.messageList);
-      //  groupname=intent.getStringExtra("name");
-     //   group_name.setText(intent.getStringExtra("name"));
+        //  groupname=intent.getStringExtra("name");
+        //   group_name.setText(intent.getStringExtra("name"));
         backbtnMessage.setOnClickListener(this);
         edit_chat_message = findViewById(R.id.edit_chat_message);
         button_chat_send = findViewById(R.id.button_chat_send);
@@ -141,10 +145,20 @@ public class GroupMessageScreen extends BaseActivity implements View.OnClickList
         linearLayoutManagerPopularList.setOrientation(LinearLayoutManager.VERTICAL);
         messageList.setLayoutManager(linearLayoutManagerPopularList);
         messageList.setNestedScrollingEnabled(false);
-        getGroupNameImage(groupID ,new SessionManager(getApplicationContext()).getUserID());
-        getGroupHistory(new SessionManager(getApplicationContext()).getUserID(), groupID);
-        getGroupMember(new SessionManager(getApplicationContext()).getUserID(), groupID,"","");
+        getGroupNameImage(groupID, new SessionManager(getApplicationContext()).getUserID());
+
+        if (channelID!=null){
+            getGroupHistory(new SessionManager(getApplicationContext()).getUserID(), channelID);
+            getGroupMember(new SessionManager(getApplicationContext()).getUserID(), channelID, "", "");
+        }
+        else {
+            getGroupHistory(new SessionManager(getApplicationContext()).getUserID(), groupID);
+            getGroupMember(new SessionManager(getApplicationContext()).getUserID(), groupID, "", "");
+        }
+
+
     }
+
     @Override
     public void onClick(View v) {
         if (v == backbtnMessage) {
@@ -162,8 +176,7 @@ public class GroupMessageScreen extends BaseActivity implements View.OnClickList
             } else if (typevalue == 1) {
                 previewImage.setVisibility(View.GONE);
                 sendMesaage(groupID, new SessionManager(getApplicationContext()).getUserID(), "image", edit_chat_message.getText().toString(), 1);
-            }
-            else if (typevalue==2){
+            } else if (typevalue == 2) {
                 if (videofile != null) {
                     videoview.setVisibility(View.GONE);
                     sendMesaage(groupID, new SessionManager(getApplicationContext()).getUserID(), "video", edit_chat_message.getText().toString(), 2);
@@ -191,8 +204,7 @@ public class GroupMessageScreen extends BaseActivity implements View.OnClickList
             typevalue = 3;
             getAudioFile();
             mBottomSheetDialog.dismiss();
-        }
-        else if (v == videobtn) {
+        } else if (v == videobtn) {
             typevalue = 2;
             mBottomSheetDialog.dismiss();
             try {
@@ -207,27 +219,23 @@ public class GroupMessageScreen extends BaseActivity implements View.OnClickList
             openFile(111);
             mBottomSheetDialog.dismiss();
 
-        }
-        else if (v==voicebtn){
+        } else if (v == voicebtn) {
             showBottomListSheet("audiocall");
-        }
-        else if (v==videobtncall){
+        } else if (v == videobtncall) {
             showBottomListSheet("videocall");
-        }
-        else if (v==group_name){
-            Intent intent = new Intent(this,GroupDetailScreen.class);
-            intent.putExtra("name",groupname);
+        } else if (v == group_name) {
+            Intent intent = new Intent(this, GroupDetailScreen.class);
+            intent.putExtra("name", groupname);
             intent.putExtra("member", (Serializable) groupMemberLists);
-            intent.putExtra("groupid",groupID);
-            intent.putExtra("groupimg",groupImg);
+            intent.putExtra("groupid", groupID);
+            intent.putExtra("groupimg", groupImg);
             startActivity(intent);
-        }
-        else if (v==image_user_chat){
-            Intent intent = new Intent(this,GroupDetailScreen.class);
-            intent.putExtra("name",groupname);
+        } else if (v == image_user_chat) {
+            Intent intent = new Intent(this, GroupDetailScreen.class);
+            intent.putExtra("name", groupname);
             intent.putExtra("member", (Serializable) groupMemberLists);
-            intent.putExtra("groupid",groupID);
-            intent.putExtra("groupimg",groupImg);
+            intent.putExtra("groupid", groupID);
+            intent.putExtra("groupimg", groupImg);
             startActivity(intent);
         }
     }
@@ -246,6 +254,7 @@ public class GroupMessageScreen extends BaseActivity implements View.OnClickList
         videobtn.setOnClickListener(this);
         mBottomSheetDialog.show();
     }
+
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void sendMesaage(String group_id, String send_by, String message_type, String message, int typeval) {
         OkHttpClient client = new OkHttpClient();
@@ -271,7 +280,6 @@ public class GroupMessageScreen extends BaseActivity implements View.OnClickList
                         .addFormDataPart(" message", message)
                         .addFormDataPart(" sender_name", new SessionManager(getApplicationContext()).getUserName())
                         .addFormDataPart("image_file", imageurl.getName(), RequestBody.create(MEDIA_TYPE_PNG, imageurl))
-
                         .build();
                 break;
             case 2:
@@ -301,7 +309,7 @@ public class GroupMessageScreen extends BaseActivity implements View.OnClickList
                         .addFormDataPart(" message_type", message_type)
                         .addFormDataPart(" message", message)
                         .addFormDataPart(" sender_name", new SessionManager(getApplicationContext()).getUserName())
-                       .addFormDataPart("pdf_file", docfile.getName(), RequestBody.create(MediaType.parse("text/csv"), docfile))
+                        .addFormDataPart("pdf_file", docfile.getName(), RequestBody.create(MediaType.parse("text/csv"), docfile))
                         .build();
                 break;
             default:
@@ -339,6 +347,7 @@ public class GroupMessageScreen extends BaseActivity implements View.OnClickList
             }
         });
     }
+
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void getGroupHistory(String user_id, String groupID) {
         ApiRequest request = new ApiRequest();
@@ -347,6 +356,7 @@ public class GroupMessageScreen extends BaseActivity implements View.OnClickList
             public void onFailure(okhttp3.Call call, IOException e) {
                 Log.d("error", "error");
             }
+
             @Override
             public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
                 final String myResponse = response.body().string();
@@ -370,10 +380,12 @@ public class GroupMessageScreen extends BaseActivity implements View.OnClickList
             }
         });
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         imageUtils.request_permission_result(requestCode, permissions, grantResults);
     }
+
     public void image_attachment(int from, String filename, Bitmap file, Uri uri) {
         this.bitmap = file;
         this.fileName = filename;
@@ -384,6 +396,7 @@ public class GroupMessageScreen extends BaseActivity implements View.OnClickList
         previewImage.setVisibility(View.VISIBLE);
         previewImage.setImageBitmap(file);
     }
+
     private void getAudioFile() {
         try {
             Intent audioIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI);
@@ -392,6 +405,7 @@ public class GroupMessageScreen extends BaseActivity implements View.OnClickList
 
         }
     }
+
     private String getRealPathFromURI(String contentURI) {
         Uri contentUri = Uri.parse(contentURI);
         Cursor cursor = this.getApplicationContext().getContentResolver().query(contentUri, null, null, null, null);
@@ -403,6 +417,7 @@ public class GroupMessageScreen extends BaseActivity implements View.OnClickList
             return cursor.getString(index);
         }
     }
+
     private void openFile(int CODE) {
         Intent i = new Intent(Intent.ACTION_GET_CONTENT);
         i.setType("*/*");
@@ -410,6 +425,7 @@ public class GroupMessageScreen extends BaseActivity implements View.OnClickList
         i.putExtra(Intent.EXTRA_MIME_TYPES, mimetypes);
         startActivityForResult(i, CODE);
     }
+
     private void imagePreview(String file) {
         final Dialog previewDialog = new Dialog(this);
         previewDialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
@@ -426,6 +442,7 @@ public class GroupMessageScreen extends BaseActivity implements View.OnClickList
         });
         previewDialog.show();
     }
+
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -443,16 +460,14 @@ public class GroupMessageScreen extends BaseActivity implements View.OnClickList
                     e.printStackTrace();
                     Toast.makeText(this, "Please Select Again", Toast.LENGTH_SHORT).show();
                 }
-            }
-             else   if (requestCode == REQUEST_PICK_VIDEO) {
+            } else if (requestCode == REQUEST_PICK_VIDEO) {
                 Uri selectedVideo = data.getData();
                 try {
                     String videoPathStr = getPath(selectedVideo);
                     videofile = new File(videoPathStr);
                     initializePlayer(selectedVideo);
                     videoview.setVisibility(View.VISIBLE);
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                     Toast.makeText(this, "Please Select Again", Toast.LENGTH_SHORT).show();
                 }
@@ -468,6 +483,7 @@ public class GroupMessageScreen extends BaseActivity implements View.OnClickList
             }
         }
     }
+
     public String getPath(Uri uri) {
         String[] projection = {MediaStore.Video.Media.DATA};
         Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
@@ -479,6 +495,7 @@ public class GroupMessageScreen extends BaseActivity implements View.OnClickList
         } else
             return null;
     }
+
     private void initializePlayer(Uri uri) {
         if (uri != null) {
             videoview.setVideoURI(uri);
@@ -497,6 +514,7 @@ public class GroupMessageScreen extends BaseActivity implements View.OnClickList
                     }
                 });
     }
+
     private void releasePlayer() {
         videoview.stopPlayback();
     }
@@ -506,17 +524,17 @@ public class GroupMessageScreen extends BaseActivity implements View.OnClickList
         intent.putExtra("url", url);
         startActivity(intent);
     }
+
     private void showBottomListSheet(String calltype) {
         final View bottomSheetLayout = getLayoutInflater().inflate(R.layout.bottomsheetgroup, null);
         mBottomSheetDialog = new BottomSheetDialog(this);
         mBottomSheetDialog.setContentView(bottomSheetLayout);
         listView = mBottomSheetDialog.findViewById(R.id.groupmemberList);
-        callBtn=mBottomSheetDialog.findViewById(R.id.callBtn);
-        cancelBtn=mBottomSheetDialog.findViewById(R.id.cancelBtn);
-        if (calltype.equalsIgnoreCase("audiocall")){
+        callBtn = mBottomSheetDialog.findViewById(R.id.callBtn);
+        cancelBtn = mBottomSheetDialog.findViewById(R.id.cancelBtn);
+        if (calltype.equalsIgnoreCase("audiocall")) {
             callBtn.setBackgroundResource(R.drawable.phone);
-        }
-        else {
+        } else {
             callBtn.setBackgroundResource(R.drawable.videoc);
         }
         cancelBtn.setOnClickListener(new View.OnClickListener() {
@@ -524,37 +542,35 @@ public class GroupMessageScreen extends BaseActivity implements View.OnClickList
             public void onClick(View v) {
                 mBottomSheetDialog.dismiss();
                 memberForcall.clear();
-                Log.e("ddd",memberid);
+                Log.e("ddd", memberid);
 
             }
         });
 
-        groupMemberListAdapter = new GroupMemberListAdapter(GroupMessageScreen.this,groupMemberLists);
+        groupMemberListAdapter = new GroupMemberListAdapter(GroupMessageScreen.this, groupMemberLists);
         groupMemberListAdapter.setItemClickListener(GroupMessageScreen.this);
         listView.setAdapter(groupMemberListAdapter);
 
         callBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                for(String s:memberForcall){
-                    if (memberid == ""){
+                for (String s : memberForcall) {
+                    if (memberid == "") {
                         memberid = s;
-                    }
-                    else {
+                    } else {
                         memberid = memberid + "," + s;
                     }
                 }
-                Log.e("useris",memberid);
-                  if (memberid !="") {
-                      if (calltype.equalsIgnoreCase("audiocall")) {
-                          callFunc(true, memberid);
-                      } else {
-                          callFunc(false, memberid);
-                      }
-                  }
-                  else {
-                      Toast.makeText(GroupMessageScreen.this,"Please Add member",Toast.LENGTH_SHORT).show();
-                  }
+                Log.e("useris", memberid);
+                if (memberid != "") {
+                    if (calltype.equalsIgnoreCase("audiocall")) {
+                        callFunc(true, memberid);
+                    } else {
+                        callFunc(false, memberid);
+                    }
+                } else {
+                    Toast.makeText(GroupMessageScreen.this, "Please Add member", Toast.LENGTH_SHORT).show();
+                }
 
             }
         });
@@ -583,24 +599,23 @@ public class GroupMessageScreen extends BaseActivity implements View.OnClickList
 //        });
 
 
-
-
         mBottomSheetDialog.show();
     }
 
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    private void getGroupMember(String user_id, String groupID,String add_mem_id_in_group ,String action) {
+    private void getGroupMember(String user_id, String groupID, String add_mem_id_in_group, String action) {
         ApiRequest request = new ApiRequest();
-              if (groupMemberLists.size()>0)
-                  groupMemberLists.clear();
-        request.requestforgetGroupMember(user_id, groupID,add_mem_id_in_group,action, new okhttp3.Callback() {
+        if (groupMemberLists.size() > 0)
+            groupMemberLists.clear();
+        request.requestforgetGroupMember(user_id, groupID, add_mem_id_in_group, action, new okhttp3.Callback() {
             @Override
             public void onFailure(okhttp3.Call call, IOException e) {
                 Log.d("error", "error");
 
 
             }
+
             @Override
             public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
 
@@ -612,14 +627,13 @@ public class GroupMessageScreen extends BaseActivity implements View.OnClickList
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                             for (int i = 0; i<form.getUser_list().size();i++){
-                                 if (form.getUser_list().get(i).getId().equalsIgnoreCase(new SessionManager(getApplicationContext()).getUserID())){
+                            for (int i = 0; i < form.getUser_list().size(); i++) {
+                                if (form.getUser_list().get(i).getId().equalsIgnoreCase(new SessionManager(getApplicationContext()).getUserID())) {
 
-                                 }
-                                 else {
-                                     groupMemberLists.add(form.getUser_list().get(i));
-                                 }
-                             }
+                                } else {
+                                    groupMemberLists.add(form.getUser_list().get(i));
+                                }
+                            }
 
 
                         }
@@ -627,8 +641,7 @@ public class GroupMessageScreen extends BaseActivity implements View.OnClickList
 //
 //
 
-              }
-                else {
+                } else {
 
                 }
             }
@@ -638,15 +651,14 @@ public class GroupMessageScreen extends BaseActivity implements View.OnClickList
 
     @Override
     public void ontItemClick(GroupMemberList groupMemberList, int position, int id) {
-        if (groupMemberList!=null){
-            Log.e("pod",String.valueOf(position));
-            if (id==1){
+        if (groupMemberList != null) {
+            Log.e("pod", String.valueOf(position));
+            if (id == 1) {
                 memberForcall.add(groupMemberList.getId());
 
 
-            }
-            else if (id==2){
-                if (memberForcall.size()>0){
+            } else if (id == 2) {
+                if (memberForcall.size() > 0) {
                     memberForcall.remove(groupMemberList.getId());
                 }
 
@@ -656,9 +668,9 @@ public class GroupMessageScreen extends BaseActivity implements View.OnClickList
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    private void sendNotificationForCall(String user_id, String groupID ,String type ,String memberid) {
+    private void sendNotificationForCall(String user_id, String groupID, String type, String memberid) {
         ApiRequest request = new ApiRequest();
-        request.requestforCallGroupMemberNotification(user_id, groupID ,memberid, type , new okhttp3.Callback() {
+        request.requestforCallGroupMemberNotification(user_id, groupID, memberid, type, new okhttp3.Callback() {
             @Override
             public void onFailure(okhttp3.Call call, IOException e) {
                 Log.d("error", "error");
@@ -676,7 +688,7 @@ public class GroupMessageScreen extends BaseActivity implements View.OnClickList
         });
     }
 
-    private  void  callFunc(Boolean audio, String membersId){
+    private void callFunc(Boolean audio, String membersId) {
         URL serverURL;
         try {
             serverURL = new URL("https://meet.jit.si");
@@ -692,13 +704,12 @@ public class GroupMessageScreen extends BaseActivity implements View.OnClickList
                 .build();
         JitsiMeet.setDefaultConferenceOptions(defaultOptions);
 
-        if (audio==true){
-            sendNotificationForCall(new SessionManager(getApplicationContext()).getUserID(),groupID,"audioCall", membersId);
+        if (audio == true) {
+            sendNotificationForCall(new SessionManager(getApplicationContext()).getUserID(), groupID, "audioCall", membersId);
+        } else {
+            sendNotificationForCall(new SessionManager(getApplicationContext()).getUserID(), groupID, "videoCall", membersId);
         }
-        else {
-            sendNotificationForCall(new SessionManager(getApplicationContext()).getUserID(),groupID,"videoCall", membersId);
-        }
-        if (memberForcall.size() > 0 ) {
+        if (memberForcall.size() > 0) {
             // Build options object for joining the conference. The SDK will merge the default
             // one we set earlier and this one when joining.
             JitsiMeetConferenceOptions options
@@ -711,32 +722,34 @@ public class GroupMessageScreen extends BaseActivity implements View.OnClickList
             finish();
         }
     }
+
     @Override
     protected void onResume() {
         super.onResume();
-        Log.d("lifecycle","onResume invoked");
+        Log.d("lifecycle", "onResume invoked");
 
     }
+
     @Override
     protected void onRestart() {
         super.onRestart();
-        Log.d("lifecycle","onRestart invoked");
+        Log.d("lifecycle", "onRestart invoked");
 
         new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
             @Override
             public void run() {
                 //Do something here
-                getGroupMember(new SessionManager(getApplicationContext()).getUserID(), groupID,"","");
-                   getGroupNameImage(groupID ,new SessionManager(getApplicationContext()).getUserID());
+                getGroupMember(new SessionManager(getApplicationContext()).getUserID(), groupID, "", "");
+                getGroupNameImage(groupID, new SessionManager(getApplicationContext()).getUserID());
             }
         }, 1000);
 
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    private void getGroupNameImage( String groupID ,String user_id) {
+    private void getGroupNameImage(String groupID, String user_id) {
         ApiRequest request = new ApiRequest();
-        request.requestforGetGroupNameImage( groupID ,user_id, new okhttp3.Callback() {
+        request.requestforGetGroupNameImage(groupID, user_id, new okhttp3.Callback() {
             @Override
             public void onFailure(okhttp3.Call call, IOException e) {
                 Log.d("error", "error");
@@ -757,20 +770,16 @@ public class GroupMessageScreen extends BaseActivity implements View.OnClickList
                         public void run() {
                             if (!GroupMessageScreen.this.isFinishing()) {
                                 GlideUtils.loadImage(GroupMessageScreen.this, "http://" + form.getGroup_detail().getGroup_image(), image_user_chat, R.drawable.user_default, R.drawable.user_default);
-
                             }
-                            if (form.getGroup_detail().getName().length() > 10){
-
+                            if (form.getGroup_detail().getName().length() > 10) {
 
                                 group_name.setText(form.getGroup_detail().getName().substring(0, 10) + "...");
 
-                            }
-
-                            else {
+                            } else {
                                 group_name.setText(form.getGroup_detail().getName());
                             }
-                            groupImg= "http://"+ form.getGroup_detail().getGroup_image();
-                            groupname=form.getGroup_detail().getName();
+                            groupImg = "http://" + form.getGroup_detail().getGroup_image();
+                            groupname = form.getGroup_detail().getName();
                         }
                     });
                 }
@@ -784,6 +793,7 @@ public class GroupMessageScreen extends BaseActivity implements View.OnClickList
         matcher.find();
         return matcher.group();
     }
+
     protected void onDestroy() {
         super.onDestroy();
 

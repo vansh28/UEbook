@@ -112,7 +112,6 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
     private CountDownTimer countDownTimer;
     private long currentMillis=10;
     private String coverimageurl="";
-
     ImageUtils imageUtils;
     private Spinner book_category;
     ArrayList<String> categoryName;
@@ -136,7 +135,6 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
     private NotificationCompat.Builder mBuilder;
     int id = 1;
     public int numberOfLines = 1;
-
     private List<String> questionList;
     List<EditText> allEds;
     EditText isbnTV;
@@ -156,7 +154,6 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
     private String uploadurl=ApiRequest.BaseUrl+"addNewBook";
     private String savelaterUrl;
     private int typevalue=0;  //
-
     private Handler customHandler = new Handler();
     private long startTime = 0L;
     long timeInMilliseconds = 0L;
@@ -568,7 +565,6 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
                         .addFormDataPart("status", statusbook)
                         .addFormDataPart("book_id", book_id)
                         .addFormDataPart("cover_url",coverimaqgeURL)
-
                         .build();
                 break;
             case 3:

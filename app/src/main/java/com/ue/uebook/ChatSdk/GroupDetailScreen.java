@@ -85,6 +85,7 @@ public class GroupDetailScreen extends BaseActivity implements AppBarLayout.OnOf
     private ImageButton chnageGroupImageBtn;
     private File coverimage;
     private String groupImg="";
+    private String groupName="";
     private EditText groupname;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,6 +112,7 @@ public class GroupDetailScreen extends BaseActivity implements AppBarLayout.OnOf
         addMember=findViewById(R.id.addMember);
         addMember.setOnClickListener(this);
         imageGroup= findViewById(R.id.imageGroup);
+        imageGroup .setOnClickListener(this);
         backbtn=findViewById(R.id.backbtn);
         backbtn.setOnClickListener(this);
         memberList=findViewById(R.id.recyclerList);
@@ -118,7 +120,7 @@ public class GroupDetailScreen extends BaseActivity implements AppBarLayout.OnOf
       //  group_name.setText(intent.getStringExtra("name"));
       //  mTitle.setText(intent.getStringExtra("name"));
         groupID=intent.getStringExtra("groupid");
-        groupImg=intent.getStringExtra("groupimg");
+      //  groupImg=intent.getStringExtra("groupimg");
         groupMemberLists= (List<GroupMemberList>) intent.getSerializableExtra("member");
         LinearLayoutManager linearLayoutManagerPopularList = new LinearLayoutManager(this);
         linearLayoutManagerPopularList.setOrientation(LinearLayoutManager.VERTICAL);
@@ -205,6 +207,14 @@ public class GroupDetailScreen extends BaseActivity implements AppBarLayout.OnOf
         else if (v==chnageGroupImageBtn){
 
             showOption();
+
+        }
+        else if (v==imageGroup){
+            Intent intent = new Intent (GroupDetailScreen.this,OponentUserDetailsScren.class);
+            intent.putExtra("name",groupName);
+            intent.putExtra("image","http://"+groupImg);
+            intent.putExtra("id",1);
+            startActivity(intent);
 
         }
     }
@@ -609,7 +619,8 @@ public class GroupDetailScreen extends BaseActivity implements AppBarLayout.OnOf
                             GlideUtils.loadImage(GroupDetailScreen.this, "http://"+ form.getGroup_detail().getGroup_image(), imageGroup, R.drawable.user_default, R.drawable.user_default);
                             group_name.setText(form.getGroup_detail().getName());
                             mTitle.setText(form.getGroup_detail().getName());
-
+                            groupName=form.getGroup_detail().getName();
+                            groupImg=form.getGroup_detail().getGroup_image();
                         }
                     });
                 }

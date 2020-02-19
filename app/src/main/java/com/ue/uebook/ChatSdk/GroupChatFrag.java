@@ -1,7 +1,9 @@
 package com.ue.uebook.ChatSdk;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -50,7 +52,7 @@ public class GroupChatFrag extends Fragment implements GroupListAdapter.ItemClic
     private OnFragmentInteractionListener mListener;
     private SwipeRefreshLayout swipe_refresh_layout;
     private TextView noHistoryView;
-
+    private BroadcastReceiver mReceiver;
     public GroupChatFrag() {
         // Required empty public constructor
     }
@@ -129,8 +131,7 @@ public class GroupChatFrag extends Fragment implements GroupListAdapter.ItemClic
         intent.putExtra("name",grouplist.getName());
         intent.putExtra("groupimg", grouplist.getGroup_image());
         getContext().startActivity(intent);
-        Log.e("groupid",grouplist.getId());
-        Log.e("groupid",grouplist.getGroupuserid());
+
     }
     /**
      * This interface must be implemented by activities that contain this
@@ -194,7 +195,35 @@ public class GroupChatFrag extends Fragment implements GroupListAdapter.ItemClic
             }
         });
     }
+    @Override
+    public void onResume() {
+        super.onResume();
+        IntentFilter intentFilter = new IntentFilter(
+                "android.intent.action.MAIN");
 
+        mReceiver = new BroadcastReceiver() {
+
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                //extract our message from intent
+                String msg_for_me = intent.getStringExtra("some_msg");
+                //log our message value
+                Log.i("InchooTutorial", msg_for_me);
+                getGroupList(new SessionManager(getActivity().getApplicationContext()).getUserID());
+            }
+        };
+        //registering our receiver
+        getContext().registerReceiver(mReceiver, intentFilter);
+    }
+
+    @Override
+    public void onPause() {
+        // TODO Auto-generated method stub
+        super.onPause();
+        //unregister our receiver
+        getContext().unregisterReceiver(this.mReceiver);
+    }
 
 
 }

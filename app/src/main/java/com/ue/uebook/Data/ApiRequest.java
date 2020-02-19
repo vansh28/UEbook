@@ -44,8 +44,6 @@ public class ApiRequest {
         String url = null;
         url = BaseUrl + "createUser";
         OkHttpClient client = new OkHttpClient();
-
-
         final MediaType MEDIA_TYPE_PNG = MediaType.parse("image/png");
         RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
                 .addFormDataPart("user_name", full_name)
@@ -58,7 +56,6 @@ public class ApiRequest {
                 .addFormDataPart("device_type", "android")
                 .addFormDataPart("device_token", device_token)
                 .addFormDataPart("login_type", type)
-
                 .build();
         Request request = new Request.Builder()
                 .url(url)

@@ -73,13 +73,11 @@ public class SplashScreenApp extends AppCompatActivity {
     }
     private void showSplash() {
         final int status = new SessionManager(getApplicationContext()).getLoginStatus();
-
         Intent mainIntent = mainIntent = new Intent(SplashScreenApp.this, HomeScreen.class);
 
         switch (status) {
             case 0:
                 mainIntent = new Intent(SplashScreenApp.this, StartActivityHome.class);
-
                 break;
             case 1:
                 mainIntent = new Intent(SplashScreenApp.this, HomeScreen.class);

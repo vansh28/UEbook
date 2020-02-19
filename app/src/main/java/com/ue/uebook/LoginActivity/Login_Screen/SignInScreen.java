@@ -498,7 +498,6 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener, 
             @Override
             public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
                 String myResponse = response.body().string();
-
                 Gson gson = new GsonBuilder().create();
                 final RegistrationResponse form = gson.fromJson(myResponse, RegistrationResponse.class);
                 if (form.getError().equalsIgnoreCase("false")&&form.getUser_data()!=null){

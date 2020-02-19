@@ -46,7 +46,7 @@ public class ChatListAdapter  extends RecyclerView.Adapter<ChatListAdapter.MyVie
 
     public interface ItemClick {
         void onUserChatClick(String channelID,String sendTo ,String name ,String imageUrl);
-        void  onUserProfileClick(String imageURl);
+        void  onUserProfileClick(String imageURl,String oponentName);
     }
     public void setItemClickListener(ItemClick clickListener) {
         itemClick = clickListener;
@@ -90,10 +90,10 @@ public class ChatListAdapter  extends RecyclerView.Adapter<ChatListAdapter.MyVie
                 if (itemClick!=null){
 
                     if (userID.equalsIgnoreCase(dataList.get(position).getSend_detail().getId())){
-                        itemClick.onUserProfileClick(dataList.get(position).getRec_detail().getUrl());
+                        itemClick.onUserProfileClick(dataList.get(position).getRec_detail().getUrl(),userList.get(position).getRec_detail().getUser_name());
                     }
                     else {
-                        itemClick.onUserProfileClick(dataList.get(position).getSend_detail().getUrl());
+                        itemClick.onUserProfileClick(dataList.get(position).getSend_detail().getUrl(),userList.get(position).getSend_detail().getUser_name());
                     }
 
                 }

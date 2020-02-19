@@ -132,8 +132,7 @@ public class HomeScreen extends BaseActivity implements Home_Fragment.OnFragment
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.frame_container, fragment);
-        fragmentTransaction.commitNowAllowingStateLoss();;
-
+        fragmentTransaction.commitNowAllowingStateLoss();
     }
     @Override
     public void onFragmentInteraction(Uri uri) {
@@ -178,9 +177,9 @@ public class HomeScreen extends BaseActivity implements Home_Fragment.OnFragment
         }
         if (!checkPermissions()){
             PermissionRequest(34);
-
         }
         else{
+
 
         }
        // write your logic here

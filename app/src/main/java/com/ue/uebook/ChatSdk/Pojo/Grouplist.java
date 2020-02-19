@@ -15,6 +15,24 @@ public  class Grouplist implements Serializable {
     public String updated_at;
     public String type;
     public String removegroupuserid;
+    public   String unreadmessage;
+    public   String message;
+
+    public String getUnreadmessage() {
+        return unreadmessage;
+    }
+
+    public void setUnreadmessage(String unreadmessage) {
+        this.unreadmessage = unreadmessage;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
 
     public String getId() {
         return id;
