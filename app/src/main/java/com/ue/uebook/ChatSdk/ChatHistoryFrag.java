@@ -273,7 +273,6 @@ public class ChatHistoryFrag extends Fragment implements View.OnClickListener ,C
                     @Override
                     public void run() {
                         if (form.getUserList()!= null) {
-
                             userListList=form.getUserList();
                             data=form.getData();
                             chatAdapter = new ChatListAdapter(form.getData(),form.getUserList(), (AppCompatActivity) getContext(),new SessionManager(getActivity().getApplicationContext()).getUserID());
