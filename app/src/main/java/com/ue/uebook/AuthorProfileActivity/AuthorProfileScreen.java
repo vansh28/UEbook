@@ -58,6 +58,9 @@ public class AuthorProfileScreen extends BaseActivity implements View.OnClickLis
     private List<AuthorData>authorDataList;
 
 
+
+
+
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {

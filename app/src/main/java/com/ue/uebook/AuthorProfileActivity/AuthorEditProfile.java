@@ -242,7 +242,6 @@ public class AuthorEditProfile extends BaseActivity implements View.OnClickListe
                 RegistrationResponse form = gson.fromJson(myResponse, RegistrationResponse.class);
                 if (form.getError().equals("false") && form.getUser_data() != null) {
                     new SessionManager(getApplicationContext()).storeUserPublishtype(form.getUser_data().getPublisher_type());
-
                    runOnUiThread(new Runnable() {
                         @Override
                         public void run() {

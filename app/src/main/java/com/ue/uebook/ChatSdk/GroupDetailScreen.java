@@ -92,7 +92,7 @@ public class GroupDetailScreen extends BaseActivity implements AppBarLayout.OnOf
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_detail_screen);
         bindActivity();
-        memberListForAdmin= new ArrayList<>();
+        memberListForAdmin = new ArrayList<>();
         memberListForAdminID = new ArrayList<>();
         mAppBarLayout.addOnOffsetChangedListener(this);
         startAlphaAnimation(mTitle, 0, View.INVISIBLE);

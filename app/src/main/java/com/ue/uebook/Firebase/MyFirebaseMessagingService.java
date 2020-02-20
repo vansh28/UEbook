@@ -19,6 +19,7 @@ import androidx.core.app.NotificationCompat;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.ue.uebook.AuthorProfileActivity.PendingRequestScreen;
+import com.ue.uebook.ChatSdk.GroupMessageScreen;
 import com.ue.uebook.R;
 import com.ue.uebook.SplashActivity.SplashScreenApp;
 import com.ue.uebook.VideoSdk.VideoCallRecive;
@@ -95,15 +96,22 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
                 else
                     {
+                        if (noti_type.equalsIgnoreCase("individual")) {
+                            if (taskInfo.get(0).topActivity.getClassName().equalsIgnoreCase("com.ue.uebook.ChatSdk.MessageScreen")) {
 
-                     if (taskInfo.get(0).topActivity.getClassName().equalsIgnoreCase("com.ue.uebook.ChatSdk.MessageScreen")){
+                            } else {
+                                sendNotification(noti_msz, getBitmapfromUrl("http://dnddemo.com/ebooks/api/v1/upload/book_1571040310.jpg"));
+                            }
+                        }
+                        else if (noti_type.equalsIgnoreCase("group")) {
+                            if (taskInfo.get(0).topActivity.getClassName().equalsIgnoreCase("com.ue.uebook.ChatSdk.GroupMessageScreen")) {
 
-                     }
+                            } else {
 
-                     else
-                         {
-                                 sendNotification(noti_msz,getBitmapfromUrl("http://dnddemo.com/ebooks/api/v1/upload/book_1571040310.jpg"));
-                     }
+                                sendGroupNotification(noti_msz, getBitmapfromUrl("http://dnddemo.com/ebooks/api/v1/upload/book_1571040310.jpg"));
+
+                            }
+                        }
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -233,8 +241,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         intent.putExtra("id",1);
         intent.putExtra("noti_type",noti_type);
 
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         int randomRequestCode = new Random().nextInt(54325);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, randomRequestCode /* Request code */, intent,
                 PendingIntent.FLAG_ONE_SHOT);
@@ -255,6 +263,43 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         notificationManager.notify(value /* ID of notification */, notificationBuilder.build());
     }
+
+
+    private void sendGroupNotification(String msg ,Bitmap imageurl) {
+        value++;
+        Intent intent = new Intent(this, GroupMessageScreen.class);
+        intent.putExtra("sendTo",user_id);
+        intent.putExtra("channel_id",channel_id);
+        intent.putExtra("name",name);
+        intent.putExtra("imageUrl",Avtar);
+        intent.putExtra("id",1);
+        intent.putExtra("noti_type",noti_type);
+
+
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        int randomRequestCode = new Random().nextInt(54325);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, randomRequestCode /* Request code */, intent,
+                PendingIntent.FLAG_ONE_SHOT);
+        String channelId = getString(R.string.app_name);
+        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        NotificationCompat.Builder notificationBuilder =
+                new NotificationCompat.Builder(this, channelId)
+                        .setSmallIcon(R.drawable.applogo)
+                        .setContentTitle(name)
+                        .setContentText(msg)
+                        .setAutoCancel(true)
+                        .addAction(R.drawable.receive, "Reply",pendingIntent)                       // .setLargeIcon(imageurl)
+                        .setSound(defaultSoundUri)
+                        .setContentIntent(pendingIntent)
+                        .setPriority(NotificationManager.IMPORTANCE_HIGH);
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);// Since android Oreo notification channel is needed.
+        createNotificationChannel();
+
+        notificationManager.notify(value /* ID of notification */, notificationBuilder.build());
+    }
+
+
+
     public Bitmap getBitmapfromUrl(String imageUrl) {
         try {
             URL url = new URL(imageUrl);

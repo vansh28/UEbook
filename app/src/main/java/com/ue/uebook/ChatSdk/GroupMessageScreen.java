@@ -3,7 +3,10 @@ package com.ue.uebook.ChatSdk;
 import android.Manifest;
 import android.app.Dialog;
 import android.content.ActivityNotFoundException;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -107,6 +110,7 @@ public class GroupMessageScreen extends BaseActivity implements View.OnClickList
     private List<Grouplist> grouplists;
     private String groupImg = "";
     private String  channelID ="";
+    private BroadcastReceiver mReceiver;
 
 
     @Override
@@ -128,7 +132,7 @@ public class GroupMessageScreen extends BaseActivity implements View.OnClickList
         voicebtn.setOnClickListener(this);
         videoview = findViewById(R.id.videoview);
         groupID = intent.getStringExtra("groupid");
-        channelID=intent.getStringExtra("channelID");
+        channelID=intent.getStringExtra("channel_id");
         // groupImg = intent.getStringExtra("groupimg");
         backbtnMessage = findViewById(R.id.backbtnMessage);
         group_name = findViewById(R.id.group_name);
@@ -145,18 +149,17 @@ public class GroupMessageScreen extends BaseActivity implements View.OnClickList
         linearLayoutManagerPopularList.setOrientation(LinearLayoutManager.VERTICAL);
         messageList.setLayoutManager(linearLayoutManagerPopularList);
         messageList.setNestedScrollingEnabled(false);
-        getGroupNameImage(groupID, new SessionManager(getApplicationContext()).getUserID());
-
         if (channelID!=null){
             getGroupHistory(new SessionManager(getApplicationContext()).getUserID(), channelID);
             getGroupMember(new SessionManager(getApplicationContext()).getUserID(), channelID, "", "");
+            getGroupNameImage(channelID, new SessionManager(getApplicationContext()).getUserID());
+            groupID=channelID;
         }
         else {
             getGroupHistory(new SessionManager(getApplicationContext()).getUserID(), groupID);
             getGroupMember(new SessionManager(getApplicationContext()).getUserID(), groupID, "", "");
+            getGroupNameImage(groupID, new SessionManager(getApplicationContext()).getUserID());
         }
-
-
     }
 
     @Override
@@ -723,12 +726,7 @@ public class GroupMessageScreen extends BaseActivity implements View.OnClickList
         }
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Log.d("lifecycle", "onResume invoked");
 
-    }
 
     @Override
     protected void onRestart() {
@@ -797,6 +795,40 @@ public class GroupMessageScreen extends BaseActivity implements View.OnClickList
     protected void onDestroy() {
         super.onDestroy();
 
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        IntentFilter intentFilter = new IntentFilter(
+                "android.intent.action.MAIN");
+
+        mReceiver = new BroadcastReceiver() {
+
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                //extract our message from intent
+                String msg_for_me = intent.getStringExtra("some_msg");
+                //log our message value
+                Log.i("InchooTutorial", msg_for_me);
+                if (channelID!=null){
+                    getGroupHistory(new SessionManager(getApplicationContext()).getUserID(), channelID);
+                }
+                else {
+                    getGroupHistory(new SessionManager(getApplicationContext()).getUserID(), groupID);
+                }
+            }
+        };
+        //registering our receiver
+        this.registerReceiver(mReceiver, intentFilter);
+    }
+
+    @Override
+    public void onPause() {
+        // TODO Auto-generated method stub
+        super.onPause();
+        //unregister our receiver
+       this.unregisterReceiver(this.mReceiver);
     }
 
 }

@@ -1,7 +1,4 @@
 package com.ue.uebook.LoginActivity.Pojo;
-
-import java.util.List;
-
 public class RegistrationResponse {
     private String error;
     private String user_id;

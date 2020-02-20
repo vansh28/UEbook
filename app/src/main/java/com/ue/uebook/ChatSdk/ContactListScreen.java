@@ -20,8 +20,6 @@ public class ContactListScreen extends AppCompatActivity implements View.OnClick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact_list_screen);
-
-
         tabLayout = findViewById(R.id.tabLayout);
         backbtnChat=findViewById(R.id.backbtnChat);
         backbtnChat.setOnClickListener(this);

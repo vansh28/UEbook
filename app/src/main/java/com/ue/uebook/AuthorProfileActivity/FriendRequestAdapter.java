@@ -93,7 +93,6 @@ public class FriendRequestAdapter   extends RecyclerView.Adapter<FriendRequestAd
             usertype=itemView.findViewById(R.id.usertype);
             confirm=itemView.findViewById(R.id.confirmbtn);
             delete=itemView.findViewById(R.id.deletebtn);
-
         }
     }}
 
