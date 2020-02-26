@@ -31,18 +31,21 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyviewHo
    private String userId;
    private AppCompatActivity mtx;
    private ChatImageFileClick chatImageFileClick;
+   private List<Chathistory>historyAll;
     private MediaPlayer mediaPlayer =new MediaPlayer();
     private MediaPlayer omediaPlayer =new MediaPlayer();
     private int mediaFileLengthInMilliseconds; // this value contains the song
     private final Handler handler = new Handler();
     public MessageAdapter(AppCompatActivity mtx, List<Chathistory> chat_list, String userID) {
         this.chatData=chat_list;
+        this.historyAll=chat_list;
         this.userId=userID;
         this.mtx=mtx;
     }
     public interface ChatImageFileClick {
         void onImageClick(String url ,String type);
         void onDownloadClick(String url ,String type ,String name);
+        void onLongClickOnMessage(View view);
     }
     public void setItemClickListener(ChatImageFileClick clickListener) {
         chatImageFileClick = clickListener;
@@ -60,6 +63,8 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyviewHo
     @Override
     public void onBindViewHolder(@NonNull final MyviewHolder holder, final int position) {
         Log.d("sender",chatData.get(position).getSender());
+
+        final long user = getItemId(position);
         if (chatData.get(position).getSender().equalsIgnoreCase(userId)) {
             if (chatData.get(position).getType().equalsIgnoreCase("image")){
                 holder.senderlayoutimage.setVisibility(View.VISIBLE);
@@ -195,6 +200,33 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyviewHo
 
             }
         });
+
+        holder.senderlayout.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if (chatImageFileClick!=null){
+                    chatImageFileClick.onLongClickOnMessage(v);
+                }
+                return false;
+            }
+        });
+        holder.oponentlayout.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if (chatImageFileClick!=null){
+//                    if (historyAll.contains(user)){
+//                        v.setBackgroundColor(Color.parseColor("#d3d3d3"));
+//                    }
+//                    else {
+//                        v.setBackgroundColor(Color.parseColor("#ffffff"));
+//                    }
+
+                    chatImageFileClick.onLongClickOnMessage(v);
+                }
+                return false;
+            }
+        });
+
 //        holder.audioviewoponent.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {

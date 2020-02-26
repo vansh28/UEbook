@@ -155,15 +155,17 @@
             android:layout_width="@dimen/size_200"
             android:layout_height="@dimen/size_200" />
         <ImageButton
+            android:id="@+id/video_start_oponent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:src="@android:drawable/ic_menu_upload_you_tube" />
+            android:src="@android:drawable/ic_media_play" />
     </RelativeLayout>
     <RelativeLayout
         android:id="@+id/videoConainersender"
         android:layout_width="@dimen/size_200"
         android:layout_height="match_parent"
+        android:layout_margin="@dimen/size_10"
         android:layout_gravity="right"
         android:visibility="gone">
         <ImageView
@@ -173,10 +175,11 @@
             android:layout_alignParentRight="true"
             android:layout_marginRight="@dimen/size_10" />
         <ImageButton
+            android:id="@+id/video_start_sender"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:src="@android:drawable/ic_menu_upload_you_tube"
+            android:src="@android:drawable/ic_media_play"
             android:visibility="visible" />
     </RelativeLayout>
     <RelativeLayout

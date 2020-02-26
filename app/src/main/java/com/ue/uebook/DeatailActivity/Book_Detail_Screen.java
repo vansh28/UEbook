@@ -36,6 +36,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.ue.uebook.AuthorProfileActivity.AuthorProfileScreen;
 import com.ue.uebook.BaseActivity;
+import com.ue.uebook.ChatSdk.OponentUserDetailsScren;
 import com.ue.uebook.Data.ApiRequest;
 import com.ue.uebook.DeatailActivity.Pojo.Assignment;
 import com.ue.uebook.DeatailActivity.Pojo.BookDetails;
@@ -79,7 +80,10 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
     private List<user_answer> user_answers;
     private RatingBar myRatingBar;
     private int textSize;
-
+    private String bookname="";
+    private String bookcover="";
+    private String username="";
+    private String userimage="";
     private Handler handler;
     String docbaseUrl = "http://docs.google.com/gview?embedded=true&url=";
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -119,6 +123,7 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
         bookAuthor = findViewById(R.id.bookauthor);
         book_uploadBy.setOnClickListener(this);
         book_coverTv = findViewById(R.id.bookcoverImage);
+        book_coverTv.setOnClickListener(this);
         comment_Submit.setOnClickListener(this);
         facebook_btn.setOnClickListener(this);
         google_btn.setOnClickListener(this);
@@ -134,6 +139,7 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
         linearLayoutManagerList.setOrientation(LinearLayoutManager.VERTICAL);
         review_List.setLayoutManager(linearLayoutManagerList);
         review_List.setNestedScrollingEnabled(false);
+        profile_user.setOnClickListener(this);
         getBookDetail(book_Id);
         pullTorefreshswipe();
         fontsize();
@@ -238,7 +244,20 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
             intent.putExtra("answer", (Serializable) user_answers);
             intent.putExtra("book_id", book_Id);
             startActivity(intent);
-
+        }
+        else if (view==book_coverTv){
+            Intent intent = new Intent (Book_Detail_Screen.this, OponentUserDetailsScren.class);
+            intent.putExtra("name",bookname);
+            intent.putExtra("image",bookcover);
+            intent.putExtra("id",1);
+            startActivity(intent);
+        }
+        else if (view==profile_user){
+            Intent intent = new Intent (Book_Detail_Screen.this, OponentUserDetailsScren.class);
+            intent.putExtra("name",username);
+            intent.putExtra("image",userimage);
+            intent.putExtra("id",1);
+            startActivity(intent);
         }
     }
 
@@ -298,6 +317,11 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
 //                       SpannableString content = new SpannableString(form.getData().getUser_name());
 //                       content.setSpan(new UnderlineSpan(), 0, content.length(), 0)
                        book_uploadBy.setText((form.getData().getUser_name()));
+                            username = form.getData().getUser_name();
+
+                            userimage= "http://"+ form.getData().getProfile_pic();
+                             Log.e("imsge",userimage);
+
             //          GlideUtils.loadImage(Book_Detail_Screen.this,"http://"+form.getData().getProfile_pic(),book_coverTv,R.drawable.user_default,R.drawable.user_default);
                         } else {
                             profile_user.setVisibility(View.GONE);
@@ -326,8 +350,11 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
                         if (form.getData().getBook_description().length() >= 50) {
                             makeTextViewResizable(bookDesc, 5, "See More", true);
                         }
+                        bookcover="http://" + form.getData().getThubm_image();
+                        bookname=form.getData().getBook_title();
+
                         GlideUtils.loadImage(Book_Detail_Screen.this, "http://" + form.getData().getThubm_image(), book_coverTv, R.drawable.noimage, R.drawable.noimage);
-                        GlideUtils.loadImage(Book_Detail_Screen.this, "http://dnddemo.com/ebooks/api/v1/upload/" + form.getData().getProfile_pic(), profile_user, R.drawable.user_default, R.drawable.user_default);
+                        GlideUtils.loadImage(Book_Detail_Screen.this,  "http://"+form.getData().getProfile_pic(), profile_user, R.drawable.user_default, R.drawable.user_default);
                         if (form.getReview() != null) {
                             review_list_adapter = new Review_List_Adapter(Book_Detail_Screen.this, form.getReview());
                             review_List.setAdapter(review_list_adapter);

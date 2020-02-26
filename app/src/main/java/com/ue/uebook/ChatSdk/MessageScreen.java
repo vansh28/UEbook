@@ -687,6 +687,28 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
         }).start();
     }
 
+    @Override
+    public void onLongClickOnMessage(View view) {
+        showFilterPopup(view);
+
+    }
+    private void showFilterPopup(View v) {
+        PopupMenu popup = new PopupMenu(this, v);
+        popup.inflate(R.menu.deletepopup);
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.delete:
+                        Toast.makeText(MessageScreen.this,"delete",Toast.LENGTH_SHORT).show();
+
+                    default:
+                        return false;
+                }
+            }
+        });
+        popup.show();
+    }
+
     private void showfullImage(String url) {
         final Dialog nagDialog = new Dialog(MessageScreen.this, android.R.style.Theme_Translucent_NoTitleBar_Fullscreen);
         nagDialog.setCancelable(false);

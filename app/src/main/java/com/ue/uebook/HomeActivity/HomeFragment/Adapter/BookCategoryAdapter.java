@@ -51,6 +51,7 @@ public class BookCategoryAdapter extends RecyclerView.Adapter<BookCategoryAdapte
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, final int position) {
          holder.categoryName.setText(response.get(position).getCategory_name());
+         holder.bookCount.setText(response.get(position).getBook_count()+" Books");
          holder.categoryContqainer.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View v) {
@@ -73,7 +74,7 @@ public class BookCategoryAdapter extends RecyclerView.Adapter<BookCategoryAdapte
         return response.size();
     }
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        private TextView categoryName;
+        private TextView categoryName ,bookCount;
         private RelativeLayout categoryContqainer;
         private ImageView categoryimage;
         public MyViewHolder(@NonNull View itemView) {
@@ -81,6 +82,7 @@ public class BookCategoryAdapter extends RecyclerView.Adapter<BookCategoryAdapte
             categoryName=itemView.findViewById(R.id.categoryName);
             categoryContqainer=itemView.findViewById(R.id.categoryContqainer);
             categoryimage=itemView.findViewById(R.id.categoryimage);
+            bookCount=itemView.findViewById(R.id.bookCount);
 
         }
     }

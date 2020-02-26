@@ -17,7 +17,8 @@ public class WebviewScreen extends BaseActivity implements View.OnClickListener 
     private Intent intent;
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_webview_screen);
         mWebView = findViewById(R.id.mWebView);

@@ -19,6 +19,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -26,6 +27,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
@@ -41,6 +43,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.ue.uebook.BaseActivity;
 import com.ue.uebook.ChatSdk.Adapter.GroupChatAdapter;
+import com.ue.uebook.ChatSdk.Adapter.GroupListAdapter;
 import com.ue.uebook.ChatSdk.Adapter.GroupMemberListAdapter;
 import com.ue.uebook.ChatSdk.Pojo.GroupHistoryResponse;
 import com.ue.uebook.ChatSdk.Pojo.GroupMemberList;
@@ -78,7 +81,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 
-public class GroupMessageScreen extends BaseActivity implements View.OnClickListener, ImageUtils.ImageAttachmentListener, GroupMemberListAdapter.GroupMemberItemClick {
+public class GroupMessageScreen extends BaseActivity implements View.OnClickListener, ImageUtils.ImageAttachmentListener, GroupMemberListAdapter.GroupMemberItemClick, GroupListAdapter.ItemClick, GroupChatAdapter.ItemClick {
     private Intent intent;
     private static final int REQUEST_PICK_VIDEO = 12;
     private String groupID;
@@ -99,7 +102,7 @@ public class GroupMessageScreen extends BaseActivity implements View.OnClickList
     private Bitmap bitmap;
     private int typevalue = 0;
     private VideoView videoview;
-    private ImageButton callBtn, cancelBtn;
+    private ImageButton callBtn, cancelBtn,morebtn;
     private ListView listView;
     private GroupMemberListAdapter groupMemberListAdapter;
     private List<String> memberForcall;
@@ -119,6 +122,8 @@ public class GroupMessageScreen extends BaseActivity implements View.OnClickList
         setContentView(R.layout.activity_group_message_screen);
         button_chat_attachment = findViewById(R.id.button_chat_attachment);
         image_user_chat = findViewById(R.id.image_user_chat);
+        morebtn=findViewById(R.id.morebtn);
+        morebtn.setOnClickListener(this);
         image_user_chat.setOnClickListener(this);
         intent = getIntent();
         imageUtils = new ImageUtils(this);
@@ -240,6 +245,9 @@ public class GroupMessageScreen extends BaseActivity implements View.OnClickList
             intent.putExtra("groupid", groupID);
             intent.putExtra("groupimg", groupImg);
             startActivity(intent);
+        }
+        else if (v==morebtn){
+            showPopupmenu();
         }
     }
 
@@ -373,6 +381,7 @@ public class GroupMessageScreen extends BaseActivity implements View.OnClickList
                             messageList.setAdapter(groupChatAdapter);
                             messageList.scrollToPosition(form.getData().size() - 1);
                             groupChatAdapter.notifyDataSetChanged();
+                            groupChatAdapter.setItemClickListener(GroupMessageScreen.this);
                         }
                     });
 //
@@ -830,6 +839,54 @@ public class GroupMessageScreen extends BaseActivity implements View.OnClickList
         //unregister our receiver
        this.unregisterReceiver(this.mReceiver);
     }
+
+    @Override
+    public void ongroupListItemClick(Grouplist grouplist) {
+
+    }
+
+    @Override
+    public void onGroupMessage(View view,String message, int position) {
+         showFilterPopup(view);
+    }
+
+    private void showFilterPopup(View v) {
+        PopupMenu popup = new PopupMenu(this, v);
+        popup.inflate(R.menu.deletepopup);
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.delete:
+                        Toast.makeText(GroupMessageScreen.this,"delete",Toast.LENGTH_SHORT).show();
+
+                    default:
+                        return false;
+                }
+            }
+        });
+        popup.show();
+    }
+
+    private void showPopupmenu() {
+        PopupMenu popup = new PopupMenu(GroupMessageScreen.this, morebtn);
+        popup.getMenuInflater()
+                .inflate(R.menu.chatmoremenu, popup.getMenu());
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.clearChat:
+                        return true;
+
+                    default:
+                        return false;
+                }
+            }
+        });
+        popup.show();
+    }
+
+
 
 }
 

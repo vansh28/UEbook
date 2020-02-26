@@ -27,8 +27,7 @@ public class ContactListScreen extends AppCompatActivity implements View.OnClick
         tabLayout.addTab(tabLayout.newTab().setText("Friend List"));
         tabLayout.addTab(tabLayout.newTab().setText("Telephone Book"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-        final ConactListTabChanger adapter = new ConactListTabChanger(this,getSupportFragmentManager(),
-                tabLayout.getTabCount());
+        final ConactListTabChanger adapter = new ConactListTabChanger(this,getSupportFragmentManager(),tabLayout.getTabCount());
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {

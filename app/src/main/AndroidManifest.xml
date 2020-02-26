@@ -39,7 +39,8 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".ChatSdk.OponentUserDetailsScren"></activity>
+        <activity android:name=".VideoViewScreen"></activity>
+        <activity android:name=".ChatSdk.OponentUserDetailsScren" />
         <activity android:name=".ChatSdk.AddMemberToGroupScreen" />
         <activity android:name=".ChatSdk.GroupDetailScreen" />
         <activity android:name=".ChatSdk.GroupMessageScreen" />

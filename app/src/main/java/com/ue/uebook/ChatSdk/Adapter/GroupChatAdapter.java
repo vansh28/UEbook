@@ -1,5 +1,9 @@
 package com.ue.uebook.ChatSdk.Adapter;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.media.MediaMetadataRetriever;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,20 +22,31 @@ import com.ue.uebook.ChatSdk.Pojo.GroupMessageLIst;
 import com.ue.uebook.Data.ApiRequest;
 import com.ue.uebook.GlideUtils;
 import com.ue.uebook.R;
+import com.ue.uebook.VideoViewScreen;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class GroupChatAdapter extends RecyclerView.Adapter<GroupChatAdapter.MyviewHolder> {
     private List<GroupMessageLIst> groupMessageLIsts;
     private String userid;
     private AppCompatActivity mtx;
+    private ItemClick itemClick;
 
 
     public GroupChatAdapter(GroupMessageScreen groupMessageScreen, List<GroupMessageLIst> data, String userid) {
         this.groupMessageLIsts = data;
         this.userid = userid;
-        this.mtx=groupMessageScreen;
+        this.mtx = groupMessageScreen;
 
+    }
+
+    public interface ItemClick {
+        void onGroupMessage(View v, String message, int position);
+    }
+
+    public void setItemClickListener(ItemClick clickListener) {
+        itemClick = clickListener;
     }
 
     @NonNull
@@ -57,8 +72,7 @@ public class GroupChatAdapter extends RecyclerView.Adapter<GroupChatAdapter.Myvi
                 holder.videoConainerOpopnent.setVisibility(View.GONE);
                 holder.audioviewSender.setVisibility(View.GONE);
                 holder.sendermsz.setText(groupMessageLIsts.get(position).getMessage());
-            }
-            else if (groupMessageLIsts.get(position).getMessagetype().equalsIgnoreCase("image")){
+            } else if (groupMessageLIsts.get(position).getMessagetype().equalsIgnoreCase("image")) {
                 holder.oponentlayout.setVisibility(View.GONE);
                 holder.senderlayout.setVisibility(View.GONE);
                 holder.senderlayoutimage.setVisibility(View.VISIBLE);
@@ -68,8 +82,7 @@ public class GroupChatAdapter extends RecyclerView.Adapter<GroupChatAdapter.Myvi
                 holder.videoConainerOpopnent.setVisibility(View.GONE);
                 holder.audioviewSender.setVisibility(View.GONE);
                 GlideUtils.loadImage(mtx, ApiRequest.BaseUrl + groupMessageLIsts.get(position).getMessage(), holder.senderimage, R.drawable.noimage, R.drawable.noimage);
-            }
-            else if (groupMessageLIsts.get(position).getMessagetype().equalsIgnoreCase("audio")){
+            } else if (groupMessageLIsts.get(position).getMessagetype().equalsIgnoreCase("audio")) {
                 holder.oponentlayout.setVisibility(View.GONE);
                 holder.senderlayout.setVisibility(View.GONE);
                 holder.senderlayoutimage.setVisibility(View.GONE);
@@ -78,19 +91,22 @@ public class GroupChatAdapter extends RecyclerView.Adapter<GroupChatAdapter.Myvi
                 holder.videoConainersender.setVisibility(View.GONE);
                 holder.videoConainerOpopnent.setVisibility(View.GONE);
                 holder.audioviewSender.setVisibility(View.VISIBLE);
-            }
-            else if (groupMessageLIsts.get(position).getMessagetype().equalsIgnoreCase("video")){
+            } else if (groupMessageLIsts.get(position).getMessagetype().equalsIgnoreCase("video")) {
+                try {
+                    holder.videoviewSender.setImageBitmap(retriveVideoFrameFromVideo("http://dnddemo.com/ebooks/api/v1/" + groupMessageLIsts.get(position).getMessage()));
+                } catch (Throwable throwable) {
+                    throwable.printStackTrace();
+                }
                 holder.oponentlayout.setVisibility(View.GONE);
                 holder.senderlayout.setVisibility(View.GONE);
                 holder.senderlayoutimage.setVisibility(View.GONE);
                 holder.oponentlayoutimage.setVisibility(View.GONE);
                 holder.audioviewoponent.setVisibility(View.GONE);
-                holder.videoConainersender.setVisibility(View.GONE);
+                holder.videoConainersender.setVisibility(View.VISIBLE);
                 holder.videoConainerOpopnent.setVisibility(View.GONE);
                 holder.audioviewSender.setVisibility(View.GONE);
             }
-        }
-        else {
+        } else {
             if (groupMessageLIsts.get(position).getMessagetype().equalsIgnoreCase("text")) {
                 holder.oponentlayout.setVisibility(View.VISIBLE);
                 holder.senderlayout.setVisibility(View.GONE);
@@ -103,8 +119,7 @@ public class GroupChatAdapter extends RecyclerView.Adapter<GroupChatAdapter.Myvi
                 holder.nameUser.setText(groupMessageLIsts.get(position).getSendername());
                 holder.oponentmsz.setText(groupMessageLIsts.get(position).getMessage());
                 holder.sendermsz.setText(groupMessageLIsts.get(position).getMessage());
-            }
-            else if (groupMessageLIsts.get(position).getMessagetype().equalsIgnoreCase("image")){
+            } else if (groupMessageLIsts.get(position).getMessagetype().equalsIgnoreCase("image")) {
                 holder.oponentlayout.setVisibility(View.GONE);
                 holder.senderlayout.setVisibility(View.GONE);
                 holder.senderlayoutimage.setVisibility(View.GONE);
@@ -116,8 +131,7 @@ public class GroupChatAdapter extends RecyclerView.Adapter<GroupChatAdapter.Myvi
                 holder.oponentlayoutimage.setVisibility(View.VISIBLE);
                 holder.nameImageSender.setText(groupMessageLIsts.get(position).getSendername());
                 GlideUtils.loadImage(mtx, ApiRequest.BaseUrl + groupMessageLIsts.get(position).getMessage(), holder.oponentimage, R.drawable.noimage, R.drawable.noimage);
-            }
-            else if (groupMessageLIsts.get(position).getMessagetype().equalsIgnoreCase("audio")){
+            } else if (groupMessageLIsts.get(position).getMessagetype().equalsIgnoreCase("audio")) {
                 holder.oponentlayout.setVisibility(View.GONE);
                 holder.senderlayout.setVisibility(View.GONE);
                 holder.senderlayoutimage.setVisibility(View.GONE);
@@ -126,40 +140,87 @@ public class GroupChatAdapter extends RecyclerView.Adapter<GroupChatAdapter.Myvi
                 holder.videoConainersender.setVisibility(View.GONE);
                 holder.videoConainerOpopnent.setVisibility(View.GONE);
                 holder.audioviewSender.setVisibility(View.GONE);
-            }
-            else if (groupMessageLIsts.get(position).getMessagetype().equalsIgnoreCase("video")){
+            } else if (groupMessageLIsts.get(position).getMessagetype().equalsIgnoreCase("video")) {
+                try {
+                    holder.VideoViewOponent.setImageBitmap(retriveVideoFrameFromVideo("http://dnddemo.com/ebooks/api/v1/" + groupMessageLIsts.get(position).getMessage()));
+                } catch (Throwable throwable) {
+                    throwable.printStackTrace();
+                }
+
+
                 holder.oponentlayout.setVisibility(View.GONE);
                 holder.senderlayout.setVisibility(View.GONE);
                 holder.senderlayoutimage.setVisibility(View.GONE);
                 holder.oponentlayoutimage.setVisibility(View.GONE);
                 holder.audioviewoponent.setVisibility(View.GONE);
                 holder.videoConainersender.setVisibility(View.GONE);
-                holder.videoConainerOpopnent.setVisibility(View.GONE);
+                holder.videoConainerOpopnent.setVisibility(View.VISIBLE);
                 holder.audioviewSender.setVisibility(View.GONE);
             }
         }
+
+        holder.oponentlayout.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+
+                if (itemClick != null) {
+                    itemClick.onGroupMessage(v, "group Message", 3);
+                }
+                return false;
+            }
+        });
+        holder.senderlayout.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+
+                if (itemClick != null) {
+                    itemClick.onGroupMessage(v, "group Message", 3);
+                }
+                return false;
+            }
+        });
+        holder.video_start_oponent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mtx, VideoViewScreen.class);
+                intent.putExtra("url","http://dnddemo.com/ebooks/api/v1/" + groupMessageLIsts.get(position).getMessage());
+                mtx.startActivity(intent);
+            }
+        });
+        holder.video_start_sender.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mtx, VideoViewScreen.class);
+                intent.putExtra("url","http://dnddemo.com/ebooks/api/v1/" + groupMessageLIsts.get(position).getMessage());
+                mtx.startActivity(intent);
+            }
+        });
+
     }
+
     @Override
     public int getItemCount() {
         return groupMessageLIsts.size();
     }
 
     public class MyviewHolder extends RecyclerView.ViewHolder {
-        TextView sendermsz, oponentmsz, nameUser ,nameImageSender;
+        TextView sendermsz, oponentmsz, nameUser, nameImageSender;
         ImageView senderimage, oponentimage, videoviewSender, VideoViewOponent;
         SeekBar senderSeekBarTestPlay, oponentsenderSeekBarTestPlay;
 
         RelativeLayout videoConainersender, videoConainerOpopnent, fileviewSender, fileviewoponent, audioviewoponent, audioviewSender;
         RelativeLayout senderlayout, oponentlayout, senderlayoutimage, oponentlayoutimage;
-        ImageButton playbtnOponent, playbtnSender, downloadimageoponent, downloadfileoponent, downloadaudio, senderButtonTestPlayPause, oponentButtonTestPlayPause;
+        ImageButton video_start_sender, video_start_oponent, playbtnOponent, playbtnSender, downloadimageoponent, downloadfileoponent, downloadaudio, senderButtonTestPlayPause, oponentButtonTestPlayPause;
 
         public MyviewHolder(@NonNull View itemView) {
             super(itemView);
+            video_start_sender = itemView.findViewById(R.id.video_start_sender);
+            video_start_oponent = itemView.findViewById(R.id.video_start_oponent);
             oponentsenderSeekBarTestPlay = itemView.findViewById(R.id.oponentSeekBarTestPlay);
             senderSeekBarTestPlay = itemView.findViewById(R.id.SeekBarTestPlay);
             senderButtonTestPlayPause = itemView.findViewById(R.id.ButtonTestPlayPause);
-            nameUser=itemView.findViewById(R.id.nameUser);
-            nameImageSender=itemView.findViewById(R.id.nameSender);
+            nameUser = itemView.findViewById(R.id.nameUser);
+            nameImageSender = itemView.findViewById(R.id.nameSender);
             oponentButtonTestPlayPause = itemView.findViewById(R.id.oponentButtonTestPlayPause);
             sendermsz = itemView.findViewById(R.id.userMessage);
             oponentmsz = itemView.findViewById(R.id.oPonentMessage);
@@ -186,4 +247,25 @@ public class GroupChatAdapter extends RecyclerView.Adapter<GroupChatAdapter.Myvi
         }
     }
 
+    public static Bitmap retriveVideoFrameFromVideo(String videoPath) throws Throwable {
+        Bitmap bitmap = null;
+        MediaMetadataRetriever mediaMetadataRetriever = null;
+        try {
+            mediaMetadataRetriever = new MediaMetadataRetriever();
+            if (Build.VERSION.SDK_INT >= 14)
+                mediaMetadataRetriever.setDataSource(videoPath, new HashMap<String, String>());
+            else
+                mediaMetadataRetriever.setDataSource(videoPath);
+            //   mediaMetadataRetriever.setDataSource(videoPath);
+            bitmap = mediaMetadataRetriever.getFrameAtTime(1, MediaMetadataRetriever.OPTION_CLOSEST);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new Throwable("Exception in retriveVideoFrameFromVideo(String videoPath)" + e.getMessage());
+        } finally {
+            if (mediaMetadataRetriever != null) {
+                mediaMetadataRetriever.release();
+            }
+        }
+        return bitmap;
+    }
 }

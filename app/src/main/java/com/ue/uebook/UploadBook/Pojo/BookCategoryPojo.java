@@ -9,6 +9,16 @@ public class BookCategoryPojo {
     private String created_at;
     private String updated_at;
 
+    public String getBook_count() {
+        return book_count;
+    }
+
+    public void setBook_count(String book_count) {
+        this.book_count = book_count;
+    }
+
+    private String book_count;
+
     public BookCategoryPojo(String id, String category_name, String slug_url, String status, String thum_image, String created_at, String updated_at) {
         this.id = id;
         this.category_name = category_name;

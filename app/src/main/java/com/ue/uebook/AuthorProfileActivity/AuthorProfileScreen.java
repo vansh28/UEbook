@@ -30,6 +30,7 @@ import com.ue.uebook.AuthorProfileActivity.pojo.AuthorData;
 import com.ue.uebook.AuthorProfileActivity.pojo.StatusPojo;
 import com.ue.uebook.BaseActivity;
 import com.ue.uebook.ChatSdk.MessageScreen;
+import com.ue.uebook.ChatSdk.OponentUserDetailsScren;
 import com.ue.uebook.Data.ApiRequest;
 import com.ue.uebook.DeatailActivity.Book_Detail_Screen;
 import com.ue.uebook.GlideUtils;
@@ -56,6 +57,8 @@ public class AuthorProfileScreen extends BaseActivity implements View.OnClickLis
     private int followStatusvalue = 0;
     private List<StatusPojo>detailList;
     private List<AuthorData>authorDataList;
+    private String nameUser="";
+    private String profileuser="";
 
 
 
@@ -93,6 +96,7 @@ public class AuthorProfileScreen extends BaseActivity implements View.OnClickLis
         author_name.setTextSize(textSize);
         postView.setTextSize(textSize);
         emailToAuthor.setTextSize(textSize);
+        author_profile.setOnClickListener(this);
 
          id = intent.getIntExtra("id",0);
         if (id==1){
@@ -156,8 +160,12 @@ public class AuthorProfileScreen extends BaseActivity implements View.OnClickLis
         else if (view== editProfile){
          Intent intent = new Intent(this,AuthorEditProfile.class);
          startActivity(intent);
-
-
+        }
+        else if (view==author_profile){
+            Intent intent = new Intent (AuthorProfileScreen.this, OponentUserDetailsScren.class);
+            intent.putExtra("name",nameUser);
+            intent.putExtra("image",profileuser);
+            startActivity(intent);
         }
 
     }
@@ -194,7 +202,10 @@ public class AuthorProfileScreen extends BaseActivity implements View.OnClickLis
                         author_desc.setText(form.getData().getAbout_me());
                         publisher_type.setText(form.getData().getPublisher_type());
                         GlideUtils.loadImage(AuthorProfileScreen.this, "http://dnddemo.com/ebooks/api/v1/upload/" + form.getData().getUrl(), author_profile, R.drawable.user_default, R.drawable.user_default);
-                        authorEmail=form.getData().getEmail();
+                        profileuser=form.getData().getUrl();
+                        nameUser=form.getData().getUser_name();
+
+                       authorEmail=form.getData().getEmail();
                         if (form.getBooklist()!=null){
                             post_list.setVisibility(View.VISIBLE);
                             author_postAdapter = new Author_BookListAdapter(AuthorProfileScreen.this,form.getBooklist(),id,textSize);
