@@ -194,7 +194,7 @@ public class GroupFriendList extends BaseActivity implements View.OnClickListene
                 groupID =   groupID + "," + s;
             }
         }
-        Log.e("sring",groupID);
+        Log.e("string",groupID);
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater layoutInflater = getLayoutInflater();
         View customView = layoutInflater.inflate(R.layout.groupnameitem, null);

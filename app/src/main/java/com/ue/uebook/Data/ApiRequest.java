@@ -790,6 +790,24 @@ public class ApiRequest {
                 .build();
         client.newCall(request).enqueue(callback);
     }
+
+    public void requestfordeleteMessage(String group_id ,String user_id ,String chat_id,String action,Callback callback) {
+        String url = null;
+        url = BaseUrl + "deleteGroupChatByUser";
+        OkHttpClient client = new OkHttpClient();
+        RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
+                .addFormDataPart("group_id", group_id)
+                .addFormDataPart("user_id", user_id)
+                .addFormDataPart("chat_id", chat_id)
+                .addFormDataPart("action", action)
+                .build();
+        Request request = new Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .build();
+        client.newCall(request).enqueue(callback);
+    }
 }
+
 
 

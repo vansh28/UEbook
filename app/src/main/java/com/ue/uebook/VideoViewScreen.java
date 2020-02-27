@@ -22,6 +22,7 @@ public class VideoViewScreen extends AppCompatActivity {
         videoUrl=intent.getStringExtra("url");
         MediaController mediaController = new MediaController(this);
         mediaController.setAnchorView(videoView);
+
         videoView.setMediaController(mediaController);
         videoView.setVideoURI(Uri.parse(videoUrl));
         videoView.start();

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.media.MediaMetadataRetriever;
 import android.os.Build;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,7 +43,7 @@ public class GroupChatAdapter extends RecyclerView.Adapter<GroupChatAdapter.Myvi
     }
 
     public interface ItemClick {
-        void onGroupMessage(View v, String message, int position);
+        void onGroupMessage(View v, String chatID, int position);
     }
 
     public void setItemClickListener(ItemClick clickListener) {
@@ -164,7 +165,7 @@ public class GroupChatAdapter extends RecyclerView.Adapter<GroupChatAdapter.Myvi
             public boolean onLongClick(View v) {
 
                 if (itemClick != null) {
-                    itemClick.onGroupMessage(v, "group Message", 3);
+                    itemClick.onGroupMessage(v, groupMessageLIsts.get(position).getUschid(), 3);
                 }
                 return false;
             }
@@ -174,7 +175,7 @@ public class GroupChatAdapter extends RecyclerView.Adapter<GroupChatAdapter.Myvi
             public boolean onLongClick(View v) {
 
                 if (itemClick != null) {
-                    itemClick.onGroupMessage(v, "group Message", 3);
+                    itemClick.onGroupMessage(v, groupMessageLIsts.get(position).getUschid(), 3);
                 }
                 return false;
             }
@@ -183,6 +184,7 @@ public class GroupChatAdapter extends RecyclerView.Adapter<GroupChatAdapter.Myvi
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(mtx, VideoViewScreen.class);
+                Log.e("url","http://dnddemo.com/ebooks/api/v1/" + groupMessageLIsts.get(position).getMessage());
                 intent.putExtra("url","http://dnddemo.com/ebooks/api/v1/" + groupMessageLIsts.get(position).getMessage());
                 mtx.startActivity(intent);
             }
@@ -195,7 +197,86 @@ public class GroupChatAdapter extends RecyclerView.Adapter<GroupChatAdapter.Myvi
                 mtx.startActivity(intent);
             }
         });
+        holder.videoConainersender.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
 
+                if (itemClick != null) {
+                    itemClick.onGroupMessage(v, groupMessageLIsts.get(position).getUschid(), 3);
+                }
+                return false;
+            }
+        });
+        holder.videoConainerOpopnent.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+
+                if (itemClick != null) {
+                    itemClick.onGroupMessage(v, groupMessageLIsts.get(position).getUschid(), 3);
+                }
+                return false;
+            }
+        });
+        holder.oponentlayoutimage.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+
+                if (itemClick != null) {
+                    itemClick.onGroupMessage(v, groupMessageLIsts.get(position).getUschid(), 3);
+                }
+                return false;
+            }
+        });
+        holder.senderlayoutimage.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+
+                if (itemClick != null) {
+                    itemClick.onGroupMessage(v, groupMessageLIsts.get(position).getUschid(), 3);
+                }
+                return false;
+            }
+        });
+        holder.audioviewoponent.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+
+                if (itemClick != null) {
+                    itemClick.onGroupMessage(v, groupMessageLIsts.get(position).getUschid(), 3);
+                }
+                return false;
+            }
+        });
+        holder.audioviewSender.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+
+                if (itemClick != null) {
+                    itemClick.onGroupMessage(v, groupMessageLIsts.get(position).getUschid(), 3);
+                }
+                return false;
+            }
+        });
+        holder.fileviewSender.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+
+                if (itemClick != null) {
+                    itemClick.onGroupMessage(v, groupMessageLIsts.get(position).getUschid(), 3);
+                }
+                return false;
+            }
+        });
+        holder.fileviewoponent.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+
+                if (itemClick != null) {
+                    itemClick.onGroupMessage(v, groupMessageLIsts.get(position).getUschid(), 3);
+                }
+                return false;
+            }
+        });
     }
 
     @Override

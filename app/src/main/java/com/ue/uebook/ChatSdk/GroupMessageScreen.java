@@ -554,7 +554,6 @@ public class GroupMessageScreen extends BaseActivity implements View.OnClickList
             public void onClick(View v) {
                 mBottomSheetDialog.dismiss();
                 memberForcall.clear();
-                Log.e("ddd", memberid);
 
             }
         });
@@ -573,7 +572,7 @@ public class GroupMessageScreen extends BaseActivity implements View.OnClickList
                         memberid = memberid + "," + s;
                     }
                 }
-                Log.e("useris", memberid);
+
                 if (memberid != "") {
                     if (calltype.equalsIgnoreCase("audiocall")) {
                         callFunc(true, memberid);
@@ -846,20 +845,30 @@ public class GroupMessageScreen extends BaseActivity implements View.OnClickList
     }
 
     @Override
-    public void onGroupMessage(View view,String message, int position) {
-         showFilterPopup(view);
+    public void onGroupMessage(View view,String chatID, int position) {
+         showFilterPopup(view ,chatID);
     }
 
-    private void showFilterPopup(View v) {
+    private void showFilterPopup(View v ,String chatID ) {
         PopupMenu popup = new PopupMenu(this, v);
+
+        Log.e("chatid",chatID);
+        Log.e("groupid",groupID);
         popup.inflate(R.menu.deletepopup);
         popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.delete:
-                        Toast.makeText(GroupMessageScreen.this,"delete",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(GroupMessageScreen.this,"deleted",Toast.LENGTH_SHORT).show();
 
-                    default:
+                        if (channelID!=null){
+                           deleteMessage(channelID,new SessionManager(getApplicationContext()).getUserID(),chatID,"selected");
+                        }
+                        else {
+                           deleteMessage(groupID,new SessionManager(getApplicationContext()).getUserID(),chatID,"selected");
+
+                        }
+                     default:
                         return false;
                 }
             }
@@ -884,6 +893,37 @@ public class GroupMessageScreen extends BaseActivity implements View.OnClickList
             }
         });
         popup.show();
+    }
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private void deleteMessage( String groupID ,String user_id , String chatId ,String action) {
+        ApiRequest request = new ApiRequest();
+        request.requestfordeleteMessage( groupID ,user_id, chatId,action ,new okhttp3.Callback() {
+            @Override
+            public void onFailure(okhttp3.Call call, IOException e) {
+                Log.d("error", "error");
+                hideLoadingIndicator();
+            }
+
+            @Override
+            public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
+                hideLoadingIndicator();
+                final String myResponse = response.body().string();
+                Log.e("response",myResponse);
+                Gson gson = new GsonBuilder().create();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (channelID!=null){
+                            getGroupHistory(new SessionManager(getApplicationContext()).getUserID(), channelID);
+                        }
+                        else {
+                            getGroupHistory(new SessionManager(getApplicationContext()).getUserID(), groupID);
+                        }
+                    }
+                });
+
+            }
+        });
     }
 
 
