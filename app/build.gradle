@@ -49,13 +49,16 @@ buildscript {
         maven {
             url "https://github.com/jitsi/jitsi-maven-repository/raw/master/releases"
         }
+
     }
 
     dependencies {
         classpath 'io.fabric.tools:gradle:1.30.0'
     }
 }
-
+repositories {
+    maven { url "https://dl.bintray.com/hani-momanii/maven"}
+}
 apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
 apply plugin: 'com.google.gms.google-services'
@@ -138,5 +141,7 @@ dependencies {
 
     implementation('org.jitsi.react:jitsi-meet-sdk:2.5.0') { transitive = true }
     implementation 'com.dropbox.core:dropbox-core-sdk:3.1.3'
+    implementation 'hani.momanii.supernova_emoji_library:supernova-emoji-library:0.0.2'
+
 }
 apply plugin: 'com.google.gms.google-services'

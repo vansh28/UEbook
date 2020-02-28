@@ -28,6 +28,8 @@ import com.ue.uebook.VideoViewScreen;
 import java.util.HashMap;
 import java.util.List;
 
+import hani.momanii.supernova_emoji_library.Helper.EmojiconTextView;
+
 public class GroupChatAdapter extends RecyclerView.Adapter<GroupChatAdapter.MyviewHolder> {
     private List<GroupMessageLIst> groupMessageLIsts;
     private String userid;
@@ -285,7 +287,8 @@ public class GroupChatAdapter extends RecyclerView.Adapter<GroupChatAdapter.Myvi
     }
 
     public class MyviewHolder extends RecyclerView.ViewHolder {
-        TextView sendermsz, oponentmsz, nameUser, nameImageSender;
+        TextView  nameUser, nameImageSender;
+        EmojiconTextView sendermsz, oponentmsz;
         ImageView senderimage, oponentimage, videoviewSender, VideoViewOponent;
         SeekBar senderSeekBarTestPlay, oponentsenderSeekBarTestPlay;
 

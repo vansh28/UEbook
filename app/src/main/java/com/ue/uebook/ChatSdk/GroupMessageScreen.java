@@ -23,11 +23,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupMenu;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
@@ -73,6 +73,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import hani.momanii.supernova_emoji_library.Actions.EmojIconActions;
+import hani.momanii.supernova_emoji_library.Helper.EmojiconEditText;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MediaType;
@@ -85,8 +87,8 @@ public class GroupMessageScreen extends BaseActivity implements View.OnClickList
     private Intent intent;
     private static final int REQUEST_PICK_VIDEO = 12;
     private String groupID;
-    private EditText edit_chat_message;
-    private ImageButton videobtncall, voicebtn, button_chat_send, backbtnMessage, button_chat_attachment, gallerybtn, audiobtn, videobtn, filebtn;
+    private EmojiconEditText edit_chat_message;
+    private ImageButton   emojiBtn,videobtncall, voicebtn, button_chat_send, backbtnMessage, button_chat_attachment, gallerybtn, audiobtn, videobtn, filebtn;
     private TextView group_name;
     private RecyclerView messageList;
     private BottomSheetDialog mBottomSheetDialog;
@@ -114,8 +116,8 @@ public class GroupMessageScreen extends BaseActivity implements View.OnClickList
     private String groupImg = "";
     private String  channelID ="";
     private BroadcastReceiver mReceiver;
-
-
+    EmojIconActions emojIcon;
+    private RelativeLayout root_view;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -123,6 +125,9 @@ public class GroupMessageScreen extends BaseActivity implements View.OnClickList
         button_chat_attachment = findViewById(R.id.button_chat_attachment);
         image_user_chat = findViewById(R.id.image_user_chat);
         morebtn=findViewById(R.id.morebtn);
+        emojiBtn= findViewById(R.id.emojibtn);
+        root_view=findViewById(R.id.root_view);
+        emojiBtn.setOnClickListener(this);
         morebtn.setOnClickListener(this);
         image_user_chat.setOnClickListener(this);
         intent = getIntent();
@@ -165,6 +170,22 @@ public class GroupMessageScreen extends BaseActivity implements View.OnClickList
             getGroupMember(new SessionManager(getApplicationContext()).getUserID(), groupID, "", "");
             getGroupNameImage(groupID, new SessionManager(getApplicationContext()).getUserID());
         }
+        emojIcon = new EmojIconActions(this, root_view, edit_chat_message, emojiBtn);
+        emojIcon.ShowEmojIcon();
+        emojIcon.setIconsIds(R.drawable.ic_action_keyboard, R.drawable.smiley);
+        emojIcon.setKeyboardListener(new EmojIconActions.KeyboardListener() {
+            @Override
+            public void onKeyboardOpen() {
+                Log.e("fff", "Keyboard opened!");
+            }
+
+            @Override
+            public void onKeyboardClose() {
+                Log.e("fff", "Keyboard closed");
+            }
+        });
+
+
     }
 
     @Override
@@ -847,6 +868,7 @@ public class GroupMessageScreen extends BaseActivity implements View.OnClickList
     @Override
     public void onGroupMessage(View view,String chatID, int position) {
          showFilterPopup(view ,chatID);
+
     }
 
     private void showFilterPopup(View v ,String chatID ) {

@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -13,13 +14,14 @@
         android:layout_marginRight="@dimen/size_150"
         android:background="@drawable/rounded_rect"
         android:visibility="gone">
-        <TextView
+        <hani.momanii.supernova_emoji_library.Helper.EmojiconTextView
             android:id="@+id/oPonentMessage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:minHeight="@dimen/size_40"
             android:minWidth="@dimen/size_80"
             android:padding="@dimen/size_5"
+            app:emojiconSize="28sp"
             android:textColor="@color/black" />
         <TextView
             android:id="@+id/nameUser"
@@ -52,7 +54,7 @@
         android:layout_marginRight="@dimen/size_15"
         android:background="@drawable/senderbg"
         android:visibility="gone">
-        <TextView
+        <hani.momanii.supernova_emoji_library.Helper.EmojiconTextView
             android:id="@+id/userMessage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -62,6 +64,7 @@
             android:gravity="center_vertical"
             android:minHeight="@dimen/size_40"
             android:minWidth="@dimen/size_70"
+            app:emojiconSize="28sp"
             android:textColor="@color/black" />
 
         <TextView

@@ -26,12 +26,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.MediaController;
 import android.widget.PopupMenu;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
@@ -71,6 +71,8 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import hani.momanii.supernova_emoji_library.Actions.EmojIconActions;
+import hani.momanii.supernova_emoji_library.Helper.EmojiconEditText;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MediaType;
@@ -84,10 +86,10 @@ import static com.ue.uebook.NetworkUtils.getInstance;
 public class MessageScreen extends BaseActivity implements View.OnClickListener, ImageUtils.ImageAttachmentListener, MessageAdapter.ChatImageFileClick {
     private static final int REQUEST_PICK_VIDEO = 12;
     private Intent intent;
-    private ImageButton back_btn, button_chat_attachment, morebtn, button_chat_send, gallerybtn, videobtn, audiobtn, filebtn, voicebtn, videoCallbtn;
+    private ImageButton   button_chat_emoji,back_btn, button_chat_attachment, morebtn, button_chat_send, gallerybtn, videobtn, audiobtn, filebtn, voicebtn, videoCallbtn;
     private ImageView userProfile, previewImage;
     private RecyclerView messageList;
-    private EditText chat_message;
+    private EmojiconEditText chat_message;
     private TextView oponent_name;
     private int screenID;
     private int mCurrentPosition = 0;
@@ -124,15 +126,19 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
     TextView cur_val;
     private String oponentName="";
     private String oponentImage="";
-
+    EmojIconActions emojIcon;
+    private RelativeLayout root_view;
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message_screen);
+        button_chat_emoji=findViewById(R.id.button_chat_emoji);
+        button_chat_emoji.setOnClickListener(this);
         voicebtn = findViewById(R.id.voicebtn);
         videoCallbtn = findViewById(R.id.videobtn);
         voicebtn.setOnClickListener(this);
+        root_view=findViewById(R.id.root_view);
         videoCallbtn.setOnClickListener(this);
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setIndeterminate(true);
@@ -227,6 +233,21 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
                 oponentImage=imageUrl;
             }
         }
+        emojIcon = new EmojIconActions(this, root_view, chat_message, button_chat_emoji);
+        emojIcon.ShowEmojIcon();
+        emojIcon.setIconsIds(R.drawable.ic_action_keyboard, R.drawable.smiley);
+        emojIcon.setKeyboardListener(new EmojIconActions.KeyboardListener() {
+            @Override
+            public void onKeyboardOpen() {
+                Log.e("fff", "Keyboard opened!");
+            }
+
+            @Override
+            public void onKeyboardClose() {
+                Log.e("fff", "Keyboard closed");
+            }
+        });
+
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -324,6 +345,11 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
               intent.putExtra("name",oponentName);
               intent.putExtra("image",oponentImage);
              startActivity(intent);
+
+        }
+        else if (v==button_chat_emoji)
+        {
+
 
         }
     }
@@ -688,19 +714,19 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
     }
 
     @Override
-    public void onLongClickOnMessage(View view) {
-        showFilterPopup(view);
-
+    public void onLongClickOnMessage(View view ,String chatid) {
+        showFilterPopup(view ,chatid);
+        Log.e("chatid",chatid);
     }
-    private void showFilterPopup(View v) {
+    private void showFilterPopup(View v , String chatid) {
         PopupMenu popup = new PopupMenu(this, v);
         popup.inflate(R.menu.deletepopup);
         popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.delete:
-                        Toast.makeText(MessageScreen.this,"delete",Toast.LENGTH_SHORT).show();
-
+                        Toast.makeText(MessageScreen.this,"deleted",Toast.LENGTH_SHORT).show();
+                         deleteMessage(new SessionManager(getApplicationContext()).getUserID(),chatid,"selected");
                     default:
                         return false;
                 }
@@ -946,10 +972,90 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
                     @Override
                     public void run() {
                         getChatHistory(new SessionManager(getApplication()).getUserID(), sendToID, channelID, "text");
-
                     }
                 });
 //                final AllchatResponse form = gson.fromJson(myResponse, AllchatResponse.class);
+            }
+        });
+    }
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private void deleteMessage( String user_id , String chatId ,String action) {
+        ApiRequest request = new ApiRequest();
+        request.requestfordelete_chat( user_id, chatId,action ,new okhttp3.Callback() {
+            @Override
+            public void onFailure(okhttp3.Call call, IOException e) {
+                Log.d("error", "error");
+                hideLoadingIndicator();
+            }
+            @Override
+            public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
+                hideLoadingIndicator();
+                final String myResponse = response.body().string();
+                Log.e("response",myResponse);
+                Gson gson = new GsonBuilder().create();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (screenID == 2) {
+                            oponentData = (OponentData) intent.getSerializableExtra("oponentdata");
+                            userData = (UserData) intent.getSerializableExtra("userData");
+                            if (oponentData != null) {
+                                oponentName=oponentData.getName();
+                                if (oponentData.getName().length()>10){
+                                    oponent_name.setText(oponentData.getName().substring(0,10)+"..");
+                                }
+                                else {
+                                    oponent_name.setText(oponentData.getName());
+                                }
+                                sendToID = oponentData.userId;
+                                GlideUtils.loadImage(MessageScreen.this, ApiRequest.BaseUrl + "upload/" + oponentData.getUrl(), userProfile, R.drawable.user_default, R.drawable.user_default);
+                                imageProfile = oponentData.getUrl();
+                                oponentImage=oponentData.getUrl();
+                            }
+
+                            if (oponentData.channelId != null) {
+                                chanelID = oponentData.channelId;
+                                sendToID = oponentData.userId;
+                                getChatHistory(new SessionManager(getApplication()).getUserID(), sendToID, chanelID, "text");
+                            }
+
+                        } else if (screenID == 1) {
+
+                            String sendTo = intent.getStringExtra("sendTo");
+                            channelID = intent.getStringExtra("channelID");
+                            String name = intent.getStringExtra("name");
+                            oponentName= intent.getStringExtra("name");
+                            if (name.length()>10){
+                                oponent_name.setText(name.substring(0,10)+"..");
+                            }
+                            else {
+                                oponent_name.setText(name);
+                            }
+
+
+
+                            sendToID = sendTo;
+
+                            if (channelID != null) {
+                                chanelID = channelID;
+                                getChatHistory(new SessionManager(getApplication()).getUserID(), sendToID, channelID, "text");
+                                GlideUtils.loadImage(MessageScreen.this, ApiRequest.BaseUrl + "upload/" + imageUrl, userProfile, R.drawable.user_default, R.drawable.user_default);
+                                imageProfile = imageUrl;
+                                oponentImage=imageUrl;
+                            } else {
+
+                                getChatHistory(new SessionManager(getApplication()).getUserID(), sendToID, "", "text");
+                                GlideUtils.loadImage(MessageScreen.this, ApiRequest.BaseUrl + "upload/" + imageUrl, userProfile, R.drawable.user_default, R.drawable.user_default);
+                                imageProfile = imageUrl;
+                                oponentImage=imageUrl;
+                            }
+                        }
+
+
+
+                    }
+                });
+
             }
         });
     }

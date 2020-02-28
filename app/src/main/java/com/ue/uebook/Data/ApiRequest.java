@@ -807,6 +807,21 @@ public class ApiRequest {
                 .build();
         client.newCall(request).enqueue(callback);
     }
+    public void requestfordelete_chat(String user_id ,String chat_id,String action,Callback callback) {
+        String url = null;
+        url = BaseUrl + "delete_chat";
+        OkHttpClient client = new OkHttpClient();
+        RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
+                .addFormDataPart("user_id", user_id)
+                .addFormDataPart("chat_id", chat_id)
+                .addFormDataPart("action", action)
+                .build();
+        Request request = new Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .build();
+        client.newCall(request).enqueue(callback);
+    }
 }
 
 

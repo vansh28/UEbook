@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:orientation="vertical"
     android:background="#E9E9E9"
+    android:id="@+id/root_view"
     android:layout_height="match_parent"
     tools:context=".ChatSdk.GroupMessageScreen">
 
@@ -98,19 +99,24 @@
         style="@style/MatchWidth"
         android:layout_alignParentBottom="true"
         android:orientation="horizontal">
-
         <ImageButton
-            android:id="@+id/button_chat_attachment"
+            android:id="@+id/emojibtn"
             style="@style/BorderlessImageButtonStyle"
             android:layout_gravity="center_vertical"
-            android:src="@drawable/ic_action_attachment" />
+            android:src="@drawable/smiley" />
 
-        <EditText
+
+        <hani.momanii.supernova_emoji_library.Helper.EmojiconEditText
             android:id="@+id/edit_chat_message"
             style="@style/WeightWidth"
             android:layout_height="wrap_content"
             android:hint="@string/chat_edit_text_hint"
             android:maxLength="1024" />
+        <ImageButton
+            android:id="@+id/button_chat_attachment"
+            style="@style/BorderlessImageButtonStyle"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ic_action_attachment" />
 
         <ImageButton
             android:id="@+id/button_chat_send"

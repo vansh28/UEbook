@@ -157,7 +157,6 @@ public class ChatHistoryFrag extends Fragment implements View.OnClickListener ,C
         //registering our receiver
         getActivity().registerReceiver(mReceiver, intentFilter);
     }
-
     @Override
     public void onPause() {
         // TODO Auto-generated method stub
@@ -165,7 +164,6 @@ public class ChatHistoryFrag extends Fragment implements View.OnClickListener ,C
         //unregister our receiver
         getActivity().unregisterReceiver(this.mReceiver);
     }
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -176,13 +174,11 @@ public class ChatHistoryFrag extends Fragment implements View.OnClickListener ,C
                     + " must implement OnFragmentInteractionListener");
         }
     }
-
     @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
     }
-
     @Override
     public void onClick(View v) {
                  if (v==newChatbtn){
@@ -190,9 +186,6 @@ public class ChatHistoryFrag extends Fragment implements View.OnClickListener ,C
                      getContext().startActivity(intent);
                  }
     }
-
-
-
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -212,7 +205,6 @@ public class ChatHistoryFrag extends Fragment implements View.OnClickListener ,C
         ApiRequest request = new ApiRequest();
         progressDialog.setMessage("Please wait");
         progressDialog.show();
-
         if (userListList.size()>0)
             userListList.clear();
         request.requestforgetAllchatHistory(user_id, new okhttp3.Callback() {

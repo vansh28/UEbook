@@ -26,6 +26,8 @@ import com.ue.uebook.R;
 import java.util.HashMap;
 import java.util.List;
 
+import hani.momanii.supernova_emoji_library.Helper.EmojiconTextView;
+
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyviewHolder> {
    private List<Chathistory>chatData;
    private String userId;
@@ -45,7 +47,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyviewHo
     public interface ChatImageFileClick {
         void onImageClick(String url ,String type);
         void onDownloadClick(String url ,String type ,String name);
-        void onLongClickOnMessage(View view);
+        void onLongClickOnMessage(View view ,String chatid );
     }
     public void setItemClickListener(ChatImageFileClick clickListener) {
         chatImageFileClick = clickListener;
@@ -205,7 +207,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyviewHo
             @Override
             public boolean onLongClick(View v) {
                 if (chatImageFileClick!=null){
-                    chatImageFileClick.onLongClickOnMessage(v);
+                    chatImageFileClick.onLongClickOnMessage(v,chatData.get(position).getId());
                 }
                 return false;
             }
@@ -221,7 +223,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyviewHo
 //                        v.setBackgroundColor(Color.parseColor("#ffffff"));
 //                    }
 
-                    chatImageFileClick.onLongClickOnMessage(v);
+                    chatImageFileClick.onLongClickOnMessage(v,chatData.get(position).getId());
                 }
                 return false;
             }
@@ -346,7 +348,8 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyviewHo
         }
     }
     public class MyviewHolder extends RecyclerView.ViewHolder {
-        TextView sendermsz,oponentmsz ,nameUser;
+        TextView nameUser;
+        EmojiconTextView sendermsz,oponentmsz;
         ImageView senderimage,oponentimage ,videoviewSender,VideoViewOponent;
         SeekBar senderSeekBarTestPlay,oponentsenderSeekBarTestPlay;
 
