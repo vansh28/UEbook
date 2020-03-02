@@ -414,7 +414,7 @@ public class SignInScreen extends BaseActivity implements View.OnClickListener, 
         url = ApiRequest.BaseUrl+"userLogin";
         OkHttpClient client = new OkHttpClient();
         RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
-                .addFormDataPart("user_name", user_name)
+                .addFormDataPart("email", user_name)
                 .addFormDataPart("password", password)
                 .addFormDataPart("device_type", "android")
                 .addFormDataPart("device_token", deviceToken)

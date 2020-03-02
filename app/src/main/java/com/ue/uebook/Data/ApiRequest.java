@@ -29,9 +29,6 @@ public class ApiRequest {
 //                .addFormDataPart("face_detect_image", face_detect_image.getName(), RequestBody.create(MEDIA_TYPE_PNG, face_detect_image))
                 .addFormDataPart("device_token", device_token)
                 .addFormDataPart("login_type", "normal")
-
-
-
                 .build();
                  Request request = new Request.Builder()
                 .url(url)
@@ -96,7 +93,6 @@ public class ApiRequest {
         OkHttpClient client = new OkHttpClient();
         RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
                 .addFormDataPart("user_id", user_id)
-                .addFormDataPart("password", password)
                 .addFormDataPart("email", email)
                 .addFormDataPart("publisher_type", publisher_type)
                 .addFormDataPart("country", country)
@@ -822,6 +818,27 @@ public class ApiRequest {
                 .build();
         client.newCall(request).enqueue(callback);
     }
+
+
+    public void requestforPaymentPaypal(String amount , String currency ,String transaction_id , String user_id ,String email,String book_id,Callback callback) {
+        String url = null;
+        url = BaseUrl + "payment_by_paypal";
+        OkHttpClient client = new OkHttpClient();
+        RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
+                .addFormDataPart("amount", amount)
+                .addFormDataPart("currency", currency)
+                .addFormDataPart("transaction_id", transaction_id)
+                .addFormDataPart("user_id", user_id)
+                .addFormDataPart("email", email)
+                .addFormDataPart("book_id", book_id)
+                .build();
+        Request request = new Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .build();
+        client.newCall(request).enqueue(callback);
+    }
+
 }
 
 

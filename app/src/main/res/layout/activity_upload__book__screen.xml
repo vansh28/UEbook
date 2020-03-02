@@ -148,6 +148,39 @@
                         android:textColor="@color/black"
                         android:textSize="@dimen/size_16"/>
                 </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="@dimen/size_5"
+                    android:layout_marginTop="@dimen/size_10"
+                    android:layout_marginRight="@dimen/size_5"
+                    android:background="@drawable/spinnerbg"
+                    android:orientation="horizontal">
+                    <Spinner
+                        android:id="@+id/payemntInfo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:paddingLeft="@dimen/size_5"
+                        android:spinnerMode="dropdown"/>
+                </LinearLayout>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/paymemt_text_input"
+                    style="@style/TextInputLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                     android:layout_marginTop="@dimen/size_10"
+                    android:hint="Euro"
+                    android:visibility="gone"
+                    app:errorEnabled="true">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/payment_edit_text"
+                        android:layout_width="@dimen/size_150"
+                        android:inputType="number"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1" />
+                </com.google.android.material.textfield.TextInputLayout>
+
                 <RelativeLayout
                     android:id="@+id/cover_image_layout"
                     android:layout_width="match_parent"
@@ -164,7 +197,7 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/size_10"
+                    android:layout_marginTop="@dimen/size_5"
                     android:orientation="horizontal">
 
                     <TextView
@@ -375,6 +408,7 @@
                            android:textColor="@color/white"/>
                    </LinearLayout>
             </LinearLayout>
+
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

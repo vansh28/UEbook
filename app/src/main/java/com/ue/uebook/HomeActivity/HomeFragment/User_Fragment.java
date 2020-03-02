@@ -328,6 +328,7 @@ public class User_Fragment extends Fragment implements View.OnClickListener, Use
             public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
                 dialog.dismiss();
                 String myResponse = response.body().string();
+                Log.e("profile",myResponse);
                 Gson gson = new GsonBuilder().create();
                 final RegistrationResponse form = gson.fromJson(myResponse, RegistrationResponse.class);
                 if (form.getError().equalsIgnoreCase("false") && form.getUser_data() != null) {

@@ -52,6 +52,7 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -67,7 +68,6 @@ import com.ue.uebook.R;
 import com.ue.uebook.SessionManager;
 import com.ue.uebook.UploadBook.Pojo.BookCategoryResponsePojo;
 import com.ue.uebook.UploadBook.Pojo.PendingData;
-import com.ue.uebook.UploadBook.Pojo.UploadPojo;
 import com.ue.uebook.UploadBook.Pojo.VerifyISBNPojo;
 
 import java.io.File;
@@ -113,10 +113,11 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
     private long currentMillis=10;
     private String coverimageurl="";
     ImageUtils imageUtils;
-    private Spinner book_category;
+    private Spinner book_category,payemntInfo;
+    private TextInputLayout paymemt_text_input;
     ArrayList<String> categoryName;
     private ImageView camera_btn, video_btn, audio_btn, documents_btn, cover_image_preview;
-    private TextView timerTv,messageTv,filname_view, verifyIsbnTv, upload_info, uploadcover_view, audioname_view, uploadMoreView, assignmentView;
+    private TextView    timerTv,messageTv,filname_view, verifyIsbnTv, upload_info, uploadcover_view, audioname_view, uploadMoreView, assignmentView;
     private ProgressDialog progressdialog;
     private Button publishBtn, addQuestion, saveForLater ,startvoiceRecord,pausevoiceRecord,stopvoiceRecord;
     private String categorytype;
@@ -130,6 +131,7 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
     private VideoView videoview;
     private int mCurrentPosition = 0;
     private List<String>categoryId;
+    private String paidType="";
     Handler handler = new Handler();
     int status = 0;
     private NotificationCompat.Builder mBuilder;
@@ -160,13 +162,15 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
     long timeSwapBuff = 0L;
     long updatedTime = 0L;
     private TextView questionNumber;
-
+    private TextInputEditText payment_edit_text;
     String AudioSavePathInDevice = null;
     MediaRecorder mediaRecorder ;
     Random random ;
     String RandomAudioFileName = "ABCDEFGHIJKLMNOP";
     private Uri audioUri;
+    private String isPaid="No";
     private String coverimaqgeURL=" ";
+
     public static final int RequestPermissionCode = 1;
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
@@ -177,7 +181,10 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
         pendigbookIntent= getIntent();
         pendingBookdata= new ArrayList<>();
         random = new Random();
+        payemntInfo=findViewById(R.id.payemntInfo);
+        paymemt_text_input = findViewById(R.id.paymemt_text_input);
         pendingbookID = pendigbookIntent.getIntExtra("screenid",0);
+        payment_edit_text = findViewById(R.id.payment_edit_text);
         bookid_pending = pendigbookIntent.getStringExtra("bookid");
         back_btn_uploadbook = findViewById(R.id.back_btn_uploadbook);
         assignmentView = findViewById(R.id.asignmentView);
@@ -233,6 +240,7 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
         back_btn_uploadbook.setOnClickListener(this);
         book_category.setPrompt("Select Book Category");
         book_category.setOnItemSelectedListener(this);
+        payemntInfo.setOnItemSelectedListener(this);
         if (new SessionManager(getApplicationContext()).getUserPublishType().equalsIgnoreCase("Publish House")) {
             isbnlayout.setVisibility(View.VISIBLE);
             bookIsbnLayout.setVisibility(View.VISIBLE);
@@ -277,6 +285,34 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
                 getPendingBookDetails(bookid_pending);
             }
         }
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.paymentInfo, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        payemntInfo.setAdapter(adapter);
+        payemntInfo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View arg1,
+                                       int arg2, long arg3) {
+                String label = parent.getItemAtPosition(arg2).toString();
+                     if (label.equalsIgnoreCase("paid")){
+                         paidType = label;
+                         isPaid ="Yes";
+                         paymemt_text_input.setVisibility(View.VISIBLE);
+                     }
+                     else {
+                         paidType = label;
+                         isPaid ="No";
+                         paymemt_text_input.setVisibility(View.GONE);
+                     }
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
     }
     private void openFile(int CODE) {
         Intent i = new Intent(Intent.ACTION_GET_CONTENT);
@@ -312,22 +348,59 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
             openFile(111);
         } else if
         (view == publishBtn) {
+
+            Log.e("paidType",paidType);
+
+            Log.e("isPaid",isPaid.toString());
+            Log.e("isPaid",isPaid.toString());
+
             if (isvalidate()) {
-                if (new SessionManager(getApplicationContext()).getUserPublishType().equalsIgnoreCase("Publish House")) {
-                    if (isbnTvview.getText().toString().isEmpty()) {
-                        isbnTvview.setError("Enter Book ISBN Number");
-                        isbnTvview.requestFocus();
-                        isbnTvview.setEnabled(true);
-                    } else if (isbnverifyValue.equalsIgnoreCase("true")) {
-                        uploadBook(isbnTvview.getText().toString(), "1",bookid);
-                    } else if (isbnverifyValue.equalsIgnoreCase("false")) {
-                        isbnTvview.setError("ISBN Rejected");
-                        isbnTvview.requestFocus();
-                        isbnTvview.setEnabled(true);
+
+                if (paidType.equalsIgnoreCase("paid")){
+                    if (!payment_edit_text.getText().toString().isEmpty()){
+
+                        if (new SessionManager(getApplicationContext()).getUserPublishType().equalsIgnoreCase("Publish House")) {
+                            if (isbnTvview.getText().toString().isEmpty()) {
+                                isbnTvview.setError("Enter Book ISBN Number");
+                                isbnTvview.requestFocus();
+                                isbnTvview.setEnabled(true);
+                            } else if (isbnverifyValue.equalsIgnoreCase("true")) {
+                                uploadBook(isbnTvview.getText().toString(), "1",bookid ,payment_edit_text.getText().toString(),isPaid);
+                            } else if (isbnverifyValue.equalsIgnoreCase("false")) {
+                                isbnTvview.setError("ISBN Rejected");
+                                isbnTvview.requestFocus();
+                                isbnTvview.setEnabled(true);
+                            }
+                        } else {
+                            uploadBook("", "1",bookid ,payment_edit_text.getText().toString(),isPaid);
+                        }
+
                     }
-                } else {
-                    uploadBook("", "1",bookid);
+                    else {
+                        payment_edit_text.setError("Enter price of book");
+                        payment_edit_text.requestFocus();
+                        payment_edit_text.setEnabled(true);
+                    }
+
                 }
+                else {
+                    if (new SessionManager(getApplicationContext()).getUserPublishType().equalsIgnoreCase("Publish House")) {
+                        if (isbnTvview.getText().toString().isEmpty()) {
+                            isbnTvview.setError("Enter Book ISBN Number");
+                            isbnTvview.requestFocus();
+                            isbnTvview.setEnabled(true);
+                        } else if (isbnverifyValue.equalsIgnoreCase("true")) {
+                            uploadBook(isbnTvview.getText().toString(), "1",bookid ,payment_edit_text.getText().toString(),isPaid);
+                        } else if (isbnverifyValue.equalsIgnoreCase("false")) {
+                            isbnTvview.setError("ISBN Rejected");
+                            isbnTvview.requestFocus();
+                            isbnTvview.setEnabled(true);
+                        }
+                    } else {
+                        uploadBook("", "1",bookid ,payment_edit_text.getText().toString(),isPaid);
+                    }
+                }
+
             }
         } else if (view == cover_image_layout) {
             if (pendingbookID==2){
@@ -349,7 +422,7 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
 
 
         } else if (view == saveForLater) {
-            saveForlater(isbnTvview.getText().toString(), "0",bookid);
+            saveForlater(isbnTvview.getText().toString(), "0",bookid,payment_edit_text.getText().toString(),isPaid.toString());
         } else if (view == verifyIsbnTv) {
             verifyISBN(isbnTvview.getText().toString());
         }
@@ -527,7 +600,7 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
             cover_image_layout.setVisibility(View.GONE);
         }
     }
-    public void requestforUploadBook(String url,final int type, final String userid, final String category_id, final String booktitle, final File profile_image, final String book_description, File docFile, final String author_name, String questiondata, String isbn_number, String statusbook ,String book_id) {
+    public void requestforUploadBook(String url,final int type, final String userid, final String category_id, final String booktitle, final File profile_image, final String book_description, File docFile, final String author_name, String questiondata, String isbn_number, String statusbook ,String book_id ,String price ,String ispaid) {
         OkHttpClient client = new OkHttpClient();
         final MediaType MEDIA_TYPE_PNG = MediaType.parse("image/png");
         RequestBody requestBody;
@@ -549,6 +622,9 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
                         .addFormDataPart("book_id", book_id)
                         .addFormDataPart("cover_url",coverimaqgeURL)
 
+                        .addFormDataPart("price", price)
+                        .addFormDataPart("is_paid",ispaid)
+
                         .build();
                 break;
             case 2:
@@ -565,6 +641,8 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
                         .addFormDataPart("status", statusbook)
                         .addFormDataPart("book_id", book_id)
                         .addFormDataPart("cover_url",coverimaqgeURL)
+                        .addFormDataPart("price", price)
+                        .addFormDataPart("is_paid",ispaid)
                         .build();
                 break;
             case 3:
@@ -581,6 +659,8 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
                         .addFormDataPart("status", statusbook)
                         .addFormDataPart("book_id", book_id)
                         .addFormDataPart("cover_url",coverimaqgeURL)
+                        .addFormDataPart("price", price)
+                        .addFormDataPart("is_paid",ispaid)
 
                         .build();
                 break;
@@ -597,6 +677,8 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
                         .addFormDataPart("status", statusbook)
                         .addFormDataPart("book_id", book_id)
                         .addFormDataPart("cover_url",coverimaqgeURL)
+                        .addFormDataPart("price", price)
+                        .addFormDataPart("is_paid",ispaid)
 
                         .build();
                 break;
@@ -614,6 +696,8 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
                         .addFormDataPart("status", statusbook)
                         .addFormDataPart("book_id", book_id)
                         .addFormDataPart("cover_url",coverimaqgeURL)
+                        .addFormDataPart("price", price)
+                        .addFormDataPart("is_paid",ispaid)
 
                         .build();
                 break;
@@ -632,7 +716,8 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
                         .addFormDataPart("status", statusbook)
                         .addFormDataPart("book_id", book_id)
                         .addFormDataPart("cover_url",coverimaqgeURL)
-
+                        .addFormDataPart("price", price)
+                        .addFormDataPart("is_paid",ispaid)
                         .build();
                 break;
             case 7:
@@ -650,7 +735,8 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
                         .addFormDataPart("status", statusbook)
                         .addFormDataPart("book_id", book_id)
                         .addFormDataPart("cover_url",coverimaqgeURL)
-
+                        .addFormDataPart("price", price)
+                        .addFormDataPart("is_paid",ispaid)
                         .build();
                 break;
             case 8:
@@ -665,7 +751,8 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
                         .addFormDataPart("status", statusbook)
                         .addFormDataPart("book_id", book_id)
                         .addFormDataPart("cover_url",coverimaqgeURL)
-
+                        .addFormDataPart("price", price)
+                        .addFormDataPart("is_paid",ispaid)
                         .build();
                 break;
             default:
@@ -706,7 +793,8 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
             public void onResponse(Call call, Response response) throws IOException {
                 String res = response.body().string();
                 Gson gson = new GsonBuilder().create();
-                final UploadPojo form = gson.fromJson(res, UploadPojo.class);
+                Log.e("response",res);
+              //  final UploadPojo form = gson.fromJson(res, UploadPojo.class);
             }
         });
     }
@@ -1027,7 +1115,7 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
                 break;
         }
     }
-    private void uploadBook(String isbnNumber, String status ,String book_id) {
+    private void uploadBook(String isbnNumber, String status ,String book_id ,String price ,String ispaid) {
         if (isvalidate()) {
             for (int i = 0; i < allEds.size(); i++) {
                 if (!allEds.get(i).getText().toString().isEmpty()) {
@@ -1037,29 +1125,29 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
             String json = new Gson().toJson(questionList);
 
             if (audioUrl == null && videofile != null && docfile == null) {
-                requestforUploadBook(uploadurl,3, new SessionManager(getApplicationContext()).getUserID(), String.valueOf(categorytype), bookTitle.getText().toString(), coverimage, bookDesc.getText().toString(), docfile, authorName.getText().toString(), json, isbnNumber, status,book_id);
+                requestforUploadBook(uploadurl,3, new SessionManager(getApplicationContext()).getUserID(), String.valueOf(categorytype), bookTitle.getText().toString(), coverimage, bookDesc.getText().toString(), docfile, authorName.getText().toString(), json, isbnNumber, status,book_id ,price ,ispaid);
             } else if (audioUrl != null && videofile == null && docfile == null) {
-                requestforUploadBook(uploadurl,2, new SessionManager(getApplicationContext()).getUserID(), String.valueOf(categorytype), bookTitle.getText().toString(), coverimage, bookDesc.getText().toString(), docfile, authorName.getText().toString(), json, isbnNumber, status,book_id);
+                requestforUploadBook(uploadurl,2, new SessionManager(getApplicationContext()).getUserID(), String.valueOf(categorytype), bookTitle.getText().toString(), coverimage, bookDesc.getText().toString(), docfile, authorName.getText().toString(), json, isbnNumber, status,book_id ,price ,ispaid);
 
             } else if (audioUrl != null && videofile != null && docfile != null) {
-                requestforUploadBook(uploadurl,1, new SessionManager(getApplicationContext()).getUserID(), String.valueOf(categorytype), bookTitle.getText().toString(), coverimage, bookDesc.getText().toString(), docfile, authorName.getText().toString(), json, isbnNumber, status,book_id);
+                requestforUploadBook(uploadurl,1, new SessionManager(getApplicationContext()).getUserID(), String.valueOf(categorytype), bookTitle.getText().toString(), coverimage, bookDesc.getText().toString(), docfile, authorName.getText().toString(), json, isbnNumber, status,book_id ,price ,ispaid);
             }
             else if (audioUrl == null && videofile == null && docfile == null && coverimage==null) {
-                requestforUploadBook(uploadurl,8, new SessionManager(getApplicationContext()).getUserID(), String.valueOf(categorytype), bookTitle.getText().toString(), coverimage, bookDesc.getText().toString(), docfile, authorName.getText().toString(), json, isbnNumber, status,book_id);
+                requestforUploadBook(uploadurl,8, new SessionManager(getApplicationContext()).getUserID(), String.valueOf(categorytype), bookTitle.getText().toString(), coverimage, bookDesc.getText().toString(), docfile, authorName.getText().toString(), json, isbnNumber, status,book_id,price ,ispaid);
             }
             else if (audioUrl == null && videofile == null && docfile == null) {
-                requestforUploadBook(uploadurl,4, new SessionManager(getApplicationContext()).getUserID(), String.valueOf(categorytype), bookTitle.getText().toString(), coverimage, bookDesc.getText().toString(), docfile, authorName.getText().toString(), json, isbnNumber, status,book_id);
+                requestforUploadBook(uploadurl,4, new SessionManager(getApplicationContext()).getUserID(), String.valueOf(categorytype), bookTitle.getText().toString(), coverimage, bookDesc.getText().toString(), docfile, authorName.getText().toString(), json, isbnNumber, status,book_id,price ,ispaid);
             } else if (audioUrl == null && videofile == null && docfile != null) {
-                requestforUploadBook(uploadurl,5, new SessionManager(getApplicationContext()).getUserID(), String.valueOf(categorytype), bookTitle.getText().toString(), coverimage, bookDesc.getText().toString(), docfile, authorName.getText().toString(), json, isbnNumber, status,book_id);
+                requestforUploadBook(uploadurl,5, new SessionManager(getApplicationContext()).getUserID(), String.valueOf(categorytype), bookTitle.getText().toString(), coverimage, bookDesc.getText().toString(), docfile, authorName.getText().toString(), json, isbnNumber, status,book_id,price ,ispaid);
             } else if (audioUrl != null && videofile == null && docfile != null) {
-                requestforUploadBook(uploadurl,6, new SessionManager(getApplicationContext()).getUserID(), String.valueOf(categorytype), bookTitle.getText().toString(), coverimage, bookDesc.getText().toString(), docfile, authorName.getText().toString(), json, isbnNumber, status,book_id);
+                requestforUploadBook(uploadurl,6, new SessionManager(getApplicationContext()).getUserID(), String.valueOf(categorytype), bookTitle.getText().toString(), coverimage, bookDesc.getText().toString(), docfile, authorName.getText().toString(), json, isbnNumber, status,book_id,price ,ispaid);
             } else if (audioUrl == null && videofile != null && docfile != null) {
-                requestforUploadBook(uploadurl,7, new SessionManager(getApplicationContext()).getUserID(), String.valueOf(categorytype), bookTitle.getText().toString(), coverimage, bookDesc.getText().toString(), docfile, authorName.getText().toString(), json, isbnNumber, status,book_id);
+                requestforUploadBook(uploadurl,7, new SessionManager(getApplicationContext()).getUserID(), String.valueOf(categorytype), bookTitle.getText().toString(), coverimage, bookDesc.getText().toString(), docfile, authorName.getText().toString(), json, isbnNumber, status,book_id,price ,ispaid);
             }
         }
 
     }
-    private void saveForlater(String isbnNumber, String status,String book_id) {
+    private void saveForlater(String isbnNumber, String status,String book_id ,String price ,String ispaid) {
         if (pendingbookID==2){
             savelaterUrl=ApiRequest.BaseUrl+"updateBookByid";
         }
@@ -1073,33 +1161,33 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
         }
         String json = new Gson().toJson(questionList);
         if (audioUrl == null && videofile != null && docfile == null) {
-            requestforUploadBook(savelaterUrl,3, new SessionManager(getApplicationContext()).getUserID(), String.valueOf(categorytype), bookTitle.getText().toString(), coverimage, bookDesc.getText().toString(), docfile, authorName.getText().toString(), json, isbnNumber, status,book_id);
+            requestforUploadBook(savelaterUrl,3, new SessionManager(getApplicationContext()).getUserID(), String.valueOf(categorytype), bookTitle.getText().toString(), coverimage, bookDesc.getText().toString(), docfile, authorName.getText().toString(), json, isbnNumber, status,book_id ,price ,ispaid);
         } else if (audioUrl != null && videofile == null && docfile == null) {
-            requestforUploadBook(savelaterUrl,2, new SessionManager(getApplicationContext()).getUserID(), String.valueOf(categorytype), bookTitle.getText().toString(), coverimage, bookDesc.getText().toString(), docfile, authorName.getText().toString(), json, isbnNumber, status,book_id);
+            requestforUploadBook(savelaterUrl,2, new SessionManager(getApplicationContext()).getUserID(), String.valueOf(categorytype), bookTitle.getText().toString(), coverimage, bookDesc.getText().toString(), docfile, authorName.getText().toString(), json, isbnNumber, status,book_id ,price ,ispaid);
 
         } else if (audioUrl != null && videofile != null && docfile != null) {
-            requestforUploadBook(savelaterUrl,1, new SessionManager(getApplicationContext()).getUserID(), String.valueOf(categorytype), bookTitle.getText().toString(), coverimage, bookDesc.getText().toString(), docfile, authorName.getText().toString(), json, isbnNumber, status,book_id);
+            requestforUploadBook(savelaterUrl,1, new SessionManager(getApplicationContext()).getUserID(), String.valueOf(categorytype), bookTitle.getText().toString(), coverimage, bookDesc.getText().toString(), docfile, authorName.getText().toString(), json, isbnNumber, status,book_id ,price ,ispaid);
         }
 
         else if (audioUrl == null && videofile == null && docfile == null && coverimage==null) {
 
-            requestforUploadBook(savelaterUrl,8, new SessionManager(getApplicationContext()).getUserID(), String.valueOf(categorytype), bookTitle.getText().toString(), coverimage, bookDesc.getText().toString(), docfile, authorName.getText().toString(), json, isbnNumber, status,book_id);
+            requestforUploadBook(savelaterUrl,8, new SessionManager(getApplicationContext()).getUserID(), String.valueOf(categorytype), bookTitle.getText().toString(), coverimage, bookDesc.getText().toString(), docfile, authorName.getText().toString(), json, isbnNumber, status,book_id ,price ,ispaid);
 
         }else if (audioUrl == null && videofile == null && docfile == null) {
 
-            requestforUploadBook(savelaterUrl,4, new SessionManager(getApplicationContext()).getUserID(), String.valueOf(categorytype), bookTitle.getText().toString(), coverimage, bookDesc.getText().toString(), docfile, authorName.getText().toString(), json, isbnNumber, status,book_id);
+            requestforUploadBook(savelaterUrl,4, new SessionManager(getApplicationContext()).getUserID(), String.valueOf(categorytype), bookTitle.getText().toString(), coverimage, bookDesc.getText().toString(), docfile, authorName.getText().toString(), json, isbnNumber, status,book_id ,price ,ispaid);
 
         } else if (audioUrl == null && videofile == null && docfile != null) {
 
-            requestforUploadBook(savelaterUrl,5, new SessionManager(getApplicationContext()).getUserID(), String.valueOf(categorytype), bookTitle.getText().toString(), coverimage, bookDesc.getText().toString(), docfile, authorName.getText().toString(), json, isbnNumber, status,book_id);
+            requestforUploadBook(savelaterUrl,5, new SessionManager(getApplicationContext()).getUserID(), String.valueOf(categorytype), bookTitle.getText().toString(), coverimage, bookDesc.getText().toString(), docfile, authorName.getText().toString(), json, isbnNumber, status,book_id ,price ,ispaid);
 
         } else if (audioUrl != null && videofile == null && docfile != null) {
 
-            requestforUploadBook(savelaterUrl,6, new SessionManager(getApplicationContext()).getUserID(), String.valueOf(categorytype), bookTitle.getText().toString(), coverimage, bookDesc.getText().toString(), docfile, authorName.getText().toString(), json, isbnNumber, status,book_id);
+            requestforUploadBook(savelaterUrl,6, new SessionManager(getApplicationContext()).getUserID(), String.valueOf(categorytype), bookTitle.getText().toString(), coverimage, bookDesc.getText().toString(), docfile, authorName.getText().toString(), json, isbnNumber, status,book_id ,price ,ispaid);
 
         } else if (audioUrl == null && videofile != null && docfile != null) {
 
-            requestforUploadBook(savelaterUrl,7, new SessionManager(getApplicationContext()).getUserID(), String.valueOf(categorytype), bookTitle.getText().toString(), coverimage, bookDesc.getText().toString(), docfile, authorName.getText().toString(), json, isbnNumber, status,book_id);
+            requestforUploadBook(savelaterUrl,7, new SessionManager(getApplicationContext()).getUserID(), String.valueOf(categorytype), bookTitle.getText().toString(), coverimage, bookDesc.getText().toString(), docfile, authorName.getText().toString(), json, isbnNumber, status,book_id ,price ,ispaid);
 
         }
 
@@ -1118,7 +1206,7 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
                     Toast.makeText(getApplicationContext(), "Enter ISBN Number to Upload Book", Toast.LENGTH_SHORT).show();
                 } else {
                     dialog.dismiss();
-                    uploadBook("", "1","");
+                    uploadBook("", "1","",payment_edit_text.getText().toString(),isPaid.toString());
 
                 }
 

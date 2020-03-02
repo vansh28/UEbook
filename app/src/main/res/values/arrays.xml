@@ -59,4 +59,9 @@
         <item>Large</item>
         <item>Largest</item>
     </string-array>
+    <string-array name="paymentInfo">
+        <item>Select Book  Payment</item>
+        <item>Free</item>
+        <item>Paid</item>
+    </string-array>
 </resources>

@@ -19,6 +19,24 @@ public class BookDetails {
     private String created_at;
     private String updated_at;
     private String user_name;
+    private String is_paid;
+    private String price;
+
+    public String getIs_paid() {
+        return is_paid;
+    }
+
+    public void setIs_paid(String is_paid) {
+        this.is_paid = is_paid;
+    }
+
+    public String getPrice() {
+        return price;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
+    }
 
     public String getProfile_pic() {
         return profile_pic;

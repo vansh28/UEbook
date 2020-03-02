@@ -1,5 +1,6 @@
 package com.ue.uebook.DeatailActivity;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -34,9 +35,15 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.paypal.android.sdk.payments.PayPalConfiguration;
+import com.paypal.android.sdk.payments.PayPalPayment;
+import com.paypal.android.sdk.payments.PayPalService;
+import com.paypal.android.sdk.payments.PaymentActivity;
+import com.paypal.android.sdk.payments.PaymentConfirmation;
 import com.ue.uebook.AuthorProfileActivity.AuthorProfileScreen;
 import com.ue.uebook.BaseActivity;
 import com.ue.uebook.ChatSdk.OponentUserDetailsScren;
+import com.ue.uebook.Config;
 import com.ue.uebook.Data.ApiRequest;
 import com.ue.uebook.DeatailActivity.Pojo.Assignment;
 import com.ue.uebook.DeatailActivity.Pojo.BookDetails;
@@ -52,6 +59,7 @@ import com.ue.uebook.WebviewScreen;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,10 +72,10 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
     private ImageButton bookmark_btn;
     private Boolean isBookmark_book = false;
     private Button comment_Submit;
-    private List<BookDetails> bookDetail;
+    private BookDetails bookDetail;
     private ProgressDialog dialog;
     private ImageView book_coverTv, profile_user;
-    private TextView reviewCountView, bookTitle, bookDesc, bookAuthor, averageRating, topreviewView, book_uploadBy, book_asignment, readFull_Book_btn;
+    private TextView   priceBook,reviewCountView, bookTitle, bookDesc, bookAuthor, averageRating, topreviewView, book_uploadBy, book_asignment, readFull_Book_btn;
     private Intent intent;
     private String book_Id, videourl, docurl, audiourl;
     private int position;
@@ -85,6 +93,12 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
     private String username="";
     private String userimage="";
     private Handler handler;
+    private  String price ,ispaid;
+    public static  final  int Payrequescode=111;
+    private static PayPalConfiguration configuration = new PayPalConfiguration()
+            .environment(PayPalConfiguration.ENVIRONMENT_SANDBOX)
+            .clientId(Config.clientID);
+    String euro = "\u20ac";
     String docbaseUrl = "http://docs.google.com/gview?embedded=true&url=";
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
@@ -92,6 +106,9 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book__detail__screen);
         swipeRefreshLayout = findViewById(R.id.swipe_refresh_layout);
+        Intent intent = new Intent(this, PayPalService.class);
+        intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION,configuration);
+        startService(intent);
         myRatingBar = findViewById(R.id.myRatingBar);
         reviewCountView = findViewById(R.id.reviewCountView);
         profile_user = findViewById(R.id.profile_user);
@@ -102,8 +119,8 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
         commnetRating = findViewById(R.id.myRatingBar_detail);
         user_comment = findViewById(R.id.comment_edit_text);
         book_asignment = findViewById(R.id.book_asignment);
+        priceBook=findViewById(R.id.priceBook);
         book_asignment.setOnClickListener(this);
-        bookDetail = new ArrayList<>();
         assignmentList = new ArrayList<>();
         user_answers = new ArrayList<>();
         dialog = new ProgressDialog(this);
@@ -219,7 +236,31 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
         } else if (view == whatsappshare_btn) {
             ShareUtils.shareWhatsapp(this, bookdesc, "");
         } else if (view == readFull_Book_btn) {
-            showFilterPopup(view);
+
+            if (ispaid.equalsIgnoreCase("Yes")){
+
+                new AlertDialog.Builder(this)
+                        .setMessage("Do you want to purchase this Book")
+                        .setCancelable(false)
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                procssPayment();
+                                 dialog.dismiss();
+                            }
+                        })
+                        .setNegativeButton("No", null)
+                        .show();
+
+
+            }
+            else {
+                showFilterPopup(view);
+            }
+
+
+
+
+
         } else if (view == comment_Submit) {
             if (isvalidate()) {
                 addCommentToBook(user_comment.getText().toString(), String.valueOf(commnetRating.getRating()));
@@ -289,8 +330,6 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
     private void getBookDetail(final String book_id) {
         ApiRequest request = new ApiRequest();
         showLoadingIndicator();
-        if (bookDetail.size() > 0)
-            bookDetail.clear();
 
         request.requestforgetBookDetail(book_id, new SessionManager(getApplicationContext()).getUserID(), new okhttp3.Callback() {
             @Override
@@ -318,10 +357,11 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
 //                       content.setSpan(new UnderlineSpan(), 0, content.length(), 0)
                        book_uploadBy.setText((form.getData().getUser_name()));
                             username = form.getData().getUser_name();
-
+                             ispaid =form.getData().getIs_paid();
+                             price =form.getData().getPrice();
                             userimage= "http://"+ form.getData().getProfile_pic();
                              Log.e("imsge",userimage);
-
+                            priceBook.setText(euro+price);
             //          GlideUtils.loadImage(Book_Detail_Screen.this,"http://"+form.getData().getProfile_pic(),book_coverTv,R.drawable.user_default,R.drawable.user_default);
                         } else {
                             profile_user.setVisibility(View.GONE);
@@ -568,6 +608,63 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
         AlertDialog alert = builder.create();
         alert.show();
     }
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private void paypal( String user_id , String amount ,String currency ,String trans_id ,String email ,String bookid) {
+        ApiRequest request = new ApiRequest();
+        request.requestforPaymentPaypal( amount,currency,trans_id,user_id, email,bookid ,new okhttp3.Callback() {
+            @Override
+            public void onFailure(okhttp3.Call call, IOException e) {
+                Log.d("error", "error");
+                hideLoadingIndicator();
+            }
+            @Override
+            public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
+                hideLoadingIndicator();
+                final String myResponse = response.body().string();
+                Log.e("response",myResponse);
+                Gson gson = new GsonBuilder().create();
 
+            }
+        });
+    }
+    private void procssPayment(){
+        // totalamount=amount.getText().toString();
+        PayPalPayment payPalPayment = new PayPalPayment(new BigDecimal(1),"EUR","Donate for Demo",PayPalPayment.PAYMENT_INTENT_SALE);
+        Intent intent = new Intent(this, PaymentActivity.class);
+        intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION,configuration);
+        intent.putExtra(PaymentActivity.EXTRA_PAYMENT,payPalPayment);
+        startActivityForResult(intent,Payrequescode);
+
+    }
+
+    protected  void onActivityResult(int requestcode ,int resultcode ,Intent data) {
+        super.onActivityResult(requestcode, resultcode, data);
+        if (requestcode == Payrequescode) {
+            if (resultcode == RESULT_OK) {
+                PaymentConfirmation confirm = data.getParcelableExtra(PaymentActivity.EXTRA_RESULT_CONFIRMATION);
+                if (configuration != null) {
+                    try {
+                        String paymentDetails = confirm.toJSONObject().toString(4);
+                        Log.d("payment6", paymentDetails);
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            } else if (resultcode == Activity.RESULT_CANCELED)
+                Toast.makeText(this, "Cancel", Toast.LENGTH_SHORT).show();
+        } else if (resultcode == PaymentActivity.RESULT_EXTRAS_INVALID) {
+            Toast.makeText(this, "Invalid", Toast.LENGTH_SHORT).show();
+        }
+
+
+    }
+
+    @Override
+    public void onDestroy() {
+        stopService(new Intent(this, PayPalService.class));
+        super.onDestroy();
+    }
 
 }
