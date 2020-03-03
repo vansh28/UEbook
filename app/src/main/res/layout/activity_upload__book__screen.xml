@@ -61,6 +61,8 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/bookTitle_edit_text"
                         android:layout_width="match_parent"
+                        android:maxLines="1"
+                        android:singleLine="true"
                         android:layout_height="wrap_content" />
                 </com.google.android.material.textfield.TextInputLayout>
 

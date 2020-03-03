@@ -7,6 +7,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -212,6 +213,7 @@ public class UserProfile_Fragment extends Fragment implements View.OnClickListen
             public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
                 hideLoadingIndicator();
                 String myResponse = response.body().string();
+                Log.e("myres",myResponse);
                 Gson gson = new GsonBuilder().create();
                 RegistrationResponse form = gson.fromJson(myResponse, RegistrationResponse.class);
                 if (form.getError().equals("false") && form.getUser_data() != null) {

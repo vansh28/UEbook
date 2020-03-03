@@ -35,7 +35,7 @@ public class StartActivityHome extends AppCompatActivity implements View.OnClick
         String s= "Write your Book \n With UEbook";
         String s1= "Write with\nVOICE";
         String s2= "Write with\nTYPING";
-        String s3= "Start\nCHATING";
+        String s3= "Start\nCHATTING";
         String s4= "Read The\n BOOK";
 
         SpannableString ss1=  new SpannableString(s);

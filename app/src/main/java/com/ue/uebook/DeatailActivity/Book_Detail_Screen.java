@@ -52,10 +52,15 @@ import com.ue.uebook.DeatailActivity.Pojo.DetailsResponse;
 import com.ue.uebook.DeatailActivity.Pojo.user_answer;
 import com.ue.uebook.GlideUtils;
 import com.ue.uebook.MySpannable;
+import com.ue.uebook.PaymentPojo.CheckPaymentDone;
+import com.ue.uebook.PaymentPojo.PaymentResponse;
 import com.ue.uebook.R;
 import com.ue.uebook.SessionManager;
 import com.ue.uebook.ShareUtils;
 import com.ue.uebook.WebviewScreen;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -75,7 +80,7 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
     private BookDetails bookDetail;
     private ProgressDialog dialog;
     private ImageView book_coverTv, profile_user;
-    private TextView   priceBook,reviewCountView, bookTitle, bookDesc, bookAuthor, averageRating, topreviewView, book_uploadBy, book_asignment, readFull_Book_btn;
+    private TextView priceBook, reviewCountView, bookTitle, bookDesc, bookAuthor, averageRating, topreviewView, book_uploadBy, book_asignment, readFull_Book_btn;
     private Intent intent;
     private String book_Id, videourl, docurl, audiourl;
     private int position;
@@ -88,18 +93,21 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
     private List<user_answer> user_answers;
     private RatingBar myRatingBar;
     private int textSize;
-    private String bookname="";
-    private String bookcover="";
-    private String username="";
-    private String userimage="";
+    private String bookname = "";
+    private String bookcover = "";
+    private String username = "";
+    private String userimage = "";
     private Handler handler;
-    private  String price ,ispaid;
-    public static  final  int Payrequescode=111;
+    private String price, ispaid;
+    public static final int Payrequescode = 111;
     private static PayPalConfiguration configuration = new PayPalConfiguration()
             .environment(PayPalConfiguration.ENVIRONMENT_SANDBOX)
             .clientId(Config.clientID);
     String euro = "\u20ac";
+    private String transaction_id;
+    private String intents,state;
     String docbaseUrl = "http://docs.google.com/gview?embedded=true&url=";
+
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,7 +115,7 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
         setContentView(R.layout.activity_book__detail__screen);
         swipeRefreshLayout = findViewById(R.id.swipe_refresh_layout);
         Intent intent = new Intent(this, PayPalService.class);
-        intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION,configuration);
+        intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, configuration);
         startService(intent);
         myRatingBar = findViewById(R.id.myRatingBar);
         reviewCountView = findViewById(R.id.reviewCountView);
@@ -119,7 +127,7 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
         commnetRating = findViewById(R.id.myRatingBar_detail);
         user_comment = findViewById(R.id.comment_edit_text);
         book_asignment = findViewById(R.id.book_asignment);
-        priceBook=findViewById(R.id.priceBook);
+        priceBook = findViewById(R.id.priceBook);
         book_asignment.setOnClickListener(this);
         assignmentList = new ArrayList<>();
         user_answers = new ArrayList<>();
@@ -161,6 +169,7 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
         pullTorefreshswipe();
         fontsize();
     }
+
     private void fontsize() {
         switch (new SessionManager(getApplicationContext()).getfontSize()) {
             case "smallest":
@@ -208,14 +217,11 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
             finish();
         } else if (view == bookmark_btn) {
 
-            if (!isBookmark_book)
-            {
+            if (!isBookmark_book) {
                 bookmark_btn.setBackgroundResource(R.drawable.bookmark_active);
                 isBookmark_book = true;
                 addBookToBookmark(book_Id, "1");
-            }
-
-            else {
+            } else {
                 bookmark_btn.setBackgroundResource(R.drawable.bookmarkwhite);
                 isBookmark_book = false;
                 addBookToBookmark(book_Id, "0");
@@ -224,7 +230,7 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
 
             ShareUtils.shareFacebook(this, bookdesc, "");
 
-        //    shareFacebook(bookdesc);
+            //    shareFacebook(bookdesc);
 
         } else if (view == google_btn) {
 
@@ -237,28 +243,20 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
             ShareUtils.shareWhatsapp(this, bookdesc, "");
         } else if (view == readFull_Book_btn) {
 
-            if (ispaid.equalsIgnoreCase("Yes")){
-
-                new AlertDialog.Builder(this)
-                        .setMessage("Do you want to purchase this Book")
-                        .setCancelable(false)
-                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                procssPayment();
-                                 dialog.dismiss();
-                            }
-                        })
-                        .setNegativeButton("No", null)
-                        .show();
-
-
-            }
-            else {
+            if (new SessionManager(getApplicationContext()).getUserID().equalsIgnoreCase(ulpoadByUserId)) {
                 showFilterPopup(view);
+            } else {
+                if (ispaid.equalsIgnoreCase("Yes")) {
+
+
+                    checkPaymentDone(new SessionManager(getApplicationContext()).getUserID(), book_Id, view);
+
+
+                } else {
+                    showFilterPopup(view);
+                }
+
             }
-
-
-
 
 
         } else if (view == comment_Submit) {
@@ -277,27 +275,23 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
                 intent.putExtra("userID", ulpoadByUserId);
                 startActivity(intent);
             }
-        }
-
-        else if (view == book_asignment) {
+        } else if (view == book_asignment) {
             Intent intent = new Intent(this, Book_Assignment.class);
             intent.putExtra("QuestionListExtra", (Serializable) assignmentList);
             intent.putExtra("answer", (Serializable) user_answers);
             intent.putExtra("book_id", book_Id);
             startActivity(intent);
-        }
-        else if (view==book_coverTv){
-            Intent intent = new Intent (Book_Detail_Screen.this, OponentUserDetailsScren.class);
-            intent.putExtra("name",bookname);
-            intent.putExtra("image",bookcover);
-            intent.putExtra("id",1);
+        } else if (view == book_coverTv) {
+            Intent intent = new Intent(Book_Detail_Screen.this, OponentUserDetailsScren.class);
+            intent.putExtra("name", bookname);
+            intent.putExtra("image", bookcover);
+            intent.putExtra("id", 1);
             startActivity(intent);
-        }
-        else if (view==profile_user){
-            Intent intent = new Intent (Book_Detail_Screen.this, OponentUserDetailsScren.class);
-            intent.putExtra("name",username);
-            intent.putExtra("image",userimage);
-            intent.putExtra("id",1);
+        } else if (view == profile_user) {
+            Intent intent = new Intent(Book_Detail_Screen.this, OponentUserDetailsScren.class);
+            intent.putExtra("name", username);
+            intent.putExtra("image", userimage);
+            intent.putExtra("id", 1);
             startActivity(intent);
         }
     }
@@ -355,14 +349,14 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
                         if (form.getData().getUser_name() != null) {
 //                       SpannableString content = new SpannableString(form.getData().getUser_name());
 //                       content.setSpan(new UnderlineSpan(), 0, content.length(), 0)
-                       book_uploadBy.setText((form.getData().getUser_name()));
+                            book_uploadBy.setText((form.getData().getUser_name()));
                             username = form.getData().getUser_name();
-                             ispaid =form.getData().getIs_paid();
-                             price =form.getData().getPrice();
-                            userimage= "http://"+ form.getData().getProfile_pic();
-                             Log.e("imsge",userimage);
-                            priceBook.setText(euro+price);
-            //          GlideUtils.loadImage(Book_Detail_Screen.this,"http://"+form.getData().getProfile_pic(),book_coverTv,R.drawable.user_default,R.drawable.user_default);
+                            ispaid = form.getData().getIs_paid();
+                            price = form.getData().getPrice();
+                            userimage = "http://" + form.getData().getProfile_pic();
+                            Log.e("imsge", userimage);
+                            priceBook.setText(euro + price);
+                            //          GlideUtils.loadImage(Book_Detail_Screen.this,"http://"+form.getData().getProfile_pic(),book_coverTv,R.drawable.user_default,R.drawable.user_default);
                         } else {
                             profile_user.setVisibility(View.GONE);
                         }
@@ -373,7 +367,7 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
                         bookdesc = form.getData().getBook_description();
                         averageRating.setText(form.getAveraVal());
                         myRatingBar.setRating(Float.parseFloat(form.getAveraVal()));
-                        reviewCountView.setText("( "+form.getData().getMostView()+" )"+" Reviews");
+                        reviewCountView.setText("( " + form.getData().getMostView() + " )" + " Reviews");
                         if (form.getBookMark() != null) {
                             if (form.getBookMark().getBookmarkStatus().equals("1")) {
                                 bookmark_btn.setBackgroundResource(R.drawable.bookmark_active);
@@ -382,19 +376,18 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
                                 bookmark_btn.setBackgroundResource(R.drawable.bookmarkwhite);
                                 isBookmark_book = false;
                             }
-                        }
-                        else {
+                        } else {
                             bookmark_btn.setBackgroundResource(R.drawable.bookmarkwhite);
                             isBookmark_book = false;
                         }
                         if (form.getData().getBook_description().length() >= 50) {
                             makeTextViewResizable(bookDesc, 5, "See More", true);
                         }
-                        bookcover="http://" + form.getData().getThubm_image();
-                        bookname=form.getData().getBook_title();
+                        bookcover = "http://" + form.getData().getThubm_image();
+                        bookname = form.getData().getBook_title();
 
                         GlideUtils.loadImage(Book_Detail_Screen.this, "http://" + form.getData().getThubm_image(), book_coverTv, R.drawable.noimage, R.drawable.noimage);
-                        GlideUtils.loadImage(Book_Detail_Screen.this,  "http://"+form.getData().getProfile_pic(), profile_user, R.drawable.user_default, R.drawable.user_default);
+                        GlideUtils.loadImage(Book_Detail_Screen.this, "http://" + form.getData().getProfile_pic(), profile_user, R.drawable.user_default, R.drawable.user_default);
                         if (form.getReview() != null) {
                             review_list_adapter = new Review_List_Adapter(Book_Detail_Screen.this, form.getReview());
                             review_List.setAdapter(review_list_adapter);
@@ -419,6 +412,7 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
             public void onFailure(okhttp3.Call call, IOException e) {
                 hideLoadingIndicator();
             }
+
             @Override
             public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
                 hideLoadingIndicator();
@@ -434,6 +428,7 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
             }
         });
     }
+
     private void showFilterPopup(View v) {
         PopupMenu popup = new PopupMenu(this, v);
         popup.inflate(R.menu.popup_filter);
@@ -442,22 +437,22 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
                 switch (item.getItemId()) {
                     case R.id.videotv:
 
-                        if (videourl != null) {
+                        if (!videourl.isEmpty()) {
                             gotoWebview("http://" + videourl);
                         } else {
-                          //  Toast.makeText(Book_Detail_Screen.this, "No Video for this Book", Toast.LENGTH_SHORT).show();
+                            //  Toast.makeText(Book_Detail_Screen.this, "No Video for this Book", Toast.LENGTH_SHORT).show();
 
-                            dialog("ok","No Video for this Book");
+                            dialog("ok", "No Video for this Book");
 
                         }
                         return true;
                     case R.id.audiotv:
-                        if (audiourl != null) {
+                        if (!audiourl.isEmpty()) {
                             gotoWebview("http://" + audiourl);
                         } else {
 
-                           // Toast.makeText(Book_Detail_Screen.this, "No Audio for this Book", Toast.LENGTH_SHORT).show();
-                            dialog("ok","No Audio for this Book");
+                            // Toast.makeText(Book_Detail_Screen.this, "No Audio for this Book", Toast.LENGTH_SHORT).show();
+                            dialog("ok", "No Audio for this Book");
 
 
                         }
@@ -465,12 +460,12 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
                     case R.id.doctv:
 
 
-                        if (docurl != null) {
+                        if (!docurl.isEmpty()) {
                             gotoWebview(docbaseUrl + docurl);
                         } else {
 
-                          //  Toast.makeText(Book_Detail_Screen.this, "No Document File", Toast.LENGTH_SHORT).show();
-                            dialog("ok","No Document File for this Book");
+                            //  Toast.makeText(Book_Detail_Screen.this, "No Document File", Toast.LENGTH_SHORT).show();
+                            dialog("ok", "No Document File for this Book");
                         }
 
                         return true;
@@ -566,8 +561,7 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
                 hideLoadingIndicator();
                 runOnUiThread(new Runnable() {
                     @Override
-                    public void run()
-                    {
+                    public void run() {
                         user_comment.setText("");
                         commnetRating.setRating(0);
                         getBookDetail(book_Id);
@@ -576,6 +570,7 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
             }
         });
     }
+
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void onRestart() {
         super.onRestart();
@@ -596,7 +591,8 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
             startActivity(i);
         }
     }
-    public void dialog(final String value1,final String mesg ) {
+
+    public void dialog(final String value1, final String mesg) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(mesg)
                 .setCancelable(false)
@@ -608,36 +604,54 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
         AlertDialog alert = builder.create();
         alert.show();
     }
+
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    private void paypal( String user_id , String amount ,String currency ,String trans_id ,String email ,String bookid) {
+    private void paypal(String user_id, String amount, String currency, String trans_id, String email, String bookid, String intent, String state) {
         ApiRequest request = new ApiRequest();
-        request.requestforPaymentPaypal( amount,currency,trans_id,user_id, email,bookid ,new okhttp3.Callback() {
+        request.requestforPaymentPaypal(amount, currency, trans_id, user_id, email, bookid, intent, state, new okhttp3.Callback() {
             @Override
             public void onFailure(okhttp3.Call call, IOException e) {
                 Log.d("error", "error");
                 hideLoadingIndicator();
             }
+
             @Override
             public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
                 hideLoadingIndicator();
                 final String myResponse = response.body().string();
-                Log.e("response",myResponse);
+                Log.e("response", myResponse);
                 Gson gson = new GsonBuilder().create();
+                final PaymentResponse form = gson.fromJson(myResponse, PaymentResponse.class);
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+//                         if (form.getStatus().equalsIgnoreCase("success"))
+//                         {
+//                             Toast .makeText(Book_Detail_Screen.this,"Transaction Successfull",Toast.LENGTH_SHORT).show();
+//                         }
+//                         else {
+//                             Toast .makeText(Book_Detail_Screen.this,"Transaction Failed",Toast.LENGTH_SHORT).show();
+//                         }
+                    }
+                });
+
 
             }
         });
     }
-    private void procssPayment(){
+
+    private void procssPayment() {
         // totalamount=amount.getText().toString();
-        PayPalPayment payPalPayment = new PayPalPayment(new BigDecimal(1),"EUR","Donate for Demo",PayPalPayment.PAYMENT_INTENT_SALE);
+        PayPalPayment payPalPayment = new PayPalPayment(new BigDecimal(price), "EUR", "Donate for Demo", PayPalPayment.PAYMENT_INTENT_SALE);
         Intent intent = new Intent(this, PaymentActivity.class);
-        intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION,configuration);
-        intent.putExtra(PaymentActivity.EXTRA_PAYMENT,payPalPayment);
-        startActivityForResult(intent,Payrequescode);
+        intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, configuration);
+        intent.putExtra(PaymentActivity.EXTRA_PAYMENT, payPalPayment);
+        startActivityForResult(intent, Payrequescode);
 
     }
 
-    protected  void onActivityResult(int requestcode ,int resultcode ,Intent data) {
+    protected void onActivityResult(int requestcode, int resultcode, Intent data) {
         super.onActivityResult(requestcode, resultcode, data);
         if (requestcode == Payrequescode) {
             if (resultcode == RESULT_OK) {
@@ -646,6 +660,23 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
                     try {
                         String paymentDetails = confirm.toJSONObject().toString(4);
                         Log.d("payment6", paymentDetails);
+                        try {
+                            JSONObject jsonObject = new JSONObject(paymentDetails);
+                            JSONObject object = jsonObject.getJSONObject("response");
+                            transaction_id = (object.getString("id"));
+                             intents = object.getString("intent");
+                             state = object.getString("state");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        paypal(new SessionManager(getApplicationContext()).getUserID(), price, "EUR", transaction_id, new SessionManager(getApplicationContext()).getUserEmail(), book_Id, intents, state);
+
+//                        startActivity(new Intent(this, PaymentSuccess.class)
+//                                .putExtra("transaction_id", transaction_id)
+//                                .putExtra("PaymentAmount", price)
+//                                .putExtra("tr_type", "PayPal")
+//                                .putExtra("bookId", book_Id)
+//                                .putExtra("currency", "EUR"));
 
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -657,8 +688,6 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
         } else if (resultcode == PaymentActivity.RESULT_EXTRAS_INVALID) {
             Toast.makeText(this, "Invalid", Toast.LENGTH_SHORT).show();
         }
-
-
     }
 
     @Override
@@ -666,5 +695,54 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
         stopService(new Intent(this, PayPalService.class));
         super.onDestroy();
     }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private void checkPaymentDone(String user_id, String bookId, View view) {
+        ApiRequest request = new ApiRequest();
+        request.requestforcheckPaymentDone(user_id, bookId, new okhttp3.Callback() {
+            @Override
+            public void onFailure(okhttp3.Call call, IOException e) {
+                Log.d("error", "error");
+                hideLoadingIndicator();
+            }
+
+            @Override
+            public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
+                hideLoadingIndicator();
+                final String myResponse = response.body().string();
+                Log.e("response", myResponse);
+                Gson gson = new GsonBuilder().create();
+                final CheckPaymentDone form = gson.fromJson(myResponse, CheckPaymentDone.class);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (form.getError().equals(false)) {
+                            if (form.getUser_data().getIs_payment_done().equalsIgnoreCase("Yes") && form.getUser_data().getPayment_status().equalsIgnoreCase("success")) {
+                                showFilterPopup(view);
+                            } else {
+                                new AlertDialog.Builder(Book_Detail_Screen.this)
+                                        .setMessage("Do you want to purchase this Book")
+                                        .setCancelable(false)
+                                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int id) {
+                                                procssPayment();
+                                                dialog.dismiss();
+                                            }
+                                        })
+                                        .setNegativeButton("No", null)
+                                        .show();
+
+
+                            }
+                        }
+
+                    }
+                });
+
+
+            }
+        });
+    }
+
 
 }

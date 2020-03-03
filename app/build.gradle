@@ -57,7 +57,7 @@ buildscript {
     }
 }
 repositories {
-    maven { url "https://dl.bintray.com/hani-momanii/maven"}
+    maven { url "https://dl.bintray.com/hani-momanii/maven" }
 }
 apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'

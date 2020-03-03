@@ -820,7 +820,7 @@ public class ApiRequest {
     }
 
 
-    public void requestforPaymentPaypal(String amount , String currency ,String transaction_id , String user_id ,String email,String book_id,Callback callback) {
+    public void requestforPaymentPaypal(String amount , String currency ,String transaction_id , String user_id ,String email,String book_id,String intent,String state,Callback callback) {
         String url = null;
         url = BaseUrl + "payment_by_paypal";
         OkHttpClient client = new OkHttpClient();
@@ -831,6 +831,8 @@ public class ApiRequest {
                 .addFormDataPart("user_id", user_id)
                 .addFormDataPart("email", email)
                 .addFormDataPart("book_id", book_id)
+                .addFormDataPart("intent", intent)
+                .addFormDataPart("state", state)
                 .build();
         Request request = new Request.Builder()
                 .url(url)
@@ -838,7 +840,20 @@ public class ApiRequest {
                 .build();
         client.newCall(request).enqueue(callback);
     }
-
+    public void requestforcheckPaymentDone( String user_id ,String book_id,Callback callback) {
+        String url = null;
+        url = BaseUrl + "checkPaymentDone";
+        OkHttpClient client = new OkHttpClient();
+        RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
+                .addFormDataPart("user_id", user_id)
+                .addFormDataPart("book_id", book_id)
+                .build();
+        Request request = new Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .build();
+        client.newCall(request).enqueue(callback);
+    }
 }
 
 

@@ -9,6 +9,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -238,6 +239,7 @@ public class AuthorEditProfile extends BaseActivity implements View.OnClickListe
             public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
                 hideLoadingIndicator();
                 String myResponse = response.body().string();
+                Log.e("resp",myResponse);
                 Gson gson = new GsonBuilder().create();
                 RegistrationResponse form = gson.fromJson(myResponse, RegistrationResponse.class);
                 if (form.getError().equals("false") && form.getUser_data() != null) {

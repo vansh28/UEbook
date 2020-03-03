@@ -44,7 +44,7 @@
             android:layout_height="wrap_content"
             android:textSize="18sp"
             android:layout_marginLeft="6dp"
-            android:maxLines="1"
+            android:maxLines="2"
             android:layout_marginTop="@dimen/size_5"
             android:textColor="@color/black"/>
         <com.ue.uebook.Customview.CustomTextViewNormal
