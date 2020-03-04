@@ -148,7 +148,7 @@ public class GroupChatFrag extends Fragment implements GroupListAdapter.ItemClic
         void onFragmentInteraction(Uri uri);
     }
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    private void getGroupList(String user_id   ) {
+    private void getGroupList(String user_id) {
         ApiRequest request = new ApiRequest();
         request.requestforgetGroupList(user_id ,new okhttp3.Callback() {
             @Override
