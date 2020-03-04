@@ -52,8 +52,10 @@ import com.ue.uebook.DeatailActivity.Pojo.DetailsResponse;
 import com.ue.uebook.DeatailActivity.Pojo.user_answer;
 import com.ue.uebook.GlideUtils;
 import com.ue.uebook.MySpannable;
+import com.ue.uebook.Payment.StripePayment;
 import com.ue.uebook.PaymentPojo.CheckPaymentDone;
 import com.ue.uebook.PaymentPojo.PaymentResponse;
+import com.ue.uebook.PaymentSuccess;
 import com.ue.uebook.R;
 import com.ue.uebook.SessionManager;
 import com.ue.uebook.ShareUtils;
@@ -604,7 +606,6 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
         AlertDialog alert = builder.create();
         alert.show();
     }
-
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void paypal(String user_id, String amount, String currency, String trans_id, String email, String bookid, String intent, String state) {
         ApiRequest request = new ApiRequest();
@@ -671,12 +672,12 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
                         }
                         paypal(new SessionManager(getApplicationContext()).getUserID(), price, "EUR", transaction_id, new SessionManager(getApplicationContext()).getUserEmail(), book_Id, intents, state);
 
-//                        startActivity(new Intent(this, PaymentSuccess.class)
-//                                .putExtra("transaction_id", transaction_id)
-//                                .putExtra("PaymentAmount", price)
-//                                .putExtra("tr_type", "PayPal")
-//                                .putExtra("bookId", book_Id)
-//                                .putExtra("currency", "EUR"));
+                        startActivity(new Intent(this, PaymentSuccess.class)
+                                .putExtra("transaction_id", transaction_id)
+                                .putExtra("PaymentAmount", price)
+                                .putExtra("tr_type", "PayPal")
+                                .putExtra("bookId", book_Id)
+                                .putExtra("currency", "EUR"));
 
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -725,7 +726,7 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
                                         .setCancelable(false)
                                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog, int id) {
-                                                procssPayment();
+                                              PaymentMethod();
                                                 dialog.dismiss();
                                             }
                                         })
@@ -742,6 +743,37 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
 
             }
         });
+    }
+
+
+    private void  PaymentMethod(){
+        final CharSequence[] items = {"PayPal", "Master Card / Credit Card"};
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setTitle("Select Payment Method");
+        builder.setItems(items, new DialogInterface.OnClickListener() {
+
+            public void onClick(DialogInterface dialog, int item) {
+                Toast.makeText(getApplicationContext(), items[item], Toast.LENGTH_SHORT).show();
+                 if (items[item].equals("PayPal"))
+                 {
+                     procssPayment();
+                 }
+                 else {
+                     Intent intent = new Intent(Book_Detail_Screen.this, StripePayment.class);
+                     intent.putExtra("price",price);
+                      intent.putExtra("bookid",book_Id);
+                     startActivity(intent);
+                 }
+
+            }
+
+        });
+
+        AlertDialog alert = builder.create();
+
+        alert.show();
     }
 
 

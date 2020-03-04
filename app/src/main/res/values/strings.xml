@@ -250,5 +250,16 @@
     <string name="pending_book">Pending Book</string>
     <string name="login_successfully">Login Successfully</string>
     <string name="category">Category</string>
+    <string name="Enter_Your_Mail">Enter Your Mail</string>
+    <string name="Enter_Month">Enter Month</string>
+    <string name="Enter_Year">Enter Year</string>
+    <string name="Enter_CVC">Enter CVC</string>
+    <string name="Enter_Card_Number">Enter Card Number</string>
+    <string name="name_validation">Name can not empty</string>
+    <string name="email_validation">Invalid email</string>
+    <string name="phone_validation">Phone must have 10 digits</string>
+    <string name="please_wait">Please wait..</string>
+    <string name="payment_successfully_done">Payment Successfully Done</string>
     <string name="homecontent"> Accomplish your goal : Writing and Publishing your Own book without getting confused</string>
+    <string name="paypal_ssl_inf">Secure payment! \n\n SSL-certificate with 256-bit encryption.</string>
 </resources>

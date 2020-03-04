@@ -21,3 +21,4 @@ public class PaymentResponse {
         this.result = result;
     }
 }
+

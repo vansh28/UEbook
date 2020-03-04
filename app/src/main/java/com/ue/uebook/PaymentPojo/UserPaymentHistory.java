@@ -1,5 +1,4 @@
 package com.ue.uebook.PaymentPojo;
-
 public class UserPaymentHistory {
     private String is_payment_done;
     private String  payment_status;

@@ -6,5 +6,6 @@ public class Config {
 
     public static  final  String clientID="AfE4ngUB-X4y8fkOE2bPiVcNub8J2rRrdrIUCwMUc3B3SaxKP3QeynlY-tA3bXF7VV2hqrtWJgx4X1i-";
 
+    public static final String Publishable_key="pk_test_YI02rzpQTHWOkPT0vo22NDC900JyjFn3wv";
 
 }

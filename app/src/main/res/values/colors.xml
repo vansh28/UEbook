@@ -39,7 +39,7 @@
     <color name="color_blue_qb">#046ad0</color>
     <color name="color_light_blue_qb">#87cefa</color>
     <color name="color_username_rectangle">#99000000</color>
-
+    <color name="tab_disable">#979797</color>
 
     <color name="dark_gray">#6c6c6c</color>
     <color name="grey">#d3d3d3</color>

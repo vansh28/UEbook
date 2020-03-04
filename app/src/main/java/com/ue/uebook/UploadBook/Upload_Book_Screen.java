@@ -51,6 +51,12 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.RequestQueue;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -70,6 +76,9 @@ import com.ue.uebook.UploadBook.Pojo.BookCategoryResponsePojo;
 import com.ue.uebook.UploadBook.Pojo.PendingData;
 import com.ue.uebook.UploadBook.Pojo.VerifyISBNPojo;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -79,7 +88,9 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import io.github.lizhangqu.coreprogress.ProgressHelper;
@@ -170,6 +181,8 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
     private Uri audioUri;
     private String isPaid="No";
     private String coverimaqgeURL=" ";
+    private MaterialDialog progressDialog;
+    String admin_Commision="";
 
     public static final int RequestPermissionCode = 1;
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
@@ -181,6 +194,7 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
         pendigbookIntent= getIntent();
         pendingBookdata= new ArrayList<>();
         random = new Random();
+        checkComission("50");
         payemntInfo=findViewById(R.id.payemntInfo);
         paymemt_text_input = findViewById(R.id.paymemt_text_input);
         pendingbookID = pendigbookIntent.getIntExtra("screenid",0);
@@ -313,6 +327,9 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
 
             }
         });
+
+
+
     }
     private void openFile(int CODE) {
         Intent i = new Intent(Intent.ACTION_GET_CONTENT);
@@ -1403,6 +1420,55 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
             e.printStackTrace();
         }
     }
+
+    public void checkComission(final String amount) {
+        progressDialog = new MaterialDialog.Builder(Upload_Book_Screen.this)
+                .content(getResources().getString(R.string.please_wait))
+                .progress(true, 0)
+                .show();
+
+        StringRequest stringRequest = new StringRequest(com.android.volley.Request.Method.POST,ApiRequest.BaseUrl+"admin_percentage",
+                new com.android.volley.Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        progressDialog.dismiss();
+                        Log.e("response", response);
+                        try {
+                            final JSONObject jsonObject = new JSONObject(response);
+                            if (jsonObject.getString("error").equals("false")) {
+                             Log.e("percentage",jsonObject.getString("percentage"));
+                                admin_Commision=jsonObject.getString("percentage");
+                            }
+                        }
+                        catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                },
+                new com.android.volley.Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        progressDialog.dismiss();
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> arguments = new HashMap<String, String>();
+                arguments.put("amount", amount);
+                return arguments;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                6000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+    }
+
+
 }
 
 
