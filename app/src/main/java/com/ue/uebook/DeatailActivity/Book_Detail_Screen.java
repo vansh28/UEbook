@@ -1,6 +1,7 @@
 package com.ue.uebook.DeatailActivity;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -18,11 +19,14 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -67,6 +71,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -101,7 +106,10 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
     private String userimage = "";
     private Handler handler;
     private String price, ispaid;
+    private String admin_commission="0";
     public static final int Payrequescode = 111;
+    private String paymentMethod="";
+    private String currencyType="";
     private static PayPalConfiguration configuration = new PayPalConfiguration()
             .environment(PayPalConfiguration.ENVIRONMENT_SANDBOX)
             .clientId(Config.clientID);
@@ -109,7 +117,7 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
     private String transaction_id;
     private String intents,state;
     String docbaseUrl = "http://docs.google.com/gview?embedded=true&url=";
-
+    private   RadioGroup radioGroupPaymentMethod,radioGroupCurrency;
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -362,6 +370,7 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
                         } else {
                             profile_user.setVisibility(View.GONE);
                         }
+                        admin_commission = form.getData().getAdmin_commission();
                         bookDesc.setText(form.getData().getBook_description());
                         videourl = form.getData().getVideo_url();
                         docurl = form.getData().getPdf_url();
@@ -607,9 +616,9 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
         alert.show();
     }
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    private void paypal(String user_id, String amount, String currency, String trans_id, String email, String bookid, String intent, String state) {
+    private void paypal(String user_id, String amount, String currency, String trans_id, String email, String bookid, String intent, String state ,String adminCommission ,String book_name) {
         ApiRequest request = new ApiRequest();
-        request.requestforPaymentPaypal(amount, currency, trans_id, user_id, email, bookid, intent, state, new okhttp3.Callback() {
+        request.requestforPaymentPaypal(amount, currency, trans_id, user_id, email, bookid, intent, state, adminCommission,book_name,new okhttp3.Callback() {
             @Override
             public void onFailure(okhttp3.Call call, IOException e) {
                 Log.d("error", "error");
@@ -644,7 +653,7 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
 
     private void procssPayment() {
         // totalamount=amount.getText().toString();
-        PayPalPayment payPalPayment = new PayPalPayment(new BigDecimal(price), "EUR", "Donate for Demo", PayPalPayment.PAYMENT_INTENT_SALE);
+        PayPalPayment payPalPayment = new PayPalPayment(new BigDecimal(price), currencyType, "Book Payment", PayPalPayment.PAYMENT_INTENT_SALE);
         Intent intent = new Intent(this, PaymentActivity.class);
         intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, configuration);
         intent.putExtra(PaymentActivity.EXTRA_PAYMENT, payPalPayment);
@@ -670,14 +679,14 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                        paypal(new SessionManager(getApplicationContext()).getUserID(), price, "EUR", transaction_id, new SessionManager(getApplicationContext()).getUserEmail(), book_Id, intents, state);
+                        paypal(new SessionManager(getApplicationContext()).getUserID(), price, "EUR", transaction_id, new SessionManager(getApplicationContext()).getUserEmail(), book_Id, intents, state , admin_commission ,bookname);
 
                         startActivity(new Intent(this, PaymentSuccess.class)
                                 .putExtra("transaction_id", transaction_id)
                                 .putExtra("PaymentAmount", price)
                                 .putExtra("tr_type", "PayPal")
                                 .putExtra("bookId", book_Id)
-                                .putExtra("currency", "EUR"));
+                                .putExtra("currency", currencyType));
 
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -726,7 +735,8 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
                                         .setCancelable(false)
                                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog, int id) {
-                                              PaymentMethod();
+                                              //PaymentMethod();
+                                                 showDialog(Book_Detail_Screen.this,"");
                                                 dialog.dismiss();
                                             }
                                         })
@@ -761,10 +771,7 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
                      procssPayment();
                  }
                  else {
-                     Intent intent = new Intent(Book_Detail_Screen.this, StripePayment.class);
-                     intent.putExtra("price",price);
-                      intent.putExtra("bookid",book_Id);
-                     startActivity(intent);
+
                  }
 
             }
@@ -776,5 +783,108 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
         alert.show();
     }
 
+    public void showDialog(Activity activity, String msg){
+        final Dialog dialog = new Dialog(activity);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(false);
+        dialog.setContentView(R.layout.paymentmethod);
+         TextView payment  = dialog.findViewById(R.id.payment);
+        radioGroupPaymentMethod = dialog.findViewById(R.id.radioGroupPaymentMethod);
+        radioGroupCurrency =dialog.findViewById(R.id.radioGroupCurrency);
+        Button cancel = dialog.findViewById(R.id.cancel);
+        Button ok = dialog.findViewById(R.id.ok);
+        payment.setText(euro+price);
+        radioGroupPaymentMethod.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch(checkedId){
+                    case R.id.paypalMethod:
+                        paymentMethod="paypal";
+                        break;
+                    case R.id.StripeMethod:
+                        paymentMethod="stripe";
+                        break;
+                }
+            }
+        });
 
+        radioGroupCurrency.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch(checkedId){
+                    case R.id.Euro:
+                        currencyType="EUR";
+                        payment.setText(euro+price);
+                        break;
+                    case R.id.usd:
+                       currencyType="USD";
+                        DecimalFormat precision = new DecimalFormat("0.00");
+                        double p = Double.valueOf(price)*1.12;
+                        payment.setText("$"+precision.format(p));
+                        break;
+                }
+            }
+        });
+
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                     dialog.dismiss();
+                     currencyType="";
+                     paymentMethod="";
+            }
+        });
+        ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                     if (isValidate()){
+                         dialog.dismiss();
+                         if (paymentMethod.equalsIgnoreCase("paypal")){
+                             Log.e("pay",paymentMethod);
+                             Log.e("cur",currencyType);
+                             procssPayment();
+
+                         }
+                         else if (paymentMethod.equalsIgnoreCase("stripe")){
+                             Log.e("pay",paymentMethod);
+                             Log.e("cur",currencyType);
+                             Intent intent = new Intent(Book_Detail_Screen.this, StripePayment.class);
+                             intent.putExtra("price",price);
+                             intent.putExtra("bookid",book_Id);
+                             intent.putExtra("adminCommision",admin_commission);
+                             intent.putExtra("book_name",bookname);
+                             intent.putExtra("currency",currencyType);
+                             startActivity(intent);
+
+                         }
+                     }
+                currencyType="";
+                paymentMethod="";
+            }
+        });
+        dialog.show();
+
+    }
+
+    private Boolean isValidate(){
+         if (paymentMethod.isEmpty()){
+
+             int lastChildPos=radioGroupPaymentMethod.getChildCount()-1;
+             ((RadioButton)radioGroupPaymentMethod.getChildAt(lastChildPos)).setError("Select Method");
+             return false;
+         }
+         else {
+              if (currencyType.isEmpty()){
+                  int lastChildPos=radioGroupCurrency.getChildCount()-1;
+                  ((RadioButton)radioGroupCurrency.getChildAt(lastChildPos)).setError("Select Currency");
+                  return false;
+              }
+              else {
+
+                  return true;
+              }
+         }
+
+
+    }
 }

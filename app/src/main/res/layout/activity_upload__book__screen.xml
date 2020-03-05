@@ -150,6 +150,20 @@
                         android:textColor="@color/black"
                         android:textSize="@dimen/size_16"/>
                 </LinearLayout>
+                <RelativeLayout
+                    android:id="@+id/cover_image_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/size_80"
+                    android:layout_marginTop="@dimen/size_10"
+                    android:paddingRight="@dimen/size_10"
+                    android:visibility="gone">
+                    <ImageView
+                        android:id="@+id/cover_image_preview"
+                        android:layout_width="80dp"
+                        android:layout_height="match_parent"
+                        android:layout_margin="@dimen/size_10"/>
+                </RelativeLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
@@ -166,36 +180,43 @@
                         android:paddingLeft="@dimen/size_5"
                         android:spinnerMode="dropdown"/>
                 </LinearLayout>
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/paymemt_text_input"
-                    style="@style/TextInputLayout"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                     android:layout_marginTop="@dimen/size_10"
-                    android:hint="Euro"
+                    android:orientation="horizontal"
                     android:visibility="gone"
-                    app:errorEnabled="true">
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/payment_edit_text"
-                        android:layout_width="@dimen/size_150"
-                        android:inputType="number"
-                        android:layout_height="wrap_content"
-                        android:maxLines="1" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <RelativeLayout
-                    android:id="@+id/cover_image_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/size_80"
+                    android:id="@+id/paidView"
                     android:layout_marginTop="@dimen/size_10"
-                    android:paddingRight="@dimen/size_10"
-                    android:visibility="gone">
-                    <ImageView
-                        android:id="@+id/cover_image_preview"
-                        android:layout_width="80dp"
-                        android:layout_height="match_parent"
-                        android:layout_margin="@dimen/size_10"/>
-                </RelativeLayout>
+                    android:layout_height="wrap_content">
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/paymemt_text_input"
+                        style="@style/TextInputLayout"
+                        android:layout_width="@dimen/size_150"
+                        android:layout_height="wrap_content"
+                        android:hint="Euro"
+                        android:layout_gravity="center_vertical"
+
+                        app:errorEnabled="true">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/payment_edit_text"
+                            android:layout_width="@dimen/size_150"
+                            android:inputType="number"
+                            android:layout_height="wrap_content"
+                            android:maxLines="1" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                         <Button
+                             android:id="@+id/checkCommisionBtn"
+                             android:layout_width="wrap_content"
+                             android:text="Check Commision"
+                             android:layout_margin="2dp"
+                             android:layout_height="wrap_content"/>
+                </LinearLayout>
+                    <com.ue.uebook.Customview.CustomTextViewMedium
+                        android:layout_width="match_parent"
+                        android:id="@+id/commisionView"
+                        android:layout_marginLeft="@dimen/size_10"
+                        android:textColor="@color/red"
+                        android:textSize="@dimen/size_16"
+                        android:layout_height="wrap_content"/>
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

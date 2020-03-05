@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:padding="@dimen/size_30"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="50dp">
+        <com.ue.uebook.Customview.CustomTextViewMedium
+            android:layout_width="wrap_content"
+            android:text="Payment : "
+            android:textSize="@dimen/size_20"
+            android:textColor="@color/black"
+            android:layout_gravity="center_vertical"
+            android:layout_height="wrap_content"/>
+        <com.ue.uebook.Customview.CustomTextViewBold
+            android:layout_width="wrap_content"
+            android:textSize="@dimen/size_18"
+            android:id="@+id/payment"
+            android:layout_gravity="center_vertical"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+    <com.ue.uebook.Customview.CustomTextViewMedium
+        android:layout_width="wrap_content"
+        android:text="Select Payment Method"
+        android:textColor="@color/black"
+        android:textSize="@dimen/size_15"
+        android:layout_margin="@dimen/size_5"
+        android:layout_height="wrap_content"/>
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imageView"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal"
+        android:id="@+id/radioGroupPaymentMethod"
+        >
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="55dp"
+            android:text=" Paypal"
+            android:id="@+id/paypalMethod"
+            android:checked="false"
+            android:textSize="15dp" />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" Card"
+            android:id="@+id/StripeMethod"
+            android:checked="false"
+            android:textSize="15dp"
+            android:layout_marginLeft="@dimen/size_20"
+            android:layout_weight="0.13" />
+    </RadioGroup>
+    <com.ue.uebook.Customview.CustomTextViewMedium
+        android:layout_width="match_parent"
+        android:gravity=""
+        android:text="Select Currency Type"
+        android:textColor="@color/black"
+        android:textSize="@dimen/size_15"
+        android:layout_margin="@dimen/size_5"
+        android:layout_height="wrap_content"/>
+
+    <RadioGroup
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/imageView"
+            android:orientation="horizontal"
+            android:id="@+id/radioGroupCurrency"
+         >
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="55dp"
+                android:text=" EURO"
+                android:id="@+id/Euro"
+                android:checked="false"
+                android:textSize="15dp" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" USD"
+                android:id="@+id/usd"
+                android:checked="false"
+                android:textSize="15dp"
+                android:layout_marginLeft="@dimen/size_30"
+                />
+        </RadioGroup>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:weightSum="2"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:id="@+id/cancel"
+            android:text="Cancel"
+            android:layout_margin="@dimen/size_5"
+            android:background="@color/colorPrimary"
+            android:textColor="@color/white"
+            android:layout_height="wrap_content"/>
+        <Button
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:id="@+id/ok"
+            android:text="Ok"
+            android:layout_margin="@dimen/size_5"
+            android:background="@color/colorPrimary"
+            android:textColor="@color/white"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+
+</LinearLayout>

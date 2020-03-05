@@ -819,7 +819,7 @@ public class ApiRequest {
     }
 
 
-    public void requestforPaymentPaypal(String amount , String currency ,String transaction_id , String user_id ,String email,String book_id,String intent,String state,Callback callback) {
+    public void requestforPaymentPaypal(String amount , String currency ,String transaction_id , String user_id ,String email,String book_id,String intent,String state,String admin_commission, String book_name,Callback callback) {
         String url = null;
         url = BaseUrl + "payment_by_paypal";
         OkHttpClient client = new OkHttpClient();
@@ -832,6 +832,9 @@ public class ApiRequest {
                 .addFormDataPart("book_id", book_id)
                 .addFormDataPart("intent", intent)
                 .addFormDataPart("state", state)
+                .addFormDataPart("admin_commission", admin_commission)
+                .addFormDataPart("book_name", book_name)
+
                 .build();
         Request request = new Request.Builder()
                 .url(url)

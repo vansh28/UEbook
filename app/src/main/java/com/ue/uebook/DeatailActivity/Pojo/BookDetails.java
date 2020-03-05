@@ -21,6 +21,15 @@ public class BookDetails {
     private String user_name;
     private String is_paid;
     private String price;
+    private  String admin_commission;
+
+    public String getAdmin_commission() {
+        return admin_commission;
+    }
+
+    public void setAdmin_commission(String admin_commission) {
+        this.admin_commission = admin_commission;
+    }
 
     public String getIs_paid() {
         return is_paid;

@@ -51,6 +51,9 @@ public class StripePayment extends AppCompatActivity {
     String mail_id;
     String bookid;
     Intent intent;
+    private String bookName="";
+    private String adminCommision="";
+
 
 
     int pro;
@@ -74,6 +77,13 @@ public class StripePayment extends AppCompatActivity {
         intent = getIntent();
         price = intent.getStringExtra("price");
         bookid = intent.getStringExtra("bookid");
+        bookName = intent.getStringExtra("book_name");
+        adminCommision=intent.getStringExtra("adminCommision");
+        currency=intent.getStringExtra("currency");
+
+        Log.e("pay",price);
+        Log.e("cur",currency);
+
         ((EditText) findViewById(R.id.Mail)).setText(new SessionManager(getApplicationContext()).getUserEmail());
         stripe = new Stripe(this, Config.Publishable_key);
         amount = Float.parseFloat(price);
@@ -124,8 +134,8 @@ public class StripePayment extends AppCompatActivity {
     private void cardDitail(String cardnumber, Integer integer, Integer valueOf, String toString) {
 
         card = new Card(cardnumber, integer, valueOf, toString);
-        currency = "EUR";
-        card.setCurrency("EUR");
+
+        card.setCurrency(currency);
         //card.setName("yugal");
         //card.setAddressZip("1000");
         /*
@@ -175,7 +185,7 @@ public class StripePayment extends AppCompatActivity {
         @Override
         protected String doInBackground(String... params) {
 
-            return postData(token, currency, amount, mail_id, bookid);
+            return postData(token, currency, amount, mail_id, bookid ,bookName,adminCommision);
         }
 
         @Override
@@ -202,7 +212,7 @@ public class StripePayment extends AppCompatActivity {
         }
     }
 
-    public String postData(String token, String currency, float amount, String mail_id, String book_id) {
+    public String postData(String token, String currency, float amount, String mail_id, String book_id ,String  book_name ,String admin_commission) {
         // Create a new HttpClient and Post Header
         try {
             StringBuilder sb = new StringBuilder();
@@ -214,6 +224,10 @@ public class StripePayment extends AppCompatActivity {
             conn.setDoInput(true);
             conn.setDoOutput(true);
 
+
+
+
+
             List<NameValuePair> params = new ArrayList<NameValuePair>();
             params.add(new NameValuePair("user_id", new SessionManager(getApplication()).getUserID()));
             params.add(new NameValuePair("email", mail_id));
@@ -221,6 +235,8 @@ public class StripePayment extends AppCompatActivity {
             params.add(new NameValuePair("amount", String.valueOf(amount)));
             params.add(new NameValuePair("stripeToken", token));
             params.add(new NameValuePair("book_id", book_id));
+            params.add(new NameValuePair("book_name", book_name));
+            params.add(new NameValuePair("admin_commission", admin_commission));
             Log.e("Param:", "  " + params);
             OutputStream os = null;
             os = conn.getOutputStream();
