@@ -65,6 +65,7 @@ import com.ue.uebook.SessionManager;
 import com.ue.uebook.ShareUtils;
 import com.ue.uebook.WebviewScreen;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -75,6 +76,11 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import static android.text.Html.fromHtml;
 
 public class Book_Detail_Screen extends BaseActivity implements View.OnClickListener {
@@ -87,7 +93,7 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
     private BookDetails bookDetail;
     private ProgressDialog dialog;
     private ImageView book_coverTv, profile_user;
-    private TextView priceBook, reviewCountView, bookTitle, bookDesc, bookAuthor, averageRating, topreviewView, book_uploadBy, book_asignment, readFull_Book_btn;
+    private TextView  payment, priceBook, reviewCountView, bookTitle, bookDesc, bookAuthor, averageRating, topreviewView, book_uploadBy, book_asignment, readFull_Book_btn;
     private Intent intent;
     private String book_Id, videourl, docurl, audiourl;
     private int position;
@@ -113,11 +119,12 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
     private static PayPalConfiguration configuration = new PayPalConfiguration()
             .environment(PayPalConfiguration.ENVIRONMENT_SANDBOX)
             .clientId(Config.clientID);
-    String euro = "\u20ac";
+    private String euro = "\u20ac";
     private String transaction_id;
     private String intents,state;
     String docbaseUrl = "http://docs.google.com/gview?embedded=true&url=";
     private   RadioGroup radioGroupPaymentMethod,radioGroupCurrency;
+    private String convertPrice="0";
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -653,7 +660,7 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
 
     private void procssPayment() {
         // totalamount=amount.getText().toString();
-        PayPalPayment payPalPayment = new PayPalPayment(new BigDecimal(price), currencyType, "Book Payment", PayPalPayment.PAYMENT_INTENT_SALE);
+        PayPalPayment payPalPayment = new PayPalPayment(new BigDecimal(convertPrice), currencyType, "Book Payment", PayPalPayment.PAYMENT_INTENT_SALE);
         Intent intent = new Intent(this, PaymentActivity.class);
         intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, configuration);
         intent.putExtra(PaymentActivity.EXTRA_PAYMENT, payPalPayment);
@@ -679,11 +686,11 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                        paypal(new SessionManager(getApplicationContext()).getUserID(), price, "EUR", transaction_id, new SessionManager(getApplicationContext()).getUserEmail(), book_Id, intents, state , admin_commission ,bookname);
+                        paypal(new SessionManager(getApplicationContext()).getUserID(), convertPrice, currencyType, transaction_id, new SessionManager(getApplicationContext()).getUserEmail(), book_Id, intents, state , admin_commission ,bookname);
 
                         startActivity(new Intent(this, PaymentSuccess.class)
                                 .putExtra("transaction_id", transaction_id)
-                                .putExtra("PaymentAmount", price)
+                                .putExtra("PaymentAmount", convertPrice)
                                 .putExtra("tr_type", "PayPal")
                                 .putExtra("bookId", book_Id)
                                 .putExtra("currency", currencyType));
@@ -788,7 +795,7 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(false);
         dialog.setContentView(R.layout.paymentmethod);
-         TextView payment  = dialog.findViewById(R.id.payment);
+          payment  = dialog.findViewById(R.id.payment);
         radioGroupPaymentMethod = dialog.findViewById(R.id.radioGroupPaymentMethod);
         radioGroupCurrency =dialog.findViewById(R.id.radioGroupCurrency);
         Button cancel = dialog.findViewById(R.id.cancel);
@@ -812,13 +819,16 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
                 switch(checkedId){
                     case R.id.Euro:
                         currencyType="EUR";
+                        convertPrice=price;
                         payment.setText(euro+price);
                         break;
                     case R.id.usd:
                        currencyType="USD";
                         DecimalFormat precision = new DecimalFormat("0.00");
-                        double p = Double.valueOf(price)*1.12;
-                        payment.setText("$"+precision.format(p));
+                       // double p = Double.valueOf(price)*1.12;
+                      //  convertPrice = precision.format(p);
+                        convertCurrency(price,"euro","usd");
+
                         break;
                 }
             }
@@ -849,7 +859,7 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
                              Log.e("pay",paymentMethod);
                              Log.e("cur",currencyType);
                              Intent intent = new Intent(Book_Detail_Screen.this, StripePayment.class);
-                             intent.putExtra("price",price);
+                             intent.putExtra("price",convertPrice);
                              intent.putExtra("bookid",book_Id);
                              intent.putExtra("adminCommision",admin_commission);
                              intent.putExtra("book_name",bookname);
@@ -887,4 +897,97 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
 
 
     }
+
+    public void convertCurrency(final String toCurr, final double euroVlaue) throws IOException {
+
+        String url = "https://api.exchangeratesapi.io/latest";
+
+        OkHttpClient client = new OkHttpClient();
+
+        Request request = new Request.Builder()
+                .url(url)
+                .header("Content-Type", "application/json")
+                .build();
+
+
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                final String mMessage = response.body().string();
+              runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        //Toast.makeText(MainActivity.this, mMessage, Toast.LENGTH_SHORT).show();
+                        try {
+                            JSONObject obj = new JSONObject(mMessage);
+                            JSONObject  b = obj.getJSONObject("rates");
+
+                            String val = b.getString(toCurr);
+
+                            double output = euroVlaue*Double.valueOf(val);
+
+
+//                            convertPrice = String.valueOf(output);
+//                            Log.e("USD",String.valueOf(output));
+//                            payment.setText("$"+String.valueOf(output));
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+
+            }
+        });
+    }
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private void convertCurrency(String amount, String convertFrom, String convertTO) {
+        ApiRequest request = new ApiRequest();
+        showLoadingIndicator();
+        request.requestforConvertCurrency(amount, convertFrom, convertTO, new okhttp3.Callback() {
+            @Override
+            public void onFailure(okhttp3.Call call, IOException e) {
+                Log.d("error", "error");
+                hideLoadingIndicator();
+            }
+
+            @Override
+            public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
+                hideLoadingIndicator();
+                final String myResponse = response.body().string();
+                Log.e("response", myResponse);
+                Gson gson = new GsonBuilder().create();
+               // final CheckPaymentDone form = gson.fromJson(myResponse, CheckPaymentDone.class);
+              runOnUiThread(new Runnable() {
+                  @Override
+                  public void run() {
+                      try {
+                          JSONObject obj = new JSONObject(myResponse);
+                          JSONObject  b = obj.getJSONObject("data");
+
+                          String val = b.getString("converted_amount");
+
+                          convertPrice = val;
+                          Log.e("USD",val);
+                          payment.setText("$"+val);
+
+                      } catch (JSONException e) {
+                          e.printStackTrace();
+                      }
+                  }
+              });
+
+
+            }
+        });
+    }
+
+
+
 }

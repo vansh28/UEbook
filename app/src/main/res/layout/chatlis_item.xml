@@ -25,7 +25,7 @@
             android:layout_marginLeft="@dimen/size_30"
             android:visibility="gone"
             android:layout_marginTop="@dimen/size_30"
-            android:src="@drawable/ic_error"/>
+            android:src="@drawable/com_facebook_button_like_icon_selected"/>
 
         <ImageView
             android:id="@+id/activeUnactiveTv"

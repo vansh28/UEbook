@@ -856,6 +856,21 @@ public class ApiRequest {
                 .build();
         client.newCall(request).enqueue(callback);
     }
+    public void requestforConvertCurrency( String amount ,String currenyfrom, String convertTo,Callback callback) {
+        String url = null;
+        url = BaseUrl + "currency_converter";
+        OkHttpClient client = new OkHttpClient();
+        RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
+                .addFormDataPart("amount",amount)
+                .addFormDataPart("from",currenyfrom)
+                .addFormDataPart("to",convertTo)
+                .build();
+        Request request = new Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .build();
+        client.newCall(request).enqueue(callback);
+    }
 }
 
 

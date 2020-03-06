@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -53,9 +54,7 @@ public class StripePayment extends AppCompatActivity {
     Intent intent;
     private String bookName="";
     private String adminCommision="";
-
-
-
+    private TextView total_payment;
     int pro;
     private MaterialDialog progressDialog;
     private static final String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
@@ -80,10 +79,14 @@ public class StripePayment extends AppCompatActivity {
         bookName = intent.getStringExtra("book_name");
         adminCommision=intent.getStringExtra("adminCommision");
         currency=intent.getStringExtra("currency");
+        total_payment = findViewById(R.id.total_payment);
 
-        Log.e("pay",price);
-        Log.e("cur",currency);
-
+        if (currency.equalsIgnoreCase("USD")){
+            total_payment.setText("$"+price);
+        }
+        else {
+            total_payment.setText("€"+price);
+        }
         ((EditText) findViewById(R.id.Mail)).setText(new SessionManager(getApplicationContext()).getUserEmail());
         stripe = new Stripe(this, Config.Publishable_key);
         amount = Float.parseFloat(price);

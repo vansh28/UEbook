@@ -32,6 +32,14 @@
         android:orientation="vertical"
         android:layout_margin="@dimen/size_10"
         android:layout_height="match_parent">
+        <com.ue.uebook.Customview.CustomTextViewBold
+            android:layout_width="match_parent"
+            android:layout_margin="@dimen/size_10"
+            android:gravity="end"
+            android:textSize="@dimen/size_20"
+            android:textColor="@color/black"
+            android:id="@+id/total_payment"
+            android:layout_height="wrap_content"/>
         <com.ue.uebook.Customview.CustomTextViewMedium
             android:layout_width="match_parent"
             android:text="Enter mail"

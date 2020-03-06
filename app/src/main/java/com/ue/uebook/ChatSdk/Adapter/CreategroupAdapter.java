@@ -48,7 +48,7 @@ public class   CreategroupAdapter   extends BaseSelectableListAdapter<OponentDat
             GlideUtils.loadImage(context, ApiRequest.BaseUrl+"upload/"+user.getUrl(), holder.selectimage, R.drawable.user_default,  R.drawable.user_default);
             holder.timeTv.setVisibility(View.GONE);
             if (selectedItems.contains(user)) {
-//                convertView.setBackgroundColor(Color.parseColor("#98A0EE"));
+                // convertView.setBackgroundColor(Color.parseColor("#98A0EE"));
                 // holder.opponentIcon.setImageResource(R.drawable.ic_checkmark);
                 holder.opponentIcon.setVisibility(View.VISIBLE);
                 convertView.setBackgroundColor(Color.parseColor("#d3d3d3"));
