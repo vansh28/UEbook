@@ -53,7 +53,9 @@ public class AssignmentAdapter   extends RecyclerView.Adapter<AssignmentAdapter.
                 holder.answer_view.setVisibility(View.VISIBLE);
             }
         });
+
         holder.question.setText(questionList.get(position).getQuestion());
+
         holder.editanswer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

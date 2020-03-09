@@ -363,13 +363,14 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
                         bookTitle.setText(form.getData().getBook_title());
                         bookAuthor.setText(form.getData().getAuthor_name());
                         ulpoadByUserId = form.getData().getUser_id();
+                        ispaid = form.getData().getIs_paid();
+                        price = form.getData().getPrice();
                         if (form.getData().getUser_name() != null) {
 //                       SpannableString content = new SpannableString(form.getData().getUser_name());
 //                       content.setSpan(new UnderlineSpan(), 0, content.length(), 0)
                             book_uploadBy.setText((form.getData().getUser_name()));
                             username = form.getData().getUser_name();
-                            ispaid = form.getData().getIs_paid();
-                            price = form.getData().getPrice();
+
                             userimage = "http://" + form.getData().getProfile_pic();
                             Log.e("imsge", userimage);
                             priceBook.setText(euro + price);

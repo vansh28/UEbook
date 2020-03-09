@@ -22,8 +22,8 @@ import com.ue.uebook.ChatSdk.GroupMessageScreen;
 import com.ue.uebook.ChatSdk.Pojo.GroupMessageLIst;
 import com.ue.uebook.Data.ApiRequest;
 import com.ue.uebook.GlideUtils;
+import com.ue.uebook.MkPlayer.VideoPlayer;
 import com.ue.uebook.R;
-import com.ue.uebook.VideoViewScreen;
 
 import java.util.HashMap;
 import java.util.List;
@@ -185,7 +185,7 @@ public class GroupChatAdapter extends RecyclerView.Adapter<GroupChatAdapter.Myvi
         holder.video_start_oponent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(mtx, VideoViewScreen.class);
+                Intent intent = new Intent(mtx, VideoPlayer.class);
                 Log.e("url","http://dnddemo.com/ebooks/api/v1/" + groupMessageLIsts.get(position).getMessage());
                 intent.putExtra("url","http://dnddemo.com/ebooks/api/v1/" + groupMessageLIsts.get(position).getMessage());
                 mtx.startActivity(intent);
@@ -194,7 +194,7 @@ public class GroupChatAdapter extends RecyclerView.Adapter<GroupChatAdapter.Myvi
         holder.video_start_sender.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(mtx, VideoViewScreen.class);
+                Intent intent = new Intent(mtx, VideoPlayer.class);
                 intent.putExtra("url","http://dnddemo.com/ebooks/api/v1/" + groupMessageLIsts.get(position).getMessage());
                 mtx.startActivity(intent);
             }

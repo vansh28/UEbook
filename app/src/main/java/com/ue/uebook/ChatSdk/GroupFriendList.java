@@ -50,7 +50,7 @@ public class GroupFriendList extends BaseActivity implements View.OnClickListene
     private ListView userlist;
     private CreategroupAdapter contactList;
     private EditText groupname;
-    private  TextWatcher mTextEditorWatcher;
+    private TextWatcher mTextEditorWatcher;
     private List<String>userIDForChat;
     private String groupID="";
     @Override

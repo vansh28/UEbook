@@ -57,6 +57,7 @@ import com.ue.uebook.FilePath;
 import com.ue.uebook.FileUtil;
 import com.ue.uebook.GlideUtils;
 import com.ue.uebook.ImageUtils;
+import com.ue.uebook.MkPlayer.VideoPlayer;
 import com.ue.uebook.R;
 import com.ue.uebook.SessionManager;
 import com.ue.uebook.VideoSdk.VideoCall;
@@ -66,7 +67,6 @@ import com.ue.uebook.WebviewScreen;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -128,6 +128,8 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
     private String oponentImage="";
     EmojIconActions emojIcon;
     private RelativeLayout root_view;
+    String dwnload_file_path =
+            "http://coderzheaven.com/sample_folder/sample_file.png";
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -199,7 +201,7 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
             if (oponentData.channelId != null) {
                 chanelID = oponentData.channelId;
                 sendToID = oponentData.userId;
-                getChatHistory(new SessionManager(getApplication()).getUserID(), sendToID, chanelID, "text");
+                getChatHistory(new SessionManager(getApplication()).getUserID(), sendToID, chanelID, "text",1);
             }
 
         } else if (screenID == 1) {
@@ -221,13 +223,13 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
 
             if (channelID != null) {
                 chanelID = channelID;
-                getChatHistory(new SessionManager(getApplication()).getUserID(), sendToID, channelID, "text");
+                getChatHistory(new SessionManager(getApplication()).getUserID(), sendToID, channelID, "text",1);
                 GlideUtils.loadImage(MessageScreen.this, ApiRequest.BaseUrl + "upload/" + imageUrl, userProfile, R.drawable.user_default, R.drawable.user_default);
                 imageProfile = imageUrl;
                   oponentImage=imageUrl;
             } else {
 
-                getChatHistory(new SessionManager(getApplication()).getUserID(), sendToID, "", "text");
+                getChatHistory(new SessionManager(getApplication()).getUserID(), sendToID, "", "text",1);
                 GlideUtils.loadImage(MessageScreen.this, ApiRequest.BaseUrl + "upload/" + imageUrl, userProfile, R.drawable.user_default, R.drawable.user_default);
                 imageProfile = imageUrl;
                 oponentImage=imageUrl;
@@ -476,17 +478,22 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
 //        });
 //    }
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    private void getChatHistory(String user_id, String sendTO, String channelId, String type) {
+    private void getChatHistory(String user_id, String sendTO, String channelId, String type ,int viewType) {
         ApiRequest request = new ApiRequest();
+        if (viewType==1){
+            showLoadingIndicator();
+        }
         request.requestforgetChathistory(user_id, sendTO, channelId, type, new okhttp3.Callback() {
             @Override
             public void onFailure(okhttp3.Call call, IOException e) {
+                hideLoadingIndicator();
                 Log.d("error", "error");
             }
 
             @Override
             public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
                 final String myResponse = response.body().string();
+                hideLoadingIndicator();
                 Gson gson = new GsonBuilder().create();
                 final ChatResponse form = gson.fromJson(myResponse, ChatResponse.class);
                 runOnUiThread(new Runnable() {
@@ -667,7 +674,7 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
                         chat_message.setText("");
                         typevalue = 0;
                         chanelID = form.getChat_list().get(0).getChannelId();
-                        getChatHistory(new SessionManager(getApplication()).getUserID(), sendToID, chanelID, "text");
+                        getChatHistory(new SessionManager(getApplication()).getUserID(), sendToID, chanelID, "text",2);
                     }
                 });
             }
@@ -676,16 +683,32 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
 
 
     @Override
-    public void onImageClick(String url, String type) {
+    public void onImageClick(String url, String type ,String fileName) {
 //        Log.d("shdjsjhd", url);
         if (type.equalsIgnoreCase("image")) {
             showfullImage(url);
 //        mMyTask = new DownloadTask()
 
         } else if (type.equalsIgnoreCase("video")) {
-            Intent intent = new Intent(this, VideoScreen.class);
+            Intent intent = new Intent(this, VideoPlayer.class);
             intent.putExtra("url", url);
             startActivity(intent);
+            Log.e("present",fileName);
+
+//            showProgress(dwnload_file_path);
+//            new Thread(new Runnable() {
+//                public void run() {
+//                    downloadFiles(url, fileName);
+//                }
+//            }).start();
+//
+//            if (isFilePresent(fileName)){
+//                Log.e("present","preswwww");
+//            }
+//            else {
+//                Log.e("present","Noooooooooooo");
+//            }
+
         } else if (type.equalsIgnoreCase("audio")) {
             gotoWebview(url);
         } else if (type.equalsIgnoreCase("file")) {
@@ -699,6 +722,12 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
 
 
     }
+    public boolean isFilePresent(String fileName) {
+        String path = this.getFilesDir().getAbsolutePath() + "/" + fileName;
+        File file = new File(path);
+        return file.exists();
+    }
+
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
@@ -766,7 +795,7 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
                 String msg_for_me = intent.getStringExtra("some_msg");
                 //log our message value
                 Log.i("InchooTutorial", msg_for_me);
-                getChatHistory(new SessionManager(getApplication()).getUserID(), sendToID, channelID, "text");
+                getChatHistory(new SessionManager(getApplication()).getUserID(), sendToID, channelID, "text",2);
             }
         };
         //registering our receiver
@@ -859,74 +888,77 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
 
 
-    public void downloadFiles(String dwnload_file_path, String name) {
+    public void downloadFiles(String dwnload_file_paths, String name) {
 
-        try {
-            URL url = new URL(dwnload_file_path);
-            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
 
-            urlConnection.setRequestMethod("GET");
-            urlConnection.setDoOutput(true);
 
-            //connect
-            urlConnection.connect();
+            try {
+                URL url = new URL(dwnload_file_path);
+                HttpURLConnection urlConnection = (HttpURLConnection)
+                        url.openConnection();
 
-            //set the path where we want to save the file
-            File SDCardRoot = Environment.getExternalStorageDirectory();
-            //create a new file, to save the downloaded file
-            File file = new File(SDCardRoot, name);
+                urlConnection.setRequestMethod("GET");
+                urlConnection.setDoOutput(true);
 
-            FileOutputStream fileOutput = new FileOutputStream(file);
+                //connect
+                urlConnection.connect();
 
-            //Stream used for reading the data from the internet
-            InputStream inputStream = urlConnection.getInputStream();
+                //set the path where we want to save the file
+                File SDCardRoot = Environment.getExternalStorageDirectory();
+                //create a new file, to save the downloaded file
+                File file = new File(SDCardRoot,"downloaded_file.png");
 
-            //this is the total size of the file which we are downloading
-            totalSize = urlConnection.getContentLength();
+                FileOutputStream fileOutput = new FileOutputStream(file);
 
-            runOnUiThread(new Runnable() {
-                public void run() {
-                    pb.setMax(totalSize);
-                }
-            });
+                //Stream used for reading the data from the internet
+//                InputStream inputStream = urlConnection.getResponseCode();
+                int status = urlConnection.getResponseCode();
+                //this is the total size of the file which we are downloading
+                totalSize = urlConnection.getContentLength();
 
-            //create a buffer...
-            byte[] buffer = new byte[1024];
-            int bufferLength = 0;
-
-            while ((bufferLength = inputStream.read(buffer)) > 0) {
-                fileOutput.write(buffer, 0, bufferLength);
-                downloadedSize += bufferLength;
-                // update the progressbar //
                 runOnUiThread(new Runnable() {
                     public void run() {
-                        pb.setProgress(downloadedSize);
-                        float per = ((float) downloadedSize / totalSize) * 100;
-                        cur_val.setText("Downloaded " + downloadedSize + "KB / " + totalSize + "KB (" + (int) per + "%)");
-
+                        pb.setMax(totalSize);
                     }
                 });
-            }
-            //close the output stream when complete //
-            fileOutput.close();
-            runOnUiThread(new Runnable() {
-                public void run() {
-                    Toast.makeText(MessageScreen.this, "Download Successfully", Toast.LENGTH_SHORT).show();
-                    dialog.dismiss();
-                    // if you want close it..
-                }
-            });
 
-        } catch (final MalformedURLException e) {
-            showError("Error : MalformedURLException " + e);
-            e.printStackTrace();
-        } catch (final IOException e) {
-            showError("Error : IOException " + e);
-            e.printStackTrace();
-        } catch (final Exception e) {
-            showError("Error : Please check your internet connection " + e);
-        }
-    }
+                //create a buffer...
+                byte[] buffer = new byte[1024];
+                int bufferLength = 0;
+
+                while ( (bufferLength = urlConnection.getInputStream().read(buffer)) > 0 ) {
+                    fileOutput.write(buffer, 0, bufferLength);
+                    downloadedSize += bufferLength;
+                    // update the progressbar //
+                    runOnUiThread(new Runnable() {
+                        public void run() {
+                            pb.setProgress(downloadedSize);
+                            float per = ((float)downloadedSize/totalSize) *
+                                    100;
+                            cur_val.setText("Downloaded " + downloadedSize + "KB / " + totalSize + "KB (" + (int)per + "%)" );
+                        }
+                    });
+                }
+                //close the output stream when complete //
+                fileOutput.close();
+                runOnUiThread(new Runnable() {
+                    public void run() {
+                        // pb.dismiss(); // if you want close it..
+                    }
+                });
+
+            } catch (final MalformedURLException e) {
+                showError("Error : MalformedURLException " + e);
+                e.printStackTrace();
+            } catch (final IOException e) {
+                showError("Error : IOException " + e);
+                e.printStackTrace();
+            }
+            catch (final Exception e) {
+                showError("Error : Please check your internet connection " +
+                        e);
+
+        }    }
 
     void showError(final String err) {
         runOnUiThread(new Runnable() {
@@ -971,7 +1003,7 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        getChatHistory(new SessionManager(getApplication()).getUserID(), sendToID, channelID, "text");
+                        getChatHistory(new SessionManager(getApplication()).getUserID(), sendToID, channelID, "text",2);
                     }
                 });
 //                final AllchatResponse form = gson.fromJson(myResponse, AllchatResponse.class);
@@ -1016,7 +1048,7 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
                             if (oponentData.channelId != null) {
                                 chanelID = oponentData.channelId;
                                 sendToID = oponentData.userId;
-                                getChatHistory(new SessionManager(getApplication()).getUserID(), sendToID, chanelID, "text");
+                                getChatHistory(new SessionManager(getApplication()).getUserID(), sendToID, chanelID, "text",2);
                             }
 
                         } else if (screenID == 1) {
@@ -1038,21 +1070,19 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
 
                             if (channelID != null) {
                                 chanelID = channelID;
-                                getChatHistory(new SessionManager(getApplication()).getUserID(), sendToID, channelID, "text");
+                                getChatHistory(new SessionManager(getApplication()).getUserID(), sendToID, channelID, "text",2);
                                 GlideUtils.loadImage(MessageScreen.this, ApiRequest.BaseUrl + "upload/" + imageUrl, userProfile, R.drawable.user_default, R.drawable.user_default);
                                 imageProfile = imageUrl;
                                 oponentImage=imageUrl;
                             } else {
 
-                                getChatHistory(new SessionManager(getApplication()).getUserID(), sendToID, "", "text");
+                                getChatHistory(new SessionManager(getApplication()).getUserID(), sendToID, "", "text",2);
                                 GlideUtils.loadImage(MessageScreen.this, ApiRequest.BaseUrl + "upload/" + imageUrl, userProfile, R.drawable.user_default, R.drawable.user_default);
                                 imageProfile = imageUrl;
                                 oponentImage=imageUrl;
-                            }
+
+                           }
                         }
-
-
-
                     }
                 });
 

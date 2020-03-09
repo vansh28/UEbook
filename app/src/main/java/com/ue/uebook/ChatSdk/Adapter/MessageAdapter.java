@@ -45,7 +45,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyviewHo
         this.mtx=mtx;
     }
     public interface ChatImageFileClick {
-        void onImageClick(String url ,String type);
+        void onImageClick(String url ,String type ,String fileName);
         void onDownloadClick(String url ,String type ,String name);
         void onLongClickOnMessage(View view ,String chatid );
     }
@@ -86,7 +86,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyviewHo
             else if (chatData.get(position).getType().equalsIgnoreCase("video")){
                 MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
                 holder.senderlayoutimage.setVisibility(View.VISIBLE);
-                holder.playbtnOponent.setVisibility(View.VISIBLE);
+                holder.playbtnOponent.setVisibility(View.GONE);
                 holder.oponentlayoutimage.setVisibility(View.GONE);
                 holder.playbtnSender.setVisibility(View.VISIBLE);
                 mediaMetadataRetriever .setDataSource(ApiRequest.BaseUrl + chatData.get(position).getMessage(), new HashMap<String, String>());
@@ -107,7 +107,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyviewHo
             if (chatData.get(position).getType().equalsIgnoreCase("image")){
                 holder.senderlayoutimage.setVisibility(View.GONE);
                 holder.oponentlayoutimage.setVisibility(View.VISIBLE);
-                holder.playbtnOponent.setVisibility(View.VISIBLE);
+                holder.playbtnOponent.setVisibility(View.GONE);
                 holder.playbtnSender.setVisibility(View.GONE);
                 GlideUtils.loadImage(mtx, ApiRequest.BaseUrl + chatData.get(position).getMessage(), holder.oponentimage, R.drawable.noimage, R.drawable.noimage);
 
@@ -117,7 +117,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyviewHo
                 holder.oponentlayout.setVisibility(View.VISIBLE);
                 holder.oponentlayoutimage.setVisibility(View.GONE);
                 holder.senderlayout.setVisibility(View.GONE);
-                holder.playbtnOponent.setVisibility(View.GONE);
+                holder.playbtnOponent.setVisibility(View.VISIBLE);
                 holder.playbtnSender.setVisibility(View.GONE);
             }
             else if (chatData.get(position).getType().equalsIgnoreCase("video")){
@@ -144,11 +144,11 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyviewHo
             @Override
             public void onClick(View v) {
                 if (chatData.get(position).getType().equalsIgnoreCase("image")){
-                    chatImageFileClick.onImageClick(ApiRequest.BaseUrl+ chatData.get(position).getMessage(),"image");
+                    chatImageFileClick.onImageClick(ApiRequest.BaseUrl+ chatData.get(position).getMessage(),"image",chatData.get(position).getMessage());
 
                 }
                 else {
-                    chatImageFileClick.onImageClick(ApiRequest.BaseUrl + chatData.get(position).getMessage(),"video");
+                    chatImageFileClick.onImageClick(ApiRequest.BaseUrl + chatData.get(position).getMessage(),"video",chatData.get(position).getMessage());
 
                 }
             }
@@ -157,10 +157,10 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyviewHo
             @Override
             public void onClick(View v) {
                 if (chatData.get(position).getType().equalsIgnoreCase("image")) {
-                    chatImageFileClick.onImageClick(ApiRequest.BaseUrl + chatData.get(position).getMessage(),"image");
+                    chatImageFileClick.onImageClick(ApiRequest.BaseUrl + chatData.get(position).getMessage(),"image",chatData.get(position).getMessage());
                 }
                 else {
-                    chatImageFileClick.onImageClick(ApiRequest.BaseUrl + chatData.get(position).getMessage(),"video");
+                    chatImageFileClick.onImageClick(ApiRequest.BaseUrl + chatData.get(position).getMessage(),"video",chatData.get(position).getMessage());
                 }
             }
         });
@@ -168,11 +168,11 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyviewHo
             @Override
             public void onClick(View v) {
                 if (chatData.get(position).getType().equalsIgnoreCase("image")){
-                    chatImageFileClick.onImageClick(ApiRequest.BaseUrl+ chatData.get(position).getMessage(),"image");
+                    chatImageFileClick.onImageClick(ApiRequest.BaseUrl+ chatData.get(position).getMessage(),"image",chatData.get(position).getMessage());
 
                 }
                 else {
-                    chatImageFileClick.onImageClick(ApiRequest.BaseUrl + chatData.get(position).getMessage(),"video");
+                    chatImageFileClick.onImageClick(ApiRequest.BaseUrl + chatData.get(position).getMessage(),"video" ,chatData.get(position).getMessage());
 
                 }
             }
@@ -181,24 +181,24 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyviewHo
             @Override
             public void onClick(View v) {
                 if (chatData.get(position).getType().equalsIgnoreCase("image")) {
-                    chatImageFileClick.onImageClick(ApiRequest.BaseUrl + chatData.get(position).getMessage(),"image");
+                    chatImageFileClick.onImageClick(ApiRequest.BaseUrl + chatData.get(position).getMessage(),"image",chatData.get(position).getMessage());
                 }
                 else {
-                    chatImageFileClick.onImageClick(ApiRequest.BaseUrl+ chatData.get(position).getMessage(),"video");
+                    chatImageFileClick.onImageClick(ApiRequest.BaseUrl+ chatData.get(position).getMessage(),"video",chatData.get(position).getMessage());
                 }
             }
         });
         holder.fileviewoponent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                chatImageFileClick.onImageClick(ApiRequest.BaseUrl + chatData.get(position).getMessage(),"file");
+                chatImageFileClick.onImageClick(ApiRequest.BaseUrl + chatData.get(position).getMessage(),"file",chatData.get(position).getMessage());
 
             }
         });
         holder.fileviewSender.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                chatImageFileClick.onImageClick(ApiRequest.BaseUrl + chatData.get(position).getMessage(),"file");
+                chatImageFileClick.onImageClick(ApiRequest.BaseUrl + chatData.get(position).getMessage(),"file",chatData.get(position).getMessage());
 
             }
         });
@@ -253,15 +253,15 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyviewHo
 
             }
         });
-        holder.downloadimageoponent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                  String str= chatData.get(position).getMessage();
-                String[] arrOfStr = str.split("/");
-                Log.d("finsl",arrOfStr[3]);
-                chatImageFileClick.onDownloadClick(ApiRequest.BaseUrl + chatData.get(position).getMessage(),"image",arrOfStr[3]);
-            }
-        });
+//        holder.downloadimageoponent.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                  String str= chatData.get(position).getMessage();
+//                String[] arrOfStr = str.split("/");
+//                Log.d("finsl",arrOfStr[3]);
+//                chatImageFileClick.onDownloadClick(ApiRequest.BaseUrl + chatData.get(position).getMessage(),"image",arrOfStr[3]);
+//            }
+//        });
         holder.downloadaudio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -381,7 +381,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyviewHo
             fileviewoponent=itemView.findViewById(R.id.fileviewoponent);
             audioviewoponent=itemView.findViewById(R.id.audioviewoponent);
             audioviewSender=itemView.findViewById(R.id.audioviewSender);
-            downloadimageoponent=itemView.findViewById(R.id.downloadimageoponent);
+           // downloadimageoponent=itemView.findViewById(R.id.downloadimageoponent);
             downloadfileoponent=itemView.findViewById(R.id.downloadfile);
             downloadaudio=itemView.findViewById(R.id.downloadaudio);
 
