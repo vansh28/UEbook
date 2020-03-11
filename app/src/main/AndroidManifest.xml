@@ -8,6 +8,7 @@
     <uses-feature
         android:glEsVersion="0x00020000"
         android:required="true" />
+
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.CAMERA" />
@@ -39,7 +40,8 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".MkPlayer.VideoPlayer"></activity>
+        <activity android:name=".ChatSdk.TextStatusCreateScreen"></activity>
+        <activity android:name=".MkPlayer.VideoPlayer" />
         <activity android:name=".Payment.StripePayment" />
         <activity android:name=".PaymentSuccess" />
         <activity android:name=".VideoViewScreen" />

@@ -60,7 +60,6 @@
             android:layout_margin="@dimen/size_10"
             android:text="Stop"/>
     </LinearLayout>
-
     <TextView
         android:id="@+id/messageTv"
         android:layout_width="wrap_content"
@@ -69,6 +68,4 @@
         android:textSize="@dimen/size_18"
         android:textColor="@color/colorAccent"
        />
-
-
 </LinearLayout>

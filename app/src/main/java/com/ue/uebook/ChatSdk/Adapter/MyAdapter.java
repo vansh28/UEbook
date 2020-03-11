@@ -8,6 +8,9 @@ import androidx.fragment.app.FragmentPagerAdapter;
 
 import com.ue.uebook.ChatSdk.ChatHistoryFrag;
 import com.ue.uebook.ChatSdk.GroupChatFrag;
+import com.ue.uebook.ChatSdk.StatusFragment;
+
+
 
 public class MyAdapter   extends FragmentPagerAdapter {
     Context context;
@@ -26,6 +29,9 @@ public class MyAdapter   extends FragmentPagerAdapter {
             case 1:
                 GroupChatFrag cricketFragment = new GroupChatFrag();
                 return cricketFragment;
+            case 2:
+                StatusFragment statusFragment = new StatusFragment();
+                return statusFragment;
             default:
                 return null;
         }

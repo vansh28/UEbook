@@ -1,8 +1,10 @@
 package com.ue.uebook.ChatSdk;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 
@@ -15,7 +17,7 @@ import com.ue.uebook.ChatSdk.Adapter.MyAdapter;
 import com.ue.uebook.HomeActivity.HomeScreen;
 import com.ue.uebook.R;
 
-public class ChatHistoryScreen extends AppCompatActivity implements ChatHistoryFrag.OnFragmentInteractionListener, GroupChatFrag.OnFragmentInteractionListener, View.OnClickListener {
+public class ChatHistoryScreen extends AppCompatActivity implements ChatHistoryFrag.OnFragmentInteractionListener, GroupChatFrag.OnFragmentInteractionListener, StatusFragment.OnFragmentInteractionListener,View.OnClickListener {
     TabLayout tabLayout;
     ViewPager viewPager;
     private ImageButton backbtnChat;
@@ -32,15 +34,24 @@ public class ChatHistoryScreen extends AppCompatActivity implements ChatHistoryF
         viewPager = findViewById(R.id.viewPager);
         tabLayout.addTab(tabLayout.newTab().setText("Chat"));
         tabLayout.addTab(tabLayout.newTab().setText("Group Chat"));
+        tabLayout.addTab(tabLayout.newTab().setText("Status"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         final MyAdapter adapter = new MyAdapter(this,getSupportFragmentManager(),
                 tabLayout.getTabCount());
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @SuppressLint("RestrictedApi")
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 viewPager.setCurrentItem(tab.getPosition());
+                Log.e("poso",String.valueOf(tab.getPosition()));
+                if (tab.getPosition()== 2){
+                    newChatbtn.setVisibility(View.GONE);
+                }
+                else {
+                    newChatbtn.setVisibility(View.VISIBLE);
+                }
             }
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
