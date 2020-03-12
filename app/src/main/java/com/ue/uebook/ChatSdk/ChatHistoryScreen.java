@@ -5,8 +5,10 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.PopupMenu;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
@@ -20,8 +22,9 @@ import com.ue.uebook.R;
 public class ChatHistoryScreen extends AppCompatActivity implements ChatHistoryFrag.OnFragmentInteractionListener, GroupChatFrag.OnFragmentInteractionListener, StatusFragment.OnFragmentInteractionListener,View.OnClickListener {
     TabLayout tabLayout;
     ViewPager viewPager;
-    private ImageButton backbtnChat;
+    private ImageButton backbtnChat,optionMenu;
     private FloatingActionButton newChatbtn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,6 +33,8 @@ public class ChatHistoryScreen extends AppCompatActivity implements ChatHistoryF
         backbtnChat=findViewById(R.id.backbtnChat);
         backbtnChat.setOnClickListener(this);
         newChatbtn= findViewById(R.id.newChatbtn);
+        optionMenu = findViewById(R.id.option);
+        optionMenu.setOnClickListener(this);
         newChatbtn.setOnClickListener(this);
         viewPager = findViewById(R.id.viewPager);
         tabLayout.addTab(tabLayout.newTab().setText("Chat"));
@@ -80,6 +85,9 @@ public class ChatHistoryScreen extends AppCompatActivity implements ChatHistoryF
             Intent intent = new Intent(this,ContactListScreen.class);
               startActivity(intent);
         }
+       else if (v==optionMenu){
+           showFilterPopup(v);
+        }
     }
 
     @Override
@@ -88,5 +96,29 @@ public class ChatHistoryScreen extends AppCompatActivity implements ChatHistoryF
         startActivity(intent);
         finish();
     }
+    private void showFilterPopup(View v) {
+        PopupMenu popup = new PopupMenu(this, v);
+        popup.inflate(R.menu.userchatoptions);
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.Profile:
+                        Intent intent = new Intent(ChatHistoryScreen.this,UserProfileChatScreen.class);
+                        startActivity(intent);
+                        return true;
+
+                    case R.id.Privacy:
+                    Intent intents = new Intent(ChatHistoryScreen.this,StatusPrivacyScreen.class);
+                    startActivity(intents);
+                    return  true;
+
+                    default:
+                        return false;
+                }
+            }
+        });
+        popup.show();
+    }
+
 }
 

@@ -40,18 +40,44 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".ChatSdk.TextStatusCreateScreen"></activity>
+        <activity android:name=".ChatSdk.UserProfileChatScreen"></activity>
+        <activity android:name=".ChatSdk.StatusPrivacyScreen" />
+        <activity
+            android:name=".ChatSdk.StatusTrimVideo"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".ChatSdk.TextStatusCreateScreen"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
         <activity android:name=".MkPlayer.VideoPlayer" />
         <activity android:name=".Payment.StripePayment" />
-        <activity android:name=".PaymentSuccess" />
+        <activity
+            android:name=".PaymentSuccess"
+            android:screenOrientation="portrait" />
         <activity android:name=".VideoViewScreen" />
-        <activity android:name=".ChatSdk.OponentUserDetailsScren" />
-        <activity android:name=".ChatSdk.AddMemberToGroupScreen" />
-        <activity android:name=".ChatSdk.GroupDetailScreen" />
-        <activity android:name=".ChatSdk.GroupMessageScreen" />
-        <activity android:name=".ChatSdk.ContactListScreen" />
-        <activity android:name=".ChatSdk.ChatHistoryScreen" />
-        <activity android:name=".ChatSdk.GroupFriendList" />
+        <activity
+            android:name=".ChatSdk.OponentUserDetailsScren"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ChatSdk.AddMemberToGroupScreen"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ChatSdk.GroupDetailScreen"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ChatSdk.GroupMessageScreen"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".ChatSdk.ContactListScreen"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ChatSdk.ChatHistoryScreen"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ChatSdk.GroupFriendList"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".VoiceCall.VoiceCallReceive"
             android:screenOrientation="portrait" />
@@ -88,7 +114,8 @@
         <activity android:name=".demo" />
         <activity
             android:name=".ChatSdk.MessageScreen"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".ChatSdk.FriendListScreen"
             android:screenOrientation="portrait" />
@@ -154,7 +181,8 @@
         <activity
             android:name=".SplashActivity.SplashScreenApp"
             android:configChanges="locale|orientation|screenSize"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

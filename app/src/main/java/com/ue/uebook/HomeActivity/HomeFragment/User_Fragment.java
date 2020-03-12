@@ -207,7 +207,6 @@ public class User_Fragment extends Fragment implements View.OnClickListener, Use
         ok_Btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 previewDialog.dismiss();
 
             }

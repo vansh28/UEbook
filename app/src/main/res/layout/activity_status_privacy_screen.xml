@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ChatSdk.StatusPrivacyScreen">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/size_50"
+        android:id="@+id/header"
+        android:background="@color/colorPrimary">
+        <ImageButton
+            android:id="@+id/back_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/size_10"
+            android:background="@android:color/transparent"
+            android:padding="@dimen/size_10"
+            android:src="@drawable/backbtn"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Status privacy"
+            android:textColor="@color/white"
+            android:textSize="@dimen/size_18"/>
+    </RelativeLayout>
+    <com.ue.uebook.Customview.CustomTextViewMedium
+        android:layout_width="match_parent"
+        android:text="Who can see my status updates"
+        android:layout_marginTop="@dimen/size_5"
+        android:textSize="@dimen/size_16"
+        android:layout_below="@id/header"
+        android:textColor="@color/red"
+        android:id="@id/text"
+        android:layout_marginLeft="@dimen/size_10"
+        android:layout_height="wrap_content"/>
+
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text"
+        android:orientation="vertical"
+        android:layout_margin="@dimen/size_16"
+        android:id="@+id/radioGroupPaymentMethod"
+        >
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text=" My contacts"
+            android:id="@+id/allContact"
+            android:checked="false"
+            android:textSize="15dp" />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="Hide From"
+            android:id="@+id/hidestatus"
+            android:checked="false"
+            android:textSize="15dp"
+            />
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/size_40"
+            android:text="Only Share with"
+            android:id="@+id/onlySharewith"
+            android:checked="false"
+            android:textSize="15dp"
+            />
+
+    </RadioGroup>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
+        android:text="Ok"
+        android:background="@color/colorPrimary"
+        android:textColor="@color/white"
+        android:layout_marginBottom="@dimen/size_25"
+        android:layout_height="wrap_content"/>
+
+
+
+</RelativeLayout>

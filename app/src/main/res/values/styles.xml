@@ -90,7 +90,7 @@
     </style>
 
     <style name="WeightWidth">
-        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_width">match_parent</item>
         <item name="android:layout_weight">1</item>
     </style>
 

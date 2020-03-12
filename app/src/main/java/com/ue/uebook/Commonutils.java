@@ -48,7 +48,6 @@ public  class Commonutils {public static final String TICKET_DETAILS = "ticketDe
             try {
                 geocoder = new Geocoder(Objects.requireNonNull(context), Locale.getDefault());
                 addresses = geocoder.getFromLocation(latitude, longitude, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
-                address = addresses.get(0).getFeatureName()+" - "+addresses.get(0).getSubLocality()+" , "+addresses.get(0).getLocality(); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
                if (addresses != null && addresses.size() > 0) {
                    String addresss = addresses.get(0).getAddressLine(0);
                    String city = addresses.get(0).getLocality();
@@ -59,6 +58,8 @@ public  class Commonutils {public static final String TICKET_DETAILS = "ticketDe
                     String knownName = addresses.get(0).getFeatureName();
                     String ff=addresses.get(0).getPremises();
 //                  locationTxt.setText(address + " " + city + " " + country);
+                   address = addresses.get(0).getFeatureName()+" - "+addresses.get(0).getSubLocality()+" , "+addresses.get(0).getLocality(); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
+
                }
             } catch (IOException e) {
                 e.printStackTrace();

@@ -5,21 +5,37 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.BuildConfig;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.ue.uebook.ImageUtils;
 import com.ue.uebook.R;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.InputStream;
+
+import static android.app.Activity.RESULT_OK;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -43,6 +59,15 @@ public class StatusFragment extends Fragment implements View.OnClickListener {
 
     private OnFragmentInteractionListener mListener;
     private ImageUtils imageUtils;
+    private String encodedString;
+    private String uriData, image;
+    private Bitmap bitmap;
+
+    private File destination = null;
+    private InputStream inputStreamImg;
+    private String imgPath = null;
+    private ImageView imageview;
+    Uri outPutfileUri;
     public StatusFragment() {
         // Required empty public constructor
     }
@@ -82,9 +107,10 @@ public class StatusFragment extends Fragment implements View.OnClickListener {
         View view = inflater.inflate(R.layout.fragment_status, container, false);
         addImageStatus = view.findViewById(R.id.addImageStatus);
         addTextStatus = view.findViewById(R.id.addTextStatus);
+        imageview = view.findViewById(R.id.imageview);
         addImageStatus.setOnClickListener(this);
         addTextStatus.setOnClickListener(this);
-
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         return  view;
     }
 
@@ -137,7 +163,53 @@ public class StatusFragment extends Fragment implements View.OnClickListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+    private void sendTakePictureIntent() {
 
+//        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//        cameraIntent.putExtra( MediaStore.EXTRA_FINISH_ON_COMPLETION, true);
+//        if (cameraIntent.resolveActivity(getPackageManager()) != null) {
+//            startActivityForResult(cameraIntent, REQUEST_PICTURE_CAPTURE);
+//
+//            File pictureFile = null;
+//            try {
+//                pictureFile = getPictureFile();
+//            } catch (IOException ex) {
+//                Toast.makeText(this,
+//                        "Photo file can't be created, please try again",
+//                        Toast.LENGTH_SHORT).show();
+//                return;
+//            }
+//            if (pictureFile != null) {
+//                Uri photoURI = FileProvider.getUriForFile(this,
+//                        "com.zoftino.android.fileprovider",
+//                        pictureFile);
+//                cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+//                startActivityForResult(cameraIntent, REQUEST_PICTURE_CAPTURE);
+//            }
+//        }
+        Intent intent;
+        String BX1 = android.os.Build.MANUFACTURER;
+        if (BX1.equalsIgnoreCase("samsung")) {
+            Log.e(" device", " isssssssssss samsung" + BX1);
+            intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            startActivityForResult(intent, PICK_IMAGE_CAMERA);
+        } else {
+            Log.e(" inside other", " devices isssssssssss");
+            intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            File file = new File(Environment.getExternalStorageDirectory(), String.valueOf(System.currentTimeMillis()) + ".jpg");
+            //     outPutfileUri = Uri.fromFile(file);
+            outPutfileUri = FileProvider.getUriForFile(getContext(),
+                    BuildConfig.APPLICATION_ID + ".provider",
+                    file);
+            String uriString = outPutfileUri.toString();
+            File myFile = new File(uriString);
+            String path = myFile.getAbsolutePath();
+            // this method is used to get pic name
+            // getPicName(path, outPutfileUri, myFile);
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, outPutfileUri);
+            startActivityForResult(intent, PICK_IMAGE_CAMERA);
+        }
+    }
     private void selectImage() {
         try {
             PackageManager pm = getContext().getPackageManager();
@@ -156,9 +228,8 @@ public class StatusFragment extends Fragment implements View.OnClickListener {
                         } else if (options[item].equals("Choose From Gallery")) {
                             dialog.dismiss();
 
-                            Intent pickPhoto = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                            pickPhoto.setType("image/* video/*");
-                            startActivityForResult(pickPhoto, PICK_IMAGE_GALLERY);
+                            Intent intent = new   Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                            startActivityForResult(intent, PICK_IMAGE_GALLERY);
                         } else if (options[item].equals("Cancel")) {
                             dialog.dismiss();
                         }
@@ -180,6 +251,82 @@ public class StatusFragment extends Fragment implements View.OnClickListener {
             e.printStackTrace();
         }
     }
+    private String getEncodedString(Bitmap bitmap){
+
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+
+        bitmap.compress(Bitmap.CompressFormat.JPEG,100, os);
+
+      /* or use below if you want 32 bit images
+
+       bitmap.compress(Bitmap.CompressFormat.PNG, (0–100 compression), os);*/
+        byte[] imageArr = os.toByteArray();
+        return Base64.encodeToString(imageArr, Base64.URL_SAFE);
+
+    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        inputStreamImg = null;
+        if (resultCode == RESULT_OK) {
+
+            if (requestCode==PICK_IMAGE_CAMERA){
+                Uri filePath = data.getData();
+                bitmap = (Bitmap) data.getExtras().get("data");
+
+
+                Intent intent = new Intent(getContext(),StatusTrimVideo.class);
+                intent.putExtra("file",getPath(getImageUri(getContext(),bitmap)));
+                intent.putExtra("type","image");
+                getContext().startActivity(intent);
+                // scam_image_img.setImageBitmap(bitmap);
+
+            }
+
+
+
+        }if (requestCode == PICK_IMAGE_GALLERY) {
+                Uri selectedImage = data.getData();
+                String[] filePath = { MediaStore.Images.Media.DATA };
+                Cursor c = getContext().getContentResolver().query(selectedImage,filePath, null, null, null);
+                c.moveToFirst();
+                int columnIndex = c.getColumnIndex(filePath[0]);
+                String picturePath = c.getString(columnIndex);
+                c.close();
+                Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
+                imageview.setImageBitmap(thumbnail);
+                Intent intent = new Intent(getContext(),StatusTrimVideo.class);
+                intent.putExtra("file",picturePath);
+                intent.putExtra("type","image");
+                getContext().startActivity(intent);
+            }
+
+        else
+            {
+                Toast.makeText(getContext(), "Please Try Again ", Toast.LENGTH_SHORT).show();
+            }
+
+
+}
+    public Uri getImageUri(Context inContext, Bitmap inImage) {
+
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
+        return Uri.parse(path);
+    }
+    public String getPath(Uri uri) {
+        String[] projection = {MediaStore.Images.Media.DATA};
+        Cursor cursor = getContext().getContentResolver().query(uri, projection, null, null, null);
+        int column_index = 0;
+        if (cursor != null) {
+            column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            cursor.moveToFirst();
+            String path = cursor.getString(column_index);
+            cursor.close();
+            return path;
+        } else
+            return uri.getPath();
+    }
+
 
 
 }

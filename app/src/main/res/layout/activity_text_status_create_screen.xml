@@ -7,23 +7,48 @@
     android:id="@+id/layout"
     android:background="#4B0082"
     tools:context=".ChatSdk.TextStatusCreateScreen">
-    <EditText
-        android:layout_width="match_parent"
-        android:textSize="25dp"
-        android:gravity="center"
-        android:textColor="@color/white"
+    <hani.momanii.supernova_emoji_library.Helper.EmojiconEditText
         android:id="@+id/textStatus"
-        android:layout_height="match_parent"/>
+        style="@style/WeightWidth"
+        android:layout_height="match_parent"
+        android:hint="Type Status here"
+        android:gravity="center"
+        android:textSize="@dimen/size_30"
+        app:emojiconSize="35sp"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white"
+        android:background="@android:color/transparent"
+        android:maxLength="200" />
     <LinearLayout
         android:layout_width="wrap_content"
         android:orientation="horizontal"
         android:layout_alignParentBottom="true"
+        android:layout_margin="@dimen/size_10"
+        android:fitsSystemWindows="true"
         android:layout_height="wrap_content">
         <ImageButton
-            android:layout_width="wrap_content"
-            android:src="@drawable/cancel"
+            android:id="@+id/button_chat_emoji"
+            style="@style/BorderlessImageButtonStyle"
+            android:layout_gravity="center_vertical"
+            android:visibility="visible"
+            android:src="@drawable/smiley" />
+        <ImageButton
+            android:id="@+id/textStyleChanges"
+            android:layout_width="@dimen/size_30"
+            android:layout_height="@dimen/size_30"
+            android:layout_marginLeft="@dimen/size_10"
+            android:layout_gravity="center_vertical"
+            android:background="@android:color/transparent"
+            android:src="@drawable/lettert" />
+
+
+        <ImageButton
             android:id="@+id/changeBackground"
-            android:layout_height="wrap_content"/>
+            android:layout_width="@dimen/size_30"
+            android:layout_height="@dimen/size_30"
+            android:layout_marginLeft="@dimen/size_10"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/paint" />
 
     </LinearLayout>
 

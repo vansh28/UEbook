@@ -54,9 +54,6 @@ import java.util.List;
 import java.util.Locale;
 
 import static com.ue.uebook.NetworkUtils.getInstance;
-
-
-
 public class HomeScreen extends BaseActivity implements Home_Fragment.OnFragmentInteractionListener, Bookmark_Fragment.OnFragmentInteractionListener, User_Fragment.OnFragmentInteractionListener, Search_Fragment.OnFragmentInteractionListener, UserProfile_Fragment.OnFragmentInteractionListener, UserMainFragment.OnFragmentInteractionListener, CompanyInfo_Fragment.OnFragmentInteractionListener, NotepadFragment.OnFragmentInteractionListener, View.OnClickListener , BookCategoryFragment.OnFragmentInteractionListener , HomeListingFragment.OnFragmentInteractionListener , HomeNewFragment.OnFragmentInteractionListener {
     private ActionBar toolbar;
     private List<HomeListing> recommendedList_book,newBookList,popularBook_List;
@@ -84,7 +81,6 @@ public class HomeScreen extends BaseActivity implements Home_Fragment.OnFragment
         toolbar = getSupportActionBar();
         intent = getIntent();
         int loginid= intent.getIntExtra("login",0);
-
         if (loginid==1){
             showmessage();
             showBottomSheet();
