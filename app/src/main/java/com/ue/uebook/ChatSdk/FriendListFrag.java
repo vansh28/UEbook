@@ -169,7 +169,7 @@ public class FriendListFrag extends Fragment implements ContactListAdapter.ItemC
     public void onClick(View v) {
         if (v == creategroupBtn) {
 
-            Intent intent = new Intent(getContext(), GroupFriendList.class);
+            Intent intent = new Intent(getContext(), CreateGroupScreen.class);
             startActivity(intent);
         }
     }

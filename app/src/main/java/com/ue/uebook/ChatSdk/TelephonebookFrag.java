@@ -166,7 +166,7 @@ public class TelephonebookFrag extends Fragment implements ContactListAdapter.It
     public void onClick(View v) {
         if (v == creategroupBtn) {
 
-            Intent intent = new Intent(getContext(), GroupFriendList.class);
+            Intent intent = new Intent(getContext(), CreateGroupScreen.class);
             startActivity(intent);
         }
     }

@@ -40,7 +40,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GroupFriendList extends BaseActivity implements View.OnClickListener, GroupAdapter.ItemClick, GroupItemListAdapter.ItemClick ,CreategroupAdapter.ItemClick{
+public class CreateGroupScreen extends BaseActivity implements View.OnClickListener, GroupAdapter.ItemClick, GroupItemListAdapter.ItemClick ,CreategroupAdapter.ItemClick{
     private ImageButton backbtngroup;
     private RecyclerView recyclerView,groupList;
     private GroupAdapter groupAdapter;
@@ -88,7 +88,7 @@ public class GroupFriendList extends BaseActivity implements View.OnClickListene
         }
         else if (v==createGroup){
           showPopUp();
-         // Toast.makeText(GroupFriendList.this,"Coming Soon!",Toast.LENGTH_SHORT).show();
+         // Toast.makeText(CreateGroupScreen.this,"Coming Soon!",Toast.LENGTH_SHORT).show();
         }
     }
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -113,13 +113,13 @@ public class GroupFriendList extends BaseActivity implements View.OnClickListene
                         @Override
                         public void run() {
 
-//                            groupAdapter = new GroupAdapter(GroupFriendList.this,form.getUserList(),form.getData());
+//                            groupAdapter = new GroupAdapter(CreateGroupScreen.this,form.getUserList(),form.getData());
 //                            recyclerView.setAdapter(groupAdapter);
-//                            groupAdapter.setItemClickListener(GroupFriendList.this);
+//                            groupAdapter.setItemClickListener(CreateGroupScreen.this);
 //                            groupAdapter.notifyDataSetChanged();
 
-                            contactList = new CreategroupAdapter(GroupFriendList.this,form.getUserList());
-                             contactList.setItemClickListener(GroupFriendList.this);
+                            contactList = new CreategroupAdapter(CreateGroupScreen.this,form.getUserList());
+                             contactList.setItemClickListener(CreateGroupScreen.this);
                             userlist.setAdapter(contactList);
 
                         }
@@ -139,9 +139,9 @@ public class GroupFriendList extends BaseActivity implements View.OnClickListene
         if (oponentData.size()>0){
             groupList.setVisibility(View.VISIBLE);
             createGroup.setVisibility(View.VISIBLE);
-            groupItemListAdapter= new GroupItemListAdapter(GroupFriendList.this,oponentData);
+            groupItemListAdapter= new GroupItemListAdapter(CreateGroupScreen.this,oponentData);
             groupList.setAdapter(groupItemListAdapter);
-            groupItemListAdapter.setItemClickListener(GroupFriendList.this);
+            groupItemListAdapter.setItemClickListener(CreateGroupScreen.this);
             groupItemListAdapter.notifyDataSetChanged();
         }
         else {
@@ -271,7 +271,7 @@ public class GroupFriendList extends BaseActivity implements View.OnClickListene
                         @Override
                         public void run() {
                             Toast.makeText(getApplicationContext(),"Successfully Group Created",Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(GroupFriendList.this,ChatHistoryScreen.class));
+                            startActivity(new Intent(CreateGroupScreen.this,ChatHistoryScreen.class));
                              finish();
                         }
                     });

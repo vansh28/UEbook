@@ -61,7 +61,7 @@ public class FriendListScreen extends BaseActivity implements View.OnClickListen
             finish();
         }
         else if (v==creategroupBtn){
-            Intent intent = new Intent(this,GroupFriendList.class);
+            Intent intent = new Intent(this, CreateGroupScreen.class);
             startActivity(intent);
         }
     }

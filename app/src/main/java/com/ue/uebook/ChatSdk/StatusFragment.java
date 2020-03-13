@@ -223,13 +223,19 @@ public class StatusFragment extends Fragment implements View.OnClickListener {
                     public void onClick(DialogInterface dialog, int item) {
                         if (options[item].equals("Take Photo")) {
                             dialog.dismiss();
-                            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                            startActivityForResult(intent, PICK_IMAGE_CAMERA);
+                            Intent intents = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                            startActivityForResult(intents, PICK_IMAGE_CAMERA);
                         } else if (options[item].equals("Choose From Gallery")) {
                             dialog.dismiss();
+//                            Intent intent = new   Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//                            intent.setType("video/*, image/*");
+//                            startActivityForResult(intent, PICK_IMAGE_GALLERY);
 
-                            Intent intent = new   Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                            startActivityForResult(intent, PICK_IMAGE_GALLERY);
+                            Intent photoPickerIntent = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                            photoPickerIntent.setType("*/*");
+                            startActivityForResult(photoPickerIntent, PICK_IMAGE_GALLERY);
+
+
                         } else if (options[item].equals("Cancel")) {
                             dialog.dismiss();
                         }
@@ -287,6 +293,8 @@ public class StatusFragment extends Fragment implements View.OnClickListener {
 
         }if (requestCode == PICK_IMAGE_GALLERY) {
                 Uri selectedImage = data.getData();
+                if (selectedImage!=null){
+
                 String[] filePath = { MediaStore.Images.Media.DATA };
                 Cursor c = getContext().getContentResolver().query(selectedImage,filePath, null, null, null);
                 c.moveToFirst();
@@ -299,6 +307,7 @@ public class StatusFragment extends Fragment implements View.OnClickListener {
                 intent.putExtra("file",picturePath);
                 intent.putExtra("type","image");
                 getContext().startActivity(intent);
+                }
             }
 
         else

@@ -91,7 +91,6 @@ public class VideoCall extends JitsiMeetActivity  {
                 Log.d("error", "error");
 
             }
-
             @Override
             public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
 

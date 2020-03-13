@@ -11,6 +11,7 @@ import okhttp3.RequestBody;
 
 public class ApiRequest {
     public static final String BaseUrl = "http://dnddemo.com/ebooks/api/v1/";
+    public static final String testBaseUrl = "http://dnddemo.com/ebooks/api/";
 
     public void requestforRegistration(final String full_name, final String password, final String email, final String publisher_type, final String gender, final String country, final String about_me, final String device_token, Callback callback) {
         String url = null;
@@ -871,6 +872,22 @@ public class ApiRequest {
                 .build();
         client.newCall(request).enqueue(callback);
     }
+    public void requestforChangeStatusPrivacy( String user_id ,String visibility, String user_ids,Callback callback) {
+        String url = null;
+        url = testBaseUrl + "userstatus/userChatStatus";
+        OkHttpClient client = new OkHttpClient();
+        RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
+                .addFormDataPart("user_id",user_id)
+                .addFormDataPart("visibility ",visibility )
+                .addFormDataPart("user_ids",user_ids)
+                .build();
+        Request request = new Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .build();
+        client.newCall(request).enqueue(callback);
+    }
+
 }
 
 

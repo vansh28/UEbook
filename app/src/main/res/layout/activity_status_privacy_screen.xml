@@ -44,7 +44,7 @@
         android:layout_below="@+id/text"
         android:orientation="vertical"
         android:layout_margin="@dimen/size_16"
-        android:id="@+id/radioGroupPaymentMethod"
+        android:id="@+id/radioGroupstatus"
         >
         <RadioButton
             android:layout_width="wrap_content"

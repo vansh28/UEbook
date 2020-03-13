@@ -40,7 +40,8 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".ChatSdk.UserProfileChatScreen"></activity>
+        <activity android:name=".ChatSdk.UserListForStatusPrivacyScreen"></activity>
+        <activity android:name=".ChatSdk.UserProfileChatScreen" />
         <activity android:name=".ChatSdk.StatusPrivacyScreen" />
         <activity
             android:name=".ChatSdk.StatusTrimVideo"
@@ -76,7 +77,7 @@
             android:name=".ChatSdk.ChatHistoryScreen"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ChatSdk.GroupFriendList"
+            android:name=".ChatSdk.CreateGroupScreen"
             android:screenOrientation="portrait" />
         <activity
             android:name=".VoiceCall.VoiceCallReceive"
