@@ -8,19 +8,19 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.ue.uebook.ChatSdk.Pojo.OponentData;
+import com.ue.uebook.ChatSdk.Pojo.ContactListStatus;
 import com.ue.uebook.Data.ApiRequest;
 import com.ue.uebook.GlideUtils;
 import com.ue.uebook.R;
 
 import java.util.List;
 
-public class USerListStatusAdapter   extends BaseSelectableListAdapter<OponentData> {
+public class USerListStatusAdapter   extends BaseSelectableListAdapter<ContactListStatus> {
 
     //    private SelectedItemsCountsChangedListener selectedItemsCountChangedListener;
     private ItemClick itemClick;
 
-    public  USerListStatusAdapter(AppCompatActivity context, List<OponentData> users) {
+    public  USerListStatusAdapter(AppCompatActivity context, List<ContactListStatus> users) {
         super(context, users);
     }
 
@@ -41,21 +41,25 @@ public class USerListStatusAdapter   extends BaseSelectableListAdapter<OponentDa
             holder = (CreategroupAdapter.ViewHolder) convertView.getTag();
         }
 
-        final OponentData user = getItem(position);
+        final ContactListStatus user = getItem(position);
 
         if (user != null) {
-            holder.opponentName.setText(user.getName());
+//            if (user.getIs_in_list().equalsIgnoreCase("Yes")){
+//                selectedItems.add(position,user);
+//            }
+            holder.opponentName.setText(user.getUser_name());
             GlideUtils.loadImage(context, ApiRequest.BaseUrl+"upload/"+user.getUrl(), holder.selectimage, R.drawable.user_default,  R.drawable.user_default);
             holder.timeTv.setVisibility(View.GONE);
-            if (selectedItems.contains(user)) {
-                // convertView.setBackgroundColor(Color.parseColor("#98A0EE"));
-                // holder.opponentIcon.setImageResource(R.drawable.ic_checkmark);
+
+
+            if (selectedItems.contains(user)){
+
                 holder.opponentIcon.setVisibility(View.VISIBLE);
                 convertView.setBackgroundColor(Color.parseColor("#d3d3d3"));
-            } else {
+            }
+            else {
                 convertView.setBackgroundColor(Color.parseColor("#ffffff"));
                 holder.opponentIcon.setVisibility(View.GONE);
-
             }
         }
         convertView.setOnClickListener(new View.OnClickListener() {
@@ -93,7 +97,7 @@ public class USerListStatusAdapter   extends BaseSelectableListAdapter<OponentDa
 //        void onCountSelectedItemsChanged(int count);
 //    }
     public interface ItemClick {
-        void ontItemClick(OponentData oponentData, int position ,int id);
+        void ontItemClick(ContactListStatus oponentData, int position , int id);
     }
     public void setItemClickListener(ItemClick clickListener) {
         itemClick = clickListener;

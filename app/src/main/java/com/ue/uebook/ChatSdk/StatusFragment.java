@@ -141,7 +141,8 @@ public class StatusFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         if (v==addImageStatus){
-                selectImage();
+                Intent intent = new Intent(getContext(),CameraView.class);
+                startActivity(intent);
         }
         else if (v==addTextStatus){
             Intent intent = new Intent(getContext(),TextStatusCreateScreen.class);
@@ -294,19 +295,30 @@ public class StatusFragment extends Fragment implements View.OnClickListener {
         }if (requestCode == PICK_IMAGE_GALLERY) {
                 Uri selectedImage = data.getData();
                 if (selectedImage!=null){
+                    if (selectedImage.toString().contains("image")) {
+                        //handle image
 
-                String[] filePath = { MediaStore.Images.Media.DATA };
-                Cursor c = getContext().getContentResolver().query(selectedImage,filePath, null, null, null);
-                c.moveToFirst();
-                int columnIndex = c.getColumnIndex(filePath[0]);
-                String picturePath = c.getString(columnIndex);
-                c.close();
-                Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
-                imageview.setImageBitmap(thumbnail);
-                Intent intent = new Intent(getContext(),StatusTrimVideo.class);
-                intent.putExtra("file",picturePath);
-                intent.putExtra("type","image");
-                getContext().startActivity(intent);
+                        String[] filePath = { MediaStore.Images.Media.DATA };
+                        Cursor c = getContext().getContentResolver().query(selectedImage,filePath, null, null, null);
+                        c.moveToFirst();
+                        int columnIndex = c.getColumnIndex(filePath[0]);
+                        String picturePath = c.getString(columnIndex);
+                        c.close();
+                        Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
+                        imageview.setImageBitmap(thumbnail);
+                        Intent intent = new Intent(getContext(),StatusTrimVideo.class);
+                        intent.putExtra("file",picturePath);
+                        intent.putExtra("type","image");
+                        getContext().startActivity(intent);
+
+
+                    } else  if (selectedImage.toString().contains("video")) {
+
+                         Log.e("vid","videp");
+
+                        //handle video
+                    }
+
                 }
             }
 

@@ -874,11 +874,11 @@ public class ApiRequest {
     }
     public void requestforChangeStatusPrivacy( String user_id ,String visibility, String user_ids,Callback callback) {
         String url = null;
-        url = testBaseUrl + "userstatus/userChatStatus";
+        url = testBaseUrl + "userstatus/userChatStatusSetting";
         OkHttpClient client = new OkHttpClient();
         RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
                 .addFormDataPart("user_id",user_id)
-                .addFormDataPart("visibility ",visibility )
+                .addFormDataPart("visibility_flag ",visibility )
                 .addFormDataPart("user_ids",user_ids)
                 .build();
         Request request = new Request.Builder()
@@ -887,7 +887,6 @@ public class ApiRequest {
                 .build();
         client.newCall(request).enqueue(callback);
     }
-
 }
 
 

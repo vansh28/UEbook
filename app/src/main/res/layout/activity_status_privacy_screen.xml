@@ -77,6 +77,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerInParent="true"
         android:text="Ok"
+        android:id="@+id/okStatus"
         android:background="@color/colorPrimary"
         android:textColor="@color/white"
         android:layout_marginBottom="@dimen/size_25"

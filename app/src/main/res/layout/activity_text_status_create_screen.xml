@@ -51,5 +51,14 @@
             android:background="@drawable/paint" />
 
     </LinearLayout>
+<com.google.android.material.floatingactionbutton.FloatingActionButton
+    android:layout_width="wrap_content"
+    android:src="@android:drawable/ic_menu_send"
+    android:id="@+id/sendStatusToServer"
+    android:layout_alignParentBottom="true"
+    android:visibility="gone"
+    android:layout_alignParentRight="true"
+    android:layout_margin="@dimen/size_50"
+    android:layout_height="wrap_content"/>
 
 </RelativeLayout>

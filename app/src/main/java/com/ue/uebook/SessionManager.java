@@ -23,6 +23,7 @@ public class SessionManager {
     private static final String UserEmail = "UserEmail";
     private static final String Lang = "lang";
     private static final String font = "font";
+    private static final String Status = "statusValue";
     private SharedPreferences sharedPreference;
     private SharedPreferences.Editor editor;
     @SuppressLint("CommitPrefEdits")
@@ -114,5 +115,13 @@ public class SessionManager {
     }
     public String getfontSize(){
         return sharedPreference.getString(font, "normal");
+    }
+
+    public void setStatus(String status){
+        editor.putString(Status, status);
+        editor.commit();
+    }
+    public String getStatus(){
+        return sharedPreference.getString(Status, "1");
     }
 }
