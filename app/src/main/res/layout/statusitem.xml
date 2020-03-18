@@ -5,6 +5,38 @@
     android:orientation="vertical">
 
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/rootview"
+        android:orientation="horizontal">
+
+        <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/lastStatusImage"
+            android:layout_width="60dp"
+            android:layout_height="@dimen/size_60"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="@dimen/size_15"
+            android:src="@drawable/user_default"
+            app:civ_border_color="#ffffff"
+            app:civ_border_width="2dp" />
+
+        <com.ue.uebook.Customview.CustomTextViewBold
+            android:id="@+id/friendName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:textSize="@dimen/size_18"
+            android:textColor="@color/black"
+            android:layout_marginLeft="@dimen/size_15"
+            android:layout_toRightOf="@+id/lastStatusImage"
+            />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/size_1"
+        android:background="#9B9999" />
 
 
 </LinearLayout>

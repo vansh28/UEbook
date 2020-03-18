@@ -1,6 +1,7 @@
 package com.ue.uebook.ChatSdk;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -19,21 +20,45 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.Response.ErrorListener;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.BuildConfig;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.ue.uebook.ChatSdk.Adapter.StatusAdapter;
+import com.ue.uebook.ChatSdk.Pojo.Statusmodel;
+import com.ue.uebook.Data.ApiRequest;
+import com.ue.uebook.GlideUtils;
 import com.ue.uebook.ImageUtils;
 import com.ue.uebook.R;
+import com.ue.uebook.SessionManager;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -45,7 +70,7 @@ import static android.app.Activity.RESULT_OK;
  * Use the {@link StatusFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class StatusFragment extends Fragment implements View.OnClickListener {
+public class StatusFragment extends Fragment implements View.OnClickListener ,StatusAdapter.ItemClick{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -68,6 +93,11 @@ public class StatusFragment extends Fragment implements View.OnClickListener {
     private String imgPath = null;
     private ImageView imageview;
     Uri outPutfileUri;
+    private List<Statusmodel>statusmodelList;
+    private StatusAdapter statusAdapter;
+    private RecyclerView friendStatusList;
+    private RelativeLayout rootview;
+    private ImageView userProfiles;
     public StatusFragment() {
         // Required empty public constructor
     }
@@ -94,6 +124,7 @@ public class StatusFragment extends Fragment implements View.OnClickListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         imageUtils = new ImageUtils(getActivity().getParent());
+        statusmodelList = new ArrayList<>();
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -107,10 +138,27 @@ public class StatusFragment extends Fragment implements View.OnClickListener {
         View view = inflater.inflate(R.layout.fragment_status, container, false);
         addImageStatus = view.findViewById(R.id.addImageStatus);
         addTextStatus = view.findViewById(R.id.addTextStatus);
+        friendStatusList = view.findViewById(R.id.friendStatusList);
+        image = new SessionManager(getActivity().getApplicationContext()).getUserimage();
+        rootview = view.findViewById(R.id.header);
+        userProfiles = view.findViewById(R.id.profilePic);
+        rootview.setOnClickListener(this);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
+        friendStatusList.setLayoutManager(linearLayoutManager);
         imageview = view.findViewById(R.id.imageview);
         addImageStatus.setOnClickListener(this);
         addTextStatus.setOnClickListener(this);
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        getAllStatus(new SessionManager(getActivity()).getUserID());
+
+        if (!image.isEmpty()) {
+            GlideUtils.loadImage((AppCompatActivity) getActivity(), ApiRequest.BaseUrl+"upload/" + image, userProfiles, R.drawable.user_default, R.drawable.user_default);
+        } else {
+
+            userProfiles.setImageResource(R.drawable.user_default);
+        }
+
         return  view;
     }
 
@@ -148,6 +196,16 @@ public class StatusFragment extends Fragment implements View.OnClickListener {
             Intent intent = new Intent(getContext(),TextStatusCreateScreen.class);
             startActivity(intent);
         }
+        else if (v==rootview){
+
+        }
+    }
+
+    @Override
+    public void ontItemClick(Statusmodel oponentData, int position) {
+                    Intent intent = new Intent(getContext(),StatusViewScreen.class);
+                    intent.putExtra("friendId",oponentData.getUser_id());
+                    getContext().startActivity(intent);
     }
 
     /**
@@ -348,6 +406,80 @@ public class StatusFragment extends Fragment implements View.OnClickListener {
             return uri.getPath();
     }
 
+
+    public void getAllStatus(final String userID ){
+        final ProgressDialog progressDialog = new ProgressDialog(getContext());
+        progressDialog.setCancelable(true);
+        progressDialog.setMessage(getResources().getString(R.string.please_wait));
+        progressDialog.show();
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, ApiRequest.testBaseUrl +"userstatus/latestUserStatusList",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        progressDialog.dismiss();
+                        Log.e(" response", response);
+                        try {
+                            JSONObject jsonObject = new JSONObject(String.valueOf(response));
+                            if (jsonObject.getBoolean("error")==false){
+                                JSONArray jsonObjectResponse = jsonObject.getJSONArray("data");
+                                if (jsonObjectResponse!=null){
+                                    for (int i=0; i<jsonObjectResponse.length();i++){
+                                        Statusmodel statusmodel = new Statusmodel();
+                                        JSONObject rec = jsonObjectResponse.getJSONObject(i);
+                                        statusmodel.setStatus_id(rec.getString("status_id"));
+                                        statusmodel.setMessage(rec.getString("message"));
+                                        statusmodel.setMessage_type(rec.getString("message_type"));
+                                        statusmodel.setUrl(rec.getString("url"));
+                                        statusmodel.setUser_id(rec.getString("user_id"));
+                                        statusmodel.setUser_name(rec.getString("user_name"));
+
+                                        statusmodelList.add(statusmodel);
+                                    }
+                                    getActivity().runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            statusAdapter = new StatusAdapter((AppCompatActivity) getContext(),statusmodelList);
+                                            friendStatusList.setAdapter(statusAdapter);
+                                            statusAdapter.setItemClickListener(StatusFragment.this);
+                                        }
+                                    });
+                                }
+                            }
+                        }
+                        catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        try {
+                            String responseBody = new String(error.networkResponse.data, "utf-8");
+                            JSONObject data = new JSONObject(responseBody);
+
+                            Toast.makeText(getContext(), data.optString("message","Something wrong!"), Toast.LENGTH_LONG).show();
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
+                        progressDialog.dismiss();
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> arguments = new HashMap<String, String>();
+                arguments.put("user_id",userID);
+                return arguments;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        requestQueue.add(stringRequest);
+
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                30000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+    }
 
 
 }

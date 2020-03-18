@@ -5,6 +5,56 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".ChatSdk.StatusFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/header"
+        android:layout_marginRight="@dimen/size_10"
+        android:layout_marginLeft="@dimen/size_10"
+        android:orientation="horizontal">
+
+        <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/profilePic"
+            android:layout_width="60dp"
+            android:layout_height="@dimen/size_60"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="@dimen/size_15"
+            android:src="@drawable/user_default"
+            app:civ_border_color="#ffffff"
+            app:civ_border_width="2dp" />
+
+        <com.ue.uebook.Customview.CustomTextViewBold
+            android:id="@+id/friendName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="My Status"
+            android:textSize="@dimen/size_18"
+            android:textColor="@color/black"
+            android:layout_marginLeft="@dimen/size_15"
+            android:layout_toRightOf="@+id/profilePic"
+            />
+    </RelativeLayout>
+    <com.ue.uebook.Customview.CustomTextViewMedium
+        android:layout_width="match_parent"
+        android:text="Friends Status"
+        android:layout_below="@id/header"
+        android:id="@+id/text"
+        android:textColor="@color/black"
+        android:layout_marginLeft="@dimen/size_10"
+        android:textSize="@dimen/size_17"
+        android:layout_marginTop="@dimen/size_5"
+        android:layout_height="wrap_content"/>
+
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_margin="@dimen/size_10"
+        android:id="@+id/friendStatusList"
+        android:layout_below="@+id/text"
+        android:layout_height="match_parent"/>
     <ImageView
         android:layout_width="match_parent"
         android:id="@+id/imageview"

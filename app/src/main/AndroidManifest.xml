@@ -40,7 +40,8 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".ChatSdk.CameraView"></activity>
+        <activity android:name=".ChatSdk.StatusViewScreen"></activity>
+        <activity android:name=".ChatSdk.CameraView" />
         <activity android:name=".ChatSdk.UserListForStatusPrivacyScreen" />
         <activity android:name=".ChatSdk.UserProfileChatScreen" />
         <activity android:name=".ChatSdk.StatusPrivacyScreen" />

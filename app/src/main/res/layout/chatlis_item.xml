@@ -57,6 +57,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/size_16"
+                android:singleLine="true"
                 android:layout_marginLeft="@dimen/size_5"
                 android:textColor="#A7A7A7"/>
         </LinearLayout>
