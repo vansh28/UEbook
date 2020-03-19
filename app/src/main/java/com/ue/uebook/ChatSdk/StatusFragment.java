@@ -197,7 +197,10 @@ public class StatusFragment extends Fragment implements View.OnClickListener ,St
             startActivity(intent);
         }
         else if (v==rootview){
-
+            Intent intent = new Intent(getContext(),StatusViewScreen.class);
+            intent.putExtra("ownStatus",1);
+            intent.putExtra("friendId","");
+            getContext().startActivity(intent);
         }
     }
 
@@ -205,6 +208,7 @@ public class StatusFragment extends Fragment implements View.OnClickListener ,St
     public void ontItemClick(Statusmodel oponentData, int position) {
                     Intent intent = new Intent(getContext(),StatusViewScreen.class);
                     intent.putExtra("friendId",oponentData.getUser_id());
+                     intent.putExtra("ownStatus",2);
                     getContext().startActivity(intent);
     }
 

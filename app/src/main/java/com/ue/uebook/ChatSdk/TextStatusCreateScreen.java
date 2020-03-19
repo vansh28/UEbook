@@ -44,6 +44,8 @@ public class TextStatusCreateScreen extends AppCompatActivity implements View.On
     EmojIconActions emojIcon;
     private int fontPos=0;
     private FloatingActionButton sendStatusToServer;
+    private String bgColor="#4B0082";
+    private String fontStyle="NORMAL";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,11 +108,13 @@ public class TextStatusCreateScreen extends AppCompatActivity implements View.On
             if (pos==colorArray.length-1){
                 pos=0;
                 layout.setBackgroundColor(Color.parseColor(colorArray[0]));
+                bgColor=colorArray[0];
 
             }
             else {
                 pos++;
                 layout.setBackgroundColor(Color.parseColor(colorArray[pos]));
+                bgColor=colorArray[pos];
 
             }
 
@@ -119,17 +123,21 @@ public class TextStatusCreateScreen extends AppCompatActivity implements View.On
             if (fontPos==0){
                 textStatus.setTypeface(null, Typeface.BOLD);
                 fontPos++;
+                fontStyle="BOLD";
             }
             else if (fontPos==1){
                 textStatus.setTypeface(null, Typeface.ITALIC);
                 fontPos++;
+                fontStyle="ITALIC";
             }
             else if (fontPos==2){
                 textStatus.setTypeface(null, Typeface.BOLD_ITALIC);
                 fontPos++;
+                fontStyle="BOLD_ITALIC";
             }
             else if (fontPos==3){
                 textStatus.setTypeface(null, Typeface.NORMAL);
+                fontStyle="NORMAL";
                 fontPos=0;
             }
         }
@@ -141,14 +149,15 @@ public class TextStatusCreateScreen extends AppCompatActivity implements View.On
                 textStatus.setEnabled(true);
             }
             else {
-                        UploadStatus(new SessionManager(getApplication()).getUserID(),"text",textStatus.getText().toString());
+                        UploadStatus(new SessionManager(getApplication()).getUserID(),"text",textStatus.getText().toString(),bgColor,fontStyle);
             }
         }
 
     }
 
-    public void UploadStatus(final String userID ,final  String message_type ,final  String message ){
+    public void UploadStatus(final String userID ,final  String message_type ,final  String message ,final  String bg_color , final String font_style ){
         final ProgressDialog progressDialog = new ProgressDialog(this);
+        Log.e("ddd",bg_color+font_style);
         progressDialog.setCancelable(true);
         progressDialog.setMessage(getResources().getString(R.string.please_wait));
         progressDialog.show();
@@ -198,6 +207,9 @@ public class TextStatusCreateScreen extends AppCompatActivity implements View.On
                 arguments.put("user_id",userID);
                 arguments.put("message_type",message_type);
                 arguments.put("message",message);
+                arguments.put("bg_color",bg_color);
+                arguments.put("font_style",font_style);
+
                 return arguments;
             }
         };

@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
+    android:id="@+id/rootview"
     android:layout_height="match_parent">
-    <TextView
+    <hani.momanii.supernova_emoji_library.Helper.EmojiconTextView
         android:layout_width="match_parent"
         android:id="@+id/textView"
         android:textSize="@dimen/size_25"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         android:gravity="center"
+        app:emojiconSize="35sp"
         android:layout_height="match_parent"/>
 
 </LinearLayout>
