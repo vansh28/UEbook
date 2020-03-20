@@ -342,8 +342,6 @@ public class StatusFragment extends Fragment implements View.OnClickListener ,St
             if (requestCode==PICK_IMAGE_CAMERA){
                 Uri filePath = data.getData();
                 bitmap = (Bitmap) data.getExtras().get("data");
-
-
                 Intent intent = new Intent(getContext(),StatusTrimVideo.class);
                 intent.putExtra("file",getPath(getImageUri(getContext(),bitmap)));
                 intent.putExtra("type","image");
@@ -421,6 +419,9 @@ public class StatusFragment extends Fragment implements View.OnClickListener ,St
                     @Override
                     public void onResponse(String response) {
                         progressDialog.dismiss();
+
+                        if(statusmodelList.size()>0)
+                            statusmodelList.clear();
                         Log.e(" response", response);
                         try {
                             JSONObject jsonObject = new JSONObject(String.valueOf(response));
@@ -484,6 +485,7 @@ public class StatusFragment extends Fragment implements View.OnClickListener ,St
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
     }
+
 
 
 }

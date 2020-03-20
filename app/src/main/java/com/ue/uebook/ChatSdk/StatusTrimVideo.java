@@ -1,5 +1,6 @@
 package com.ue.uebook.ChatSdk;
 
+import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
@@ -18,13 +19,26 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.ue.uebook.Data.ApiRequest;
 import com.ue.uebook.R;
+
+import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 import hani.momanii.supernova_emoji_library.Actions.EmojIconActions;
 import hani.momanii.supernova_emoji_library.Helper.EmojiconEditText;
+import okhttp3.MediaType;
 
 public class StatusTrimVideo extends AppCompatActivity implements View.OnClickListener {
     private ImageView status_image ,backbtn;
@@ -137,4 +151,71 @@ public class StatusTrimVideo extends AppCompatActivity implements View.OnClickLi
             }
         }
     }
+    public void UploadStatus(final String userID ,final  String message_type ,final  String message ,  File image_file ){
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setCancelable(true);
+        final MediaType MEDIA_TYPE_PNG = MediaType.parse("image/png");
+        progressDialog.setMessage(getResources().getString(R.string.please_wait));
+        progressDialog.show();
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, ApiRequest.testBaseUrl+"userstatus/addUserChatStatus",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        progressDialog.dismiss();
+                        Log.e(" response", response);
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            if (jsonObject.getBoolean("error")==false) {
+                                finish();
+                            }
+                            Toast.makeText(StatusTrimVideo.this, jsonObject.getString("message"), Toast.LENGTH_LONG).show();
+
+                        }
+
+                        catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        try {
+                            String responseBody = new String(error.networkResponse.data, "utf-8");
+                            JSONObject data = new JSONObject(responseBody);
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+
+                                }
+                            });
+                            Toast.makeText(StatusTrimVideo.this, data.optString("message","Something wrong!"), Toast.LENGTH_LONG).show();
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
+                        progressDialog.dismiss();
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> arguments = new HashMap<String, String>();
+                arguments.put("user_id",userID);
+                arguments.put("message_type",message_type);
+                arguments.put("message",message);
+                arguments.put("image_file",image_file.getName());
+                return arguments;
+            }
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(StatusTrimVideo.this);
+        requestQueue.add(stringRequest);
+
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                30000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+    }
+
+
 }

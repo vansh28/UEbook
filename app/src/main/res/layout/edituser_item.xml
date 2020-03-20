@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+    <com.ue.uebook.Customview.CustomTextViewBold
+        android:layout_width="match_parent"
+        android:text="Enter your name"
+        android:layout_margin="@dimen/size_10"
+        android:textColor="@color/black"
+        android:textSize="@dimen/size_18"
+        android:layout_height="wrap_content"/>
+<hani.momanii.supernova_emoji_library.Helper.EmojiconEditText
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"/>
+
+
+</LinearLayout>

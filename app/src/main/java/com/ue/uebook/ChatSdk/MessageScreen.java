@@ -935,7 +935,7 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
                             pb.setProgress(downloadedSize);
                             float per = ((float)downloadedSize/totalSize) *
                                     100;
-                            cur_val.setText("Downloaded " + downloadedSize + "KB / " + totalSize + "KB (" + (int)per + "%)" );
+                            cur_val.setText("Downloaded "  + downloadedSize + "KB / " + totalSize + "KB (" + (int)per + "%)" );
                         }
                     });
                 }
