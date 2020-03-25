@@ -887,6 +887,26 @@ public class ApiRequest {
                 .build();
         client.newCall(request).enqueue(callback);
     }
+
+    public void requestforUploadImageToStatus( String user_id ,File image_file, String caption,String msg_type ,Callback callback) {
+        String url = null;
+        url = testBaseUrl+"userstatus/addUserChatStatus";
+        OkHttpClient client = new OkHttpClient();
+        final MediaType MEDIA_TYPE_PNG = MediaType.parse("image/png");
+        RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
+                .addFormDataPart("user_id",user_id)
+                .addFormDataPart("msg_type",msg_type )
+                .addFormDataPart("image_file", image_file.getName(), RequestBody.create(MEDIA_TYPE_PNG, image_file))
+                .addFormDataPart("caption",caption)
+                .build();
+        Request request = new Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .build();
+        client.newCall(request).enqueue(callback);
+    }
+
+
 }
 
 

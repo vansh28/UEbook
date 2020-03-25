@@ -5,6 +5,15 @@ public class StatusViewDetail {
     private String message_type;
     private String  bg_color;
     private String  font_style;
+    private String  caption;
+
+    public String getCaption() {
+        return caption;
+    }
+
+    public void setCaption(String caption) {
+        this.caption = caption;
+    }
 
     public String getBg_color() {
         return bg_color;

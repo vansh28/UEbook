@@ -7,11 +7,15 @@ import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import com.squareup.picasso.Picasso;
 import com.ue.uebook.ChatSdk.Pojo.StatusViewDetail;
 import com.ue.uebook.R;
 
@@ -23,16 +27,18 @@ import hani.momanii.supernova_emoji_library.Helper.EmojiconTextView;
 
 public class ViewPagerStatus  extends PagerAdapter {
 
-    private Context context;
+    private AppCompatActivity context;
     private LayoutInflater layoutInflater;
     private List<StatusViewDetail>statusViewDetailList;
     private EmojiconTextView textView ;
     private Handler myHandler;
     private Runnable myRunnable;
-    private LinearLayout rootview;
+    private RelativeLayout rootview,imageViewLayout;
+    private ImageView statusImage;
+    private TextView caption;
     Timer timer;
     TimerTask timerTask;
-    public ViewPagerStatus(Context applicationContext, List<StatusViewDetail> statusViewDetailList) {
+    public ViewPagerStatus(AppCompatActivity applicationContext, List<StatusViewDetail> statusViewDetailList) {
         this.context=applicationContext;
         this.statusViewDetailList=statusViewDetailList;
 
@@ -57,14 +63,33 @@ public class ViewPagerStatus  extends PagerAdapter {
         View view = layoutInflater.inflate(R.layout.detailsimageview, null);
         textView = view.findViewById(R.id.textView);
         rootview = view.findViewById(R.id.rootview);
-        textView.setText(statusViewDetailList.get(position).getMessage());
-        if (statusViewDetailList.get(position).getBg_color()!=null){
+        statusImage = view.findViewById(R.id.statusImage);
+        caption = view.findViewById(R.id.caption);
+        imageViewLayout=view.findViewById(R.id.imageViewLayout);
+        if (statusViewDetailList.get(position).getMessage_type().equalsIgnoreCase("text")){
+            textView.setVisibility(View.VISIBLE);
+            imageViewLayout.setVisibility(View.GONE);
+            textView.setText(statusViewDetailList.get(position).getMessage());
             rootview.setBackgroundColor(Color.parseColor(statusViewDetailList.get(position).getBg_color()));
+            setFont(statusViewDetailList.get(position).getFont_style());
         }
-        else {
+        else if (statusViewDetailList.get(position).getMessage_type().equalsIgnoreCase("image")){
+            textView.setVisibility(View.GONE);
+            imageViewLayout.setVisibility(View.VISIBLE);
+            Picasso.get()
+                    .load("http://dnddemo.com/ebooks/"+ statusViewDetailList.get(position).getMessage())
+                    .placeholder(R.drawable.noimage)
+                    .error(R.drawable.noimage)
+                    .fit().centerInside()
+                    .into(statusImage);
+
+            caption.setText(statusViewDetailList.get(position).getCaption());
+          //  GlideUtils.loadImage( context, "http://dnddemo.com/ebooks/"+ statusViewDetailList.get(position).getMessage(), statusImage, R.drawable.noimage, R.drawable.noimage);
 
         }
-        setFont(statusViewDetailList.get(position).getFont_style());
+
+
+
 
         ViewPager vp = (ViewPager) container;
 

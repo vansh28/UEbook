@@ -48,7 +48,6 @@ import okhttp3.Response;
 import static android.app.Activity.RESULT_OK;
 import static com.facebook.FacebookSdk.getApplicationContext;
 public class Search_Fragment extends Fragment implements View.OnClickListener, Search_History_Adapter.SearchHistoryItemClick ,User_Search_List.SearchListItemClick{
-
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private String mParam1;
@@ -116,6 +115,7 @@ public class Search_Fragment extends Fragment implements View.OnClickListener, S
         edittext_search.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
 
 
             }

@@ -1,6 +1,5 @@
 package com.ue.uebook.ChatSdk;
 
-import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
@@ -8,6 +7,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -17,30 +17,23 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.annotation.RequiresApi;
 
-import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.ue.uebook.BaseActivity;
 import com.ue.uebook.Data.ApiRequest;
 import com.ue.uebook.R;
-
-import org.json.JSONObject;
+import com.ue.uebook.SessionManager;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
+import java.io.IOException;
 
 import hani.momanii.supernova_emoji_library.Actions.EmojIconActions;
 import hani.momanii.supernova_emoji_library.Helper.EmojiconEditText;
-import okhttp3.MediaType;
 
-public class StatusTrimVideo extends AppCompatActivity implements View.OnClickListener {
+public class StatusTrimVideo extends BaseActivity implements View.OnClickListener {
     private ImageView status_image ,backbtn;
     private Intent intent;
     private String type;
@@ -51,6 +44,7 @@ public class StatusTrimVideo extends AppCompatActivity implements View.OnClickLi
     private EmojiconEditText edit_chat_message;
     EmojIconActions emojIcon;
     final int PIC_CROP = 1;
+    private ImageButton button_upload_send;
     private Bitmap bmp;
 
     @Override
@@ -69,9 +63,9 @@ public class StatusTrimVideo extends AppCompatActivity implements View.OnClickLi
         intent = getIntent();
         file = intent.getStringExtra("file");
 
-
         if(file!=null){
             bmp = (BitmapFactory.decodeFile(file));
+
             status_image.setImageBitmap(bmp);
         }
 
@@ -98,7 +92,7 @@ public class StatusTrimVideo extends AppCompatActivity implements View.OnClickLi
             finish();
         }
         else if (v==button_status_send){
-
+            addImageToStatus(new SessionManager(getApplicationContext()).getUserID(), new File(file),edit_chat_message.getText().toString(),"image");
         }
     }
     public Uri getImageUri(Context inContext, Bitmap inImage) {
@@ -151,71 +145,68 @@ public class StatusTrimVideo extends AppCompatActivity implements View.OnClickLi
             }
         }
     }
-    public void UploadStatus(final String userID ,final  String message_type ,final  String message ,  File image_file ){
-        final ProgressDialog progressDialog = new ProgressDialog(this);
-        progressDialog.setCancelable(true);
-        final MediaType MEDIA_TYPE_PNG = MediaType.parse("image/png");
-        progressDialog.setMessage(getResources().getString(R.string.please_wait));
-        progressDialog.show();
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, ApiRequest.testBaseUrl+"userstatus/addUserChatStatus",
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        progressDialog.dismiss();
-                        Log.e(" response", response);
-                        try {
-                            JSONObject jsonObject = new JSONObject(response);
-                            if (jsonObject.getBoolean("error")==false) {
-                                finish();
-                            }
-                            Toast.makeText(StatusTrimVideo.this, jsonObject.getString("message"), Toast.LENGTH_LONG).show();
 
-                        }
 
-                        catch (Exception e) {
-                            e.printStackTrace();
-                        }
 
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        try {
-                            String responseBody = new String(error.networkResponse.data, "utf-8");
-                            JSONObject data = new JSONObject(responseBody);
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-
-                                }
-                            });
-                            Toast.makeText(StatusTrimVideo.this, data.optString("message","Something wrong!"), Toast.LENGTH_LONG).show();
-                        } catch (Exception ex) {
-                            ex.printStackTrace();
-                        }
-                        progressDialog.dismiss();
-                    }
-                }) {
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private void addImageToStatus(String user_id, File image, String caption ,String messageType) {
+        ApiRequest request = new ApiRequest();
+        showLoadingIndicator();
+        request.requestforUploadImageToStatus(user_id, image , caption,messageType ,new okhttp3.Callback() {
             @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> arguments = new HashMap<String, String>();
-                arguments.put("user_id",userID);
-                arguments.put("message_type",message_type);
-                arguments.put("message",message);
-                arguments.put("image_file",image_file.getName());
-                return arguments;
+            public void onFailure(okhttp3.Call call, IOException e) {
+                Log.d("error", "error");
+                hideLoadingIndicator();
             }
-        };
 
-        RequestQueue requestQueue = Volley.newRequestQueue(StatusTrimVideo.this);
-        requestQueue.add(stringRequest);
+            @Override
+            public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
+                hideLoadingIndicator();
+                final String myResponse = response.body().string();
+                Log.e("response", myResponse);
+                Gson gson = new GsonBuilder().create();
+                // final CheckPaymentDone form = gson.fromJson(myResponse, CheckPaymentDone.class);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        finish();
+//                        try {
+//                            JSONObject obj = new JSONObject(myResponse);
+//                            JSONObject  b = obj.getJSONObject("data");
+//
+//                            String val = b.getString("converted_amount");
+//
+//                            convertPrice = val;
+//                            Log.e("USD",val);
+//                            payment.setText("$"+val);
+//
+//                        } catch (JSONException e) {
+//                            e.printStackTrace();
+//                        }
+                    }
+                });
 
-        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
-                30000,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+            }
+        });
     }
+
+    public int getOrientation(Uri selectedImage) {
+        int orientation = 0;
+        final String[] projection = new String[]{MediaStore.Images.Media.ORIENTATION};
+        final Cursor cursor = getContentResolver().query(selectedImage, projection, null, null, null);
+        if(cursor != null) {
+            final int orientationColumnIndex = cursor.getColumnIndex(MediaStore.Images.Media.ORIENTATION);
+            if(cursor.moveToFirst()) {
+                orientation = cursor.isNull(orientationColumnIndex) ? 0 : cursor.getInt(orientationColumnIndex);
+            }
+            cursor.close();
+        }
+        return orientation;
+    }
+
+
+
 
 
 }

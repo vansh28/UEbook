@@ -205,7 +205,7 @@ public class TextStatusCreateScreen extends AppCompatActivity implements View.On
             protected Map<String, String> getParams() {
                 Map<String, String> arguments = new HashMap<String, String>();
                 arguments.put("user_id",userID);
-                arguments.put("message_type",message_type);
+                arguments.put("msg_type",message_type);
                 arguments.put("message",message);
                 arguments.put("bg_color",bg_color);
                 arguments.put("font_style",font_style);

@@ -146,6 +146,7 @@ dependencies {
     implementation 'com.github.khizar1556.MKVideoPlayer:mkvideoplayer:0.1.5'
     implementation 'com.github.lzyzsd:circleprogress:1.2.1'
 
+    implementation 'com.squareup.picasso:picasso:2.71828'
     compile('com.stripe:stripe-android:8.0.0') {
         transitive = true
     }

@@ -7,6 +7,8 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.hardware.Camera;
+import android.hardware.camera2.CameraAccessException;
+import android.hardware.camera2.CameraManager;
 import android.media.CamcorderProfile;
 import android.media.MediaRecorder;
 import android.net.Uri;
@@ -16,8 +18,8 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.SurfaceView;
 import android.view.View;
-import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -37,7 +39,9 @@ public class CameraView extends AppCompatActivity implements View.OnClickListene
     private FrameLayout camera_preview;
     private Camera mCamera;
     private CameraPreview mPreview;
-    private Button captureImage ,button_gallary;
+    CameraManager manager;
+    private String cameraId = CAMERA_BACK;
+    private ImageButton captureImage,button_gallary;
     private Camera.PictureCallback mPicture;
     public static final int MEDIA_TYPE_IMAGE = 1;
     public static final int MEDIA_TYPE_VIDEO = 2;
@@ -46,6 +50,9 @@ public class CameraView extends AppCompatActivity implements View.OnClickListene
     private MediaRecorder mediaRecorder;
     private BottomSheetDialog mBottomSheetDialog;
     private Bitmap bitmap;
+    public static final String CAMERA_FRONT = "1";
+    public static final String CAMERA_BACK = "0";
+    private String cameraIdFront;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,6 +64,13 @@ public class CameraView extends AppCompatActivity implements View.OnClickListene
         mCamera = getCameraInstance();
         checkCameraHardware(getApplicationContext());
         Camera.Parameters params = mCamera.getParameters();
+         manager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
+        try {
+             cameraIdFront = manager.getCameraIdList()[1];
+        } catch (CameraAccessException e) {
+            e.printStackTrace();
+        }
+
         params.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
         mCamera.setParameters(params);
         captureImage.setOnClickListener(new View.OnClickListener() {
@@ -65,37 +79,35 @@ public class CameraView extends AppCompatActivity implements View.OnClickListene
                 mCamera.takePicture(null, null, mPicture);
             }
         });
-//        captureImage.setOnLongClickListener(new View.OnLongClickListener() {
-//            @Override
-//            public boolean onLongClick(View v) {
-//                if (isRecording) {
-//                    // stop recording and release camera
-//                    mediaRecorder.stop();  // stop the recording
-//                    releaseMediaRecorder(); // release the MediaRecorder object
-//                    mCamera.lock();         // take camera access back from MediaRecorder
-//
-//                    // inform the user that recording has stopped
-//                    captureImage.setText("Capture");
-//                    isRecording = false;
-//                } else {
-//                    // initialize video camera
-//                    if (prepareVideoRecorder()) {
-//                        // Camera is available and unlocked, MediaRecorder is prepared,
-//                        // now you can start recording
-//                        mediaRecorder.start();
-//
-//                        // inform the user that recording has started
-//                        captureImage.setText("Stop");
-//                        isRecording = true;
-//                    } else {
-//                        // prepare didn't work, release the camera
-//                        releaseMediaRecorder();
-//                        // inform user
-//                    }
-//                }
-//                return false;
-//            }
-//        });
+        captureImage.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if (isRecording) {
+                    // stop recording and release camera
+                    mediaRecorder.stop();  // stop the recording
+                    releaseMediaRecorder(); // release the MediaRecorder object
+                    mCamera.lock();         // take camera access back from MediaRecorder
+
+                    // inform the user that recording has stopped
+                    isRecording = false;
+                } else {
+                    // initialize video camera
+                    if (prepareVideoRecorder()) {
+                        // Camera is available and unlocked, MediaRecorder is prepared,
+                        // now you can start recording
+                        mediaRecorder.start();
+                        // inform the user that recording has started
+
+                        isRecording = true;
+                    } else {
+                        // prepare didn't work, release the camera
+                        releaseMediaRecorder();
+                        // inform user
+                    }
+                }
+                return false;
+            }
+        });
         // Create our Preview view and set it as the content of our activity.
         mPicture = new Camera.PictureCallback() {
 
@@ -125,10 +137,11 @@ public class CameraView extends AppCompatActivity implements View.OnClickListene
                     try {
                         Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
                         Intent intent = new Intent(CameraView.this,StatusTrimVideo.class);
-                        intent.putExtra("file",getPath(getImageUri(CameraView.this,bitmap)));
+                        intent.putExtra("file",getPath(selectedImage));
+                        intent.putExtra("imagefile",pictureFile);
                         intent.putExtra("type","image");
                         startActivity(intent);
-
+                        finish();
                     } catch (Exception e) {
                         e.printStackTrace();
 
@@ -327,10 +340,11 @@ public class CameraView extends AppCompatActivity implements View.OnClickListene
                     String filePath = cursor.getString(columnIndex);
                     cursor.close();
                     Intent intent = new Intent(CameraView.this,StatusTrimVideo.class);
-                    intent.putExtra("file",getPath(getImageUri(this,bitmap)));
+                    intent.putExtra("file",getPath(selectedImage));
+
                     intent.putExtra("type","image");
                   startActivity(intent);
-
+                    finish();
                     Bitmap yourSelectedImage = BitmapFactory.decodeFile(filePath);
                     /* Now you have choosen image in Bitmap format in object "yourSelectedImage". You can use it in way you want! */
                 }

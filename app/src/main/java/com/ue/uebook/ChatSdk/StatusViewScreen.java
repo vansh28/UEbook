@@ -101,12 +101,13 @@ public class StatusViewScreen extends BaseActivity {
                                         statusmodel.setMessage_type(rec.getString("message_type"));
                                         statusmodel.setBg_color(rec.getString("bg_color"));
                                         statusmodel.setFont_style(rec.getString("font_style"));
+                                        statusmodel.setCaption(rec.getString("caption"));
                                         statusViewDetailList.add(statusmodel);
                                     }
                                   runOnUiThread(new Runnable() {
                                         @Override
                                         public void run() {
-                                          viewPagerIngredent = new ViewPagerStatus(getApplicationContext(),statusViewDetailList);
+                                          viewPagerIngredent = new ViewPagerStatus(StatusViewScreen.this,statusViewDetailList);
                                             viewPager.setAdapter(viewPagerIngredent);
 
                                             StatusListLineView statusListLineView = new StatusListLineView(statusViewDetailList);
@@ -179,12 +180,13 @@ public class StatusViewScreen extends BaseActivity {
                                         statusmodel.setMessage_type(rec.getString("message_type"));
                                         statusmodel.setBg_color(rec.getString("bg_color"));
                                         statusmodel.setFont_style(rec.getString("font_style"));
+                                        statusmodel.setCaption(rec.getString("caption"));
                                         statusViewDetailList.add(statusmodel);
                                     }
                                     runOnUiThread(new Runnable() {
                                         @Override
                                         public void run() {
-                                            viewPagerIngredent = new ViewPagerStatus(getApplicationContext(),statusViewDetailList);
+                                            viewPagerIngredent = new ViewPagerStatus( StatusViewScreen.this,statusViewDetailList);
                                             viewPager.setAdapter(viewPagerIngredent);
 
                                             StatusListLineView statusListLineView = new StatusListLineView(statusViewDetailList);
