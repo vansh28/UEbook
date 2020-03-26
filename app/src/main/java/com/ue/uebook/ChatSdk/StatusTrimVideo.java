@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
+import android.widget.VideoView;
 
 import androidx.annotation.RequiresApi;
 
@@ -38,14 +40,17 @@ public class StatusTrimVideo extends BaseActivity implements View.OnClickListene
     private Intent intent;
     private String type;
     private String file;
-    private File imageFile;
     private RelativeLayout root_view;
-    private ImageButton button_chat_emoji,button_status_send;
+    private ImageButton button_chat_emoji,button_status_send ,playvideo;
     private EmojiconEditText edit_chat_message;
     EmojIconActions emojIcon;
     final int PIC_CROP = 1;
     private ImageButton button_upload_send;
     private Bitmap bmp;
+    private VideoView videoview;
+    private boolean isplaying =false;
+    private boolean isImage = true;
+    private File videoFile ,imageFile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,19 +62,58 @@ public class StatusTrimVideo extends BaseActivity implements View.OnClickListene
         button_status_send = findViewById(R.id.button_chat_send);
         button_status_send.setOnClickListener(this);
         button_chat_emoji.setOnClickListener(this);
+        videoview =findViewById(R.id.videoview);
         edit_chat_message = findViewById(R.id.edit_chat_message);
         backbtn = findViewById(R.id.backbtn);
         backbtn.setOnClickListener(this);
         intent = getIntent();
-        file = intent.getStringExtra("file");
+        playvideo = findViewById(R.id.playvideo);
+        playvideo.setOnClickListener(this);
 
-        if(file!=null){
+        type = intent.getStringExtra("type");
+        if (type.equalsIgnoreCase("image")){
+            file = intent.getStringExtra("file");
+            if(file!=null){
+                isImage = true;
+                imageFile = new File(file);
+                status_image.setVisibility(View.VISIBLE);
+                videoview.setVisibility(View.GONE);
+                bmp = (BitmapFactory.decodeFile(file));
+                status_image.setImageBitmap(bmp);
+            }
+        }
+
+        else if (type.equalsIgnoreCase("cameraimage")){
+            isImage = true;
+            file = intent.getStringExtra("file");
+            status_image.setVisibility(View.VISIBLE);
+            videoview.setVisibility(View.GONE);
             bmp = (BitmapFactory.decodeFile(file));
-
             status_image.setImageBitmap(bmp);
         }
 
-        type = intent.getStringExtra("type");
+        else if (type.equalsIgnoreCase("video")){
+            isImage = false;
+            playvideo.setVisibility(View.VISIBLE);
+            playvideo.setBackgroundResource(R.drawable.play);
+            file = intent.getStringExtra("file");
+            Uri uri = Uri.parse(file);
+            videoview.setVideoURI(uri);
+            videoview.requestFocus();
+            status_image.setVisibility(View.GONE);
+            videoview.setVisibility(View.VISIBLE);
+            try {
+                String videoPathStr = getRealPathFromURI(uri);
+                videoFile = new File(videoPathStr);
+
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+                Toast.makeText(this, "Please Select Again", Toast.LENGTH_SHORT).show();
+            }
+
+        }
+
         emojIcon = new EmojIconActions(this, root_view, edit_chat_message, button_chat_emoji);
         emojIcon.ShowEmojIcon();
         emojIcon.setIconsIds(R.drawable.ic_action_keyboard, R.drawable.smiley);
@@ -84,6 +128,15 @@ public class StatusTrimVideo extends BaseActivity implements View.OnClickListene
                 Log.e("fff", "Keyboard closed");
             }
         });
+
+        videoview.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mediaPlayer) {
+                playvideo.setBackgroundResource(R.drawable.play);
+                isplaying=false;
+            }
+        });
+
     }
 
     @Override
@@ -92,7 +145,25 @@ public class StatusTrimVideo extends BaseActivity implements View.OnClickListene
             finish();
         }
         else if (v==button_status_send){
-            addImageToStatus(new SessionManager(getApplicationContext()).getUserID(), new File(file),edit_chat_message.getText().toString(),"image");
+            if (isImage){
+                addImageToStatus(new SessionManager(getApplicationContext()).getUserID(), imageFile,edit_chat_message.getText().toString(),"image");
+            }
+            else
+                {
+                addVideoToStatus(new SessionManager(getApplicationContext()).getUserID(), videoFile,edit_chat_message.getText().toString(),"video");
+            }
+        }
+        else if (v==playvideo){
+               if (isplaying){
+                   playvideo.setBackgroundResource(R.drawable.play);
+                   videoview.pause();
+                   isplaying=false;
+               }
+               else {
+                   playvideo.setBackgroundResource(R.drawable.pause);
+                   videoview.start();
+                   isplaying=true;
+               }
         }
     }
     public Uri getImageUri(Context inContext, Bitmap inImage) {
@@ -205,8 +276,57 @@ public class StatusTrimVideo extends BaseActivity implements View.OnClickListene
         return orientation;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private void addVideoToStatus(String user_id, File videoFiles, String caption ,String messageType) {
+
+        ApiRequest request = new ApiRequest();
+        showLoadingIndicator();
+        request.requestforUploadVideoToStatus(user_id, videoFiles , caption,messageType ,new okhttp3.Callback() {
+            @Override
+            public void onFailure(okhttp3.Call call, IOException e) {
+                Log.d("error", "error");
+                hideLoadingIndicator();
+            }
+
+            @Override
+            public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
+                hideLoadingIndicator();
+                final String myResponse = response.body().string();
+                Log.e("response", myResponse);
+                Gson gson = new GsonBuilder().create();
+                // final CheckPaymentDone form = gson.fromJson(myResponse, CheckPaymentDone.class);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        finish();
+//                        try {
+//                            JSONObject obj = new JSONObject(myResponse);
+//                            JSONObject  b = obj.getJSONObject("data");
+//
+//                            String val = b.getString("converted_amount");
+//
+//                            convertPrice = val;
+//                            Log.e("USD",val);
+//                            payment.setText("$"+val);
+//
+//                        } catch (JSONException e) {
+//                            e.printStackTrace();
+//                        }
+                    }
+                });
 
 
+            }
+        });
+    }
+
+    public String getRealPathFromURI(Uri contentUri) {
+        String[] proj = { MediaStore.Images.Media.DATA };
+        Cursor cursor = managedQuery(contentUri, proj, null, null, null);
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        return cursor.getString(column_index);
+    }
 
 
 }

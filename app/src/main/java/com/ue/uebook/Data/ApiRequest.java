@@ -905,7 +905,22 @@ public class ApiRequest {
                 .build();
         client.newCall(request).enqueue(callback);
     }
-
+    public void requestforUploadVideoToStatus( String user_id ,File videofile, String caption,String msg_type ,Callback callback) {
+        String url = null;
+        url = testBaseUrl+"userstatus/addUserChatStatus";
+        OkHttpClient client = new OkHttpClient();
+        RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
+                .addFormDataPart("user_id",user_id)
+                .addFormDataPart("msg_type",msg_type )
+                .addFormDataPart("video_file", videofile.getName(), RequestBody.create(MediaType.parse("video/mp4"), videofile))
+                .addFormDataPart("caption",caption)
+                .build();
+        Request request = new Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .build();
+        client.newCall(request).enqueue(callback);
+    }
 
 }
 

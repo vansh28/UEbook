@@ -25,7 +25,22 @@
         android:layout_below="@id/header"
         android:layout_above="@id/layout_chat_send_container"
         android:layout_margin="@dimen/size_5"
+        android:visibility="gone"
         android:layout_height="match_parent"/>
+    <VideoView
+        android:layout_width="match_parent"
+        android:layout_below="@+id/header"
+        android:id="@+id/videoview"
+        android:visibility="gone"
+        android:layout_above="@id/layout_chat_send_container"
+        android:layout_height="match_parent"/>
+    <ImageButton
+        android:layout_width="40dp"
+        android:id="@+id/playvideo"
+        android:visibility="gone"
+        android:background="@android:color/transparent"
+        android:layout_centerInParent="true"
+        android:layout_height="40dp"/>
     <LinearLayout
         android:id="@+id/layout_chat_send_container"
         style="@style/MatchWidth"

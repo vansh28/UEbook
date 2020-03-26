@@ -37,4 +37,27 @@
         android:layout_height="wrap_content"/>
 
 </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:id="@+id/videoViewLayout"
+        android:visibility="gone"
+
+        android:layout_height="match_parent">
+       <VideoView
+           android:layout_width="match_parent"
+           android:id="@+id/videoView"
+           android:layout_height="match_parent"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:id="@+id/videocaption"
+            android:text="hsdkshdf kfd ksfdgfg"
+            android:textColor="@color/black"
+            android:layout_alignParentBottom="true"
+            android:gravity="center"
+            android:layout_marginBottom="@dimen/size_100"
+            android:textSize="@dimen/size_20"
+            android:layout_height="wrap_content"/>
+    </RelativeLayout>
+
 </RelativeLayout>

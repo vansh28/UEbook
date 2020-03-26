@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/size_100"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/size_60"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:weightSum="3">
+        <ImageButton
+            android:id="@+id/cameraBtn"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:src="@drawable/audiochat"
+            android:layout_gravity="center"
+            android:background="@android:color/transparent"
+            android:layout_height="wrap_content"/>
+
+        <ImageButton
+            android:id="@+id/videoBtn"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:src="@drawable/videochat"
+            android:background="@android:color/transparent"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content"/>
+        <ImageButton
+            android:id="@+id/galleryBtn"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:src="@drawable/gallerychat"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+</LinearLayout>

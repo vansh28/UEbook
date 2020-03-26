@@ -1,32 +1,26 @@
 package com.ue.uebook.ChatSdk;
 
-import android.Manifest;
 import android.app.ProgressDialog;
+import android.content.ContentValues;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
-import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -39,7 +33,7 @@ import com.android.volley.Response.ErrorListener;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.bumptech.glide.BuildConfig;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.ue.uebook.ChatSdk.Adapter.StatusAdapter;
 import com.ue.uebook.ChatSdk.Pojo.Statusmodel;
@@ -52,8 +46,8 @@ import com.ue.uebook.SessionManager;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -93,11 +87,14 @@ public class StatusFragment extends Fragment implements View.OnClickListener ,St
     private String imgPath = null;
     private ImageView imageview;
     Uri outPutfileUri;
+    Uri imageUri;
     private List<Statusmodel>statusmodelList;
     private StatusAdapter statusAdapter;
     private RecyclerView friendStatusList;
     private RelativeLayout rootview;
     private ImageView userProfiles;
+    private BottomSheetDialog mBottomSheetDialog;
+    private ImageButton camerabtn,videobtn,gallerybtn;
     public StatusFragment() {
         // Required empty public constructor
     }
@@ -189,8 +186,10 @@ public class StatusFragment extends Fragment implements View.OnClickListener ,St
     @Override
     public void onClick(View v) {
         if (v==addImageStatus){
-                Intent intent = new Intent(getContext(),CameraView.class);
-                startActivity(intent);
+//                Intent intent = new Intent(getContext(),CameraView.class);
+//                startActivity(intent);
+
+            showBottomSheet();
         }
         else if (v==addTextStatus){
             Intent intent = new Intent(getContext(),TextStatusCreateScreen.class);
@@ -201,6 +200,37 @@ public class StatusFragment extends Fragment implements View.OnClickListener ,St
             intent.putExtra("ownStatus",1);
             intent.putExtra("friendId","");
             getContext().startActivity(intent);
+        }
+        else if (v==camerabtn){
+            mBottomSheetDialog.dismiss();
+            ContentValues values = new ContentValues();
+            values.put(MediaStore.Images.Media.TITLE, "New Picture");
+            values.put(MediaStore.Images.Media.DESCRIPTION, "From your Camera");
+             imageUri = getContext().getContentResolver().insert(
+                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+            startActivityForResult(intent, 2);
+
+        }
+        else if (v==gallerybtn){
+            mBottomSheetDialog.dismiss();
+//            Intent i = new Intent(Intent.ACTION_PICK,
+//                    android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+//            final int ACTIVITY_SELECT_IMAGE = 1234;
+//            startActivityForResult(i, ACTIVITY_SELECT_IMAGE);
+
+            Intent pickIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            pickIntent.setType("image/* video/*");
+            startActivityForResult(pickIntent, 1234);
+
+        }
+        else if (v==videobtn){
+            mBottomSheetDialog.dismiss();
+            Intent takeVideoIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+            if (takeVideoIntent.resolveActivity(getContext().getPackageManager()) != null) {
+                startActivityForResult(takeVideoIntent, 1);
+            }
         }
     }
 
@@ -226,113 +256,6 @@ public class StatusFragment extends Fragment implements View.OnClickListener ,St
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
-    private void sendTakePictureIntent() {
-
-//        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//        cameraIntent.putExtra( MediaStore.EXTRA_FINISH_ON_COMPLETION, true);
-//        if (cameraIntent.resolveActivity(getPackageManager()) != null) {
-//            startActivityForResult(cameraIntent, REQUEST_PICTURE_CAPTURE);
-//
-//            File pictureFile = null;
-//            try {
-//                pictureFile = getPictureFile();
-//            } catch (IOException ex) {
-//                Toast.makeText(this,
-//                        "Photo file can't be created, please try again",
-//                        Toast.LENGTH_SHORT).show();
-//                return;
-//            }
-//            if (pictureFile != null) {
-//                Uri photoURI = FileProvider.getUriForFile(this,
-//                        "com.zoftino.android.fileprovider",
-//                        pictureFile);
-//                cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-//                startActivityForResult(cameraIntent, REQUEST_PICTURE_CAPTURE);
-//            }
-//        }
-        Intent intent;
-        String BX1 = android.os.Build.MANUFACTURER;
-        if (BX1.equalsIgnoreCase("samsung")) {
-            Log.e(" device", " isssssssssss samsung" + BX1);
-            intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            startActivityForResult(intent, PICK_IMAGE_CAMERA);
-        } else {
-            Log.e(" inside other", " devices isssssssssss");
-            intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            File file = new File(Environment.getExternalStorageDirectory(), String.valueOf(System.currentTimeMillis()) + ".jpg");
-            //     outPutfileUri = Uri.fromFile(file);
-            outPutfileUri = FileProvider.getUriForFile(getContext(),
-                    BuildConfig.APPLICATION_ID + ".provider",
-                    file);
-            String uriString = outPutfileUri.toString();
-            File myFile = new File(uriString);
-            String path = myFile.getAbsolutePath();
-            // this method is used to get pic name
-            // getPicName(path, outPutfileUri, myFile);
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, outPutfileUri);
-            startActivityForResult(intent, PICK_IMAGE_CAMERA);
-        }
-    }
-    private void selectImage() {
-        try {
-            PackageManager pm = getContext().getPackageManager();
-            int hasPerm = pm.checkPermission(Manifest.permission.CAMERA, getContext().getPackageName());
-            if (hasPerm == PackageManager.PERMISSION_GRANTED) {
-                final CharSequence[] options = {"Take Photo", "Choose From Gallery", "Cancel"};
-                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                builder.setTitle("Select Option");
-                builder.setItems(options, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int item) {
-                        if (options[item].equals("Take Photo")) {
-                            dialog.dismiss();
-                            Intent intents = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                            startActivityForResult(intents, PICK_IMAGE_CAMERA);
-                        } else if (options[item].equals("Choose From Gallery")) {
-                            dialog.dismiss();
-//                            Intent intent = new   Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-//                            intent.setType("video/*, image/*");
-//                            startActivityForResult(intent, PICK_IMAGE_GALLERY);
-
-                            Intent photoPickerIntent = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                            photoPickerIntent.setType("*/*");
-                            startActivityForResult(photoPickerIntent, PICK_IMAGE_GALLERY);
-
-
-                        } else if (options[item].equals("Cancel")) {
-                            dialog.dismiss();
-                        }
-
-                    }
-
-
-                });
-                builder.show();
-            } else {
-                ActivityCompat.requestPermissions(getActivity(),
-                        new String[]{Manifest.permission.CAMERA},
-                        MY_PERMISSIONS_REQUEST_CAMERA);
-
-
-            }
-        } catch (Exception e) {
-            Toast.makeText(getContext(), "Camera Permission error", Toast.LENGTH_SHORT).show();
-            e.printStackTrace();
-        }
-    }
-    private String getEncodedString(Bitmap bitmap){
-
-        ByteArrayOutputStream os = new ByteArrayOutputStream();
-
-        bitmap.compress(Bitmap.CompressFormat.JPEG,100, os);
-
-      /* or use below if you want 32 bit images
-
-       bitmap.compress(Bitmap.CompressFormat.PNG, (0–100 compression), os);*/
-        byte[] imageArr = os.toByteArray();
-        return Base64.encodeToString(imageArr, Base64.URL_SAFE);
-
-    }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -349,8 +272,6 @@ public class StatusFragment extends Fragment implements View.OnClickListener ,St
                 // scam_image_img.setImageBitmap(bitmap);
 
             }
-
-
 
         }if (requestCode == PICK_IMAGE_GALLERY) {
                 Uri selectedImage = data.getData();
@@ -381,14 +302,57 @@ public class StatusFragment extends Fragment implements View.OnClickListener ,St
 
                 }
             }
-
-        else
-            {
-                Toast.makeText(getContext(), "Please Try Again ", Toast.LENGTH_SHORT).show();
+        if(requestCode == 1234 && resultCode == RESULT_OK){
+            Uri selectedImage = data.getData();
+            String[] filePathColumn = {MediaStore.Images.Media.DATA};
+            Cursor cursor = getContext().getContentResolver().query(selectedImage, filePathColumn, null, null, null);
+            cursor.moveToFirst();
+            try {
+                bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), selectedImage);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-
+            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+            String filePath = cursor.getString(columnIndex);
+            cursor.close();
+            Intent intent = new Intent(getContext(),StatusTrimVideo.class);
+            intent.putExtra("file",getPath(selectedImage));
+            intent.putExtra("type","image");
+            getContext().startActivity(intent);
+        }
+        if (requestCode == 1 && resultCode == RESULT_OK) {
+            Uri videoUri = data.getData();
+            Intent intent = new Intent(getContext(),StatusTrimVideo.class);
+            intent.putExtra("file",videoUri.toString());
+            intent.putExtra("type","video");
+            startActivity(intent);
+        }
+        if (requestCode == 2 && resultCode == RESULT_OK) {
+            try {
+                Bitmap thumbnail = MediaStore.Images.Media.getBitmap(
+                        getActivity().getContentResolver(), imageUri);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            Intent intent = new Intent(getContext(), StatusTrimVideo.class);
+            intent.putExtra("file", getRealPathFromURI(imageUri));
+            intent.putExtra("type", "cameraimage");
+            startActivity(intent);
+        }
 
 }
+
+    public String getRealPathFromURI(Uri contentUri) {
+        String[] proj = { MediaStore.Images.Media.DATA };
+        Cursor cursor = getActivity().managedQuery(contentUri, proj, null, null, null);
+        int column_index = cursor
+                .getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        return cursor.getString(column_index);
+    }
+
+
+
     public Uri getImageUri(Context inContext, Bitmap inImage) {
 
         String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
@@ -485,7 +449,18 @@ public class StatusFragment extends Fragment implements View.OnClickListener ,St
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
     }
-
+    private void showBottomSheet() {
+        final View bottomSheetLayout = getLayoutInflater().inflate(R.layout.camerabottomitem, null);
+        mBottomSheetDialog = new BottomSheetDialog(getContext());
+        mBottomSheetDialog.setContentView(bottomSheetLayout);
+        gallerybtn = mBottomSheetDialog.findViewById(R.id.galleryBtn);
+        camerabtn = mBottomSheetDialog.findViewById(R.id.cameraBtn);
+        videobtn = mBottomSheetDialog.findViewById(R.id.videoBtn);
+        gallerybtn.setOnClickListener(this);
+        camerabtn.setOnClickListener(this);
+        videobtn.setOnClickListener(this);
+        mBottomSheetDialog.show();
+    }
 
 
 }

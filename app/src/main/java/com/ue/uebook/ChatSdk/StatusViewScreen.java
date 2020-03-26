@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
+import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
@@ -22,8 +23,11 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.ue.uebook.BaseActivity;
 import com.ue.uebook.ChatSdk.Adapter.StatusListLineView;
+import com.ue.uebook.ChatSdk.Adapter.StatusSeenAdapter;
 import com.ue.uebook.ChatSdk.Adapter.ViewPagerStatus;
 import com.ue.uebook.ChatSdk.Pojo.StatusViewDetail;
 import com.ue.uebook.Data.ApiRequest;
@@ -49,12 +53,20 @@ public class StatusViewScreen extends BaseActivity {
     private int ownStatus;
     private int dotscount;
     private ImageView[] dots;
+    private BottomSheetBehavior mBottomSheetBehavior;
+    private RecyclerView viewSeenUserList;
+    private StatusSeenAdapter statusSeenAdapter;
+     private BottomSheetDialog mBottomSheetDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_status_view_screen);
         viewPager = findViewById(R.id.viewPager);
         listView = findViewById(R.id.listView);
+        NestedScrollView bottomSheet = findViewById(R.id.bottom_sheet);
+        viewSeenUserList = findViewById(R.id.viewList);
+        mBottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
+        bottomSheet.setNestedScrollingEnabled(true);
         my_linear_layout  = findViewById(R.id.SliderDots);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
@@ -63,10 +75,15 @@ public class StatusViewScreen extends BaseActivity {
         intent = getIntent();
         friendId =intent.getStringExtra("friendId");
         ownStatus = intent.getIntExtra("ownStatus",0);
+
+
+
         if (ownStatus==1){
+            showBottomSheet();
             getOwnStatus(new  SessionManager(getApplicationContext()).getUserID());
         }
         else if (ownStatus==2){
+
             getAllStatus(new SessionManager(getApplicationContext()).getUserID(),friendId);
         }
         viewPager.setOnTouchListener(new View.OnTouchListener() {
@@ -281,6 +298,20 @@ public class StatusViewScreen extends BaseActivity {
 
 
         });
+    }
+    private void showBottomSheet() {
+        final View bottomSheetLayout = getLayoutInflater().inflate(R.layout.statusbottomsheet, null);
+        mBottomSheetDialog = new BottomSheetDialog(this);
+        mBottomSheetDialog.setContentView(bottomSheetLayout);
+        mBottomSheetDialog.setCancelable(false);
+        mBottomSheetDialog.setCanceledOnTouchOutside(false);
+        RecyclerView recyclerView = bottomSheetLayout.findViewById(R.id.viewList);
+        LinearLayoutManager linearLayoutManagers = new LinearLayoutManager(this);
+        linearLayoutManagers.setOrientation(RecyclerView.VERTICAL);
+        recyclerView.setLayoutManager(linearLayoutManagers);
+        statusSeenAdapter = new StatusSeenAdapter();
+        recyclerView.setAdapter(statusSeenAdapter);
+        mBottomSheetDialog.show();
     }
 
 

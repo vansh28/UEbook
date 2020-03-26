@@ -3,13 +3,16 @@ package com.ue.uebook.ChatSdk.Adapter;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.MediaController;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.VideoView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.PagerAdapter;
@@ -33,9 +36,10 @@ public class ViewPagerStatus  extends PagerAdapter {
     private EmojiconTextView textView ;
     private Handler myHandler;
     private Runnable myRunnable;
-    private RelativeLayout rootview,imageViewLayout;
+    private RelativeLayout rootview,imageViewLayout ,videoLayout;
     private ImageView statusImage;
-    private TextView caption;
+    private TextView caption ,videocaption;
+    private VideoView videoView;
     Timer timer;
     TimerTask timerTask;
     public ViewPagerStatus(AppCompatActivity applicationContext, List<StatusViewDetail> statusViewDetailList) {
@@ -66,9 +70,13 @@ public class ViewPagerStatus  extends PagerAdapter {
         statusImage = view.findViewById(R.id.statusImage);
         caption = view.findViewById(R.id.caption);
         imageViewLayout=view.findViewById(R.id.imageViewLayout);
+        videocaption = view.findViewById(R.id.videocaption);
+        videoLayout = view.findViewById(R.id.videoViewLayout);
+        videoView = view.findViewById(R.id.videoView);
         if (statusViewDetailList.get(position).getMessage_type().equalsIgnoreCase("text")){
             textView.setVisibility(View.VISIBLE);
             imageViewLayout.setVisibility(View.GONE);
+            videoLayout.setVisibility(View.GONE);
             textView.setText(statusViewDetailList.get(position).getMessage());
             rootview.setBackgroundColor(Color.parseColor(statusViewDetailList.get(position).getBg_color()));
             setFont(statusViewDetailList.get(position).getFont_style());
@@ -76,6 +84,7 @@ public class ViewPagerStatus  extends PagerAdapter {
         else if (statusViewDetailList.get(position).getMessage_type().equalsIgnoreCase("image")){
             textView.setVisibility(View.GONE);
             imageViewLayout.setVisibility(View.VISIBLE);
+            videoLayout.setVisibility(View.GONE);
             Picasso.get()
                     .load("http://dnddemo.com/ebooks/"+ statusViewDetailList.get(position).getMessage())
                     .placeholder(R.drawable.noimage)
@@ -88,8 +97,19 @@ public class ViewPagerStatus  extends PagerAdapter {
 
         }
 
+        else if (statusViewDetailList.get(position).getMessage_type().equalsIgnoreCase("video"))
+        {
 
-
+            imageViewLayout.setVisibility(View.GONE);
+             textView.setVisibility(View.GONE);
+             videoLayout.setVisibility(View.GONE);
+             videocaption.setText(statusViewDetailList.get(position).getCaption());
+             videoView.setVideoURI(Uri.parse("http://dnddemo.com/ebooks/"+ statusViewDetailList.get(position).getMessage()));
+             MediaController mc = new MediaController(context);
+              videoView.setMediaController(mc);
+              videoView.requestFocus();
+              videoView.start();
+        }
 
         ViewPager vp = (ViewPager) container;
 

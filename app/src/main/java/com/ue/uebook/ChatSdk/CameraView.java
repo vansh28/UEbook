@@ -26,6 +26,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.ue.uebook.R;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -41,7 +42,7 @@ public class CameraView extends AppCompatActivity implements View.OnClickListene
     private CameraPreview mPreview;
     CameraManager manager;
     private String cameraId = CAMERA_BACK;
-    private ImageButton captureImage,button_gallary;
+    private ImageButton captureImage,button_gallary ,button_video ;
     private Camera.PictureCallback mPicture;
     public static final int MEDIA_TYPE_IMAGE = 1;
     public static final int MEDIA_TYPE_VIDEO = 2;
@@ -53,6 +54,7 @@ public class CameraView extends AppCompatActivity implements View.OnClickListene
     public static final String CAMERA_FRONT = "1";
     public static final String CAMERA_BACK = "0";
     private String cameraIdFront;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,6 +62,8 @@ public class CameraView extends AppCompatActivity implements View.OnClickListene
         camera_preview = findViewById(R.id.camera_preview);
         captureImage = findViewById(R.id.button_capture);
         button_gallary = findViewById(R.id.button_gallary);
+        button_video = findViewById(R.id.button_video);
+
         button_gallary.setOnClickListener(this);
         mCamera = getCameraInstance();
         checkCameraHardware(getApplicationContext());
@@ -76,36 +80,44 @@ public class CameraView extends AppCompatActivity implements View.OnClickListene
         captureImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mCamera.takePicture(null, null, mPicture);
+                Intent takeVideoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                if (takeVideoIntent.resolveActivity(getPackageManager()) != null) {
+                    startActivityForResult(takeVideoIntent, 2);
+                }
             }
         });
-        captureImage.setOnLongClickListener(new View.OnLongClickListener() {
+
+        button_video.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onLongClick(View v) {
-                if (isRecording) {
-                    // stop recording and release camera
-                    mediaRecorder.stop();  // stop the recording
-                    releaseMediaRecorder(); // release the MediaRecorder object
-                    mCamera.lock();         // take camera access back from MediaRecorder
-
-                    // inform the user that recording has stopped
-                    isRecording = false;
-                } else {
-                    // initialize video camera
-                    if (prepareVideoRecorder()) {
-                        // Camera is available and unlocked, MediaRecorder is prepared,
-                        // now you can start recording
-                        mediaRecorder.start();
-                        // inform the user that recording has started
-
-                        isRecording = true;
-                    } else {
-                        // prepare didn't work, release the camera
-                        releaseMediaRecorder();
-                        // inform user
-                    }
+            public void onClick(View v) {
+                Intent takeVideoIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+                if (takeVideoIntent.resolveActivity(getPackageManager()) != null) {
+                    startActivityForResult(takeVideoIntent, 1);
                 }
-                return false;
+
+//                if (isRecording) {
+//                    // stop recording and release camera
+//                    mediaRecorder.stop();  // stop the recording
+//                    releaseMediaRecorder(); // release the MediaRecorder object
+//                    mCamera.lock();         // take camera access back from MediaRecorder
+//                    Toast.makeText(CameraView.this,"Stop",Toast.LENGTH_SHORT).show();
+//                    // inform the user that recording has stopped
+//                    isRecording = false;
+//                } else {
+//                    // initialize video camera
+//                    if (prepareVideoRecorder()) {
+//                        // Camera is available and unlocked, MediaRecorder is prepared,
+//                        // now you can start recording
+//                        mediaRecorder.start();
+//                        // inform the user that recording has started
+//                        Toast.makeText(CameraView.this,"Start",Toast.LENGTH_SHORT).show();
+//                        isRecording = true;
+//                    } else {
+//                        // prepare didn't work, release the camera
+//                        releaseMediaRecorder();
+//                        // inform user
+//                    }
+//                }
             }
         });
         // Create our Preview view and set it as the content of our activity.
@@ -266,11 +278,11 @@ public class CameraView extends AppCompatActivity implements View.OnClickListene
         try {
             mediaRecorder.prepare();
         } catch (IllegalStateException e) {
-            Log.d("f", "IllegalStateException preparing MediaRecorder: " + e.getMessage());
+            Log.d("eroor", "IllegalStateException preparing MediaRecorder: " + e.getMessage());
             releaseMediaRecorder();
             return false;
         } catch (IOException e) {
-            Log.d("fdf", "IOException preparing MediaRecorder: " + e.getMessage());
+            Log.d("eroor", "IOException preparing MediaRecorder: " + e.getMessage());
             releaseMediaRecorder();
             return false;
         }
@@ -285,6 +297,7 @@ public class CameraView extends AppCompatActivity implements View.OnClickListene
 
     private void releaseMediaRecorder(){
         if (mediaRecorder != null) {
+            mCamera.stopPreview();
             mediaRecorder.reset();   // clear recorder configuration
             mediaRecorder.release(); // release the recorder object
             mediaRecorder = null;
@@ -318,6 +331,7 @@ public class CameraView extends AppCompatActivity implements View.OnClickListene
             final int ACTIVITY_SELECT_IMAGE = 1234;
             startActivityForResult(i, ACTIVITY_SELECT_IMAGE);
         }
+
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
@@ -342,13 +356,42 @@ public class CameraView extends AppCompatActivity implements View.OnClickListene
                     Intent intent = new Intent(CameraView.this,StatusTrimVideo.class);
                     intent.putExtra("file",getPath(selectedImage));
 
-                    intent.putExtra("type","image");
+                    intent.putExtra("type","gallary");
                   startActivity(intent);
                     finish();
                     Bitmap yourSelectedImage = BitmapFactory.decodeFile(filePath);
                     /* Now you have choosen image in Bitmap format in object "yourSelectedImage". You can use it in way you want! */
                 }
+
+            case 1:
+                if (requestCode == 1 && resultCode == RESULT_OK) {
+                    Uri videoUri = data.getData();
+                    Intent intent = new Intent(CameraView.this,StatusTrimVideo.class);
+                    intent.putExtra("file",videoUri.toString());
+                    intent.putExtra("type","video");
+                    startActivity(intent);
+                    finish();
+                }
+            case 2:
+                if (requestCode == 2 && resultCode == RESULT_OK) {
+                    Bundle extras = data.getExtras();
+
+
+
+                    Bitmap imageBitmap = (Bitmap) extras.get("data");
+                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                    imageBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                    byte[] byteArray = stream.toByteArray();
+
+                    Intent intent = new Intent(CameraView.this, StatusTrimVideo.class);
+                    intent.putExtra("file",byteArray);
+                    intent.putExtra("type", "image");
+                    startActivity(intent);
+                    finish();
+                }
         }
+
+
 
     };
 
