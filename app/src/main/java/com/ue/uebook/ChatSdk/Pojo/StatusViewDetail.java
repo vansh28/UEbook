@@ -1,12 +1,33 @@
 package com.ue.uebook.ChatSdk.Pojo;
 
-public class StatusViewDetail {
+import java.io.Serializable;
+
+public class StatusViewDetail implements Serializable {
+
+
+    private String id;
     private String message;
     private String message_type;
     private String  bg_color;
     private String  font_style;
     private String  caption;
+    private String userid;
 
+    public String getUserid() {
+        return userid;
+    }
+
+    public void setUserid(String userid) {
+        this.userid = userid;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
     public String getCaption() {
         return caption;
     }

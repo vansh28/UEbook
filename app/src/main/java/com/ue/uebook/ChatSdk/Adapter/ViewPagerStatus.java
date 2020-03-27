@@ -3,6 +3,7 @@ package com.ue.uebook.ChatSdk.Adapter;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -10,15 +11,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.MediaController;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.VideoView;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.ue.uebook.ChatSdk.Pojo.StatusViewDetail;
 import com.ue.uebook.R;
 
@@ -41,6 +48,7 @@ public class ViewPagerStatus  extends PagerAdapter {
     private TextView caption ,videocaption;
     private VideoView videoView;
     Timer timer;
+    private ProgressBar progressBar;
     TimerTask timerTask;
     public ViewPagerStatus(AppCompatActivity applicationContext, List<StatusViewDetail> statusViewDetailList) {
         this.context=applicationContext;
@@ -65,41 +73,64 @@ public class ViewPagerStatus  extends PagerAdapter {
     public Object instantiateItem(ViewGroup container, final int position) {
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = layoutInflater.inflate(R.layout.detailsimageview, null);
+        progressBar = (ProgressBar) view.findViewById(R.id.progress);
+
         textView = view.findViewById(R.id.textView);
         rootview = view.findViewById(R.id.rootview);
         statusImage = view.findViewById(R.id.statusImage);
         caption = view.findViewById(R.id.caption);
-        imageViewLayout=view.findViewById(R.id.imageViewLayout);
+        imageViewLayout = view.findViewById(R.id.imageViewLayout);
         videocaption = view.findViewById(R.id.videocaption);
         videoLayout = view.findViewById(R.id.videoViewLayout);
         videoView = view.findViewById(R.id.videoView);
-        if (statusViewDetailList.get(position).getMessage_type().equalsIgnoreCase("text")){
+        if (statusViewDetailList.get(position).getMessage_type().equalsIgnoreCase("text")) {
+            progressBar.setVisibility(View.GONE);
             textView.setVisibility(View.VISIBLE);
             imageViewLayout.setVisibility(View.GONE);
             videoLayout.setVisibility(View.GONE);
             textView.setText(statusViewDetailList.get(position).getMessage());
             rootview.setBackgroundColor(Color.parseColor(statusViewDetailList.get(position).getBg_color()));
             setFont(statusViewDetailList.get(position).getFont_style());
-        }
-        else if (statusViewDetailList.get(position).getMessage_type().equalsIgnoreCase("image")){
+        } else if (statusViewDetailList.get(position).getMessage_type().equalsIgnoreCase("image")) {
             textView.setVisibility(View.GONE);
             imageViewLayout.setVisibility(View.VISIBLE);
             videoLayout.setVisibility(View.GONE);
-            Picasso.get()
-                    .load("http://dnddemo.com/ebooks/"+ statusViewDetailList.get(position).getMessage())
-                    .placeholder(R.drawable.noimage)
-                    .error(R.drawable.noimage)
-                    .fit().centerInside()
-                    .into(statusImage);
 
             caption.setText(statusViewDetailList.get(position).getCaption());
-          //  GlideUtils.loadImage( context, "http://dnddemo.com/ebooks/"+ statusViewDetailList.get(position).getMessage(), statusImage, R.drawable.noimage, R.drawable.noimage);
+            Glide.with(context)
+                    .load("http://dnddemo.com/ebooks/" + statusViewDetailList.get(position).getMessage())
 
+                    .listener(new RequestListener<Drawable>() {
+                        @Override
+                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                            progressBar.setVisibility(View.GONE);
+                            return false;
+                        }
+
+                        @Override
+                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                            progressBar.setVisibility(View.GONE);
+                            return false;
+                        }
+                    })
+                    .into(statusImage);
         }
+
+
+//            Picasso.get()
+//                    .load("http://dnddemo.com/ebooks/"+ statusViewDetailList.get(position).getMessage())
+//                    .placeholder(R.drawable.noimage)
+//                    .error(R.drawable.noimage)
+//                    .fit().centerInside()
+//                    .into(statusImage);
+
+
+        //  GlideUtils.loadImage( context, "http://dnddemo.com/ebooks/"+ statusViewDetailList.get(position).getMessage(), statusImage, R.drawable.noimage, R.drawable.noimage);
+
 
         else if (statusViewDetailList.get(position).getMessage_type().equalsIgnoreCase("video"))
         {
-
+            progressBar.setVisibility(View.GONE);
             imageViewLayout.setVisibility(View.GONE);
              textView.setVisibility(View.GONE);
              videoLayout.setVisibility(View.GONE);

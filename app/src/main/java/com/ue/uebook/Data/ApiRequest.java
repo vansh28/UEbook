@@ -921,8 +921,22 @@ public class ApiRequest {
                 .build();
         client.newCall(request).enqueue(callback);
     }
+    public void requestforViewStatus( String user_id , String chat_status_id,String view_user_id ,String flag,Callback callback) {
+        String url = null;
+        url = testBaseUrl+"userstatus/viewChatStatus";
+        OkHttpClient client = new OkHttpClient();
+        RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
+                .addFormDataPart("user_id",user_id)
+                .addFormDataPart("chat_status_id",chat_status_id )
+                .addFormDataPart("view_user_id",view_user_id)
+                .addFormDataPart("is_update_or_view",flag)
 
+                .build();
+        Request request = new Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .build();
+        client.newCall(request).enqueue(callback);
+    }
 }
-
-
 

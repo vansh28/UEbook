@@ -2,16 +2,16 @@ package com.ue.uebook.ChatSdk;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
-import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
@@ -25,6 +25,8 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.ue.uebook.BaseActivity;
 import com.ue.uebook.ChatSdk.Adapter.StatusListLineView;
 import com.ue.uebook.ChatSdk.Adapter.StatusSeenAdapter;
@@ -37,6 +39,7 @@ import com.ue.uebook.SessionManager;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -57,16 +60,14 @@ public class StatusViewScreen extends BaseActivity {
     private RecyclerView viewSeenUserList;
     private StatusSeenAdapter statusSeenAdapter;
      private BottomSheetDialog mBottomSheetDialog;
+    private LinearLayout bottom_sheet;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_status_view_screen);
         viewPager = findViewById(R.id.viewPager);
         listView = findViewById(R.id.listView);
-        NestedScrollView bottomSheet = findViewById(R.id.bottom_sheet);
-        viewSeenUserList = findViewById(R.id.viewList);
-        mBottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
-        bottomSheet.setNestedScrollingEnabled(true);
+        bottom_sheet = findViewById(R.id.bottom_sheet);
         my_linear_layout  = findViewById(R.id.SliderDots);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
@@ -76,24 +77,24 @@ public class StatusViewScreen extends BaseActivity {
         friendId =intent.getStringExtra("friendId");
         ownStatus = intent.getIntExtra("ownStatus",0);
 
-
-
         if (ownStatus==1){
-            showBottomSheet();
-            getOwnStatus(new  SessionManager(getApplicationContext()).getUserID());
+
+            statusViewDetailList = (List<StatusViewDetail>) intent.getSerializableExtra("arraylist");
+            viewPagerIngredent = new ViewPagerStatus( StatusViewScreen.this,statusViewDetailList);
+            viewPager.setAdapter(viewPagerIngredent);
+
+            StatusListLineView statusListLineView = new StatusListLineView(statusViewDetailList);
+            listView.setAdapter(statusListLineView);
+            if (statusViewDetailList.size()>1){
+                dotSlide();
+            }
         }
         else if (ownStatus==2){
 
             getAllStatus(new SessionManager(getApplicationContext()).getUserID(),friendId);
         }
-        viewPager.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
 
 
-                return false;
-            }
-        });
     }
     public void getAllStatus(final String userID ,final String status_user_id ){
         final ProgressDialog progressDialog = new ProgressDialog(this);
@@ -119,6 +120,8 @@ public class StatusViewScreen extends BaseActivity {
                                         statusmodel.setBg_color(rec.getString("bg_color"));
                                         statusmodel.setFont_style(rec.getString("font_style"));
                                         statusmodel.setCaption(rec.getString("caption"));
+                                        statusmodel.setId(rec.getString("id"));
+                                        statusmodel.setUserid(rec.getString("userid"));
                                         statusViewDetailList.add(statusmodel);
                                     }
                                   runOnUiThread(new Runnable() {
@@ -193,24 +196,20 @@ public class StatusViewScreen extends BaseActivity {
                                     for (int i=0; i<jsonObjectResponse.length();i++){
                                         StatusViewDetail statusmodel = new StatusViewDetail();
                                         JSONObject rec = jsonObjectResponse.getJSONObject(i);
+                                        statusmodel.setId(rec.getString("id"));
                                         statusmodel.setMessage(rec.getString("message"));
                                         statusmodel.setMessage_type(rec.getString("message_type"));
                                         statusmodel.setBg_color(rec.getString("bg_color"));
                                         statusmodel.setFont_style(rec.getString("font_style"));
                                         statusmodel.setCaption(rec.getString("caption"));
+                                        statusmodel.setUserid(rec.getString("userid"));
                                         statusViewDetailList.add(statusmodel);
+
                                     }
                                     runOnUiThread(new Runnable() {
                                         @Override
                                         public void run() {
-                                            viewPagerIngredent = new ViewPagerStatus( StatusViewScreen.this,statusViewDetailList);
-                                            viewPager.setAdapter(viewPagerIngredent);
 
-                                            StatusListLineView statusListLineView = new StatusListLineView(statusViewDetailList);
-                                            listView.setAdapter(statusListLineView);
-                                            if (statusViewDetailList.size()>1){
-                                                dotSlide();
-                                            }
                                         }
                                     });
                                 }
@@ -276,27 +275,28 @@ public class StatusViewScreen extends BaseActivity {
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                  Log.e("onPageScrolled", String.valueOf(position));
+
+                  if (ownStatus==2){
+                      updateViewStats(statusViewDetailList.get(position).getUserid(),statusViewDetailList.get(position).getId(),new SessionManager(getApplication()).getUserID(),"update");
+                  }
+                  else   if (ownStatus==1){
+                      updateViewStats(new SessionManager(getApplication()).getUserID(),statusViewDetailList.get(position).getId(),"","view");
+                  }
 
             }
 
             @Override
             public void onPageSelected(int position) {
-
                 for (int i = 0; i < dotscount; i++) {
                     dots[i].setBackground(ContextCompat.getDrawable(StatusViewScreen.this, R.drawable.nonactivedot));
                 }
-
                 dots[position].setBackground(ContextCompat.getDrawable(StatusViewScreen.this, R.drawable.activedot));
-
-
             }
-
             @Override
             public void onPageScrollStateChanged(int state) {
 
             }
-
-
         });
     }
     private void showBottomSheet() {
@@ -305,6 +305,7 @@ public class StatusViewScreen extends BaseActivity {
         mBottomSheetDialog.setContentView(bottomSheetLayout);
         mBottomSheetDialog.setCancelable(false);
         mBottomSheetDialog.setCanceledOnTouchOutside(false);
+
         RecyclerView recyclerView = bottomSheetLayout.findViewById(R.id.viewList);
         LinearLayoutManager linearLayoutManagers = new LinearLayoutManager(this);
         linearLayoutManagers.setOrientation(RecyclerView.VERTICAL);
@@ -312,6 +313,46 @@ public class StatusViewScreen extends BaseActivity {
         statusSeenAdapter = new StatusSeenAdapter();
         recyclerView.setAdapter(statusSeenAdapter);
         mBottomSheetDialog.show();
+    }
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private void updateViewStats(String user_id, String chatsTatusId, String viewuserid ,String flag)
+    {
+        ApiRequest request = new ApiRequest();
+        request.requestforViewStatus(user_id , chatsTatusId,viewuserid ,flag,new okhttp3.Callback() {
+            @Override
+            public void onFailure(okhttp3.Call call, IOException e) {
+                Log.d("error", "error");
+
+            }
+
+            @Override
+            public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
+                hideLoadingIndicator();
+                final String myResponse = response.body().string();
+                Gson gson = new GsonBuilder().create();
+                // final CheckPaymentDone form = gson.fromJson(myResponse, CheckPaymentDone.class);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+
+//                        try {
+//                            JSONObject obj = new JSONObject(myResponse);
+//                            JSONObject  b = obj.getJSONObject("data");
+//
+//                            String val = b.getString("converted_amount");
+//
+//                            convertPrice = val;
+//                            Log.e("USD",val);
+//                            payment.setText("$"+val);
+//
+//                        } catch (JSONException e) {
+//                            e.printStackTrace();
+//                        }
+                    }
+                });
+
+            }
+        });
     }
 
 
