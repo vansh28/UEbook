@@ -85,7 +85,7 @@ public class StatusViewScreen extends BaseActivity {
 
             StatusListLineView statusListLineView = new StatusListLineView(statusViewDetailList);
             listView.setAdapter(statusListLineView);
-            if (statusViewDetailList.size()>1){
+            if (statusViewDetailList.size()>0){
                 dotSlide();
             }
         }
@@ -132,7 +132,7 @@ public class StatusViewScreen extends BaseActivity {
 
                                             StatusListLineView statusListLineView = new StatusListLineView(statusViewDetailList);
                                             listView.setAdapter(statusListLineView);
-                                             if (statusViewDetailList.size()>1){
+                                             if (statusViewDetailList.size()>0){
                                                  dotSlide();
                                              }
                                         }

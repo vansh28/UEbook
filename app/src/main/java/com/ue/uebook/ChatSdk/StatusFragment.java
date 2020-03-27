@@ -640,6 +640,9 @@ public class StatusFragment extends Fragment implements View.OnClickListener, St
                     @Override
                     public void onResponse(String response) {
                         progressDialog.dismiss();
+                        if (statusViewDetailList.size()>0)
+                            statusViewDetailList.clear();
+
                         Log.e(" response", response);
                         try {
                             JSONObject jsonObject = new JSONObject(String.valueOf(response));
