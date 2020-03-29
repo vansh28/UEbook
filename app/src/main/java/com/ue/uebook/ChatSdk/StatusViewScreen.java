@@ -1,10 +1,13 @@
 package com.ue.uebook.ChatSdk;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Display;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -61,40 +64,54 @@ public class StatusViewScreen extends BaseActivity {
     private StatusSeenAdapter statusSeenAdapter;
      private BottomSheetDialog mBottomSheetDialog;
     private LinearLayout bottom_sheet;
+    private Display display;
+    private  int height;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_status_view_screen);
         viewPager = findViewById(R.id.viewPager);
         listView = findViewById(R.id.listView);
-        bottom_sheet = findViewById(R.id.bottom_sheet);
         my_linear_layout  = findViewById(R.id.SliderDots);
+           my_linear_layout.setWeightSum(5f);
+         display = getWindowManager().getDefaultDisplay();
+        // ((display.getWidth()*20)/100)
+         height = display.getHeight();// (
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
         listView.setLayoutManager(linearLayoutManager);
         statusViewDetailList = new ArrayList<>();
         intent = getIntent();
+
         friendId =intent.getStringExtra("friendId");
         ownStatus = intent.getIntExtra("ownStatus",0);
-
+           //showBottomSheet();
         if (ownStatus==1){
-
             statusViewDetailList = (List<StatusViewDetail>) intent.getSerializableExtra("arraylist");
             viewPagerIngredent = new ViewPagerStatus( StatusViewScreen.this,statusViewDetailList);
             viewPager.setAdapter(viewPagerIngredent);
-
             StatusListLineView statusListLineView = new StatusListLineView(statusViewDetailList);
             listView.setAdapter(statusListLineView);
-            if (statusViewDetailList.size()>0){
+
+//            int width = display.getWidth()/statusViewDetailList.size();
+//            for(int i=0;i<statusViewDetailList.size();i++)
+//            {
+//                ImageView ii= new ImageView(this);
+//                LinearLayout.LayoutParams parms = new LinearLayout.LayoutParams(width,height);
+//                parms.setMargins(5,0,5,0);
+//                ii.setLayoutParams(parms);
+//                ii.setBackgroundResource(R.drawable.activedot);
+//                my_linear_layout.addView(ii);
+//            }
+
+            if (statusViewDetailList.size()>0)
+            {
                 dotSlide();
             }
         }
         else if (ownStatus==2){
-
             getAllStatus(new SessionManager(getApplicationContext()).getUserID(),friendId);
         }
-
-
     }
     public void getAllStatus(final String userID ,final String status_user_id ){
         final ProgressDialog progressDialog = new ProgressDialog(this);
@@ -132,6 +149,11 @@ public class StatusViewScreen extends BaseActivity {
 
                                             StatusListLineView statusListLineView = new StatusListLineView(statusViewDetailList);
                                             listView.setAdapter(statusListLineView);
+
+
+
+
+
                                              if (statusViewDetailList.size()>0){
                                                  dotSlide();
                                              }
@@ -256,17 +278,18 @@ public class StatusViewScreen extends BaseActivity {
 
         dotscount = viewPagerIngredent.getCount();
         dots = new ImageView[dotscount];
-
+        int width = display.getWidth()/statusViewDetailList.size();
         for (int i = 0; i < dotscount; i++) {
 
             dots[i] = new ImageView(StatusViewScreen.this);
+
             dots[i].setBackground(ContextCompat.getDrawable(StatusViewScreen.this, R.drawable.nonactivedot));
 
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            LinearLayout.LayoutParams parms = new LinearLayout.LayoutParams(width,height);
+            parms.setMargins(5,0,5,0);
+            dots[i].setLayoutParams(parms);
 
-            params.setMargins(8, 0, 8, 0);
-
-            my_linear_layout.addView(dots[i], params);
+            my_linear_layout.addView(dots[i], parms);
 
         }
 
@@ -303,13 +326,14 @@ public class StatusViewScreen extends BaseActivity {
         final View bottomSheetLayout = getLayoutInflater().inflate(R.layout.statusbottomsheet, null);
         mBottomSheetDialog = new BottomSheetDialog(this);
         mBottomSheetDialog.setContentView(bottomSheetLayout);
-        mBottomSheetDialog.setCancelable(false);
         mBottomSheetDialog.setCanceledOnTouchOutside(false);
-
         RecyclerView recyclerView = bottomSheetLayout.findViewById(R.id.viewList);
         LinearLayoutManager linearLayoutManagers = new LinearLayoutManager(this);
         linearLayoutManagers.setOrientation(RecyclerView.VERTICAL);
         recyclerView.setLayoutManager(linearLayoutManagers);
+        BottomSheetBehavior mBehavior = BottomSheetBehavior.from((View) bottomSheetLayout.getParent());
+
+        mBehavior.setPeekHeight(150);
         statusSeenAdapter = new StatusSeenAdapter();
         recyclerView.setAdapter(statusSeenAdapter);
         mBottomSheetDialog.show();
@@ -354,6 +378,16 @@ public class StatusViewScreen extends BaseActivity {
             }
         });
     }
+    public void Add_Line() {
+
+            LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View newRowView = inflater.inflate(R.layout.statusprogress, my_linear_layout, false);
+            LinearLayout linearLayout = newRowView.findViewById(R.id.rootview);
+
+            my_linear_layout.addView(newRowView);
+
+    }
+
 
 
 

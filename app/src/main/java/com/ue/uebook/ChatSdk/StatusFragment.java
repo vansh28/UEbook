@@ -701,9 +701,14 @@ public class StatusFragment extends Fragment implements View.OnClickListener, St
     }
 
 
-
-
-
-
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                getOwnStatus(new SessionManager(getContext().getApplicationContext()).getUserID());
+            }
+        });
+    }
 }
