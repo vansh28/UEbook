@@ -4,7 +4,9 @@
     package="com.ue.uebook">
 
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
     <uses-feature android:name="android.hardware.camera" />
+
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.CAMERA" />
@@ -24,7 +26,9 @@
     <uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION" />
     <uses-permission android:name="android.permission.VIBRATE" />
+
     <uses-feature android:name="android.hardware.camera" />
+
     <application
         android:allowBackup="true"
         android:exported="false"
@@ -36,9 +40,11 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".ChatSdk.StatusViewScreen"></activity>
-        <activity android:name=".ChatSdk.CameraView"
-            android:screenOrientation="portrait"/>
+        <activity android:name=".ChatSdk.TrimActivity"></activity>
+        <activity android:name=".ChatSdk.StatusViewScreen" />
+        <activity
+            android:name=".ChatSdk.CameraView"
+            android:screenOrientation="portrait" />
         <activity android:name=".ChatSdk.UserListForStatusPrivacyScreen" />
         <activity android:name=".ChatSdk.UserProfileChatScreen" />
         <activity android:name=".ChatSdk.StatusPrivacyScreen" />

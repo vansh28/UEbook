@@ -80,6 +80,7 @@ public class StatusTrimVideo extends BaseActivity implements View.OnClickListene
         status_image = findViewById(R.id.status_image);
         progress_horizontal = findViewById(R.id.progress_horizontal);
         root_view = findViewById(R.id.root_view);
+        progress_horizontal = findViewById(R.id.progress_horizontal);
         progress_layout = findViewById(R.id.progress_layout);
         textViewProgress=findViewById(R.id.value123);
         button_chat_emoji= findViewById(R.id.button_chat_emoji);

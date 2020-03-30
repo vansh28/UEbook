@@ -49,6 +49,8 @@ public class ViewPagerStatus  extends PagerAdapter {
     private VideoView videoView;
     Timer timer;
     private ProgressBar progressBar;
+    private MediaController mediacontroller;
+
     TimerTask timerTask;
     public ViewPagerStatus(AppCompatActivity applicationContext, List<StatusViewDetail> statusViewDetailList) {
         this.context=applicationContext;
@@ -74,7 +76,6 @@ public class ViewPagerStatus  extends PagerAdapter {
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = layoutInflater.inflate(R.layout.detailsimageview, null);
         progressBar = (ProgressBar) view.findViewById(R.id.progress);
-
         textView = view.findViewById(R.id.textView);
         rootview = view.findViewById(R.id.rootview);
         statusImage = view.findViewById(R.id.statusImage);
@@ -83,8 +84,12 @@ public class ViewPagerStatus  extends PagerAdapter {
         videocaption = view.findViewById(R.id.videocaption);
         videoLayout = view.findViewById(R.id.videoViewLayout);
         videoView = view.findViewById(R.id.videoView);
+        mediacontroller = new MediaController(context);
+        mediacontroller.setAnchorView(videoView);
+        videoView.stopPlayback();
         if (statusViewDetailList.get(position).getMessage_type().equalsIgnoreCase("text")) {
             progressBar.setVisibility(View.GONE);
+            videoView.stopPlayback();
             textView.setVisibility(View.VISIBLE);
             imageViewLayout.setVisibility(View.GONE);
             videoLayout.setVisibility(View.GONE);
@@ -93,9 +98,9 @@ public class ViewPagerStatus  extends PagerAdapter {
             setFont(statusViewDetailList.get(position).getFont_style());
         } else if (statusViewDetailList.get(position).getMessage_type().equalsIgnoreCase("image")) {
             textView.setVisibility(View.GONE);
+            videoView.stopPlayback();
             imageViewLayout.setVisibility(View.VISIBLE);
             videoLayout.setVisibility(View.GONE);
-
             caption.setText(statusViewDetailList.get(position).getCaption());
             Glide.with(context)
                     .load("http://dnddemo.com/ebooks/" + statusViewDetailList.get(position).getMessage())
@@ -124,24 +129,22 @@ public class ViewPagerStatus  extends PagerAdapter {
 //                    .fit().centerInside()
 //                    .into(statusImage);
 
-
         //  GlideUtils.loadImage( context, "http://dnddemo.com/ebooks/"+ statusViewDetailList.get(position).getMessage(), statusImage, R.drawable.noimage, R.drawable.noimage);
 
 
         else if (statusViewDetailList.get(position).getMessage_type().equalsIgnoreCase("video"))
         {
+            videoView.setMediaController(mediacontroller);
             progressBar.setVisibility(View.GONE);
             imageViewLayout.setVisibility(View.GONE);
              textView.setVisibility(View.GONE);
              videoLayout.setVisibility(View.GONE);
              videocaption.setText(statusViewDetailList.get(position).getCaption());
-             videoView.setVideoURI(Uri.parse("http://dnddemo.com/ebooks/"+ statusViewDetailList.get(position).getMessage()));
-             MediaController mc = new MediaController(context);
-              videoView.setMediaController(mc);
+            videoView.setZOrderOnTop(true);
+            videoView.setVideoURI(Uri.parse("http://dnddemo.com/ebooks/"+ statusViewDetailList.get(position).getMessage()));
               videoView.requestFocus();
               videoView.start();
         }
-
         ViewPager vp = (ViewPager) container;
 
 //        timerTask = new TimerTask() {
@@ -155,12 +158,14 @@ public class ViewPagerStatus  extends PagerAdapter {
 //
 //                        }
 //                        else {
-//                            if (vp.getCurrentItem() < vp.getAdapter().getCount())
+//                            if (statusViewDetailList.get(position).getMessage_type().equalsIgnoreCase("image")||statusViewDetailList.get(position).getMessage_type().equalsIgnoreCase("text")) {
+//                                if (vp.getCurrentItem() < vp.getAdapter().getCount())
 //
-//                                Log.e("pos",String.valueOf(vp.getCurrentItem()));
+//                                    Log.e("pos", String.valueOf(vp.getCurrentItem()));
 //
 //                                vp.setCurrentItem(vp.getCurrentItem() + 1);
 //
+//                            }
 //                        }
 //
 //                    }
@@ -169,8 +174,6 @@ public class ViewPagerStatus  extends PagerAdapter {
 //        };
 //        timer = new Timer();
 //        timer.schedule(timerTask, 5000, 5000);
-
-
 
         vp.addView(view, 0);
         return view;

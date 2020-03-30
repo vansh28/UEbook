@@ -336,9 +336,10 @@ public class StatusFragment extends Fragment implements View.OnClickListener, St
                     } catch (URISyntaxException e) {
                         e.printStackTrace();
                     }
-                    Intent intent = new Intent(getContext(), StatusTrimVideo.class);
+                    Intent intent = new Intent(getContext(), TrimActivity.class);
                     intent.putExtra("file", path);
                     intent.putExtra("type", "Gallaryvideo");
+                    intent.putExtra("id",1);
                     startActivity(intent);
                 }
             } else {
@@ -349,8 +350,9 @@ public class StatusFragment extends Fragment implements View.OnClickListener, St
         }
         if (requestCode == 1 && resultCode == RESULT_OK) {
             Uri videoUri = data.getData();
-            Intent intent = new Intent(getContext(), StatusTrimVideo.class);
+            Intent intent = new Intent(getContext(), TrimActivity.class);
             intent.putExtra("file", videoUri.toString());
+            intent.putExtra("id",2);
             intent.putExtra("type", "video");
             startActivity(intent);
         }

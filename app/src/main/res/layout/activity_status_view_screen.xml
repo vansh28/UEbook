@@ -6,6 +6,7 @@ xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:id="@+id/root_view"
     tools:context=".ChatSdk.StatusViewScreen">
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
@@ -25,6 +26,48 @@ xmlns:android="http://schemas.android.com/apk/res/android"
         android:background="@android:color/transparent"
         android:layout_marginTop="2dp"
         android:orientation="horizontal" />
+<Button
+    android:layout_width="wrap_content"
+    android:text="view"
+    android:id="@+id/viewUser"
+    android:layout_alignParentBottom="true"
+    android:layout_centerHorizontal="true"
+    android:layout_marginBottom="@dimen/size_30"
+    android:layout_height="wrap_content"/>
+    <LinearLayout
+        android:id="@+id/layout_chat_send_container"
+        style="@style/MatchWidth"
+        android:layout_alignParentBottom="true"
+        android:visibility="gone"
+        android:orientation="horizontal">
+        <ImageButton
+            android:id="@+id/button_chat_emoji"
+            style="@style/BorderlessImageButtonStyle"
+            android:layout_gravity="center_vertical"
+            android:visibility="visible"
+            android:src="@drawable/smiley" />
 
+
+        <hani.momanii.supernova_emoji_library.Helper.EmojiconEditText
+            android:id="@+id/edit_chat_message"
+            style="@style/WeightWidth"
+            android:layout_height="wrap_content"
+            android:hint="@string/chat_edit_text_hint"
+            app:emojiconSize="28sp"
+            android:maxLength="1024" />
+        <ImageButton
+            android:id="@+id/button_chat_attachment"
+            style="@style/BorderlessImageButtonStyle"
+            android:layout_gravity="center_vertical"
+            android:visibility="gone"
+            android:src="@drawable/attachment" />
+
+        <ImageButton
+            android:id="@+id/button_chat_send"
+            style="@style/BorderlessImageButtonStyle"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ic_send"
+            android:text="@string/chat_send" />
+    </LinearLayout>
 
 </RelativeLayout>

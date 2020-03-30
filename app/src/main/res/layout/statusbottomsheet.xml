@@ -3,21 +3,42 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    app:behavior_peekHeight="100dp"
     app:behavior_hideable="true"
+    android:layout_margin="@dimen/size_10"
     android:background="@android:color/transparent"
     app:layout_behavior="android.support.design.widget.BottomSheetBehavior"
     android:layout_height="wrap_content">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/size_50"
+        android:background="@color/colorPrimary">
+        <ImageButton
+            android:id="@+id/delete_Status"
+            android:layout_width="@dimen/size_30"
+            android:layout_height="@dimen/size_30"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:padding="@dimen/size_10"
+            android:layout_marginRight="@dimen/size_10"
+            android:background="@drawable/delete_alert"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/total_viewStatus"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/size_10"
+            android:textColor="@color/white"
+            android:textSize="@dimen/size_18"/>
+    </RelativeLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:orientation="vertical"
         android:layout_height="match_parent">
-        <ImageButton
-            android:layout_width="match_parent"
-            android:src="@drawable/uparrow"
-            android:layout_marginBottom="@dimen/size_50"
-            android:layout_gravity="center_horizontal"
-            android:layout_height="wrap_content"/>
+
+
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
             android:id="@+id/viewList"
