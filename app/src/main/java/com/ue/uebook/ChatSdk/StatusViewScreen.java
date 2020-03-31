@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
@@ -15,12 +17,14 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.MotionEventCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
@@ -45,6 +49,7 @@ import com.ue.uebook.ChatSdk.Pojo.Statusmodel;
 import com.ue.uebook.Data.ApiRequest;
 import com.ue.uebook.R;
 import com.ue.uebook.SessionManager;
+import com.ue.uebook.SimpleGestureFilter;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -61,6 +66,8 @@ import hani.momanii.supernova_emoji_library.Helper.EmojiconEditText;
 public class StatusViewScreen extends BaseActivity implements View.OnClickListener {
     private Intent intent;
     private String friendId;
+    private SimpleGestureFilter detector;
+
     private List<StatusViewDetail>statusViewDetailList;
     private ViewPager viewPager;
     private RecyclerView listView;
@@ -86,9 +93,13 @@ public class StatusViewScreen extends BaseActivity implements View.OnClickListen
     private LinearLayout layout_chat_send_container;
     private EmojiconEditText edit_chat_message;
     private boolean iskeypadshow=false;
-    private ImageButton button_chat_emoji;
+    private ImageButton button_chat_emoji ,button_chat_send ,selectTime;
     EmojIconActions emojIcon;
     private RelativeLayout root_view;
+    private String chanelID,message,messagtype,Frndchat_statusID ;
+    private int checkStatus=1;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,6 +108,8 @@ public class StatusViewScreen extends BaseActivity implements View.OnClickListen
         listView = findViewById(R.id.listView);
         viewUser = findViewById(R.id.viewUser);
         button_chat_emoji = findViewById(R.id.button_chat_emoji);
+        button_chat_send = findViewById(R.id.button_chat_send);
+        button_chat_send.setOnClickListener(this);
         root_view=findViewById(R.id.root_view);
         viewUser.setOnClickListener(this);
         viewUser.setVisibility(View.GONE);
@@ -105,6 +118,8 @@ public class StatusViewScreen extends BaseActivity implements View.OnClickListen
         my_linear_layout  = findViewById(R.id.SliderDots);
         layout_chat_send_container = findViewById(R.id.layout_chat_send_container);
            my_linear_layout.setWeightSum(5f);
+        selectTime = findViewById(R.id.selectTime);
+        selectTime.setOnClickListener(this);
 
         WindowManager wm = (WindowManager) this.getSystemService(Context.WINDOW_SERVICE);
          display = wm.getDefaultDisplay();
@@ -119,19 +134,51 @@ public class StatusViewScreen extends BaseActivity implements View.OnClickListen
         friendId =intent.getStringExtra("friendId");
         ownStatus = intent.getIntExtra("ownStatus",0);
 
+        // Set the gesture detector as the double tap
+        // listener.
+        View myView = findViewById(R.id.view);
+        myView.setOnTouchListener(new View.OnTouchListener() {
+            public boolean onTouch(View v, MotionEvent event) {
+                int action = MotionEventCompat.getActionMasked(event);
+
+                switch(action) {
+
+                    case (MotionEvent.ACTION_UP) :
+                        if (ownStatus==1)
+
+                        {
+                            showBottomSheet();
+                        }
+                        else {
+                        layout_chat_send_container.setVisibility(View.VISIBLE);
+                        edit_chat_message.requestFocus();
+                        edit_chat_message.setEnabled(true);
+                        viewUser.setVisibility(View.GONE);
+                        InputMethodManager imm = (InputMethodManager)   getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+                        }
+
+                        return true;
+
+
+                }
+
+                  return true;
+            }
+        });
         if (ownStatus==1){
             isreply = false;
             viewUser.setText("View");
             viewUser.setVisibility(View.VISIBLE);
+            selectTime.setVisibility(View.VISIBLE);
             statusViewDetailList = (List<StatusViewDetail>) intent.getSerializableExtra("arraylist");
             viewPagerIngredent = new ViewPagerStatus( StatusViewScreen.this,statusViewDetailList);
             viewPager.setAdapter(viewPagerIngredent);
             StatusListLineView statusListLineView = new StatusListLineView(statusViewDetailList);
             listView.setAdapter(statusListLineView);
             chat_status_id = statusViewDetailList.get(0).getId();
+            checkStatusVisibility(chat_status_id);
              getStatusView(new SessionManager(getApplicationContext()).getUserID(),statusViewDetailList.get(0).getId());
-
-
             if (statusViewDetailList.size()>0)
             {
                 dotSlide();
@@ -140,6 +187,7 @@ public class StatusViewScreen extends BaseActivity implements View.OnClickListen
         else if (ownStatus==2){
             isreply = true;
             viewUser.setText("Reply");
+            selectTime.setVisibility(View.GONE);
             viewUser.setVisibility(View.VISIBLE);
             getAllStatus(new SessionManager(getApplicationContext()).getUserID(),friendId);
 
@@ -158,6 +206,11 @@ public class StatusViewScreen extends BaseActivity implements View.OnClickListen
                 Log.e("fff", "Keyboard closed");
             }
         });
+
+
+
+
+
     }
     public void getAllStatus(final String userID ,final String status_user_id ){
         final ProgressDialog progressDialog = new ProgressDialog(this);
@@ -175,6 +228,7 @@ public class StatusViewScreen extends BaseActivity implements View.OnClickListen
                         try {
                             JSONObject jsonObject = new JSONObject(String.valueOf(response));
                             if (jsonObject.getBoolean("error")==false){
+                                chanelID = jsonObject.getString("channel_id");
                                 JSONArray jsonObjectResponse = jsonObject.getJSONArray("data");
                                 if (jsonObjectResponse!=null){
                                     for (int i=0; i<jsonObjectResponse.length();i++){
@@ -197,8 +251,9 @@ public class StatusViewScreen extends BaseActivity implements View.OnClickListen
 
                                             StatusListLineView statusListLineView = new StatusListLineView(statusViewDetailList);
                                             listView.setAdapter(statusListLineView);
-
-
+                                            message = statusViewDetailList.get(0).getMessage();
+                                            messagtype =statusViewDetailList.get(0).getMessage_type();
+                                            Frndchat_statusID=statusViewDetailList.get(0).getId();
 
 
 
@@ -247,78 +302,6 @@ public class StatusViewScreen extends BaseActivity implements View.OnClickListen
     }
 
 
-    public void getOwnStatus(final String userID ){
-        final ProgressDialog progressDialog = new ProgressDialog(this);
-        progressDialog.setCancelable(true);
-        progressDialog.setMessage(getResources().getString(R.string.please_wait));
-        progressDialog.show();
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, ApiRequest.testBaseUrl +"userstatus/userOwnChatStatusList",
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        progressDialog.dismiss();
-                        Log.e(" response", response);
-                        try {
-                            JSONObject jsonObject = new JSONObject(String.valueOf(response));
-                            if (jsonObject.getBoolean("error")==false){
-                                JSONArray jsonObjectResponse = jsonObject.getJSONArray("data");
-                                if (jsonObjectResponse!=null){
-                                    for (int i=0; i<jsonObjectResponse.length();i++){
-                                        StatusViewDetail statusmodel = new StatusViewDetail();
-                                        JSONObject rec = jsonObjectResponse.getJSONObject(i);
-                                        statusmodel.setId(rec.getString("id"));
-                                        statusmodel.setMessage(rec.getString("message"));
-                                        statusmodel.setMessage_type(rec.getString("message_type"));
-                                        statusmodel.setBg_color(rec.getString("bg_color"));
-                                        statusmodel.setFont_style(rec.getString("font_style"));
-                                        statusmodel.setCaption(rec.getString("caption"));
-                                        statusmodel.setUserid(rec.getString("userid"));
-                                        statusViewDetailList.add(statusmodel);
-
-                                    }
-                                    runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-
-                                        }
-                                    });
-                                }
-                            }
-                        }
-                        catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        try {
-                            String responseBody = new String(error.networkResponse.data, "utf-8");
-                            JSONObject data = new JSONObject(responseBody);
-
-                            Toast.makeText(StatusViewScreen.this, data.optString("message","Something wrong!"), Toast.LENGTH_LONG).show();
-                        } catch (Exception ex) {
-                            ex.printStackTrace();
-                        }
-                        progressDialog.dismiss();
-                    }
-                }) {
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> arguments = new HashMap<String, String>();
-                arguments.put("user_id",userID);
-                return arguments;
-            }
-        };
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(stringRequest);
-
-        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
-                30000,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-    }
 
 
 
@@ -345,7 +328,6 @@ public class StatusViewScreen extends BaseActivity implements View.OnClickListen
         }
 
         dots[0].setBackground(ContextCompat.getDrawable(this, R.drawable.activedot));
-
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -353,10 +335,15 @@ public class StatusViewScreen extends BaseActivity implements View.OnClickListen
 
                   if (ownStatus==2){
                       updateViewStats(statusViewDetailList.get(position).getUserid(),statusViewDetailList.get(position).getId(),new SessionManager(getApplication()).getUserID(),"update");
+                      message = statusViewDetailList.get(position).getMessage();
+                      messagtype =statusViewDetailList.get(position).getMessage_type();
+                      Frndchat_statusID=statusViewDetailList.get(position).getId();
+
                   }
                   else   if (ownStatus==1){
 
                       chat_status_id = statusViewDetailList.get(position).getId();
+                      checkStatusVisibility(statusViewDetailList.get(position).getId());
                       getStatusView(new SessionManager(getApplicationContext()).getUserID(),statusViewDetailList.get(position).getId());
                   }
 
@@ -464,6 +451,13 @@ public class StatusViewScreen extends BaseActivity implements View.OnClickListen
         }
         else if (v==deleteStatus){
             deleteStatus(new SessionManager(getApplicationContext()).getUserID(),chat_status_id);
+        }
+        else if (v==button_chat_send)
+        {
+            replyToFrnd(messagtype,message,chanelID,edit_chat_message.getText().toString(),Frndchat_statusID);
+        }
+        else if (v==selectTime){
+            showPopupmenu();
         }
     }
     public void getStatusView(final String userID ,final String chat_status_id ){
@@ -597,23 +591,26 @@ public class StatusViewScreen extends BaseActivity implements View.OnClickListen
 //        else {
 //                 finish();
 //        }
-//    }
-public void replyToFrnd(final String userID ,final String message ,final String channel_id){
+   public void replyToFrnd(final String message_type ,final String message ,final String channel_id ,final String reply_message ,final String Frndchat_status_id){
     final ProgressDialog progressDialog = new ProgressDialog(this);
     progressDialog.setCancelable(true);
     progressDialog.setMessage(getResources().getString(R.string.please_wait));
     progressDialog.show();
-    StringRequest stringRequest = new StringRequest(Request.Method.POST, ApiRequest.testBaseUrl +"userstatus/deleteChatStatus",
+    StringRequest stringRequest = new StringRequest(Request.Method.POST, ApiRequest.testBaseUrl +"userstatus/commentOnChatStatus",
             new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
                     progressDialog.dismiss();
+                    Log.e(" statusview_response", response);
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             layout_chat_send_container.setVisibility(View.GONE);
                             viewUser.setText("Reply");
                             viewUser.setVisibility(View.VISIBLE);
+                            InputMethodManager imm = (InputMethodManager)getSystemService(
+                         Context.INPUT_METHOD_SERVICE);
+                      imm.hideSoftInputFromWindow(edit_chat_message.getWindowToken(), 0);
                         }
                     });
                 }
@@ -635,9 +632,13 @@ public void replyToFrnd(final String userID ,final String message ,final String 
         @Override
         protected Map<String, String> getParams() {
             Map<String, String> arguments = new HashMap<String, String>();
-            arguments.put("user_id",userID);
-            arguments.put("chat_status_id",message);
-            arguments.put("chat_status_id",channel_id);
+            arguments.put("user_id",new SessionManager(getApplicationContext()).getUserID());
+            arguments.put("chat_status_id",Frndchat_status_id);
+            arguments.put("message_type",message_type);
+            arguments.put("message",message);
+            arguments.put("reply_message",reply_message);
+            arguments.put("status_user_id",friendId);
+            arguments.put("channel_id",channel_id);
             return arguments;
         }
     };
@@ -649,6 +650,162 @@ public void replyToFrnd(final String userID ,final String message ,final String 
             DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
             DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 }
+    public void changeStatusVisibility(final String status_id ,final String status_visible_time){
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setCancelable(true);
+        progressDialog.setMessage(getResources().getString(R.string.please_wait));
+        progressDialog.show();
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, ApiRequest.testBaseUrl +"userstatus/userOwnChatStatusSetting",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        progressDialog.dismiss();
+                        Log.e(" statusview_response", response);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                checkStatusVisibility(chat_status_id);
+                            }
+                        });
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        try {
+                            String responseBody = new String(error.networkResponse.data, "utf-8");
+                            JSONObject data = new JSONObject(responseBody);
+
+                            Toast.makeText(StatusViewScreen.this, data.optString("message","Something wrong!"), Toast.LENGTH_LONG).show();
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
+                        progressDialog.dismiss();
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> arguments = new HashMap<String, String>();
+                arguments.put("user_id",new SessionManager(getApplicationContext()).getUserID());
+                arguments.put("chat_status_id",status_id);
+                arguments.put("status_visible_time",status_visible_time);
+                arguments.put("view_chat_status","update");
+
+                return arguments;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
+
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                30000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+    }
+    private void showPopupmenu() {
+        PopupMenu popup = new PopupMenu(StatusViewScreen.this, selectTime);
+        popup.getMenuInflater()
+                .inflate(R.menu.statusvisibility, popup.getMenu());
+
+        if (checkStatus==2){
+            popup.getMenu().findItem(R.id.item2).setChecked(true);
+        }
+        else {
+            popup.getMenu().findItem(R.id.item1).setChecked(true);
+        }
+
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.item1:
+                        changeStatusVisibility(chat_status_id,"1 days");
+                        return true;
+                    case R.id.item2:
+                        changeStatusVisibility(chat_status_id,"always");
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+        });
+        popup.show();
+    }
+
+
+    public void checkStatusVisibility(final String status_id ){
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setCancelable(true);
+        progressDialog.setMessage(getResources().getString(R.string.please_wait));
+        progressDialog.show();
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, ApiRequest.testBaseUrl +"userstatus/userOwnChatStatusSetting",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        progressDialog.dismiss();
+                        Log.e(" statusview_response", response);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    JSONObject jsonObject = new JSONObject(String.valueOf(response));
+                                    if (jsonObject.getBoolean("error")==false){
+                                        JSONObject jsonObjectResponse = jsonObject.getJSONObject("data");
+                                        if (jsonObjectResponse!=null) {
+
+                                            if (jsonObjectResponse.getString("status_visible_time").equalsIgnoreCase("always")){
+                                                checkStatus = 2;
+                                            }
+                                            else {
+                                                checkStatus = 1;
+                                            }
+                                        }
+                                    }
+                                }
+                                catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+
+
+
+                            }
+                        });
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        try {
+                            String responseBody = new String(error.networkResponse.data, "utf-8");
+                            JSONObject data = new JSONObject(responseBody);
+
+                            Toast.makeText(StatusViewScreen.this, data.optString("message","Something wrong!"), Toast.LENGTH_LONG).show();
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
+                        progressDialog.dismiss();
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> arguments = new HashMap<String, String>();
+                arguments.put("user_id",new SessionManager(getApplicationContext()).getUserID());
+                arguments.put("chat_status_id",status_id);
+                arguments.put("view_chat_status","view");
+
+                return arguments;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
+
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                30000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+    }
+
+
 
 
 }

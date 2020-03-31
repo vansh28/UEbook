@@ -13,7 +13,7 @@
             android:id="@+id/cameraBtn"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:src="@drawable/audiochat"
+            android:src="@drawable/photocamera"
             android:layout_gravity="center"
             android:background="@android:color/transparent"
             android:layout_height="wrap_content"/>

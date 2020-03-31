@@ -79,14 +79,26 @@
             android:layout_marginLeft="@dimen/size_10" />
 
     </RelativeLayout>
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/messageList"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:id="@+id/NestedScrollView"
         android:layout_above="@+id/layout_chat_send_container"
         android:layout_below="@id/header"
-        android:layout_margin="@dimen/size_10"
-        />
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/messageList"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:nestedScrollingEnabled="false"
+                android:layout_margin="@dimen/size_10"
+                />
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
     <ImageView
         android:id="@+id/previewImage"
         android:layout_width="@dimen/size_100"

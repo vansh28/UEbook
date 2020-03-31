@@ -8,6 +8,25 @@ public class Chathistory {
     private String type;
     private String created;
     private String message;
+    private String chat_status_comm_msg;
+    private String chat_status_id;
+
+    public String getChat_status_comm_msg() {
+        return chat_status_comm_msg;
+    }
+
+    public void setChat_status_comm_msg(String chat_status_comm_msg) {
+        this.chat_status_comm_msg = chat_status_comm_msg;
+    }
+
+    public String getChat_status_id() {
+        return chat_status_id;
+    }
+
+    public void setChat_status_id(String chat_status_id) {
+        this.chat_status_id = chat_status_id;
+    }
+
     public String getId() {
         return id;
     }

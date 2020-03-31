@@ -1,5 +1,6 @@
 package com.ue.uebook.ChatSdk;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -73,6 +74,7 @@ public class StatusTrimVideo extends BaseActivity implements View.OnClickListene
     private TextView textViewProgress;
     int status = 0;
     Handler handler = new Handler();
+    @SuppressLint("WrongThread")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,6 +103,7 @@ public class StatusTrimVideo extends BaseActivity implements View.OnClickListene
             file = intent.getStringExtra("file");
             if(file!=null)
             {
+
                 isImage = true;
                 imageFile = new File(file);
                 status_image.setVisibility(View.VISIBLE);
@@ -184,6 +187,10 @@ public class StatusTrimVideo extends BaseActivity implements View.OnClickListene
         }
         else if (v==button_status_send){
             if (isImage){
+
+
+
+
                 requestforUploadStatus(1,new SessionManager(getApplicationContext()).getUserID(),edit_chat_message.getText().toString());
             }
             else

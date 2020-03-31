@@ -91,6 +91,11 @@
         android:background="@drawable/border"
         android:baselineAligned="false"
         android:visibility="gone">
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_centerInParent="true"
+            android:id="@+id/progressbarsender"
+            android:layout_height="wrap_content"/>
         <ImageView
             android:id="@+id/imageSender"
             android:layout_width="@dimen/size_150"
@@ -113,6 +118,11 @@
         android:layout_marginRight="@dimen/size_200"
         android:background="@drawable/border"
         android:visibility="gone">
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_centerInParent="true"
+            android:id="@+id/progressbarOpopnent"
+            android:layout_height="wrap_content"/>
 
         <ImageView
             android:id="@+id/imageoponent"
@@ -320,4 +330,115 @@
             android:textColor="@color/white"
             android:textSize="@dimen/size_20" />
     </RelativeLayout>
+    <LinearLayout
+        android:layout_width="@dimen/size_200"
+        android:background="@drawable/bgcomment"
+        android:padding="@dimen/size_10"
+        android:layout_margin="@dimen/size_5"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:id="@+id/oponentCommentLAyout"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:weightSum="3"
+            android:background="@color/dark_gray"
+            android:layout_height="@dimen/size_50">
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:orientation="vertical"
+                android:layout_height="match_parent">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text="Status"
+                    android:textSize="@dimen/size_17"
+                    android:textColor="@color/red"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text="Photo"
+                    android:id="@+id/messageTypeOponent"
+                    android:textSize="@dimen/size_17"
+                    android:textColor="@color/white"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+            <ImageView
+        android:layout_width="0dp"
+        android:layout_weight="1"
+                android:id="@+id/imageCommentOponent"
+        android:background="@drawable/noimage"
+        android:layout_height="match_parent"/>
+
+        </LinearLayout>
+        <hani.momanii.supernova_emoji_library.Helper.EmojiconTextView
+            android:layout_width="wrap_content"
+            android:id="@+id/commentMszOponent"
+            android:textSize="@dimen/size_17"
+            android:layout_margin="@dimen/size_10"
+            android:textColor="@color/white"
+            android:layout_gravity="center_horizontal"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="@dimen/size_200"
+        android:background="@drawable/bgcomment"
+        android:padding="@dimen/size_10"
+        android:layout_margin="@dimen/size_5"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:layout_gravity="right"
+        android:id="@+id/SendertCommentLAyout"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:weightSum="3"
+            android:background="@color/dark_gray"
+            android:layout_height="@dimen/size_50">
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:orientation="vertical"
+                android:layout_height="match_parent">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text="Status"
+
+                    android:textSize="@dimen/size_17"
+                    android:textColor="@color/red"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text="Photo"
+                    android:id="@+id/messageTypeSender"
+                    android:textSize="@dimen/size_17"
+                    android:textColor="@color/white"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:id="@+id/imageCommentSender"
+                android:background="@drawable/noimage"
+                android:layout_height="match_parent"/>
+
+        </LinearLayout>
+        <hani.momanii.supernova_emoji_library.Helper.EmojiconTextView
+            android:layout_width="wrap_content"
+            android:id="@+id/commentMszSender"
+            android:textSize="@dimen/size_17"
+            android:layout_margin="@dimen/size_10"
+            android:textColor="@color/white"
+            android:layout_gravity="center_horizontal"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
 </LinearLayout>

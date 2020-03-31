@@ -14,11 +14,24 @@ xmlns:android="http://schemas.android.com/apk/res/android"
         android:visibility="gone"
         android:layout_margin="@dimen/size_5"
         android:layout_height="@dimen/size_20"/>
-<androidx.viewpager.widget.ViewPager
-    android:layout_width="match_parent"
-    android:id="@+id/viewPager"
-    android:layout_below="@+id/view"
-    android:layout_height="match_parent"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:weightSum="4"
+        android:layout_height="match_parent">
+        <androidx.viewpager.widget.ViewPager
+            android:layout_width="match_parent"
+            android:id="@+id/viewPager"
+            android:layout_height="match_parent" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_height="@dimen/size_200"
+            android:id="@+id/view"
+            android:visibility="visible"
+            android:layout_weight="1"/>
+    </RelativeLayout>
+
     <LinearLayout
         android:id="@+id/SliderDots"
         android:layout_width="match_parent"
@@ -26,13 +39,27 @@ xmlns:android="http://schemas.android.com/apk/res/android"
         android:background="@android:color/transparent"
         android:layout_marginTop="2dp"
         android:orientation="horizontal" />
-<Button
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:src="@drawable/menu"
+        android:id="@+id/selectTime"
+        android:background="@android:color/transparent"
+        android:layout_below="@id/SliderDots"
+        android:layout_marginTop="@dimen/size_5"
+        android:layout_marginRight="@dimen/size_5"
+        android:visibility="gone"
+        android:layout_alignParentRight="true"
+        android:layout_height="wrap_content"/>
+
+    <Button
     android:layout_width="wrap_content"
     android:text="view"
     android:id="@+id/viewUser"
     android:layout_alignParentBottom="true"
     android:layout_centerHorizontal="true"
     android:layout_marginBottom="@dimen/size_30"
+    android:drawableTop="@drawable/uparrow"
+    android:background="@android:color/transparent"
     android:layout_height="wrap_content"/>
     <LinearLayout
         android:id="@+id/layout_chat_send_container"
@@ -69,5 +96,6 @@ xmlns:android="http://schemas.android.com/apk/res/android"
             android:src="@drawable/ic_send"
             android:text="@string/chat_send" />
     </LinearLayout>
+
 
 </RelativeLayout>

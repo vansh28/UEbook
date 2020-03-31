@@ -39,6 +39,7 @@ import android.widget.VideoView;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
+import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -130,12 +131,14 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
     private RelativeLayout root_view;
     String dwnload_file_path =
             "http://coderzheaven.com/sample_folder/sample_file.png";
+    private NestedScrollView nestedScrollView;
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message_screen);
         button_chat_emoji=findViewById(R.id.button_chat_emoji);
+        nestedScrollView = findViewById(R.id.NestedScrollView);
         button_chat_emoji.setOnClickListener(this);
         voicebtn = findViewById(R.id.voicebtn);
         videoCallbtn = findViewById(R.id.videobtn);
@@ -201,7 +204,7 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
             if (oponentData.channelId != null) {
                 chanelID = oponentData.channelId;
                 sendToID = oponentData.userId;
-                getChatHistory(new SessionManager(getApplication()).getUserID(), sendToID, chanelID, "text",1);
+                getChatHistorys(new SessionManager(getApplication()).getUserID(), sendToID, chanelID, "text",1);
             }
 
         } else if (screenID == 1) {
@@ -223,13 +226,13 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
 
             if (channelID != null) {
                 chanelID = channelID;
-                getChatHistory(new SessionManager(getApplication()).getUserID(), sendToID, channelID, "text",1);
+                getChatHistorys(new SessionManager(getApplication()).getUserID(), sendToID, channelID, "text",1);
                 GlideUtils.loadImage(MessageScreen.this, ApiRequest.BaseUrl + "upload/" + imageUrl, userProfile, R.drawable.user_default, R.drawable.user_default);
                 imageProfile = imageUrl;
                   oponentImage=imageUrl;
             } else {
 
-                getChatHistory(new SessionManager(getApplication()).getUserID(), sendToID, "", "text",1);
+                getChatHistorys(new SessionManager(getApplication()).getUserID(), sendToID, "", "text",1);
                 GlideUtils.loadImage(MessageScreen.this, ApiRequest.BaseUrl + "upload/" + imageUrl, userProfile, R.drawable.user_default, R.drawable.user_default);
                 imageProfile = imageUrl;
                 oponentImage=imageUrl;
@@ -505,13 +508,54 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
                             messageList.scrollToPosition(form.getChat_list().size() - 1);
                             messageAdapter.notifyDataSetChanged();
                             messageAdapter.setItemClickListener(MessageScreen.this);
+                            messageList.post(() -> {
+                                float y = messageList.getY() + messageList.getChildAt(form.getChat_list().size() - 1).getY();
+                                nestedScrollView.smoothScrollTo(0, (int) y);
+                            });
                         }
                     }
                 });
             }
         });
     }
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private void getChatHistorys(String user_id, String sendTO, String channelId, String type ,int viewType) {
+        ApiRequest request = new ApiRequest();
 
+            showLoadingIndicator();
+
+        request.requestforgetChathistory(user_id, sendTO, channelId, type, new okhttp3.Callback() {
+            @Override
+            public void onFailure(okhttp3.Call call, IOException e) {
+                hideLoadingIndicator();
+                Log.d("error", "error");
+            }
+
+            @Override
+            public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
+                final String myResponse = response.body().string();
+                hideLoadingIndicator();
+                Gson gson = new GsonBuilder().create();
+                final ChatResponse form = gson.fromJson(myResponse, ChatResponse.class);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (form.getChat_list() != null) {
+                            messageAdapter = new MessageAdapter(MessageScreen.this, form.getChat_list(), new SessionManager(getApplication()).getUserID());
+                            messageList.setAdapter(messageAdapter);
+                            messageList.scrollToPosition(form.getChat_list().size() - 1);
+                            messageAdapter.notifyDataSetChanged();
+                            messageAdapter.setItemClickListener(MessageScreen.this);
+                            messageList.post(() -> {
+                                float y = messageList.getY() + messageList.getChildAt(form.getChat_list().size() - 1).getY();
+                                nestedScrollView.smoothScrollTo(0, (int) y);
+                            });
+                        }
+                    }
+                });
+            }
+        });
+    }
     private void showBottomSheet() {
         final View bottomSheetLayout = getLayoutInflater().inflate(R.layout.bottomlayoutchat, null);
         mBottomSheetDialog = new BottomSheetDialog(this);
@@ -588,7 +632,7 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
         OkHttpClient client = new OkHttpClient();
         String url = ApiRequest.BaseUrl + "user_chat";
         final MediaType MEDIA_TYPE_PNG = MediaType.parse("image/png");
-        showLoadingIndicator();
+       // showLoadingIndicator();
         RequestBody requestBody;
         switch (typeval) {
             case 0:
