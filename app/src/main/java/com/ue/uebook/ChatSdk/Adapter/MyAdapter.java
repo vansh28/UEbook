@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
+import com.ue.uebook.ChatSdk.CallLogFragment;
 import com.ue.uebook.ChatSdk.ChatHistoryFrag;
 import com.ue.uebook.ChatSdk.GroupChatFrag;
 import com.ue.uebook.ChatSdk.StatusFragment;
@@ -32,6 +33,9 @@ public class MyAdapter   extends FragmentPagerAdapter {
             case 2:
                 StatusFragment statusFragment = new StatusFragment();
                 return statusFragment;
+            case 3:
+                CallLogFragment callLogFragment = new CallLogFragment();
+                return callLogFragment;
             default:
                 return null;
         }

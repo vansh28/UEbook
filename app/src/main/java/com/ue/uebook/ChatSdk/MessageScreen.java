@@ -50,6 +50,7 @@ import com.google.gson.GsonBuilder;
 import com.ue.uebook.BaseActivity;
 import com.ue.uebook.ChatSdk.Adapter.MessageAdapter;
 import com.ue.uebook.ChatSdk.Pojo.ChatResponse;
+import com.ue.uebook.ChatSdk.Pojo.Chathistory;
 import com.ue.uebook.ChatSdk.Pojo.OponentData;
 import com.ue.uebook.ChatSdk.Pojo.UserData;
 import com.ue.uebook.Data.ApiRequest;
@@ -87,7 +88,7 @@ import static com.ue.uebook.NetworkUtils.getInstance;
 public class MessageScreen extends BaseActivity implements View.OnClickListener, ImageUtils.ImageAttachmentListener, MessageAdapter.ChatImageFileClick {
     private static final int REQUEST_PICK_VIDEO = 12;
     private Intent intent;
-    private ImageButton   button_chat_emoji,back_btn, button_chat_attachment, morebtn, button_chat_send, gallerybtn, videobtn, audiobtn, filebtn, voicebtn, videoCallbtn;
+    private ImageButton   backbtnMessageaction,deleteaction,starredbtn,button_chat_emoji,back_btn, button_chat_attachment, morebtn, button_chat_send, gallerybtn, videobtn, audiobtn, filebtn, voicebtn, videoCallbtn;
     private ImageView userProfile, previewImage;
     private RecyclerView messageList;
     private EmojiconEditText chat_message;
@@ -129,16 +130,28 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
     private String oponentImage="";
     EmojIconActions emojIcon;
     private RelativeLayout root_view;
+    private String chatidForDelete;
+    private String imageUrlfrnd;
     String dwnload_file_path =
             "http://coderzheaven.com/sample_folder/sample_file.png";
     private NestedScrollView nestedScrollView;
+    private RelativeLayout actionbarLayout,headerLayout;
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message_screen);
         button_chat_emoji=findViewById(R.id.button_chat_emoji);
+        backbtnMessageaction=findViewById(R.id.backbtnMessageaction);
+        deleteaction=findViewById(R.id.deleteaction);
+        starredbtn=findViewById(R.id.starredbtn);
+        backbtnMessageaction.setOnClickListener(this);
+        deleteaction.setOnClickListener(this);
+        starredbtn.setOnClickListener(this);
+
         nestedScrollView = findViewById(R.id.NestedScrollView);
+        actionbarLayout = findViewById(R.id.actonbarlayout);
+        headerLayout = findViewById(R.id.header);
         button_chat_emoji.setOnClickListener(this);
         voicebtn = findViewById(R.id.voicebtn);
         videoCallbtn = findViewById(R.id.videobtn);
@@ -162,6 +175,7 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
         imageUtils = new ImageUtils(this);
         screenID = intent.getIntExtra("id", 0);
         imageUrl = intent.getStringExtra("imageUrl");
+        imageUrlfrnd =imageUrl;
         userProfile = findViewById(R.id.image_user_chat);
         chat_message = findViewById(R.id.edit_chat_message);
         messageList = findViewById(R.id.messageList);
@@ -182,7 +196,7 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
         if (screenID == 2) {
             oponentData = (OponentData) intent.getSerializableExtra("oponentdata");
             userData = (UserData) intent.getSerializableExtra("userData");
-
+            imageUrlfrnd =oponentData.getUrl();
             if (oponentData != null) {
                      oponentName=oponentData.getName();
                 if (oponentData.getName().length()>10){
@@ -352,9 +366,17 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
              startActivity(intent);
 
         }
-        else if (v==button_chat_emoji)
+        else if (v==backbtnMessageaction)
         {
+            headerLayout.setVisibility(View.VISIBLE);
+            actionbarLayout.setVisibility(View.GONE);
 
+        }
+        else if (v==deleteaction){
+            Toast.makeText(MessageScreen.this,"deleted",Toast.LENGTH_SHORT).show();
+            deleteMessage(new SessionManager(getApplicationContext()).getUserID(),chatidForDelete,"selected");
+        }
+        else if (v==starredbtn){
 
         }
     }
@@ -508,6 +530,8 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
                             messageList.scrollToPosition(form.getChat_list().size() - 1);
                             messageAdapter.notifyDataSetChanged();
                             messageAdapter.setItemClickListener(MessageScreen.this);
+                            headerLayout.setVisibility(View.VISIBLE);
+                            actionbarLayout.setVisibility(View.GONE);
                             messageList.post(() -> {
                                 float y = messageList.getY() + messageList.getChildAt(form.getChat_list().size() - 1).getY();
                                 nestedScrollView.smoothScrollTo(0, (int) y);
@@ -787,9 +811,12 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
     }
 
     @Override
-    public void onLongClickOnMessage(View view ,String chatid) {
-        showFilterPopup(view ,chatid);
-        Log.e("chatid",chatid);
+    public void onLongClickOnMessage(View view , Chathistory chatid) {
+//        showFilterPopup(view ,chatid);
+        chatidForDelete=chatid.getId();
+        Log.e("chatid",chatidForDelete);
+        actionbarLayout.setVisibility(View.VISIBLE);
+        headerLayout.setVisibility(View.GONE);
     }
     private void showFilterPopup(View v , String chatid) {
         PopupMenu popup = new PopupMenu(this, v);

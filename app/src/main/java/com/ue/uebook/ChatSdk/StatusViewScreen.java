@@ -343,7 +343,7 @@ public class StatusViewScreen extends BaseActivity implements View.OnClickListen
                   else   if (ownStatus==1){
 
                       chat_status_id = statusViewDetailList.get(position).getId();
-                      checkStatusVisibility(statusViewDetailList.get(position).getId());
+                      checkStatusVisibility(chat_status_id);
                       getStatusView(new SessionManager(getApplicationContext()).getUserID(),statusViewDetailList.get(position).getId());
                   }
 

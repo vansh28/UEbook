@@ -1,13 +1,22 @@
 package com.ue.uebook.VideoSdk;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.ue.uebook.Data.ApiRequest;
@@ -18,10 +27,13 @@ import org.jitsi.meet.sdk.JitsiMeet;
 import org.jitsi.meet.sdk.JitsiMeetActivity;
 import org.jitsi.meet.sdk.JitsiMeetConferenceOptions;
 import org.jitsi.meet.sdk.JitsiMeetView;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 public class VideoCall extends JitsiMeetActivity  {
@@ -58,8 +70,9 @@ public class VideoCall extends JitsiMeetActivity  {
               //  .setAudioOnly(true)
                 .build();
         JitsiMeet.setDefaultConferenceOptions(defaultOptions);
-
+        UpdateCallLog(new SessionManager(getApplicationContext()).getUserID(),receiverid);
         videocall(new SessionManager(getApplicationContext()).getUserID(),receiverid,channeld);
+
         if (channeld.length() > 0) {
             // Build options object for joining the conference. The SDK will merge the default
             // one we set earlier and this one when joining.
@@ -118,6 +131,60 @@ public class VideoCall extends JitsiMeetActivity  {
         return stringBuilder.toString();
     }
 
+    public void UpdateCallLog(final String userID ,final  String recevier_id  ){
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setCancelable(true);
+        progressDialog.setMessage(getResources().getString(R.string.please_wait));
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, ApiRequest.testBaseUrl+"userstatus/addViewCallLogs",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        progressDialog.dismiss();
+                        Log.e(" response", response);
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        try {
+                            String responseBody = new String(error.networkResponse.data, "utf-8");
+                            JSONObject data = new JSONObject(responseBody);
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+
+                                }
+                            });
+                            Toast.makeText(VideoCall.this, data.optString("message","Something wrong!"), Toast.LENGTH_LONG).show();
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
+                        progressDialog.dismiss();
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> arguments = new HashMap<String, String>();
+                arguments.put("user_id",userID);
+                arguments.put("recevier_id",recevier_id);
+                arguments.put("type","video");
+                arguments.put("flag","add");
+
+
+                return arguments;
+            }
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(VideoCall.this);
+        requestQueue.add(stringRequest);
+
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                30000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+    }
 
 
 

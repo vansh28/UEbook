@@ -4,5 +4,9 @@
         android:title="View Profile" />
     <item android:id="@+id/Privacy"
         android:title="Status Privacy" />
+    <item android:id="@+id/Starred"
+        android:title="Starred Messages" />
+    <item android:id="@+id/Broadcast"
+        android:title="New Broadcast" />
 
 </menu>

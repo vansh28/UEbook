@@ -19,7 +19,7 @@ import com.ue.uebook.ChatSdk.Adapter.MyAdapter;
 import com.ue.uebook.HomeActivity.HomeScreen;
 import com.ue.uebook.R;
 
-public class ChatHistoryScreen extends AppCompatActivity implements ChatHistoryFrag.OnFragmentInteractionListener, GroupChatFrag.OnFragmentInteractionListener, StatusFragment.OnFragmentInteractionListener,View.OnClickListener {
+public class ChatHistoryScreen extends AppCompatActivity implements ChatHistoryFrag.OnFragmentInteractionListener, GroupChatFrag.OnFragmentInteractionListener, StatusFragment.OnFragmentInteractionListener,View.OnClickListener ,CallLogFragment.OnFragmentInteractionListener {
     TabLayout tabLayout;
     ViewPager viewPager;
     private ImageButton backbtnChat,optionMenu;
@@ -40,6 +40,7 @@ public class ChatHistoryScreen extends AppCompatActivity implements ChatHistoryF
         tabLayout.addTab(tabLayout.newTab().setText("Chat"));
         tabLayout.addTab(tabLayout.newTab().setText("Group Chat"));
         tabLayout.addTab(tabLayout.newTab().setText("Status"));
+        tabLayout.addTab(tabLayout.newTab().setText("Calls"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         final MyAdapter adapter = new MyAdapter(this,getSupportFragmentManager(),
                 tabLayout.getTabCount());
@@ -51,11 +52,17 @@ public class ChatHistoryScreen extends AppCompatActivity implements ChatHistoryF
             public void onTabSelected(TabLayout.Tab tab) {
                 viewPager.setCurrentItem(tab.getPosition());
                 Log.e("poso",String.valueOf(tab.getPosition()));
+                if (tab.getPosition()== 0){
+                    newChatbtn.setVisibility(View.VISIBLE);
+                }
+                if (tab.getPosition()== 1){
+                    newChatbtn.setVisibility(View.VISIBLE);
+                }
                 if (tab.getPosition()== 2){
                     newChatbtn.setVisibility(View.GONE);
                 }
-                else {
-                    newChatbtn.setVisibility(View.VISIBLE);
+                if (tab.getPosition()== 3){
+                    newChatbtn.setVisibility(View.GONE);
                 }
             }
             @Override
@@ -111,7 +118,15 @@ public class ChatHistoryScreen extends AppCompatActivity implements ChatHistoryF
                     Intent intents = new Intent(ChatHistoryScreen.this,StatusPrivacyScreen.class);
                     startActivity(intents);
                     return  true;
+                    case R.id.Starred:
+                        Intent intentst = new Intent(ChatHistoryScreen.this,StarredMessageScreen.class);
+                        startActivity(intentst);
+                        return true;
 
+                    case R.id.Broadcast:
+                        Intent intentb = new Intent(ChatHistoryScreen.this,BroadCastUserList.class);
+                        startActivity(intentb);
+                        return  true;
                     default:
                         return false;
                 }

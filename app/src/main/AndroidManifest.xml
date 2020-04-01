@@ -40,7 +40,9 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".ChatSdk.TrimActivity"></activity>
+        <activity android:name=".ChatSdk.BroadCastUserList"></activity>
+        <activity android:name=".ChatSdk.StarredMessageScreen" />
+        <activity android:name=".ChatSdk.TrimActivity" />
         <activity android:name=".ChatSdk.StatusViewScreen" />
         <activity
             android:name=".ChatSdk.CameraView"

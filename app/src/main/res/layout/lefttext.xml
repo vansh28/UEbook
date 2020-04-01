@@ -44,6 +44,14 @@
             android:textColor="@color/black"
             android:textSize="@dimen/size_10"
             android:visibility="gone" />
+        <ImageView
+            android:layout_width="@dimen/size_20"
+            android:src="@drawable/star"
+            android:visibility="gone"
+            android:layout_toRightOf="@+id/oPonentMessage"
+            android:layout_marginLeft="@dimen/size_5"
+            android:layout_marginTop="@dimen/size_10"
+            android:layout_height="@dimen/size_20"/>
     </RelativeLayout>
     <RelativeLayout
         android:id="@+id/senderlayout"
@@ -79,6 +87,16 @@
             android:textColor="@color/black"
             android:textSize="@dimen/size_10"
             android:visibility="gone" />
+        <ImageView
+            android:layout_width="@dimen/size_20"
+            android:src="@drawable/starred"
+            android:visibility="gone"
+
+            android:layout_toRightOf="@+id/userMessage"
+            android:layout_marginLeft="@dimen/size_5"
+            android:layout_marginTop="@dimen/size_10"
+            android:layout_height="@dimen/size_20"/>
+
     </RelativeLayout>
     <RelativeLayout
         android:id="@+id/senderlayoutimage"
@@ -109,6 +127,16 @@
             android:alpha=".6"
             android:src="@drawable/play"
             android:visibility="gone" />
+        <ImageView
+            android:layout_width="@dimen/size_20"
+            android:src="@drawable/starred"
+            android:visibility="gone"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="@dimen/size_5"
+            android:layout_marginTop="@dimen/size_10"
+            android:layout_height="@dimen/size_20"/>
+
     </RelativeLayout>
     <RelativeLayout
         android:id="@+id/oponentlayoutimage"
@@ -137,6 +165,16 @@
             android:alpha=".6"
             android:src="@drawable/play"
             android:visibility="gone" />
+        <ImageView
+            android:layout_width="@dimen/size_20"
+            android:src="@drawable/starred"
+            android:visibility="gone"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="@dimen/size_5"
+            android:layout_marginTop="@dimen/size_10"
+            android:layout_height="@dimen/size_20"/>
+
     </RelativeLayout>
     <RelativeLayout
         android:id="@+id/videoConainerOponet"

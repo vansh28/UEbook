@@ -59,7 +59,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyviewHo
     public interface ChatImageFileClick {
         void onImageClick(String url ,String type ,String fileName);
         void onDownloadClick(String url ,String type ,String name);
-        void onLongClickOnMessage(View view ,String chatid );
+        void onLongClickOnMessage(View view ,Chathistory chatid );
     }
     public void setItemClickListener(ChatImageFileClick clickListener) {
         chatImageFileClick = clickListener;
@@ -344,6 +344,27 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyviewHo
             }
 
         }
+
+
+        holder.playbtnSender.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if (chatImageFileClick!=null){
+                    chatImageFileClick.onLongClickOnMessage(v,chatData.get(position));
+                }
+                return false;
+            }
+        });
+        holder.playbtnOponent.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if (chatImageFileClick!=null){
+                    chatImageFileClick.onLongClickOnMessage(v,chatData.get(position));
+                }
+                return false;
+            }
+        });
+
         holder.senderimage.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
@@ -364,6 +385,30 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyviewHo
                 }
             }
         });
+
+
+        holder.oponentimage.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+
+                if (chatImageFileClick!=null){
+                    chatImageFileClick.onLongClickOnMessage(v,chatData.get(position));
+                }
+                return false;
+            }
+        });
+        holder.senderimage.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+
+                if (chatImageFileClick!=null){
+                    chatImageFileClick.onLongClickOnMessage(v,chatData.get(position));
+                }
+                return false;
+            }
+        });
+
+
         holder.oponentimage.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
@@ -427,7 +472,16 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyviewHo
             @Override
             public boolean onLongClick(View v) {
                 if (chatImageFileClick!=null){
-                    chatImageFileClick.onLongClickOnMessage(v,chatData.get(position).getId());
+                    chatImageFileClick.onLongClickOnMessage(v,chatData.get(position));
+                }
+                return false;
+            }
+        });
+        holder.commentSenderLayout.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if (chatImageFileClick!=null){
+                    chatImageFileClick.onLongClickOnMessage(v,chatData.get(position));
                 }
                 return false;
             }
@@ -436,16 +490,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyviewHo
             @Override
             public boolean onLongClick(View v) {
                 if (chatImageFileClick!=null){
-                    chatImageFileClick.onLongClickOnMessage(v,chatData.get(position).getId());
-                }
-                return false;
-            }
-        });
-        holder.commentOponentLayout.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                if (chatImageFileClick!=null){
-                    chatImageFileClick.onLongClickOnMessage(v,chatData.get(position).getId());
+                    chatImageFileClick.onLongClickOnMessage(v,chatData.get(position));
                 }
                 return false;
             }
@@ -461,7 +506,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyviewHo
 //                        v.setBackgroundColor(Color.parseColor("#ffffff"));
 //                    }
 
-                    chatImageFileClick.onLongClickOnMessage(v,chatData.get(position).getId());
+                    chatImageFileClick.onLongClickOnMessage(v,chatData.get(position));
                 }
                 return false;
             }

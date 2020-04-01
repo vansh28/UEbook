@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_margin="@dimen/size_5"
+        android:gravity="center_vertical"
+        android:layout_height="@dimen/size_40">
+        <de.hdodenhof.circleimageview.CircleImageView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/image_user"
+            android:layout_width="@dimen/size_30"
+            android:layout_height="@dimen/size_30"
+            android:src="@drawable/user_default"
+            android:layout_gravity="center_vertical"
+            android:layout_centerVertical="true"
+            app:civ_border_width="2dp"
+            app:civ_border_color="#ffffff"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:text="You"
+            android:textSize="@dimen/size_15"
+            android:textColor="@color/black"
+            android:layout_marginLeft="@dimen/size_5"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:text="-"
+            android:textSize="@dimen/size_15"
+            android:textColor="@color/black"
+            android:layout_marginLeft="@dimen/size_5"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:text="Vansh Chaudhary"
+            android:textSize="@dimen/size_15"
+            android:textColor="@color/black"
+            android:layout_marginLeft="@dimen/size_10"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:text="3/3/20"
+            android:textSize="@dimen/size_15"
+            android:textColor="@color/black"
+            android:gravity="right"
+            android:layout_marginLeft="@dimen/size_10"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+    <RelativeLayout
+        android:id="@+id/oponentlayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/size_25"
+        android:layout_marginRight="@dimen/size_150"
+        android:background="@drawable/rounded_rect"
+        android:visibility="visible">
+        <hani.momanii.supernova_emoji_library.Helper.EmojiconTextView
+            android:id="@+id/oPonentMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/size_40"
+            android:minWidth="@dimen/size_80"
+            android:padding="@dimen/size_5"
+            app:emojiconSize="28sp"
+            android:textColor="@color/black" />
+    </RelativeLayout>
+    <View
+        android:layout_width="match_parent"
+        android:background="#d3d3d3"
+        android:layout_marginTop="@dimen/size_3"
+        android:layout_height="@dimen/size_1"/>
+
+
+</LinearLayout>

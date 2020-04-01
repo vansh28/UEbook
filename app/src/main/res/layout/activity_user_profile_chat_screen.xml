@@ -93,6 +93,7 @@
             android:background="@android:color/transparent"
             android:layout_alignParentRight="true"
             android:id="@+id/nameEdit"
+            android:visibility="gone"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/size_16"
             android:layout_height="wrap_content"/>
@@ -142,6 +143,8 @@
             android:background="@android:color/transparent"
             android:layout_alignParentRight="true"
             android:id="@+id/editAbout"
+            android:visibility="gone"
+
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/size_16"
             android:layout_height="wrap_content"/>

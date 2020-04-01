@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/image_user"
+        android:layout_width="@dimen/size_70"
+        android:layout_height="@dimen/size_70"
+        android:layout_centerVertical="true"
+        android:src="@drawable/user_default"
+        app:civ_border_color="#ffffff"
+        app:civ_border_width="2dp" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/size_15"
+        android:layout_toRightOf="@+id/image_user"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLength="20"
+            android:maxLines="1"
+            android:id="@+id/username"
+            android:textColor="@color/black"
+            android:textSize="@dimen/size_20" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:id="@+id/time"
+
+
+            android:drawablePadding="@dimen/size_10"
+            android:textSize="@dimen/size_18" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_margin="@dimen/size_10"
+        android:id="@+id/calltype"
+     />
+    <View
+        android:layout_width="match_parent"
+        android:background="#C2C1C1"
+        android:layout_below="@id/image_user"
+        android:layout_marginTop="@dimen/size_5"
+        android:layout_height="@dimen/size_1"/>
+</RelativeLayout>

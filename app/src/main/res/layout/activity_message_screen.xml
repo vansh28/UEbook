@@ -8,13 +8,54 @@
     android:id="@+id/root_view"
     android:layout_height="match_parent"
     tools:context=".ChatSdk.MessageScreen">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:background="@color/colorAccent"
+        android:padding="@dimen/size_10"
+        android:visibility="gone"
+        android:id="@+id/actonbarlayout"
+        android:layout_height="@dimen/size_60">
+        <ImageButton
+            android:id="@+id/backbtnMessageaction"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/backbtn"
+            android:background="@android:color/transparent"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/size_10"
+            android:layout_marginLeft="@dimen/size_10" />
+
+        <ImageButton
+            android:id="@+id/deleteaction"
+            android:layout_width="@dimen/size_30"
+            android:layout_height="@dimen/size_30"
+            android:background="@drawable/deletewhite"
+            android:layout_marginRight="@dimen/size_10"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/starredbtn"
+            />
+
+        <ImageButton
+            android:id="@+id/starredbtn"
+            android:layout_width="@dimen/size_40"
+            android:layout_height="@dimen/size_40"
+            android:src="@drawable/star"
+            android:background="@android:color/transparent"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginStart="@dimen/size_10"
+             />
+
+
+    </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:background="@color/colorAccent"
         android:id="@+id/header"
+        android:visibility="visible"
         android:padding="@dimen/size_10"
-        android:layout_height="wrap_content">
+        android:layout_height="@dimen/size_60">
         <ImageButton
             android:id="@+id/backbtnMessage"
             android:layout_width="wrap_content"
@@ -82,8 +123,8 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:id="@+id/NestedScrollView"
+        android:layout_marginTop="@dimen/size_60"
         android:layout_above="@+id/layout_chat_send_container"
-        android:layout_below="@id/header"
         android:layout_height="match_parent">
         <LinearLayout
             android:layout_width="match_parent"
