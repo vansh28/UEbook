@@ -2,12 +2,15 @@ package com.ue.uebook.ChatSdk;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,6 +33,8 @@ import com.ue.uebook.ChatSdk.Pojo.callResponse;
 import com.ue.uebook.Data.ApiRequest;
 import com.ue.uebook.R;
 import com.ue.uebook.SessionManager;
+import com.ue.uebook.VideoSdk.VideoCall;
+import com.ue.uebook.VoiceCall.VoiceCallActivity;
 
 import org.json.JSONObject;
 
@@ -46,7 +51,7 @@ import java.util.Map;
  * Use the {@link CallLogFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CallLogFragment extends Fragment {
+public class CallLogFragment extends Fragment implements CallLogAdapter.ItemClick {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -132,6 +137,46 @@ public class CallLogFragment extends Fragment {
         mListener = null;
     }
 
+    @Override
+    public void onContactListItemClick(String channelId, String FriendID, String type) {
+
+        Log.e("type",channelId+FriendID+type);
+          if (type.equalsIgnoreCase("audio")){
+              Intent intents = new Intent(getContext(), VoiceCallActivity.class);
+              intents.putExtra("id", channelId);
+              intents.putExtra("receiverid", FriendID);
+              getContext().startActivity(intents);
+        }
+        else if (type.equalsIgnoreCase("video")){
+              Intent intent = new Intent(getContext(), VideoCall.class);
+              intent.putExtra("id", channelId);
+              intent.putExtra("receiverid", FriendID);
+              getContext().startActivity(intent);
+        }
+    }
+
+    @Override
+    public void onDeleteClick(View view ,String id) {
+         showFilterPopup(view,id);
+
+    }
+    private void showFilterPopup(View v , String chatid) {
+        PopupMenu popup = new PopupMenu(getContext(), v);
+        popup.inflate(R.menu.deletepopup);
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.delete:
+                        Toast.makeText(getContext(),"deleted",Toast.LENGTH_SHORT).show();
+
+
+                    default:
+                        return false;
+                }
+            }
+        });
+        popup.show();
+    }
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -168,6 +213,7 @@ public class CallLogFragment extends Fragment {
                                 if (form!=null){
                                     callLogAdapter = new CallLogAdapter((AppCompatActivity) getContext(),form.getData(),userID);
                                     callLogList.setAdapter(callLogAdapter);
+                                    callLogAdapter.setItemClickListener(CallLogFragment.this);
                                 }
 
                             }
@@ -205,5 +251,60 @@ public class CallLogFragment extends Fragment {
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
     }
 
+    @Override
+    public void onResume() {
+        Log.e("DEBUG", "onResume of HomeFragment");
+        super.onResume();
+        getAllCallLogList(new SessionManager(getContext().getApplicationContext()).getUserID());
+    }
+    public void deleteCall(final String userID){
+        final ProgressDialog progressDialog = new ProgressDialog(getContext());
+        progressDialog.setCancelable(true);
+        progressDialog.setMessage(getResources().getString(R.string.please_wait));
+        progressDialog.show();
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, ApiRequest.testBaseUrl +"userstatus/addViewCallLogs",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        progressDialog.dismiss();
+                        Log.e(" statusview_response", response);
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                getAllCallLogList(new SessionManager(getContext().getApplicationContext()).getUserID());
+                            }
+                        });
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        try {
+                            String responseBody = new String(error.networkResponse.data, "utf-8");
+                            JSONObject data = new JSONObject(responseBody);
+
+                            Toast.makeText(getContext(), data.optString("message","Something wrong!"), Toast.LENGTH_LONG).show();
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
+                        progressDialog.dismiss();
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> arguments = new HashMap<String, String>();
+                arguments.put("user_id",userID);
+                arguments.put("flag","view" );
+                return arguments;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        requestQueue.add(stringRequest);
+
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                30000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+    }
 
 }

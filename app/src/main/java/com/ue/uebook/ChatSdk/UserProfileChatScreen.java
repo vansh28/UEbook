@@ -4,6 +4,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
@@ -12,6 +13,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.ue.uebook.BaseActivity;
 import com.ue.uebook.Data.ApiRequest;
+import com.ue.uebook.GlideUtils;
 import com.ue.uebook.LoginActivity.Pojo.LoginResponse;
 import com.ue.uebook.R;
 import com.ue.uebook.SessionManager;
@@ -22,6 +24,7 @@ public class UserProfileChatScreen extends BaseActivity implements View.OnClickL
     private ImageButton back_btn;
     private ImageButton editName ,editAbout;
     private TextView userName,userAbout;
+    private ImageView profile_image_user;
 
 
     @Override
@@ -33,6 +36,7 @@ public class UserProfileChatScreen extends BaseActivity implements View.OnClickL
         editAbout =findViewById(R.id.editAbout);
         userName = findViewById(R.id.userName);
         userAbout =findViewById(R.id.abouUser);
+        profile_image_user = findViewById(R.id.profile_image_user);
         editName.setOnClickListener(this);
         back_btn.setOnClickListener(this);
         UserInfo(new SessionManager(getApplicationContext()).getUserID());
@@ -71,6 +75,7 @@ public class UserProfileChatScreen extends BaseActivity implements View.OnClickL
                         public void run() {
                           userName.setText(form.getResponse().getUser_name());
                           userAbout.setText(form.getResponse().getAbout_me());
+                            GlideUtils.loadImage(UserProfileChatScreen.this, "http://dnddemo.com/ebooks/api/v1/upload/" + form.getResponse().getUrl(), profile_image_user, R.drawable.user_default, R.drawable.user_default);
 
                         }
                     });

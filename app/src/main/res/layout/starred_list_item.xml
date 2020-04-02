@@ -22,8 +22,8 @@
             app:civ_border_color="#ffffff"/>
         <TextView
             android:layout_width="wrap_content"
-            android:text="You"
             android:textSize="@dimen/size_15"
+            android:id="@+id/senderName"
             android:textColor="@color/black"
             android:layout_marginLeft="@dimen/size_5"
             android:layout_height="wrap_content"/>
@@ -37,15 +37,15 @@
 
         <TextView
             android:layout_width="wrap_content"
-            android:text="Vansh Chaudhary"
             android:textSize="@dimen/size_15"
+            android:id="@+id/reciverName"
             android:textColor="@color/black"
             android:layout_marginLeft="@dimen/size_10"
             android:layout_height="wrap_content"/>
         <TextView
             android:layout_width="match_parent"
-            android:text="3/3/20"
             android:textSize="@dimen/size_15"
+            android:id="@+id/date"
             android:textColor="@color/black"
             android:gravity="right"
             android:layout_marginLeft="@dimen/size_10"
@@ -65,6 +65,7 @@
             android:layout_height="wrap_content"
             android:minHeight="@dimen/size_40"
             android:minWidth="@dimen/size_80"
+            android:layout_centerInParent="true"
             android:padding="@dimen/size_5"
             app:emojiconSize="28sp"
             android:textColor="@color/black" />

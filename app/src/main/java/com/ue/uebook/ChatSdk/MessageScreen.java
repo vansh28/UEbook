@@ -43,6 +43,12 @@ import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
@@ -66,12 +72,16 @@ import com.ue.uebook.VideoSdk.VideoCall;
 import com.ue.uebook.VoiceCall.VoiceCallActivity;
 import com.ue.uebook.WebviewScreen;
 
+import org.json.JSONObject;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 import hani.momanii.supernova_emoji_library.Actions.EmojIconActions;
 import hani.momanii.supernova_emoji_library.Helper.EmojiconEditText;
@@ -108,6 +118,7 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
     private int typevalue = 0;
     IntentFilter filter;
     private String sendToID;
+    private String chatID;
     //gallery=1,video=2,audio=3,doc=4//
     private BottomSheetDialog mBottomSheetDialog;
     BroadcastReceiver receiver;
@@ -377,7 +388,7 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
             deleteMessage(new SessionManager(getApplicationContext()).getUserID(),chatidForDelete,"selected");
         }
         else if (v==starredbtn){
-
+                  addToStarred(sendToID,chatidForDelete);
         }
     }
 
@@ -1099,66 +1110,185 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        headerLayout.setVisibility(View.VISIBLE);
+                        actionbarLayout.setVisibility(View.GONE);
                         if (screenID == 2) {
-                            oponentData = (OponentData) intent.getSerializableExtra("oponentdata");
-                            userData = (UserData) intent.getSerializableExtra("userData");
-                            if (oponentData != null) {
-                                oponentName=oponentData.getName();
-                                if (oponentData.getName().length()>10){
-                                    oponent_name.setText(oponentData.getName().substring(0,10)+"..");
-                                }
-                                else {
-                                    oponent_name.setText(oponentData.getName());
-                                }
-                                sendToID = oponentData.userId;
-                                GlideUtils.loadImage(MessageScreen.this, ApiRequest.BaseUrl + "upload/" + oponentData.getUrl(), userProfile, R.drawable.user_default, R.drawable.user_default);
-                                imageProfile = oponentData.getUrl();
-                                oponentImage=oponentData.getUrl();
-                            }
-
-                            if (oponentData.channelId != null) {
-                                chanelID = oponentData.channelId;
-                                sendToID = oponentData.userId;
-                                getChatHistory(new SessionManager(getApplication()).getUserID(), sendToID, chanelID, "text",2);
-                            }
-
-                        } else if (screenID == 1) {
-
-                            String sendTo = intent.getStringExtra("sendTo");
-                            channelID = intent.getStringExtra("channelID");
-                            String name = intent.getStringExtra("name");
-                            oponentName= intent.getStringExtra("name");
-                            if (name.length()>10){
-                                oponent_name.setText(name.substring(0,10)+"..");
+                        oponentData = (OponentData) intent.getSerializableExtra("oponentdata");
+                        userData = (UserData) intent.getSerializableExtra("userData");
+                        if (oponentData != null) {
+                            oponentName=oponentData.getName();
+                            if (oponentData.getName().length()>10){
+                                oponent_name.setText(oponentData.getName().substring(0,10)+"..");
                             }
                             else {
-                                oponent_name.setText(name);
+                                oponent_name.setText(oponentData.getName());
                             }
+                            sendToID = oponentData.userId;
+                            GlideUtils.loadImage(MessageScreen.this, ApiRequest.BaseUrl + "upload/" + oponentData.getUrl(), userProfile, R.drawable.user_default, R.drawable.user_default);
+                            imageProfile = oponentData.getUrl();
+                            oponentImage=oponentData.getUrl();
+                        }
+
+                        if (oponentData.channelId != null) {
+                            chanelID = oponentData.channelId;
+                            sendToID = oponentData.userId;
+                            getChatHistory(new SessionManager(getApplication()).getUserID(), sendToID, chanelID, "text",2);
+                        }
+
+                    } else if (screenID == 1) {
+
+                        String sendTo = intent.getStringExtra("sendTo");
+                        channelID = intent.getStringExtra("channelID");
+                        String name = intent.getStringExtra("name");
+                        oponentName= intent.getStringExtra("name");
+                        if (name.length()>10){
+                            oponent_name.setText(name.substring(0,10)+"..");
+                        }
+                        else {
+                            oponent_name.setText(name);
+                        }
 
 
 
-                            sendToID = sendTo;
+                        sendToID = sendTo;
 
-                            if (channelID != null) {
-                                chanelID = channelID;
-                                getChatHistory(new SessionManager(getApplication()).getUserID(), sendToID, channelID, "text",2);
-                                GlideUtils.loadImage(MessageScreen.this, ApiRequest.BaseUrl + "upload/" + imageUrl, userProfile, R.drawable.user_default, R.drawable.user_default);
-                                imageProfile = imageUrl;
-                                oponentImage=imageUrl;
-                            } else {
+                        if (channelID != null) {
+                            chanelID = channelID;
+                            getChatHistory(new SessionManager(getApplication()).getUserID(), sendToID, channelID, "text",2);
+                            GlideUtils.loadImage(MessageScreen.this, ApiRequest.BaseUrl + "upload/" + imageUrl, userProfile, R.drawable.user_default, R.drawable.user_default);
+                            imageProfile = imageUrl;
+                            oponentImage=imageUrl;
+                        } else {
 
-                                getChatHistory(new SessionManager(getApplication()).getUserID(), sendToID, "", "text",2);
-                                GlideUtils.loadImage(MessageScreen.this, ApiRequest.BaseUrl + "upload/" + imageUrl, userProfile, R.drawable.user_default, R.drawable.user_default);
-                                imageProfile = imageUrl;
-                                oponentImage=imageUrl;
+                            getChatHistory(new SessionManager(getApplication()).getUserID(), sendToID, "", "text",2);
+                            GlideUtils.loadImage(MessageScreen.this, ApiRequest.BaseUrl + "upload/" + imageUrl, userProfile, R.drawable.user_default, R.drawable.user_default);
+                            imageProfile = imageUrl;
+                            oponentImage=imageUrl;
 
-                           }
                         }
                     }
+                }
                 });
 
             }
         });
     }
+
+
+    public void addToStarred( final  String friend_id ,final String chat_id){
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setCancelable(true);
+        progressDialog.setMessage(getResources().getString(R.string.please_wait));
+        progressDialog.show();
+        StringRequest stringRequest = new StringRequest(com.android.volley.Request.Method.POST, ApiRequest.testBaseUrl +"userschat/favoriteChat",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        progressDialog.dismiss();
+                        Log.e(" statusview_response", response);
+                       runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                headerLayout.setVisibility(View.VISIBLE);
+                                actionbarLayout.setVisibility(View.GONE);
+                                if (screenID == 2) {
+                                    oponentData = (OponentData) intent.getSerializableExtra("oponentdata");
+                                    userData = (UserData) intent.getSerializableExtra("userData");
+                                    if (oponentData != null) {
+                                        oponentName=oponentData.getName();
+                                        if (oponentData.getName().length()>10){
+                                            oponent_name.setText(oponentData.getName().substring(0,10)+"..");
+                                        }
+                                        else {
+                                            oponent_name.setText(oponentData.getName());
+                                        }
+                                        sendToID = oponentData.userId;
+                                        GlideUtils.loadImage(MessageScreen.this, ApiRequest.BaseUrl + "upload/" + oponentData.getUrl(), userProfile, R.drawable.user_default, R.drawable.user_default);
+                                        imageProfile = oponentData.getUrl();
+                                        oponentImage=oponentData.getUrl();
+                                    }
+
+                                    if (oponentData.channelId != null) {
+                                        chanelID = oponentData.channelId;
+                                        sendToID = oponentData.userId;
+                                        getChatHistory(new SessionManager(getApplication()).getUserID(), sendToID, chanelID, "text",2);
+                                    }
+
+                                } else if (screenID == 1) {
+
+                                    String sendTo = intent.getStringExtra("sendTo");
+                                    channelID = intent.getStringExtra("channelID");
+                                    String name = intent.getStringExtra("name");
+                                    oponentName= intent.getStringExtra("name");
+                                    if (name.length()>10){
+                                        oponent_name.setText(name.substring(0,10)+"..");
+                                    }
+                                    else {
+                                        oponent_name.setText(name);
+                                    }
+
+
+
+                                    sendToID = sendTo;
+
+                                    if (channelID != null) {
+                                        chanelID = channelID;
+                                        getChatHistory(new SessionManager(getApplication()).getUserID(), sendToID, channelID, "text",2);
+                                        GlideUtils.loadImage(MessageScreen.this, ApiRequest.BaseUrl + "upload/" + imageUrl, userProfile, R.drawable.user_default, R.drawable.user_default);
+                                        imageProfile = imageUrl;
+                                        oponentImage=imageUrl;
+                                    } else {
+
+                                        getChatHistory(new SessionManager(getApplication()).getUserID(), sendToID, "", "text",2);
+                                        GlideUtils.loadImage(MessageScreen.this, ApiRequest.BaseUrl + "upload/" + imageUrl, userProfile, R.drawable.user_default, R.drawable.user_default);
+                                        imageProfile = imageUrl;
+                                        oponentImage=imageUrl;
+
+                                    }
+                                }
+                            }
+
+
+
+                        });
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        try {
+                            String responseBody = new String(error.networkResponse.data, "utf-8");
+                            JSONObject data = new JSONObject(responseBody);
+
+                            Toast.makeText(MessageScreen.this, data.optString("message","Something wrong!"), Toast.LENGTH_LONG).show();
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
+                        progressDialog.dismiss();
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> arguments = new HashMap<String, String>();
+                arguments.put("user_id",new SessionManager(getApplicationContext()).getUserID());
+                arguments.put("flag","add" );
+                arguments.put("friend_id",friend_id);
+                arguments.put("chat_id",chat_id);
+                arguments.put("type","chat" );
+                return arguments;
+
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
+
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                30000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+    }
+
+
+
 
 }

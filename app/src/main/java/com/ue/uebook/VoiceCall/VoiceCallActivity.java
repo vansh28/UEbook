@@ -51,7 +51,10 @@ public class VoiceCallActivity extends AppCompatActivity {
         random = new Random();
         channeld=intent.getStringExtra("id");
         receiverid=intent.getStringExtra("receiverid");
-        if (channeld.isEmpty()){
+        if (channeld!=null){
+
+        }
+        else {
             channeld=CreateRandomAudioFileName(5);
         }
         URL serverURL;

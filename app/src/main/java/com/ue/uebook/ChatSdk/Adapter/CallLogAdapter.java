@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -22,13 +23,20 @@ public class CallLogAdapter  extends RecyclerView.Adapter<CallLogAdapter.MyviewH
     private  List<callResponse> callResponseList;
     private AppCompatActivity context;
     private String userid;
+    private ItemClick itemClick;
 
     public CallLogAdapter(AppCompatActivity callLogFragment, List<callResponse> form , String userid) {
         this.context = callLogFragment;
         this.callResponseList=form;
         this.userid = userid;
     }
-
+    public interface ItemClick {
+        void onContactListItemClick(String channelId,String FriendID ,String type);
+        void onDeleteClick(View view ,String id);
+    }
+    public void setItemClickListener(ItemClick clickListener) {
+        itemClick = clickListener;
+    }
     @NonNull
     @Override
     public CallLogAdapter.MyviewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -69,6 +77,47 @@ public class CallLogAdapter  extends RecyclerView.Adapter<CallLogAdapter.MyviewH
             holder.CallTime.setText(callResponseList.get(position).getCreated());
             holder.CallTime.setCompoundDrawablesWithIntrinsicBounds(R.drawable.diagonalarrow, 0, 0, 0);
         }
+        holder.calltype.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (callResponseList.get(position).getSender_info().getId().equalsIgnoreCase(userid)){
+                    if (callResponseList.get(position).getType().equalsIgnoreCase("audio")){
+                          if (itemClick!=null){
+                              itemClick.onContactListItemClick(callResponseList.get(position).getChannel_id(),callResponseList.get(position).getReceiver_info().getId(),"audio");
+                          }
+                    }
+                    else {
+                        if (itemClick!=null){
+                            itemClick.onContactListItemClick(callResponseList.get(position).getChannel_id(),callResponseList.get(position).getReceiver_info().getId(),"video");
+                        }
+                    }
+
+
+                }
+                else {
+                    if (callResponseList.get(position).getType().equalsIgnoreCase("audio")){
+                        if (itemClick!=null){
+                            itemClick.onContactListItemClick(callResponseList.get(position).getChannel_id(),callResponseList.get(position).getSender_info().getId(),"audio");
+                        }
+                    }
+                    else {
+                        if (itemClick!=null){
+                            itemClick.onContactListItemClick(callResponseList.get(position).getChannel_id(),callResponseList.get(position).getSender_info().getId(),"video");
+                        }
+                    }
+
+                }
+            }
+        });
+            holder.root_view.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    if (itemClick!=null){
+                        itemClick.onDeleteClick(v,callResponseList.get(position).getId());
+                    }
+                    return false;
+                }
+            });
 
     }
 
@@ -80,13 +129,14 @@ public class CallLogAdapter  extends RecyclerView.Adapter<CallLogAdapter.MyviewH
     public class MyviewHolder extends RecyclerView.ViewHolder {
         private ImageView calltype,imageuser;
         private TextView CallTime,userName;
+        private RelativeLayout root_view;
         public MyviewHolder(@NonNull View itemView) {
             super(itemView);
             calltype = itemView .findViewById(R.id.calltype);
             imageuser = itemView .findViewById(R.id.image_user);
             CallTime = itemView .findViewById(R.id.time);
             userName = itemView .findViewById(R.id.username);
-
+            root_view=itemView.findViewById(R.id.root_view);
 
 
         }
