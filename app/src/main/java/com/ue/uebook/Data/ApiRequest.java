@@ -878,7 +878,7 @@ public class ApiRequest {
         OkHttpClient client = new OkHttpClient();
         RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
                 .addFormDataPart("user_id",user_id)
-                .addFormDataPart("visibility_flag ",visibility )
+                .addFormDataPart("visibility_flag",visibility )
                 .addFormDataPart("user_ids",user_ids)
                 .build();
         Request request = new Request.Builder()

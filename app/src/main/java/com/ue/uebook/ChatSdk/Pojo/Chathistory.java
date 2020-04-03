@@ -10,6 +10,15 @@ public class Chathistory {
     private String message;
     private String chat_status_comm_msg;
     private String chat_status_id;
+    private Integer favorite;
+
+    public Integer getFavorite() {
+        return favorite;
+    }
+
+    public void setFavorite(Integer favorite) {
+        this.favorite = favorite;
+    }
 
     public String getChat_status_comm_msg() {
         return chat_status_comm_msg;

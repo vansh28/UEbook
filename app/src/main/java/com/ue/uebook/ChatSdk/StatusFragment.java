@@ -524,8 +524,6 @@ public class StatusFragment extends Fragment implements View.OnClickListener, St
         }
 
     }
-
-
     public static String getRealPathFromURI_API19V(Context context, Uri uri) {
         String filePath = "";
         if (uri.getHost().contains("com.android.providers.media")) {

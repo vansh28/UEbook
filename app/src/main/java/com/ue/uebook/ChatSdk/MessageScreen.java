@@ -532,6 +532,7 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
                 hideLoadingIndicator();
                 Gson gson = new GsonBuilder().create();
                 final ChatResponse form = gson.fromJson(myResponse, ChatResponse.class);
+
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {

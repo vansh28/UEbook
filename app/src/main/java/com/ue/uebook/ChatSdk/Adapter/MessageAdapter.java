@@ -82,6 +82,18 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyviewHo
         final long user = getItemId(position);
         if (chatData.get(position).getSender().equalsIgnoreCase(userId)) {
             if (chatData.get(position).getType().equalsIgnoreCase("image")){
+                if (chatData.get(position).getFavorite()==1){
+                    holder.oponentStarImage.setVisibility(View.GONE);
+                    holder.senderStarImage.setVisibility(View.VISIBLE);
+                }
+                else {
+                    holder.oponentStarImage.setVisibility(View.GONE);
+                    holder.senderStarImage.setVisibility(View.GONE);
+                }
+                holder.oponentStartext.setVisibility(View.GONE);
+                holder.senderStartext.setVisibility(View.GONE);
+                holder.oponentStarImage.setVisibility(View.GONE);
+                holder.senderStarImage.setVisibility(View.GONE);
                 holder.progressbarOponent.setVisibility(View.GONE);
                 holder.progressbarsender.setVisibility(View.VISIBLE);
                 holder.commentSenderLayout.setVisibility(View.GONE);
@@ -138,6 +150,18 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyviewHo
                 }
             }
             else if (chatData.get(position).getType().equalsIgnoreCase("text")) {
+
+                if (chatData.get(position).getFavorite()==1){
+                    holder.oponentStartext.setVisibility(View.GONE);
+                    holder.senderStartext.setVisibility(View.VISIBLE);
+                }
+                else {
+                    holder.oponentStartext.setVisibility(View.GONE);
+                    holder.senderStartext.setVisibility(View.GONE);
+                }
+
+                holder.oponentStarImage.setVisibility(View.GONE);
+                holder.senderStarImage.setVisibility(View.GONE);
                 holder.commentSenderLayout.setVisibility(View.GONE);
                 holder.commentOponentLayout.setVisibility(View.GONE);
 
@@ -163,6 +187,10 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyviewHo
 
             }
             else if (chatData.get(position).getType().equalsIgnoreCase("video")){
+                holder.oponentStartext.setVisibility(View.GONE);
+                holder.senderStartext.setVisibility(View.GONE);
+                holder.oponentStarImage.setVisibility(View.GONE);
+                holder.senderStarImage.setVisibility(View.GONE);
                 holder.commentSenderLayout.setVisibility(View.GONE);
                 holder.commentOponentLayout.setVisibility(View.GONE);
                 holder.progressbarOponent.setVisibility(View.GONE);
@@ -193,6 +221,10 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyviewHo
 
             }
             else if (chatData.get(position).getType().equalsIgnoreCase("docfile")) {
+                holder.oponentStartext.setVisibility(View.GONE);
+                holder.senderStartext.setVisibility(View.GONE);
+                holder.oponentStarImage.setVisibility(View.GONE);
+                holder.senderStarImage.setVisibility(View.GONE);
                 holder.commentSenderLayout.setVisibility(View.GONE);
                 holder.commentOponentLayout.setVisibility(View.GONE);
                 holder.progressbarOponent.setVisibility(View.GONE);
@@ -201,6 +233,10 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyviewHo
                      holder.fileviewoponent.setVisibility(View.GONE);
             }
             else if (chatData.get(position).getType().equalsIgnoreCase("audio")) {
+                holder.oponentStartext.setVisibility(View.GONE);
+                holder.senderStartext.setVisibility(View.GONE);
+                holder.oponentStarImage.setVisibility(View.GONE);
+                holder.senderStarImage.setVisibility(View.GONE);
                 holder.commentSenderLayout.setVisibility(View.GONE);
                 holder.commentOponentLayout.setVisibility(View.GONE);
                 holder.progressbarOponent.setVisibility(View.GONE);
@@ -212,6 +248,18 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyviewHo
         }
         else  {
             if (chatData.get(position).getType().equalsIgnoreCase("image")){
+                holder.oponentStartext.setVisibility(View.GONE);
+                holder.senderStartext.setVisibility(View.GONE);
+                if (chatData.get(position).getFavorite()==1){
+                    holder.oponentStarImage.setVisibility(View.GONE);
+                    holder.senderStarImage.setVisibility(View.VISIBLE);
+                }
+                else {
+                    holder.oponentStarImage.setVisibility(View.GONE);
+                    holder.senderStarImage.setVisibility(View.GONE);
+                }
+                holder.oponentStarImage.setVisibility(View.GONE);
+                holder.senderStarImage.setVisibility(View.GONE);
                 holder.commentSenderLayout.setVisibility(View.GONE);
                 holder.commentOponentLayout.setVisibility(View.GONE);
                 holder.progressbarOponent.setVisibility(View.VISIBLE);
@@ -270,6 +318,16 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyviewHo
 
             }
             else if (chatData.get(position).getType().equalsIgnoreCase("text")) {
+                if (chatData.get(position).getFavorite()==1){
+                    holder.oponentStartext.setVisibility(View.VISIBLE);
+                    holder.senderStartext.setVisibility(View.GONE);
+                }
+                else {
+                    holder.oponentStartext.setVisibility(View.GONE);
+                    holder.senderStartext.setVisibility(View.GONE);
+                }
+                holder.oponentStarImage.setVisibility(View.GONE);
+                holder.senderStarImage.setVisibility(View.GONE);
                 holder.commentSenderLayout.setVisibility(View.GONE);
                 holder.commentOponentLayout.setVisibility(View.GONE);
                 holder.progressbarOponent.setVisibility(View.GONE);
@@ -297,6 +355,10 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyviewHo
 
             }
             else if (chatData.get(position).getType().equalsIgnoreCase("video")){
+                holder.oponentStartext.setVisibility(View.GONE);
+                holder.senderStartext.setVisibility(View.GONE);
+                holder.oponentStarImage.setVisibility(View.GONE);
+                holder.senderStarImage.setVisibility(View.GONE);
                 holder.commentSenderLayout.setVisibility(View.GONE);
                 holder.commentOponentLayout.setVisibility(View.GONE);
                 holder.progressbarOponent.setVisibility(View.GONE);
@@ -327,6 +389,10 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyviewHo
 
             }
             else if (chatData.get(position).getType().equalsIgnoreCase("docfile")) {
+                holder.oponentStartext.setVisibility(View.GONE);
+                holder.senderStartext.setVisibility(View.GONE);
+                holder.oponentStarImage.setVisibility(View.GONE);
+                holder.senderStarImage.setVisibility(View.GONE);
                 holder.commentSenderLayout.setVisibility(View.GONE);
                 holder.commentOponentLayout.setVisibility(View.GONE);
                 holder.progressbarOponent.setVisibility(View.GONE);
@@ -335,6 +401,10 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyviewHo
                 holder.fileviewSender.setVisibility(View.GONE);
             }
             else if (chatData.get(position).getType().equalsIgnoreCase("audio")) {
+                holder.oponentStartext.setVisibility(View.GONE);
+                holder.senderStartext.setVisibility(View.GONE);
+                holder.oponentStarImage.setVisibility(View.GONE);
+                holder.senderStarImage.setVisibility(View.GONE);
                 holder.commentSenderLayout.setVisibility(View.GONE);
                 holder.commentOponentLayout.setVisibility(View.GONE);
                 holder.progressbarOponent.setVisibility(View.GONE);
@@ -641,10 +711,15 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyviewHo
         ImageButton playbtnOponent,playbtnSender,downloadimageoponent,downloadfileoponent,downloadaudio,senderButtonTestPlayPause,oponentButtonTestPlayPause;
         LinearLayout  commentSenderLayout,commentOponentLayout;
 
-
+          ImageView oponentStartext,senderStartext,senderStarImage,oponentStarImage;
 
         public MyviewHolder(@NonNull View itemView) {
             super(itemView);
+            oponentStartext=itemView.findViewById(R.id.oponentStartext);
+            senderStartext = itemView.findViewById(R.id.senderStartext);
+            senderStarImage = itemView.findViewById(R.id.senderStarImage);
+            oponentStarImage =itemView.findViewById(R.id.oponentStarImage);
+
             commentSenderLayout=itemView.findViewById(R.id.SendertCommentLAyout);
             commentOponentLayout = itemView.findViewById(R.id.oponentCommentLAyout);
             messageTypeOponent = itemView.findViewById(R.id.messageTypeOponent);

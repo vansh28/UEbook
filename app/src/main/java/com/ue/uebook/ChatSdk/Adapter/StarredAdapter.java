@@ -42,7 +42,24 @@ public class StarredAdapter extends RecyclerView.Adapter<StarredAdapter.MyviewHo
 
     @Override
     public void onBindViewHolder(@NonNull StarredAdapter.MyviewHolder holder, int position) {
-      holder.oPonentMessage.setText(starredAllResponseList.get(position).getMessage());
+
+        if (starredAllResponseList.get(position).getMessage_type().equalsIgnoreCase("text"))
+        {
+            holder.oPonentMessage.setVisibility(View.VISIBLE);
+            holder.imageView.setVisibility(View.GONE);
+            holder.oPonentMessage.setText(starredAllResponseList.get(position).getMessage());
+        }
+        else if (starredAllResponseList.get(position).getMessage_type().equalsIgnoreCase("image"))
+        {
+            holder.oPonentMessage.setVisibility(View.GONE);
+            holder.imageView.setVisibility(View.VISIBLE);
+            Picasso.get()
+                    .load(starredAllResponseList.get(position).getMessage())
+                    .placeholder(R.drawable.noimage)
+                    .error(R.drawable.noimage)
+                    .fit().centerInside()
+                    .into(holder.imageView);
+        }
           if (starredAllResponseList.get(position).getChat_info_sender().equalsIgnoreCase(userid)){
               holder.senderName.setText("You");
               holder.reciverName.setText(starredAllResponseList.get(position).getUser_name());
@@ -75,7 +92,7 @@ public class StarredAdapter extends RecyclerView.Adapter<StarredAdapter.MyviewHo
 
     public class MyviewHolder extends RecyclerView.ViewHolder {
         EmojiconTextView oPonentMessage;
-        ImageView image_user;
+        ImageView image_user,imageView;
         TextView reciverName,senderName,date;
         public MyviewHolder(@NonNull View itemView) {
             super(itemView);
@@ -84,6 +101,7 @@ public class StarredAdapter extends RecyclerView.Adapter<StarredAdapter.MyviewHo
             image_user = itemView.findViewById(R.id.image_user);
             reciverName=itemView.findViewById(R.id.reciverName);
             senderName = itemView.findViewById(R.id.senderName);
+            imageView = itemView.findViewById(R.id.imageview);
         }
     }
 }

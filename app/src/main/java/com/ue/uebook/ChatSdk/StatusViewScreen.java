@@ -159,8 +159,6 @@ public class StatusViewScreen extends BaseActivity implements View.OnClickListen
                         }
 
                         return true;
-
-
                 }
 
                   return true;
@@ -300,11 +298,6 @@ public class StatusViewScreen extends BaseActivity implements View.OnClickListen
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
     }
-
-
-
-
-
     private void dotSlide() {
 
         dotscount = viewPagerIngredent.getCount();

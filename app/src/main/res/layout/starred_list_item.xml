@@ -67,8 +67,15 @@
             android:minWidth="@dimen/size_80"
             android:layout_centerInParent="true"
             android:padding="@dimen/size_5"
+            android:visibility="gone"
             app:emojiconSize="28sp"
             android:textColor="@color/black" />
+        <ImageView
+            android:layout_width="@dimen/size_200"
+            android:id="@+id/imageview"
+            android:visibility="gone"
+            android:layout_height="@dimen/size_200">
+        </ImageView>
     </RelativeLayout>
     <View
         android:layout_width="match_parent"

@@ -1,17 +1,26 @@
 package com.ue.uebook.ChatSdk;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -24,9 +33,13 @@ import com.ue.uebook.Data.ApiRequest;
 import com.ue.uebook.R;
 import com.ue.uebook.SessionManager;
 
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class BroadCastUserList extends BaseActivity implements CreategroupAdapter.ItemClick, GroupItemListAdapter.ItemClick, View.OnClickListener {
     private RecyclerView memberList;
@@ -104,7 +117,6 @@ public class BroadCastUserList extends BaseActivity implements CreategroupAdapte
                 groupPopleList.add(oponentData);
                 addKist(groupPopleList);
                 userIDForChat.add(oponentData.getUserId());
-
             }
             else if (id==2){
                 if (groupPopleList.size()>0){
@@ -112,12 +124,9 @@ public class BroadCastUserList extends BaseActivity implements CreategroupAdapte
                     addKist(groupPopleList);
                     userIDForChat.remove(oponentData.getUserId());
                 }
-
             }
-
         }
     }
-
     @SuppressLint("RestrictedApi")
     private void addKist(List<OponentData> oponentData){
         if (oponentData.size()>0){
@@ -146,7 +155,58 @@ public class BroadCastUserList extends BaseActivity implements CreategroupAdapte
             finish();
         }
         else if (v==createBroadcast){
+                      if (groupPopleList.size()>1){
+
+                      }
+                      else {
+                          Toast.makeText(this,"Please Select more than one User",Toast.LENGTH_SHORT).show();
+                      }
 
         }
     }
+    public void getAllStatus(final String userID ,final String status_user_id ){
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setCancelable(true);
+        progressDialog.setMessage(getResources().getString(R.string.please_wait));
+        progressDialog.show();
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, ApiRequest.testBaseUrl +"userstatus/userChatStatusList",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        progressDialog.dismiss();
+                        Log.e(" response", response);
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        try {
+                            String responseBody = new String(error.networkResponse.data, "utf-8");
+                            JSONObject data = new JSONObject(responseBody);
+
+                            Toast.makeText(BroadCastUserList.this, data.optString("message","Something wrong!"), Toast.LENGTH_LONG).show();
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
+                        progressDialog.dismiss();
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> arguments = new HashMap<String, String>();
+                arguments.put("user_id",userID);
+                arguments.put("status_user_id",status_user_id);
+                return arguments;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
+
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                30000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+    }
+
 }
