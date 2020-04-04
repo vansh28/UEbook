@@ -36,6 +36,7 @@ import com.ue.uebook.SessionManager;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -182,7 +183,7 @@ public class BroadCastUserList extends BaseActivity implements CreategroupAdapte
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         try {
-                            String responseBody = new String(error.networkResponse.data, "utf-8");
+                            String responseBody = new String(error.networkResponse.data, StandardCharsets.UTF_8);
                             JSONObject data = new JSONObject(responseBody);
 
                             Toast.makeText(BroadCastUserList.this, data.optString("message","Something wrong!"), Toast.LENGTH_LONG).show();

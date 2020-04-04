@@ -57,8 +57,8 @@ public class VideoCallRecive extends AppCompatActivity implements View.OnClickLi
                 = new JitsiMeetConferenceOptions.Builder()
                 .setServerURL(serverURL)
                 .setWelcomePageEnabled(false)
-                
-               // .setAudioOnly(true)
+
+                // .setAudioOnly(true)
                 .build();
         JitsiMeet.setDefaultConferenceOptions(defaultOptions);
 

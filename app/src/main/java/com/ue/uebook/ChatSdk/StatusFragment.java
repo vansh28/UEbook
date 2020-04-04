@@ -419,8 +419,11 @@ public class StatusFragment extends Fragment implements View.OnClickListener, St
                                         statusmodel.setUrl(rec.getString("url"));
                                         statusmodel.setUser_id(rec.getString("user_id"));
                                         statusmodel.setUser_name(rec.getString("user_name"));
+                                        statusmodel.setIs_visible(rec.getString("is_visible"));
+                                       if (rec.getString("is_visible").equalsIgnoreCase("Yes")){
+                                           statusmodelList.add(statusmodel);
+                                       }
 
-                                        statusmodelList.add(statusmodel);
                                     }
                                     getActivity().runOnUiThread(new Runnable() {
                                         @Override
@@ -674,7 +677,7 @@ public class StatusFragment extends Fragment implements View.OnClickListener, St
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         try {
-                            String responseBody = new String(error.networkResponse.data, "utf-8");
+                            String responseBody = new String(error.networkResponse.data, StandardCharsets.UTF_8);
                             JSONObject data = new JSONObject(responseBody);
 
                             Toast.makeText(getContext(), data.optString("message","Something wrong!"), Toast.LENGTH_LONG).show();

@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupMenu;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -38,6 +39,7 @@ import com.ue.uebook.VoiceCall.VoiceCallActivity;
 
 import org.json.JSONObject;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -63,6 +65,7 @@ public class CallLogFragment extends Fragment implements CallLogAdapter.ItemClic
     private CallLogAdapter callLogAdapter;
     private RecyclerView callLogList;
     private List<callResponse>callResponseList;
+    private TextView textViewNocall;
 
     private OnFragmentInteractionListener mListener;
 
@@ -104,7 +107,7 @@ public class CallLogFragment extends Fragment implements CallLogAdapter.ItemClic
         // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.fragment_call_log, container, false);
          callLogList = view.findViewById(R.id.callLogList);
-
+        textViewNocall=view.findViewById(R.id.textViewNocall);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
         callLogList.setLayoutManager(linearLayoutManager);
@@ -167,6 +170,7 @@ public class CallLogFragment extends Fragment implements CallLogAdapter.ItemClic
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.delete:
+                        deleteCall(chatid);
                         Toast.makeText(getContext(),"deleted",Toast.LENGTH_SHORT).show();
 
 
@@ -210,10 +214,16 @@ public class CallLogFragment extends Fragment implements CallLogAdapter.ItemClic
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                if (form!=null){
+                                if (form.getData().size()>0){
+                                    callLogList.setVisibility(View.VISIBLE);
                                     callLogAdapter = new CallLogAdapter((AppCompatActivity) getContext(),form.getData(),userID);
                                     callLogList.setAdapter(callLogAdapter);
+                                    textViewNocall.setVisibility(View.GONE);
                                     callLogAdapter.setItemClickListener(CallLogFragment.this);
+                                }
+                                else {
+                                    callLogList.setVisibility(View.GONE);
+                                    textViewNocall.setVisibility(View.VISIBLE);
                                 }
 
                             }
@@ -224,7 +234,7 @@ public class CallLogFragment extends Fragment implements CallLogAdapter.ItemClic
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         try {
-                            String responseBody = new String(error.networkResponse.data, "utf-8");
+                            String responseBody = new String(error.networkResponse.data, StandardCharsets.UTF_8);
                             JSONObject data = new JSONObject(responseBody);
 
                             Toast.makeText(getContext(), data.optString("message","Something wrong!"), Toast.LENGTH_LONG).show();
@@ -257,12 +267,12 @@ public class CallLogFragment extends Fragment implements CallLogAdapter.ItemClic
         super.onResume();
         getAllCallLogList(new SessionManager(getContext().getApplicationContext()).getUserID());
     }
-    public void deleteCall(final String userID){
+    public void deleteCall(final String log_id){
         final ProgressDialog progressDialog = new ProgressDialog(getContext());
         progressDialog.setCancelable(true);
         progressDialog.setMessage(getResources().getString(R.string.please_wait));
         progressDialog.show();
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, ApiRequest.testBaseUrl +"userstatus/addViewCallLogs",
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, ApiRequest.testBaseUrl +"userstatus/deleteCallLogs",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -280,7 +290,7 @@ public class CallLogFragment extends Fragment implements CallLogAdapter.ItemClic
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         try {
-                            String responseBody = new String(error.networkResponse.data, "utf-8");
+                            String responseBody = new String(error.networkResponse.data, StandardCharsets.UTF_8);
                             JSONObject data = new JSONObject(responseBody);
 
                             Toast.makeText(getContext(), data.optString("message","Something wrong!"), Toast.LENGTH_LONG).show();
@@ -293,8 +303,8 @@ public class CallLogFragment extends Fragment implements CallLogAdapter.ItemClic
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> arguments = new HashMap<String, String>();
-                arguments.put("user_id",userID);
-                arguments.put("flag","view" );
+                arguments.put("user_id",new SessionManager(getActivity().getApplicationContext()).getUserID());
+                arguments.put("log_id",log_id );
                 return arguments;
             }
         };

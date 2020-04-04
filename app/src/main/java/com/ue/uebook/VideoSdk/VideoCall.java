@@ -32,6 +32,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -53,9 +54,13 @@ public class VideoCall extends JitsiMeetActivity  {
         channeld=intent.getStringExtra("id");
 
         receiverid=intent.getStringExtra("receiverid");
-           if (channeld.isEmpty()){
-               channeld=CreateRandomAudioFileName(5);
-           }
+
+        if (channeld!=null){
+
+        }
+        else {
+            channeld=CreateRandomAudioFileName(5);
+        }
         URL serverURL;
         try {
             serverURL = new URL("https://meet.jit.si");
@@ -88,7 +93,8 @@ public class VideoCall extends JitsiMeetActivity  {
 
     }
 
-    public void onButoonClick(View v) {
+    public void onButoonClick(View v)
+    {
 
 //        String text = editText.getText().toString();
 
@@ -149,7 +155,7 @@ public class VideoCall extends JitsiMeetActivity  {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         try {
-                            String responseBody = new String(error.networkResponse.data, "utf-8");
+                            String responseBody = new String(error.networkResponse.data, StandardCharsets.UTF_8);
                             JSONObject data = new JSONObject(responseBody);
                             runOnUiThread(new Runnable() {
                                 @Override

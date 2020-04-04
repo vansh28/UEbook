@@ -7,6 +7,15 @@ public class Statusmodel {
     private String user_id;
     private String url;
     private String user_name;
+    private String is_visible;
+
+    public String getIs_visible() {
+        return is_visible;
+    }
+
+    public void setIs_visible(String is_visible) {
+        this.is_visible = is_visible;
+    }
 
     public String getStatus_id() {
         return status_id;

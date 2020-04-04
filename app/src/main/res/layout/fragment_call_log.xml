@@ -10,5 +10,14 @@
        android:layout_margin="@dimen/size_10"
        android:id="@+id/callLogList"
        android:layout_height="match_parent"/>
+   <com.ue.uebook.Customview.CustomTextViewBold
+       android:layout_width="match_parent"
+       android:text="No call History"
+       android:gravity="center"
+       android:textSize="@dimen/size_20"
+       android:textColor="@color/red"
+       android:id="@+id/textViewNocall"
+       android:visibility="gone"
+       android:layout_height="match_parent"/>
 
 </FrameLayout>

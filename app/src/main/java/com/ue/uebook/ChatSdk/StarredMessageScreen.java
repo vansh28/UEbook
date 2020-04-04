@@ -26,6 +26,7 @@ import com.ue.uebook.SessionManager;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -107,7 +108,7 @@ public class StarredMessageScreen extends AppCompatActivity implements View.OnCl
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         try {
-                            String responseBody = new String(error.networkResponse.data, "utf-8");
+                            String responseBody = new String(error.networkResponse.data, StandardCharsets.UTF_8);
                             JSONObject data = new JSONObject(responseBody);
 
                             Toast.makeText(StarredMessageScreen.this, data.optString("message","Something wrong!"), Toast.LENGTH_LONG).show();

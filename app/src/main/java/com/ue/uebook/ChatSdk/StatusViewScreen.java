@@ -55,6 +55,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -272,7 +273,7 @@ public class StatusViewScreen extends BaseActivity implements View.OnClickListen
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         try {
-                            String responseBody = new String(error.networkResponse.data, "utf-8");
+                            String responseBody = new String(error.networkResponse.data, StandardCharsets.UTF_8);
                             JSONObject data = new JSONObject(responseBody);
 
                             Toast.makeText(StatusViewScreen.this, data.optString("message","Something wrong!"), Toast.LENGTH_LONG).show();
@@ -363,7 +364,7 @@ public class StatusViewScreen extends BaseActivity implements View.OnClickListen
         deleteStatus = bottomSheetLayout.findViewById(R.id.delete_Status);
         totalview = bottomSheetLayout.findViewById(R.id.total_viewStatus);
         deleteStatus.setOnClickListener(this);
-        totalview.setText("Viewed by "+ String.valueOf(seenViewList.size()));
+        totalview.setText("Viewed by "+ seenViewList.size());
         LinearLayoutManager linearLayoutManagers = new LinearLayoutManager(this);
         linearLayoutManagers.setOrientation(RecyclerView.VERTICAL);
         recyclerView.setLayoutManager(linearLayoutManagers);
@@ -497,7 +498,7 @@ public class StatusViewScreen extends BaseActivity implements View.OnClickListen
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         try {
-                            String responseBody = new String(error.networkResponse.data, "utf-8");
+                            String responseBody = new String(error.networkResponse.data, StandardCharsets.UTF_8);
                             JSONObject data = new JSONObject(responseBody);
 
                             Toast.makeText(StatusViewScreen.this, data.optString("message","Something wrong!"), Toast.LENGTH_LONG).show();
@@ -547,7 +548,7 @@ public class StatusViewScreen extends BaseActivity implements View.OnClickListen
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         try {
-                            String responseBody = new String(error.networkResponse.data, "utf-8");
+                            String responseBody = new String(error.networkResponse.data, StandardCharsets.UTF_8);
                             JSONObject data = new JSONObject(responseBody);
 
                             Toast.makeText(StatusViewScreen.this, data.optString("message","Something wrong!"), Toast.LENGTH_LONG).show();
@@ -612,7 +613,7 @@ public class StatusViewScreen extends BaseActivity implements View.OnClickListen
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     try {
-                        String responseBody = new String(error.networkResponse.data, "utf-8");
+                        String responseBody = new String(error.networkResponse.data, StandardCharsets.UTF_8);
                         JSONObject data = new JSONObject(responseBody);
 
                         Toast.makeText(StatusViewScreen.this, data.optString("message","Something wrong!"), Toast.LENGTH_LONG).show();
@@ -666,7 +667,7 @@ public class StatusViewScreen extends BaseActivity implements View.OnClickListen
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         try {
-                            String responseBody = new String(error.networkResponse.data, "utf-8");
+                            String responseBody = new String(error.networkResponse.data, StandardCharsets.UTF_8);
                             JSONObject data = new JSONObject(responseBody);
 
                             Toast.makeText(StatusViewScreen.this, data.optString("message","Something wrong!"), Toast.LENGTH_LONG).show();
@@ -769,7 +770,7 @@ public class StatusViewScreen extends BaseActivity implements View.OnClickListen
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         try {
-                            String responseBody = new String(error.networkResponse.data, "utf-8");
+                            String responseBody = new String(error.networkResponse.data, StandardCharsets.UTF_8);
                             JSONObject data = new JSONObject(responseBody);
 
                             Toast.makeText(StatusViewScreen.this, data.optString("message","Something wrong!"), Toast.LENGTH_LONG).show();
