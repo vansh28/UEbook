@@ -33,6 +33,8 @@ import com.ue.uebook.Data.ApiRequest;
 import com.ue.uebook.R;
 import com.ue.uebook.SessionManager;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -156,27 +158,59 @@ public class BroadCastUserList extends BaseActivity implements CreategroupAdapte
             finish();
         }
         else if (v==createBroadcast){
-                      if (groupPopleList.size()>1){
+//                      if (groupPopleList.size()>1){
+//                          String userIDs ="";
+//                          for(String s:userIDForChat){
+//                              if (userIDs == ""){
+//                                  userIDs = s;
+//                              }
+//                              else {
+//                                  userIDs =   userIDs + "," + s;
+//                              }
+//                          }
+//                             createBroadcast(userIDs);
+//                      }
+//                      else {
+//                          Toast.makeText(this,"Please Select more than one User",Toast.LENGTH_SHORT).show();
+//                      }
 
-                      }
-                      else {
-                          Toast.makeText(this,"Please Select more than one User",Toast.LENGTH_SHORT).show();
-                      }
+
+            if (groupPopleList.size()>1) {
+                JSONArray ja = new JSONArray();
+                for (int i = 0; i < groupPopleList.size(); i++) {
+                    JSONObject jo = new JSONObject();
+                    try {
+                        jo.put("receiver_id",groupPopleList.get(i).getUserId());
+                        jo.put("channel_id",groupPopleList.get(i).getChannelId());
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    ja.put(jo);
+                }
+
+                Log.e("user", String.valueOf(ja));
+                createBroadcast(String.valueOf(ja));
+            }
+            else {
+                Toast.makeText(this,"Please Select more than one User",Toast.LENGTH_SHORT).show();
+            }
+           // sendAnswer(String.valueOf(ja));
+        }
 
         }
-    }
-    public void getAllStatus(final String userID ,final String status_user_id ){
+
+    public void createBroadcast(final String receiver_ids  ){
         final ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setCancelable(true);
         progressDialog.setMessage(getResources().getString(R.string.please_wait));
         progressDialog.show();
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, ApiRequest.testBaseUrl +"userstatus/userChatStatusList",
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, ApiRequest.BaseUrl +"broadcastChat",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         progressDialog.dismiss();
                         Log.e(" response", response);
-
+                                    finish();
                     }
                 },
                 new Response.ErrorListener() {
@@ -196,8 +230,8 @@ public class BroadCastUserList extends BaseActivity implements CreategroupAdapte
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> arguments = new HashMap<String, String>();
-                arguments.put("user_id",userID);
-                arguments.put("status_user_id",status_user_id);
+                arguments.put("send_by",new SessionManager(getApplication()).getUserID());
+                arguments.put("user_id_and_channel_id",receiver_ids );
                 return arguments;
             }
         };

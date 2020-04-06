@@ -66,6 +66,7 @@ apply plugin: 'io.fabric'
 apply plugin: 'com.google.gms.google-services'
 
 dependencies {
+    implementation 'androidx.appcompat:appcompat:1.1.0'
     testImplementation 'junit:junit:4.12'
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     //noinspection GradleCompatible
@@ -151,7 +152,7 @@ dependencies {
     implementation 'com.github.lzyzsd:circleprogress:1.2.1'
 
     implementation 'com.squareup.picasso:picasso:2.71828'
-    compile ('com.stripe:stripe-android:8.0.0') {
+    compile('com.stripe:stripe-android:8.0.0') {
         transitive = true
     }
     implementation 'com.googlecode.mp4parser:isoparser:1.1.20'

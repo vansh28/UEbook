@@ -1,6 +1,8 @@
 package com.ue.uebook.ChatSdk.Pojo;
 
-public class UserList {
+import java.io.Serializable;
+
+public class UserList implements Serializable {
     private String  chid;
     private String  id;
     private String  channel_id;
@@ -15,6 +17,38 @@ public class UserList {
     private UserDataResponse send_detail;
     private UserDataResponse rec_detail;
     private Mess_count mess_count;
+    private String chat_type;
+    private String broadcast_name;
+
+    public String getBroadcast_ids() {
+        return broadcast_ids;
+    }
+
+    public void setBroadcast_ids(String broadcast_ids) {
+        this.broadcast_ids = broadcast_ids;
+    }
+
+    private String broadcast_ids;
+
+    public void setChid(String chid) {
+        this.chid = chid;
+    }
+
+    public String getChat_type() {
+        return chat_type;
+    }
+
+    public void setChat_type(String chat_type) {
+        this.chat_type = chat_type;
+    }
+
+    public String getBroadcast_name() {
+        return broadcast_name;
+    }
+
+    public void setBroadcast_name(String broadcast_name) {
+        this.broadcast_name = broadcast_name;
+    }
 
     public String getChid() {
         return chid;

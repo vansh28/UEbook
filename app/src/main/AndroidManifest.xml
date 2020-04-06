@@ -39,9 +39,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
-        tools:ignore="GoogleAppIndexingWarning"
-       >
-        <activity android:name=".ChatSdk.BroadCastUserList"></activity>
+        tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".ChatSdk.BroadcastMessageScreen"></activity>
+        <activity android:name=".ChatSdk.BroadCastUserList" />
         <activity android:name=".ChatSdk.StarredMessageScreen" />
         <activity android:name=".ChatSdk.TrimActivity" />
         <activity android:name=".ChatSdk.StatusViewScreen" />

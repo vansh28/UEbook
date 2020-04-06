@@ -234,7 +234,8 @@ public class ChatHistoryFrag extends Fragment implements View.OnClickListener, C
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    private void getChatHistorys(String user_id) {
+    private void getChatHistorys(String user_id)
+    {
         ApiRequest request = new ApiRequest();
 
         if (userListList.size() > 0)
@@ -271,20 +272,34 @@ public class ChatHistoryFrag extends Fragment implements View.OnClickListener, C
     }
 
     @Override
-    public void onUserChatClick(String channelID, String sendTo, String name, String image) {
-        Intent intent = new Intent(getContext(), MessageScreen.class);
-        intent.putExtra("sendTo", sendTo);
-        intent.putExtra("channelID", channelID);
-        intent.putExtra("name", name);
-        intent.putExtra("imageUrl", image);
-        intent.putExtra("id", 1);
-        startActivity(intent);
-        getActivity().finish();
-    }
+    public void onUserChatClick(String channelID, String sendTo, String name, String image ,int type) {
+        if (type == 11) {
 
+            Intent intent = new Intent(getContext(), MessageScreen.class);
+            intent.putExtra("sendTo", sendTo);
+            intent.putExtra("channelID", channelID);
+            intent.putExtra("name", name);
+            intent.putExtra("imageUrl", image);
+            intent.putExtra("id", 1);
+            startActivity(intent);
+            getActivity().finish();
+        }
+
+
+
+    }
     @Override
     public void onUserProfileClick(String imageurl, String oponentName) {
         imagePreview(imageurl, oponentName);
+    }
+
+    @Override
+    public void onBroadcastClick(UserList userList) {
+        Intent intent = new Intent(getContext(), BroadcastMessageScreen.class);
+        intent.putExtra("name",userList.getBroadcast_name());
+        intent.putExtra("ids",userList.getBroadcast_ids());
+        intent.putExtra("channelID",userList.getChannel_id());
+        getActivity().startActivity(intent);
     }
 
     private void imagePreview(String file, String oponentName) {

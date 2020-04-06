@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -110,21 +111,32 @@ public class ChatListScreen extends BaseActivity implements View.OnClickListener
         }
     }
     @Override
-    public void onUserChatClick(String channelID,String sendTo ,String name ,String image) {
-        Intent intent = new Intent(this,MessageScreen.class);
-        intent.putExtra("sendTo",sendTo);
-        intent.putExtra("channelID",channelID);
-        intent.putExtra("name",name);
-        intent.putExtra("imageUrl",image);
-        intent.putExtra("id",1);
-        startActivity(intent);
-        finish();
+    public void onUserChatClick(String channelID,String sendTo ,String name ,String image ,int type) {
+                 if (type==11){
+                     Intent intent = new Intent(this,MessageScreen.class);
+                     intent.putExtra("sendTo",sendTo);
+                     intent.putExtra("channelID",channelID);
+                     intent.putExtra("name",name);
+                     intent.putExtra("imageUrl",image);
+                     intent.putExtra("id",1);
+                     startActivity(intent);
+                     finish();
+                 }
+                 else {
+                     Toast.makeText(ChatListScreen.this,"pro",Toast.LENGTH_LONG).show();
+                 }
        }
 
     @Override
     public void onUserProfileClick(String imageurl ,String name) {
         imagePreview(imageurl);
     }
+
+    @Override
+    public void onBroadcastClick(UserList userList) {
+
+    }
+
     private void imagePreview(String file) {
         final Dialog previewDialog = new Dialog(this);
         previewDialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);

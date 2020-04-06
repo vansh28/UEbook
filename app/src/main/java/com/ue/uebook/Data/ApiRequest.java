@@ -572,7 +572,7 @@ public class ApiRequest {
         url = BaseUrl + "user_chat_list";
         OkHttpClient client = new OkHttpClient();
         RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
-                .addFormDataPart(" user_id", user_id)
+                .addFormDataPart("user_id", user_id)
                 .build();
         Request request = new Request.Builder()
                 .url(url)

@@ -45,8 +45,9 @@ public class ChatListAdapter  extends RecyclerView.Adapter<ChatListAdapter.MyVie
 
 
     public interface ItemClick {
-        void onUserChatClick(String channelID,String sendTo ,String name ,String imageUrl);
+        void onUserChatClick(String channelID,String sendTo ,String name ,String imageUrl ,int type);
         void  onUserProfileClick(String imageURl,String oponentName);
+        void  onBroadcastClick(UserList userList);
     }
     public void setItemClickListener(ItemClick clickListener) {
         itemClick = clickListener;
@@ -60,26 +61,74 @@ public class ChatListAdapter  extends RecyclerView.Adapter<ChatListAdapter.MyVie
     }
     @Override
     public void onBindViewHolder(@NonNull ChatListAdapter.MyViewHolder holder, final int position) {
-        if (userID.equalsIgnoreCase(dataList.get(position).getSend_detail().getId())){
-            reciverName=dataList.get(position).getRec_detail().getUser_name();
-            holder.name.setText(dataList.get(position).getRec_detail().getUser_name());
-            GlideUtils.loadImage(mtx, ApiRequest.BaseUrl+"upload/" + dataList.get(position).getRec_detail().getUrl(), holder.profile, R.drawable.user_default, R.drawable.user_default);
-        }
-        else {
-            reciverName=dataList.get(position).getSend_detail().getUser_name();
-            holder.name.setText(dataList.get(position).getSend_detail().getUser_name());
-            GlideUtils.loadImage(mtx, ApiRequest.BaseUrl+"upload/" + dataList.get(position).getSend_detail().getUrl(), holder.profile, R.drawable.user_default, R.drawable.user_default);
+          if (dataList.get(position).getChat_type().equalsIgnoreCase("chat")) {
+              if (userID.equalsIgnoreCase(dataList.get(position).getSend_detail().getId())) {
+                  reciverName = dataList.get(position).getRec_detail().getUser_name();
+                  holder.name.setText(dataList.get(position).getRec_detail().getUser_name());
+                  GlideUtils.loadImage(mtx, ApiRequest.BaseUrl + "upload/" + dataList.get(position).getRec_detail().getUrl(), holder.profile, R.drawable.user_default, R.drawable.user_default);
+              } else {
+                  reciverName = dataList.get(position).getSend_detail().getUser_name();
+                  holder.name.setText(dataList.get(position).getSend_detail().getUser_name());
+                  GlideUtils.loadImage(mtx, ApiRequest.BaseUrl + "upload/" + dataList.get(position).getSend_detail().getUrl(), holder.profile, R.drawable.user_default, R.drawable.user_default);
 
-        }
+              }
+              if (dataList.get(position).getType().equalsIgnoreCase("text"))
+              {
+
+                  holder.userchat.setText(getFirst4Words(dataList.get(position).getMessage()+".."));
+
+
+              }
+              else if (dataList.get(position).getType().equalsIgnoreCase("image")){
+                  holder.userchat.setText("Image");
+              }
+              else if (dataList.get(position).getType().equalsIgnoreCase("video")){
+                  holder.userchat.setText("Video");
+              }
+              else if (dataList.get(position).getType().equalsIgnoreCase("docfile")){
+                  holder.userchat.setText("File");
+              }
+              else if (dataList.get(position).getType().equalsIgnoreCase("audio")){
+                  holder.userchat.setText("Audio");
+              }
+              String str= dataList.get(position).getCreated();
+              String[] arrOfStr = str.split(" ");
+              holder.timeTv.setText(arrOfStr[1]);
+              if (dataList.get(position).getSender().equalsIgnoreCase(userID)) {
+
+              }
+              else {
+                  if (Integer.valueOf(dataList.get(position).getMess_count().getTotalMessagecount()) > 0) {
+                      holder.unreadMszCounterTv.setVisibility(View.VISIBLE);
+                      holder.userchat.setTextColor(Color.parseColor("#000000"));
+                      holder.userchat.setTypeface( holder.userchat.getTypeface(), Typeface.BOLD);
+                      holder.unreadMszCounterTv.setText(dataList.get(position).getMess_count().getTotalMessagecount());
+                  } else {
+                      holder.unreadMszCounterTv.setVisibility(View.GONE);
+                  }
+              }
+
+          }
+          else {
+              holder.name.setText(dataList.get(position).getBroadcast_name());
+          }
+
        holder.chatContainer.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View v) {
                if (itemClick!=null){
-                   if (userID.equalsIgnoreCase(dataList.get(position).getSend_detail().getId())){
-                       itemClick.onUserChatClick(dataList.get(position).getChannel_id(),dataList.get(position).getRec_detail().getId(),userList.get(position).getRec_detail().getUser_name(),userList.get(position).getRec_detail().getUrl());
+                   if (dataList.get(position).getChat_type().equalsIgnoreCase("chat")) {
+                       if (userID.equalsIgnoreCase(dataList.get(position).getSend_detail().getId())) {
+                           itemClick.onUserChatClick(dataList.get(position).getChannel_id(), dataList.get(position).getRec_detail().getId(), userList.get(position).getRec_detail().getUser_name(), userList.get(position).getRec_detail().getUrl(),11);
+                       } else {
+                           itemClick.onUserChatClick(dataList.get(position).getChannel_id(), dataList.get(position).getSend_detail().getId(), userList.get(position).getSend_detail().getUser_name(), userList.get(position).getSend_detail().getUrl(),11);
+                       }
                    }
                    else {
-                       itemClick.onUserChatClick(dataList.get(position).getChannel_id(),dataList.get(position).getSend_detail().getId(),userList.get(position).getSend_detail().getUser_name(),userList.get(position).getSend_detail().getUrl());
+                       if (userID.equalsIgnoreCase(dataList.get(position).getSend_detail().getId())) {
+                           itemClick.onBroadcastClick(dataList.get(position));
+                       }
+
                    }
                }
            }
@@ -88,53 +137,18 @@ public class ChatListAdapter  extends RecyclerView.Adapter<ChatListAdapter.MyVie
             @Override
             public void onClick(View v) {
                 if (itemClick!=null){
+                    if (dataList.get(position).getChat_type().equalsIgnoreCase("chat")) {
 
-                    if (userID.equalsIgnoreCase(dataList.get(position).getSend_detail().getId())){
-                        itemClick.onUserProfileClick(dataList.get(position).getRec_detail().getUrl(),userList.get(position).getRec_detail().getUser_name());
+                        if (userID.equalsIgnoreCase(dataList.get(position).getSend_detail().getId())) {
+                            itemClick.onUserProfileClick(dataList.get(position).getRec_detail().getUrl(), userList.get(position).getRec_detail().getUser_name());
+                        } else {
+                            itemClick.onUserProfileClick(dataList.get(position).getSend_detail().getUrl(), userList.get(position).getSend_detail().getUser_name());
+                        }
                     }
-                    else {
-                        itemClick.onUserProfileClick(dataList.get(position).getSend_detail().getUrl(),userList.get(position).getSend_detail().getUser_name());
-                    }
-
                 }
             }
         });
-        if (dataList.get(position).getType().equalsIgnoreCase("text"))
-        {
-
-            holder.userchat.setText(getFirst4Words(dataList.get(position).getMessage()+".."));
-
-
-        }
-        else if (dataList.get(position).getType().equalsIgnoreCase("image")){
-            holder.userchat.setText("Image");
-        }
-        else if (dataList.get(position).getType().equalsIgnoreCase("video")){
-            holder.userchat.setText("Video");
-        }
-        else if (dataList.get(position).getType().equalsIgnoreCase("docfile")){
-            holder.userchat.setText("File");
-        }
-        else if (dataList.get(position).getType().equalsIgnoreCase("audio")){
-            holder.userchat.setText("Audio");
-        }
-        String str= dataList.get(position).getCreated();
-        String[] arrOfStr = str.split(" ");
-        holder.timeTv.setText(arrOfStr[1]);
-        if (dataList.get(position).getSender().equalsIgnoreCase(userID)) {
-
-        }
-        else {
-            if (Integer.valueOf(dataList.get(position).getMess_count().getTotalMessagecount()) > 0) {
-                holder.unreadMszCounterTv.setVisibility(View.VISIBLE);
-                holder.userchat.setTextColor(Color.parseColor("#000000"));
-                holder.userchat.setTypeface( holder.userchat.getTypeface(), Typeface.BOLD);
-                holder.unreadMszCounterTv.setText(dataList.get(position).getMess_count().getTotalMessagecount());
-            } else {
-                holder.unreadMszCounterTv.setVisibility(View.GONE);
-            }
-        }
-        }
+               }
 
 
     @Override

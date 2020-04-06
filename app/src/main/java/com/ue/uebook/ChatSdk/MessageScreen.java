@@ -110,10 +110,11 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
     private UserData userData;
     private File videofile, audioUrl, docfile;
     private MessageAdapter messageAdapter;
+    private Bitmap bitmap;
     private String filePath;
     private String fileName;
     private File imageurl;
-    private Bitmap bitmap;
+
     ImageUtils imageUtils;
     public String chanelID = "";
     private int typevalue = 0;
