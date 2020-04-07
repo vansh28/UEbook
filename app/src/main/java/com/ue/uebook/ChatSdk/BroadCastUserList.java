@@ -173,15 +173,19 @@ public class BroadCastUserList extends BaseActivity implements CreategroupAdapte
 //                      else {
 //                          Toast.makeText(this,"Please Select more than one User",Toast.LENGTH_SHORT).show();
 //                      }
-
-
             if (groupPopleList.size()>1) {
                 JSONArray ja = new JSONArray();
                 for (int i = 0; i < groupPopleList.size(); i++) {
                     JSONObject jo = new JSONObject();
                     try {
                         jo.put("receiver_id",groupPopleList.get(i).getUserId());
-                        jo.put("channel_id",groupPopleList.get(i).getChannelId());
+                        if (groupPopleList.get(i).getChannelId()==null){
+                            jo.put("channel_id","");
+                        }
+                        else {
+                            jo.put("channel_id",groupPopleList.get(i).getChannelId());
+                        }
+
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -231,7 +235,7 @@ public class BroadCastUserList extends BaseActivity implements CreategroupAdapte
             protected Map<String, String> getParams() {
                 Map<String, String> arguments = new HashMap<String, String>();
                 arguments.put("send_by",new SessionManager(getApplication()).getUserID());
-                arguments.put("user_id_and_channel_id",receiver_ids );
+                arguments.put("user_id_and_channel_id",receiver_ids);
                 return arguments;
             }
         };

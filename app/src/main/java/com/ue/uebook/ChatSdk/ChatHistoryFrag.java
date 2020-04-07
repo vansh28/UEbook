@@ -206,7 +206,6 @@ public class ChatHistoryFrag extends Fragment implements View.OnClickListener, C
                 Log.d("error", "error");
                 progressDialog.dismiss();
             }
-
             @Override
             public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
                 progressDialog.dismiss();
