@@ -39,6 +39,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.ue.uebook.ChatSdk.Adapter.BroadcastMessageAdapter;
 import com.ue.uebook.ChatSdk.Pojo.Broadcastmessagepojo;
+import com.ue.uebook.ChatSdk.Pojo.GroupMemberList;
 import com.ue.uebook.ChatSdk.Pojo.UserList;
 import com.ue.uebook.Data.ApiRequest;
 import com.ue.uebook.ImageUtils;
@@ -86,9 +87,11 @@ public class BroadcastMessageScreen extends AppCompatActivity implements View.On
     private static final int MY_PERMISSIONS_REQUEST_CAMERA = 99;
     private static final int REQUEST_PICK_VIDEO = 12;
     private List<Broadcastmessagepojo>broadcastmessageList;
+    private List<GroupMemberList>memberList;
     private Bitmap bitmap;
     private String filePath;
     private String fileName;
+    private RelativeLayout header;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,6 +104,8 @@ public class BroadcastMessageScreen extends AppCompatActivity implements View.On
         button_chat_send = findViewById(R.id.button_chat_send);
         backbtnMessage = findViewById(R.id.backbtnMessage);
         swipe_refresh_layout = findViewById(R.id.swipe_refresh_layout);
+        header = findViewById(R.id.header);
+        header.setOnClickListener(this);
         backbtnMessage.setOnClickListener(this);
         broadcastmessageList = new ArrayList<>();
         button_chat_emoji.setOnClickListener(this);
@@ -117,7 +122,7 @@ public class BroadcastMessageScreen extends AppCompatActivity implements View.On
         broadcast_No = intent.getStringExtra("broadcast_No");
         broadcast_name.setText(name);
         getAllmessage(ids,broadcast_No);
-        pullTorefreshswipe();
+//        pullTorefreshswipe();
         emojIcon = new EmojIconActions(this, root_view, edit_chat_message, button_chat_emoji);
         emojIcon.ShowEmojIcon();
         emojIcon.setIconsIds(R.drawable.ic_action_keyboard, R.drawable.smiley);
@@ -217,6 +222,9 @@ public class BroadcastMessageScreen extends AppCompatActivity implements View.On
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
     }
+
+
+
     private void getAudioFile() {
         try {
             Intent audioIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI);
@@ -270,6 +278,11 @@ public class BroadcastMessageScreen extends AppCompatActivity implements View.On
               else if (v==backbtnMessage)
               {
                   finish();
+              }
+              else if (v==header){
+                  Intent intent = new Intent(this,BroadcastDetailScreen.class);
+                  intent.putExtra("broadcastNo",broadcast_No);
+                  startActivity(intent);
               }
 
     }

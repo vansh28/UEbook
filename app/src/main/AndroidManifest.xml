@@ -40,7 +40,8 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".DeatailActivity.BookTextView"></activity>
+        <activity android:name=".ChatSdk.BroadcastDetailScreen"></activity>
+        <activity android:name=".DeatailActivity.BookTextView" />
         <activity android:name=".ChatSdk.BroadcastMessageScreen" />
         <activity android:name=".ChatSdk.BroadCastUserList" />
         <activity android:name=".ChatSdk.StarredMessageScreen" />
@@ -268,6 +269,7 @@
 
                 <category android:name="android.intent.category.BROWSABLE" />
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <data android:scheme="4eohrrjgc6n4s5v" />
             </intent-filter>
         </activity>

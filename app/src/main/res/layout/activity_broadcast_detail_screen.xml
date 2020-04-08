@@ -70,7 +70,7 @@
                     android:id="@+id/main.linearlayout.title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                        android:visibility="gone"
+                    android:visibility="gone"
                     android:layout_marginLeft="@dimen/size_10"
                     android:orientation="vertical"
                     >
@@ -125,7 +125,7 @@
                 android:layout_width="match_parent"
                 android:layout_margin="@dimen/size_10"
                 android:id="@+id/addMember"
-                android:visibility="visible"
+                android:visibility="gone"
                 android:layout_height="wrap_content">
                 <de.hdodenhof.circleimageview.CircleImageView
                     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -157,7 +157,7 @@
                 android:layout_height="match_parent"/>
             <LinearLayout
                 android:layout_width="match_parent"
-                android:id="@+id/deleteBroadcast"
+                android:id="@+id/exitGroup"
                 android:layout_margin="@dimen/size_10"
                 android:layout_height="wrap_content">
                 <com.ue.uebook.Customview.CustomTextViewBold
@@ -167,7 +167,7 @@
                     android:textSize="@dimen/size_16"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="@dimen/size_20"
-                    android:text="Delete Broadcast"/>
+                    android:text="Exit group"/>
 
             </LinearLayout>
 
