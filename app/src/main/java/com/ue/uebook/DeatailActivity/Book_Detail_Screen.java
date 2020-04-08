@@ -336,7 +336,11 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
         intent.putExtra("url", url);
         startActivity(intent);
     }
-
+    private void gotoTextview() {
+        Intent intent = new Intent(this, BookTextView.class);
+        intent.putExtra("name",bookname);
+        startActivity(intent);
+    }
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void getBookDetail(final String book_id) {
         ApiRequest request = new ApiRequest();
@@ -487,6 +491,10 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
                             dialog("ok", "No Document File for this Book");
                         }
 
+                        return true;
+
+                    case R.id.texttv:
+                         gotoTextview();
                         return true;
                     default:
                         return false;

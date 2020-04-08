@@ -19,7 +19,7 @@ public class UserList implements Serializable {
     private Mess_count mess_count;
     private String chat_type;
     private String broadcast_name;
-
+    private String broadcast_ids;
     public String getBroadcast_ids() {
         return broadcast_ids;
     }
@@ -28,7 +28,7 @@ public class UserList implements Serializable {
         this.broadcast_ids = broadcast_ids;
     }
 
-    private String broadcast_ids;
+
 
     public void setChid(String chid) {
         this.chid = chid;

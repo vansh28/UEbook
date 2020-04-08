@@ -25,6 +25,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -73,12 +74,14 @@ public class BroadcastMessageScreen extends AppCompatActivity implements View.On
     private UserList userList;
     private String name,ids,channelId;
     private EmojiconEditText edit_chat_message;
+    private SwipeRefreshLayout swipe_refresh_layout;
     private ImageButton    backbtnMessage,button_chat_attachment,button_chat_send ,button_chat_emoji, gallerybtn, videobtn, audiobtn,filebtn;
     EmojIconActions emojIcon;
     private RelativeLayout root_view;
     private File imageurl ,videofile,audioUrl,docfile;
     private int typevalue=0;
     private BottomSheetDialog mBottomSheetDialog;
+    private String broadcast_No;
     ImageUtils imageUtils;
     private static final int MY_PERMISSIONS_REQUEST_CAMERA = 99;
     private static final int REQUEST_PICK_VIDEO = 12;
@@ -97,6 +100,7 @@ public class BroadcastMessageScreen extends AppCompatActivity implements View.On
         button_chat_attachment = findViewById(R.id.button_chat_attachment);
         button_chat_send = findViewById(R.id.button_chat_send);
         backbtnMessage = findViewById(R.id.backbtnMessage);
+        swipe_refresh_layout = findViewById(R.id.swipe_refresh_layout);
         backbtnMessage.setOnClickListener(this);
         broadcastmessageList = new ArrayList<>();
         button_chat_emoji.setOnClickListener(this);
@@ -110,10 +114,10 @@ public class BroadcastMessageScreen extends AppCompatActivity implements View.On
         messageList.setLayoutManager(linearLayoutManager);
         name = intent.getStringExtra("name");
         ids=intent.getStringExtra("ids");
-        channelId = intent.getStringExtra("channelID");
+        broadcast_No = intent.getStringExtra("broadcast_No");
         broadcast_name.setText(name);
-        getAllmessage(ids,channelId);
-
+        getAllmessage(ids,broadcast_No);
+        pullTorefreshswipe();
         emojIcon = new EmojIconActions(this, root_view, edit_chat_message, button_chat_emoji);
         emojIcon.ShowEmojIcon();
         emojIcon.setIconsIds(R.drawable.ic_action_keyboard, R.drawable.smiley);
@@ -130,8 +134,17 @@ public class BroadcastMessageScreen extends AppCompatActivity implements View.On
         });
 
     }
-
-    public void getAllmessage(final String receiver_ids ,final String channelIdd){
+    private void pullTorefreshswipe() {
+        swipe_refresh_layout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void onRefresh() {
+                getAllmessage(ids,broadcast_No);
+                swipe_refresh_layout.setRefreshing(false);
+            }
+        });
+    }
+    public void getAllmessage(final String receiver_ids ,final String broadcast_no){
         final ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setCancelable(true);
         progressDialog.setMessage(getResources().getString(R.string.please_wait));
@@ -192,7 +205,7 @@ public class BroadcastMessageScreen extends AppCompatActivity implements View.On
                 Map<String, String> arguments = new HashMap<String, String>();
                 arguments.put("send_by",new SessionManager(getApplication()).getUserID());
                 arguments.put("receiver_ids",receiver_ids);
-                arguments.put("channelId",channelIdd);
+                arguments.put("broadcast_no",broadcast_no);
                 return arguments;
             }
         };
@@ -296,8 +309,8 @@ public class BroadcastMessageScreen extends AppCompatActivity implements View.On
                         .addFormDataPart(" send_by", user_id)
                         .addFormDataPart(" receiver_ids", sendTO)
                         .addFormDataPart(" message_type", type)
-                        .addFormDataPart(" channelId", channelId)
                         .addFormDataPart(" message", message)
+                        .addFormDataPart(" broadcast_no", broadcast_No)
                         .build();
                 break;
             case 1:
@@ -306,9 +319,10 @@ public class BroadcastMessageScreen extends AppCompatActivity implements View.On
                         .addFormDataPart(" user_id", user_id)
                         .addFormDataPart(" sendTO", sendTO)
                         .addFormDataPart(" type", type)
-                        .addFormDataPart(" channelId", channelId)
                         .addFormDataPart(" message", message)
                         .addFormDataPart("image_file", imageurl.getName(), RequestBody.create(MEDIA_TYPE_PNG, imageurl))
+                        .addFormDataPart(" broadcast_no", broadcast_No)
+
 
                         .build();
                 break;
@@ -318,7 +332,6 @@ public class BroadcastMessageScreen extends AppCompatActivity implements View.On
                         .addFormDataPart(" user_id", user_id)
                         .addFormDataPart(" sendTO", sendTO)
                         .addFormDataPart(" type", type)
-                        .addFormDataPart(" channelId", channelId)
                         .addFormDataPart(" message", message)
                         .addFormDataPart("video_file", videofile.getName(), RequestBody.create(MediaType.parse("video/mp4"), videofile))
                         .build();
@@ -329,7 +342,6 @@ public class BroadcastMessageScreen extends AppCompatActivity implements View.On
                         .addFormDataPart(" user_id", user_id)
                         .addFormDataPart(" sendTO", sendTO)
                         .addFormDataPart(" type", type)
-                        .addFormDataPart(" channelId", channelId)
                         .addFormDataPart(" message", "Audio")
                         .addFormDataPart("audio_file", audioUrl.getName(), RequestBody.create(MediaType.parse("audio/*"), audioUrl))
 
@@ -341,7 +353,6 @@ public class BroadcastMessageScreen extends AppCompatActivity implements View.On
                         .addFormDataPart(" user_id", user_id)
                         .addFormDataPart(" sendTO", sendTO)
                         .addFormDataPart(" type", type)
-                        .addFormDataPart(" channelId", channelId)
                         .addFormDataPart(" message", "file")
                         .addFormDataPart("pdf_file", docfile.getName(), RequestBody.create(MediaType.parse("text/csv"), docfile))
                         .build();
@@ -372,7 +383,7 @@ public class BroadcastMessageScreen extends AppCompatActivity implements View.On
                     public void run() {
                         edit_chat_message.setText("");
                         typevalue = 0;
-                        getAllmessage(ids,channelId);
+                        getAllmessage(ids,broadcast_No);
                     }
                 });
             }

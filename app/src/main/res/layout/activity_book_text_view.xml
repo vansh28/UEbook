@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".DeatailActivity.BookTextView">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary">
+        <ImageButton
+            android:id="@+id/backbtn"
+            android:layout_width="@dimen/size_50"
+            android:layout_height="@dimen/size_50"
+            android:layout_centerVertical="true"
+            android:layout_margin="@dimen/size_5"
+            android:background="@android:color/transparent"
+            android:src="@drawable/backbtn"/>
+        <TextView
+            android:id="@+id/bookName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_toRightOf="@+id/backbtn"
+            android:gravity="center"
+            android:layout_margin="@dimen/size_5"
+            android:textColor="@color/white"
+            android:textSize="@dimen/size_18"/>
+    </RelativeLayout>
+     <ScrollView
+         android:layout_width="match_parent"
+         android:layout_height="match_parent">
+         <LinearLayout
+             android:layout_width="match_parent"
+             android:layout_height="match_parent">
+             <com.ue.uebook.Customview.CustomTextViewNormal
+                 android:layout_width="match_parent"
+                 android:id="@+id/bookTextView"
+                 android:textSize="@dimen/size_18"
+                 android:layout_margin="@dimen/size_10"
+                 android:textColor="@color/black"
+
+                 android:text="@string/demoText"
+                 android:layout_height="match_parent"/>
+
+         </LinearLayout>
+     </ScrollView>
+
+</LinearLayout>

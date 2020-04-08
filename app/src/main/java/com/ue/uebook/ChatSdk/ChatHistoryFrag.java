@@ -143,7 +143,7 @@ public class ChatHistoryFrag extends Fragment implements View.OnClickListener, C
         super.onResume();
         IntentFilter intentFilter = new IntentFilter(
                 "android.intent.action.MAIN");
-
+        getChatHistorys(new SessionManager(getActivity().getApplicationContext()).getUserID());
         mReceiver = new BroadcastReceiver() {
 
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -297,7 +297,7 @@ public class ChatHistoryFrag extends Fragment implements View.OnClickListener, C
         Intent intent = new Intent(getContext(), BroadcastMessageScreen.class);
         intent.putExtra("name",userList.getBroadcast_name());
         intent.putExtra("ids",userList.getBroadcast_ids());
-        intent.putExtra("channelID",userList.getChannel_id());
+        intent.putExtra("broadcast_No",userList.getId());
         getActivity().startActivity(intent);
     }
 

@@ -132,7 +132,7 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
     private ProgressDialog progressdialog;
     private Button    checkCommisionBtn,publishBtn, addQuestion, saveForLater ,startvoiceRecord,pausevoiceRecord,stopvoiceRecord;
     private String categorytype;
-    private EditText bookTitle, bookDesc, authorName, questionEdit, isbnTvview;
+    private EditText bookTitle, bookDesc, authorName, questionEdit, isbnTvview ,writeyourBook;
     private File coverimage, videofile;
     private File docfile, audioUrl;
     private SpeechRecognizer speech = null;
@@ -194,7 +194,7 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
         pendigbookIntent= getIntent();
         pendingBookdata= new ArrayList<>();
         random = new Random();
-
+        writeyourBook = findViewById(R.id.writeyourBook);
         payemntInfo=findViewById(R.id.payemntInfo);
         commisionView =findViewById(R.id.commisionView);
         paidView = findViewById(R.id.paidView);
@@ -638,7 +638,7 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
             cover_image_layout.setVisibility(View.GONE);
         }
     }
-    public void requestforUploadBook(String url,final int type, final String userid, final String category_id, final String booktitle, final File profile_image, final String book_description, File docFile, final String author_name, String questiondata, String isbn_number, String statusbook ,String book_id ,String price ,String ispaid ,String admin_commision) {
+    public void requestforUploadBook(String url,final int type, final String userid, final String category_id, final String booktitle, final File profile_image, final String book_description, File docFile, final String author_name, String questiondata, String isbn_number, String statusbook ,String book_id ,String price ,String ispaid ,String admin_commision ,String book_write) {
         OkHttpClient client = new OkHttpClient();
         final MediaType MEDIA_TYPE_PNG = MediaType.parse("image/png");
         RequestBody requestBody;
@@ -662,11 +662,7 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
                         .addFormDataPart("price", price)
                         .addFormDataPart("is_paid",ispaid)
                         .addFormDataPart("admin_commission",admin_commision)
-
-
-
-
-
+                        .addFormDataPart("text",book_write)
                         .build();
                 break;
             case 2:
@@ -686,6 +682,7 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
                         .addFormDataPart("price", price)
                         .addFormDataPart("is_paid",ispaid)
                         .addFormDataPart("admin_commission",admin_commision)
+                        .addFormDataPart("text",book_write)
 
                         .build();
                 break;
@@ -706,6 +703,8 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
                         .addFormDataPart("price", price)
                         .addFormDataPart("is_paid",ispaid)
                         .addFormDataPart("admin_commission",admin_commision)
+                        .addFormDataPart("text",book_write)
+
                         .build();
                 break;
             case 4:
@@ -724,6 +723,7 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
                         .addFormDataPart("price", price)
                         .addFormDataPart("is_paid",ispaid)
                         .addFormDataPart("admin_commission",admin_commision)
+                        .addFormDataPart("text",book_write)
 
                         .build();
                 break;
@@ -744,6 +744,7 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
                         .addFormDataPart("price", price)
                         .addFormDataPart("is_paid",ispaid)
                         .addFormDataPart("admin_commission",admin_commision)
+                        .addFormDataPart("text",book_write)
 
                         .build();
                 break;
@@ -765,6 +766,7 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
                         .addFormDataPart("price", price)
                         .addFormDataPart("is_paid",ispaid)
                         .addFormDataPart("admin_commission",admin_commision)
+                        .addFormDataPart("text",book_write)
 
                         .build();
                 break;
@@ -786,6 +788,7 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
                         .addFormDataPart("price", price)
                         .addFormDataPart("is_paid",ispaid)
                         .addFormDataPart("admin_commission",admin_commision)
+                        .addFormDataPart("text",book_write)
 
                         .build();
                 break;
@@ -804,6 +807,7 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
                         .addFormDataPart("price", price)
                         .addFormDataPart("is_paid",ispaid)
                         .addFormDataPart("admin_commission",admin_commision)
+                        .addFormDataPart("text",book_write)
 
                         .build();
                 break;
@@ -1177,24 +1181,24 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
             String json = new Gson().toJson(questionList);
 
             if (audioUrl == null && videofile != null && docfile == null) {
-                requestforUploadBook(uploadurl,3, new SessionManager(getApplicationContext()).getUserID(), String.valueOf(categorytype), bookTitle.getText().toString(), coverimage, bookDesc.getText().toString(), docfile, authorName.getText().toString(), json, isbnNumber, status,book_id ,price ,ispaid ,admin_Commision);
+                requestforUploadBook(uploadurl,3, new SessionManager(getApplicationContext()).getUserID(), String.valueOf(categorytype), bookTitle.getText().toString(), coverimage, bookDesc.getText().toString(), docfile, authorName.getText().toString(), json, isbnNumber, status,book_id ,price ,ispaid ,admin_Commision,writeyourBook.getText().toString());
             } else if (audioUrl != null && videofile == null && docfile == null) {
-                requestforUploadBook(uploadurl,2, new SessionManager(getApplicationContext()).getUserID(), String.valueOf(categorytype), bookTitle.getText().toString(), coverimage, bookDesc.getText().toString(), docfile, authorName.getText().toString(), json, isbnNumber, status,book_id ,price ,ispaid ,admin_Commision);
+                requestforUploadBook(uploadurl,2, new SessionManager(getApplicationContext()).getUserID(), String.valueOf(categorytype), bookTitle.getText().toString(), coverimage, bookDesc.getText().toString(), docfile, authorName.getText().toString(), json, isbnNumber, status,book_id ,price ,ispaid ,admin_Commision,writeyourBook.getText().toString());
 
             } else if (audioUrl != null && videofile != null && docfile != null) {
-                requestforUploadBook(uploadurl,1, new SessionManager(getApplicationContext()).getUserID(), String.valueOf(categorytype), bookTitle.getText().toString(), coverimage, bookDesc.getText().toString(), docfile, authorName.getText().toString(), json, isbnNumber, status,book_id ,price ,ispaid,admin_Commision);
+                requestforUploadBook(uploadurl,1, new SessionManager(getApplicationContext()).getUserID(), String.valueOf(categorytype), bookTitle.getText().toString(), coverimage, bookDesc.getText().toString(), docfile, authorName.getText().toString(), json, isbnNumber, status,book_id ,price ,ispaid,admin_Commision,writeyourBook.getText().toString());
             }
             else if (audioUrl == null && videofile == null && docfile == null && coverimage==null) {
-                requestforUploadBook(uploadurl,8, new SessionManager(getApplicationContext()).getUserID(), String.valueOf(categorytype), bookTitle.getText().toString(), coverimage, bookDesc.getText().toString(), docfile, authorName.getText().toString(), json, isbnNumber, status,book_id,price ,ispaid,admin_Commision);
+                requestforUploadBook(uploadurl,8, new SessionManager(getApplicationContext()).getUserID(), String.valueOf(categorytype), bookTitle.getText().toString(), coverimage, bookDesc.getText().toString(), docfile, authorName.getText().toString(), json, isbnNumber, status,book_id,price ,ispaid,admin_Commision,writeyourBook.getText().toString());
             }
             else if (audioUrl == null && videofile == null && docfile == null) {
-                requestforUploadBook(uploadurl,4, new SessionManager(getApplicationContext()).getUserID(), String.valueOf(categorytype), bookTitle.getText().toString(), coverimage, bookDesc.getText().toString(), docfile, authorName.getText().toString(), json, isbnNumber, status,book_id,price ,ispaid,admin_Commision);
+                requestforUploadBook(uploadurl,4, new SessionManager(getApplicationContext()).getUserID(), String.valueOf(categorytype), bookTitle.getText().toString(), coverimage, bookDesc.getText().toString(), docfile, authorName.getText().toString(), json, isbnNumber, status,book_id,price ,ispaid,admin_Commision,writeyourBook.getText().toString());
             } else if (audioUrl == null && videofile == null && docfile != null) {
-                requestforUploadBook(uploadurl,5, new SessionManager(getApplicationContext()).getUserID(), String.valueOf(categorytype), bookTitle.getText().toString(), coverimage, bookDesc.getText().toString(), docfile, authorName.getText().toString(), json, isbnNumber, status,book_id,price ,ispaid,admin_Commision);
+                requestforUploadBook(uploadurl,5, new SessionManager(getApplicationContext()).getUserID(), String.valueOf(categorytype), bookTitle.getText().toString(), coverimage, bookDesc.getText().toString(), docfile, authorName.getText().toString(), json, isbnNumber, status,book_id,price ,ispaid,admin_Commision,writeyourBook.getText().toString());
             } else if (audioUrl != null && videofile == null && docfile != null) {
-                requestforUploadBook(uploadurl,6, new SessionManager(getApplicationContext()).getUserID(), String.valueOf(categorytype), bookTitle.getText().toString(), coverimage, bookDesc.getText().toString(), docfile, authorName.getText().toString(), json, isbnNumber, status,book_id,price ,ispaid,admin_Commision);
+                requestforUploadBook(uploadurl,6, new SessionManager(getApplicationContext()).getUserID(), String.valueOf(categorytype), bookTitle.getText().toString(), coverimage, bookDesc.getText().toString(), docfile, authorName.getText().toString(), json, isbnNumber, status,book_id,price ,ispaid,admin_Commision,writeyourBook.getText().toString());
             } else if (audioUrl == null && videofile != null && docfile != null) {
-                requestforUploadBook(uploadurl,7, new SessionManager(getApplicationContext()).getUserID(), String.valueOf(categorytype), bookTitle.getText().toString(), coverimage, bookDesc.getText().toString(), docfile, authorName.getText().toString(), json, isbnNumber, status,book_id,price ,ispaid,admin_Commision);
+                requestforUploadBook(uploadurl,7, new SessionManager(getApplicationContext()).getUserID(), String.valueOf(categorytype), bookTitle.getText().toString(), coverimage, bookDesc.getText().toString(), docfile, authorName.getText().toString(), json, isbnNumber, status,book_id,price ,ispaid,admin_Commision,writeyourBook.getText().toString());
             }
         }
 
@@ -1213,33 +1217,33 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
         }
         String json = new Gson().toJson(questionList);
         if (audioUrl == null && videofile != null && docfile == null) {
-            requestforUploadBook(savelaterUrl,3, new SessionManager(getApplicationContext()).getUserID(), String.valueOf(categorytype), bookTitle.getText().toString(), coverimage, bookDesc.getText().toString(), docfile, authorName.getText().toString(), json, isbnNumber, status,book_id ,price ,ispaid ,admin_Commision);
+            requestforUploadBook(savelaterUrl,3, new SessionManager(getApplicationContext()).getUserID(), String.valueOf(categorytype), bookTitle.getText().toString(), coverimage, bookDesc.getText().toString(), docfile, authorName.getText().toString(), json, isbnNumber, status,book_id ,price ,ispaid ,admin_Commision,writeyourBook.getText().toString());
         } else if (audioUrl != null && videofile == null && docfile == null) {
-            requestforUploadBook(savelaterUrl,2, new SessionManager(getApplicationContext()).getUserID(), String.valueOf(categorytype), bookTitle.getText().toString(), coverimage, bookDesc.getText().toString(), docfile, authorName.getText().toString(), json, isbnNumber, status,book_id ,price ,ispaid,admin_Commision);
+            requestforUploadBook(savelaterUrl,2, new SessionManager(getApplicationContext()).getUserID(), String.valueOf(categorytype), bookTitle.getText().toString(), coverimage, bookDesc.getText().toString(), docfile, authorName.getText().toString(), json, isbnNumber, status,book_id ,price ,ispaid,admin_Commision,writeyourBook.getText().toString());
 
         } else if (audioUrl != null && videofile != null && docfile != null) {
-            requestforUploadBook(savelaterUrl,1, new SessionManager(getApplicationContext()).getUserID(), String.valueOf(categorytype), bookTitle.getText().toString(), coverimage, bookDesc.getText().toString(), docfile, authorName.getText().toString(), json, isbnNumber, status,book_id ,price ,ispaid,admin_Commision);
+            requestforUploadBook(savelaterUrl,1, new SessionManager(getApplicationContext()).getUserID(), String.valueOf(categorytype), bookTitle.getText().toString(), coverimage, bookDesc.getText().toString(), docfile, authorName.getText().toString(), json, isbnNumber, status,book_id ,price ,ispaid,admin_Commision,writeyourBook.getText().toString());
         }
 
         else if (audioUrl == null && videofile == null && docfile == null && coverimage==null) {
 
-            requestforUploadBook(savelaterUrl,8, new SessionManager(getApplicationContext()).getUserID(), String.valueOf(categorytype), bookTitle.getText().toString(), coverimage, bookDesc.getText().toString(), docfile, authorName.getText().toString(), json, isbnNumber, status,book_id ,price ,ispaid,admin_Commision);
+            requestforUploadBook(savelaterUrl,8, new SessionManager(getApplicationContext()).getUserID(), String.valueOf(categorytype), bookTitle.getText().toString(), coverimage, bookDesc.getText().toString(), docfile, authorName.getText().toString(), json, isbnNumber, status,book_id ,price ,ispaid,admin_Commision,writeyourBook.getText().toString());
 
         }else if (audioUrl == null && videofile == null && docfile == null) {
 
-            requestforUploadBook(savelaterUrl,4, new SessionManager(getApplicationContext()).getUserID(), String.valueOf(categorytype), bookTitle.getText().toString(), coverimage, bookDesc.getText().toString(), docfile, authorName.getText().toString(), json, isbnNumber, status,book_id ,price ,ispaid,admin_Commision);
+            requestforUploadBook(savelaterUrl,4, new SessionManager(getApplicationContext()).getUserID(), String.valueOf(categorytype), bookTitle.getText().toString(), coverimage, bookDesc.getText().toString(), docfile, authorName.getText().toString(), json, isbnNumber, status,book_id ,price ,ispaid,admin_Commision,writeyourBook.getText().toString());
 
         } else if (audioUrl == null && videofile == null && docfile != null) {
 
-            requestforUploadBook(savelaterUrl,5, new SessionManager(getApplicationContext()).getUserID(), String.valueOf(categorytype), bookTitle.getText().toString(), coverimage, bookDesc.getText().toString(), docfile, authorName.getText().toString(), json, isbnNumber, status,book_id ,price ,ispaid,admin_Commision);
+            requestforUploadBook(savelaterUrl,5, new SessionManager(getApplicationContext()).getUserID(), String.valueOf(categorytype), bookTitle.getText().toString(), coverimage, bookDesc.getText().toString(), docfile, authorName.getText().toString(), json, isbnNumber, status,book_id ,price ,ispaid,admin_Commision,writeyourBook.getText().toString());
 
         } else if (audioUrl != null && videofile == null && docfile != null) {
 
-            requestforUploadBook(savelaterUrl,6, new SessionManager(getApplicationContext()).getUserID(), String.valueOf(categorytype), bookTitle.getText().toString(), coverimage, bookDesc.getText().toString(), docfile, authorName.getText().toString(), json, isbnNumber, status,book_id ,price ,ispaid,admin_Commision);
+            requestforUploadBook(savelaterUrl,6, new SessionManager(getApplicationContext()).getUserID(), String.valueOf(categorytype), bookTitle.getText().toString(), coverimage, bookDesc.getText().toString(), docfile, authorName.getText().toString(), json, isbnNumber, status,book_id ,price ,ispaid,admin_Commision,writeyourBook.getText().toString());
 
         } else if (audioUrl == null && videofile != null && docfile != null) {
 
-            requestforUploadBook(savelaterUrl,7, new SessionManager(getApplicationContext()).getUserID(), String.valueOf(categorytype), bookTitle.getText().toString(), coverimage, bookDesc.getText().toString(), docfile, authorName.getText().toString(), json, isbnNumber, status,book_id ,price ,ispaid,admin_Commision);
+            requestforUploadBook(savelaterUrl,7, new SessionManager(getApplicationContext()).getUserID(), String.valueOf(categorytype), bookTitle.getText().toString(), coverimage, bookDesc.getText().toString(), docfile, authorName.getText().toString(), json, isbnNumber, status,book_id ,price ,ispaid,admin_Commision,writeyourBook.getText().toString());
 
         }
 

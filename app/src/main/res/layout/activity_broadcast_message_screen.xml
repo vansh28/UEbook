@@ -60,11 +60,16 @@
             android:layout_marginLeft="@dimen/size_10" />
 
     </RelativeLayout>
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/swipe_refresh_layout"
+        android:layout_width="match_parent"
+        android:layout_marginTop="@dimen/size_60"
 
+        android:layout_height="match_parent">
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:id="@+id/NestedScrollView"
-        android:layout_marginTop="@dimen/size_60"
         android:layout_above="@+id/layout_chat_send_container"
         android:layout_height="match_parent">
         <LinearLayout
@@ -80,6 +85,7 @@
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <LinearLayout
         android:id="@+id/layout_chat_send_container"
