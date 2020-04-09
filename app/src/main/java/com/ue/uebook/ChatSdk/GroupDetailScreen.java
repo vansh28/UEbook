@@ -193,6 +193,7 @@ public class GroupDetailScreen extends BaseActivity implements AppBarLayout.OnOf
     else if (v==addMember){
       Intent intent = new Intent(this, AddMemberToGroupScreen.class);
       intent.putExtra("groupid",groupID);
+      intent.putExtra("id",1);
       startActivity(intent);
     }
     else if (v==exitGroup)

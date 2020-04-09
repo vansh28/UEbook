@@ -282,6 +282,7 @@ public class BroadcastMessageScreen extends AppCompatActivity implements View.On
               else if (v==header){
                   Intent intent = new Intent(this,BroadcastDetailScreen.class);
                   intent.putExtra("broadcastNo",broadcast_No);
+                  intent.putExtra("broadcastName",name);
                   startActivity(intent);
               }
 

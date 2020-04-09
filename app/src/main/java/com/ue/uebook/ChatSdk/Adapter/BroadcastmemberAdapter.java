@@ -13,16 +13,26 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.ue.uebook.ChatSdk.BroadcastDetailScreen;
 import com.ue.uebook.ChatSdk.Pojo.GroupMemberList;
+import com.ue.uebook.Data.ApiRequest;
+import com.ue.uebook.GlideUtils;
 import com.ue.uebook.R;
 
 import java.util.List;
 
 public class BroadcastmemberAdapter extends  RecyclerView.Adapter<BroadcastmemberAdapter.MyViewHolder> {
     private AppCompatActivity mctx;
+    private ItemClick itemClick;
     private List<GroupMemberList> groupMemberList;
     public BroadcastmemberAdapter(BroadcastDetailScreen broadcastDetailScreen, List<GroupMemberList> groupMemberList) {
+          this.groupMemberList = groupMemberList;
+          this.mctx=broadcastDetailScreen;
 
-
+    }
+    public interface ItemClick {
+        void onMemberItemClick(View v,GroupMemberList groupMemberList);
+    }
+    public void setItemClickListener(ItemClick clickListener) {
+        itemClick = clickListener;
     }
 
     @NonNull
@@ -36,12 +46,21 @@ public class BroadcastmemberAdapter extends  RecyclerView.Adapter<Broadcastmembe
 
     @Override
     public void onBindViewHolder(@NonNull BroadcastmemberAdapter.MyViewHolder holder, int position) {
-
+                         holder.name.setText(groupMemberList.get(position).getUser_name());
+        GlideUtils.loadImage(mctx, ApiRequest.BaseUrl+"upload/" + groupMemberList.get(position).getUrl(), holder.profile, R.drawable.user_default, R.drawable.user_default);
+             holder.chatContainer.setOnClickListener(new View.OnClickListener() {
+                 @Override
+                 public void onClick(View v) {
+                     if (itemClick!=null){
+                         itemClick.onMemberItemClick(v,groupMemberList.get(position));
+                     }
+                 }
+             });
     }
 
     @Override
     public int getItemCount() {
-        return 5;
+        return groupMemberList.size();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {

@@ -11,12 +11,15 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,6 +28,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -37,9 +47,14 @@ import com.ue.uebook.GlideUtils;
 import com.ue.uebook.R;
 import com.ue.uebook.SessionManager;
 
+import org.json.JSONObject;
+
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -301,6 +316,37 @@ public class ChatHistoryFrag extends Fragment implements View.OnClickListener, C
         getActivity().startActivity(intent);
     }
 
+    @Override
+    public void onLongClick(View view ,UserList userList) {
+        if (new SessionManager(getContext()).getUserID().equalsIgnoreCase(userList.getSend_detail().getId())) {
+            showFilterPopup(view,userList,userList.getRec_detail().getId());
+        } else {
+            showFilterPopup(view,userList,userList.getSend_detail().getId());
+
+        }
+
+    }
+    private void showFilterPopup(View v , UserList userList ,String frndID) {
+        PopupMenu popup = new PopupMenu(getContext(), v);
+        popup.inflate(R.menu.deletepopup);
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.delete:
+                        if (userList.getChat_type().equalsIgnoreCase("broadcast")){
+                            deletemember(userList.getId());
+                        }
+                        else {
+                           deleteChat(userList.getChannel_id(),frndID);
+                        }
+
+                    default:
+                        return false;
+                }
+            }
+        });
+        popup.show();
+    }
     private void imagePreview(String file, String oponentName) {
         final Dialog previewDialog = new Dialog(getContext());
         previewDialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
@@ -345,4 +391,111 @@ public class ChatHistoryFrag extends Fragment implements View.OnClickListener, C
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
+    public void deletemember(final String broadcast_id){
+        final ProgressDialog progressDialog = new ProgressDialog(getContext());
+        progressDialog.setCancelable(true);
+        progressDialog.setMessage(getResources().getString(R.string.please_wait));
+        progressDialog.show();
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, ApiRequest.BaseUrl +"broadcastDelete",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        progressDialog.dismiss();
+                        Log.e(" response", response);
+
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                getChatHistory(new SessionManager(getActivity().getApplicationContext()).getUserID());
+                            }
+                        });
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        try {
+                            String responseBody = new String(error.networkResponse.data, StandardCharsets.UTF_8);
+                            JSONObject data = new JSONObject(responseBody);
+
+                            Toast.makeText(getContext(), data.optString("message","Something wrong!"), Toast.LENGTH_LONG).show();
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
+                        progressDialog.dismiss();
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> arguments = new HashMap<String, String>();
+                arguments.put("user_id",new SessionManager(getContext().getApplicationContext()).getUserID());
+                arguments.put("broadcast_id",broadcast_id);
+                return arguments;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        requestQueue.add(stringRequest);
+
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                30000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+    }
+    public void deleteChat(final String channel_id ,final String friend_id){
+        final ProgressDialog progressDialog = new ProgressDialog(getContext());
+        progressDialog.setCancelable(true);
+        progressDialog.setMessage(getResources().getString(R.string.please_wait));
+        progressDialog.show();
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, ApiRequest.BaseUrl +"chatDelete",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        progressDialog.dismiss();
+                        Log.e(" response", response);
+
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                getChatHistory(new SessionManager(getActivity().getApplicationContext()).getUserID());
+                            }
+                        });
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        try {
+                            String responseBody = new String(error.networkResponse.data, StandardCharsets.UTF_8);
+                            JSONObject data = new JSONObject(responseBody);
+
+                            Toast.makeText(getContext(), data.optString("message","Something wrong!"), Toast.LENGTH_LONG).show();
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
+                        progressDialog.dismiss();
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> arguments = new HashMap<String, String>();
+                arguments.put("user_id",new SessionManager(getContext().getApplicationContext()).getUserID());
+                arguments.put("channel_id",channel_id);
+                arguments.put("friend_id",friend_id);
+                return arguments;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        requestQueue.add(stringRequest);
+
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                30000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+    }
+
+
+
 }

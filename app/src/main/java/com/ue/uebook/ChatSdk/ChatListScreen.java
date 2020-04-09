@@ -137,6 +137,11 @@ public class ChatListScreen extends BaseActivity implements View.OnClickListener
 
     }
 
+    @Override
+    public void onLongClick(View v, UserList userList) {
+
+    }
+
     private void imagePreview(String file) {
         final Dialog previewDialog = new Dialog(this);
         previewDialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);

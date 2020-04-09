@@ -48,6 +48,7 @@ public class ChatListAdapter  extends RecyclerView.Adapter<ChatListAdapter.MyVie
         void onUserChatClick(String channelID,String sendTo ,String name ,String imageUrl ,int type);
         void  onUserProfileClick(String imageURl,String oponentName);
         void  onBroadcastClick(UserList userList);
+        void  onLongClick(View v ,UserList userList);
     }
     public void setItemClickListener(ItemClick clickListener) {
         itemClick = clickListener;
@@ -148,6 +149,18 @@ public class ChatListAdapter  extends RecyclerView.Adapter<ChatListAdapter.MyVie
                 }
             }
         });
+
+        holder.chatContainer.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if (itemClick!=null) {
+                    itemClick.onLongClick(v,userList.get(position));
+                }
+                return false;
+            }
+        });
+
+
                }
 
 
