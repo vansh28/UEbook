@@ -1,7 +1,9 @@
 package com.ue.uebook.ChatSdk;
 
+import android.annotation.TargetApi;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
@@ -27,6 +29,7 @@ import com.ue.uebook.SessionManager;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Locale;
 
 import io.github.lizhangqu.coreprogress.ProgressHelper;
 import io.github.lizhangqu.coreprogress.ProgressUIListener;
@@ -91,8 +94,30 @@ public class TrimActivity extends AppCompatActivity implements OnTrimVideoListen
     }
     @Override
     public void getResult(Uri uri) {
-             requestforUploadStatus(2,new SessionManager(getApplication()).getUserID(),"",new File(String.valueOf(uri)));
+      requestforUploadStatus(2,new SessionManager(getApplication()).getUserID(),"",new File(String.valueOf(uri)));
     }
+    private Locale getLocale() {
+        Configuration config = getResources().getConfiguration();
+        Locale sysLocale = null;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            sysLocale = getSystemLocale(config);
+        } else {
+            sysLocale = getSystemLocaleLegacy(config);
+        }
+
+        return sysLocale;
+    }
+
+    @SuppressWarnings("deprecation")
+    public static Locale getSystemLocaleLegacy(Configuration config){
+        return config.locale;
+    }
+
+    @TargetApi(Build.VERSION_CODES.N)
+    public static Locale getSystemLocale(Configuration config){
+        return config.getLocales().get(0);
+    }
+
 
     @Override
     public void cancelAction() {
@@ -194,4 +219,5 @@ public class TrimActivity extends AppCompatActivity implements OnTrimVideoListen
         cursor.moveToFirst();
         return cursor.getString(column_index);
     }
+
 }

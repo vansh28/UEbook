@@ -15,6 +15,7 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,11 +43,14 @@ import com.ue.uebook.ChatSdk.Pojo.Broadcastmessagepojo;
 import com.ue.uebook.ChatSdk.Pojo.GroupMemberList;
 import com.ue.uebook.ChatSdk.Pojo.UserList;
 import com.ue.uebook.Data.ApiRequest;
+import com.ue.uebook.FilePath;
+import com.ue.uebook.FileUtil;
 import com.ue.uebook.ImageUtils;
 import com.ue.uebook.R;
 import com.ue.uebook.SessionManager;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -70,7 +74,7 @@ import okhttp3.RequestBody;
 public class BroadcastMessageScreen extends AppCompatActivity implements View.OnClickListener ,ImageUtils.ImageAttachmentListener {
     private BroadcastMessageAdapter broadcastMessageAdapter;
     private RecyclerView messageList;
-    private TextView broadcast_name;
+    private TextView broadcast_name,show_name;
     private Intent intent;
     private UserList userList;
     private String name,ids,channelId;
@@ -92,18 +96,21 @@ public class BroadcastMessageScreen extends AppCompatActivity implements View.On
     private String filePath;
     private String fileName;
     private RelativeLayout header;
+    private ImageView previewImage;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_broadcast_message_screen);
              messageList = findViewById(R.id.messageList);
         broadcast_name = findViewById(R.id.broadcast_name);
+        previewImage = findViewById(R.id.previewImage);
         button_chat_emoji = findViewById(R.id.button_chat_emoji);
         edit_chat_message = findViewById(R.id.edit_chat_message);
         button_chat_attachment = findViewById(R.id.button_chat_attachment);
         button_chat_send = findViewById(R.id.button_chat_send);
         backbtnMessage = findViewById(R.id.backbtnMessage);
         swipe_refresh_layout = findViewById(R.id.swipe_refresh_layout);
+        show_name = findViewById(R.id.show_name);
         header = findViewById(R.id.header);
         header.setOnClickListener(this);
         backbtnMessage.setOnClickListener(this);
@@ -117,10 +124,11 @@ public class BroadcastMessageScreen extends AppCompatActivity implements View.On
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
         linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
         messageList.setLayoutManager(linearLayoutManager);
-        name = intent.getStringExtra("name");
+//        name = intent.getStringExtra("name");
         ids=intent.getStringExtra("ids");
         broadcast_No = intent.getStringExtra("broadcast_No");
-        broadcast_name.setText(name);
+        getbroadcastNameandIds(broadcast_No);
+//        broadcast_name.setText(name);
         getAllmessage(ids,broadcast_No);
 //        pullTorefreshswipe();
         emojIcon = new EmojIconActions(this, root_view, edit_chat_message, button_chat_emoji);
@@ -145,6 +153,7 @@ public class BroadcastMessageScreen extends AppCompatActivity implements View.On
             @Override
             public void onRefresh() {
                 getAllmessage(ids,broadcast_No);
+                getbroadcastNameandIds(broadcast_No);
                 swipe_refresh_layout.setRefreshing(false);
             }
         });
@@ -179,7 +188,7 @@ public class BroadcastMessageScreen extends AppCompatActivity implements View.On
                                     runOnUiThread(new Runnable() {
                                         @Override
                                         public void run() {
-                                            broadcastMessageAdapter = new BroadcastMessageAdapter(broadcastmessageList);
+                                            broadcastMessageAdapter = new BroadcastMessageAdapter(broadcastmessageList,BroadcastMessageScreen.this);
                                             messageList.setAdapter(broadcastMessageAdapter);
                                         }
                                     });
@@ -222,6 +231,73 @@ public class BroadcastMessageScreen extends AppCompatActivity implements View.On
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
     }
+    public void getbroadcastNameandIds(final String broadcast_id){
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setCancelable(true);
+        progressDialog.setMessage(getResources().getString(R.string.please_wait));
+        progressDialog.show();
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, ApiRequest.BaseUrl +"broadcastUsersName",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        progressDialog.dismiss();
+                        Log.e(" response", response);
+                        try {
+                            JSONObject jsonObject = new JSONObject(String.valueOf(response));
+                            if (jsonObject.getBoolean("error")==false){
+                                JSONObject jsonObjectResponse = jsonObject.getJSONObject("data");
+                                if (jsonObjectResponse!=null){
+
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            try {
+                                                broadcast_name.setText(jsonObjectResponse.getString("boradcast_name1"));
+                                                ids=jsonObjectResponse.getString("broadcast_users");
+                                                show_name.setText(jsonObjectResponse.getString("boradcast_name2")+"...");
+                                            } catch (JSONException e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
+                                    });
+                                }
+                            }
+                        }
+                        catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        try {
+                            String responseBody = new String(error.networkResponse.data, StandardCharsets.UTF_8);
+                            JSONObject data = new JSONObject(responseBody);
+
+                            Toast.makeText(BroadcastMessageScreen.this, data.optString("message","Something wrong!"), Toast.LENGTH_LONG).show();
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
+                        progressDialog.dismiss();
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> arguments = new HashMap<String, String>();
+                arguments.put("user_id",new SessionManager(getApplication()).getUserID());
+                arguments.put("broadcast_id",broadcast_id);
+                return arguments;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
+
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                30000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+    }
 
 
 
@@ -236,8 +312,17 @@ public class BroadcastMessageScreen extends AppCompatActivity implements View.On
     @Override
     public void onClick(View v) {
               if (v==button_chat_send){
+                if (typevalue==0){
+                    sendMesaage(new SessionManager(getApplication()).getUserID(),"",ids,"text",channelId,edit_chat_message.getText().toString(),0);
+                }
+                else if (typevalue==1){
+                    previewImage.setVisibility(View.GONE);
+                    sendMesaage(new SessionManager(getApplication()).getUserID(),"",ids,"image",channelId,edit_chat_message.getText().toString(),1);
 
-                  sendMesaage(new SessionManager(getApplication()).getUserID(),"",ids,"text",channelId,edit_chat_message.getText().toString(),0);
+                }
+                else if (typevalue==2){
+                    sendMesaage(new SessionManager(getApplication()).getUserID(),"",ids,"video",channelId,edit_chat_message.getText().toString(),2);
+                }
               }
               else if (v==button_chat_attachment){
 
@@ -330,9 +415,9 @@ public class BroadcastMessageScreen extends AppCompatActivity implements View.On
             case 1:
                 requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
                         .addFormDataPart(" chat_type", chat_type)
-                        .addFormDataPart(" user_id", user_id)
-                        .addFormDataPart(" sendTO", sendTO)
-                        .addFormDataPart(" type", type)
+                        .addFormDataPart(" send_by", user_id)
+                        .addFormDataPart(" receiver_ids", sendTO)
+                        .addFormDataPart(" message_type", type)
                         .addFormDataPart(" message", message)
                         .addFormDataPart("image_file", imageurl.getName(), RequestBody.create(MEDIA_TYPE_PNG, imageurl))
                         .addFormDataPart(" broadcast_no", broadcast_No)
@@ -343,32 +428,37 @@ public class BroadcastMessageScreen extends AppCompatActivity implements View.On
             case 2:
                 requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
                         .addFormDataPart(" chat_type", chat_type)
-                        .addFormDataPart(" user_id", user_id)
-                        .addFormDataPart(" sendTO", sendTO)
-                        .addFormDataPart(" type", type)
+                        .addFormDataPart(" send_by", user_id)
+                        .addFormDataPart(" receiver_ids", sendTO)
+                        .addFormDataPart(" message_type", type)
                         .addFormDataPart(" message", message)
                         .addFormDataPart("video_file", videofile.getName(), RequestBody.create(MediaType.parse("video/mp4"), videofile))
+                        .addFormDataPart(" broadcast_no", broadcast_No)
+
                         .build();
                 break;
             case 3:
                 requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
                         .addFormDataPart(" chat_type", chat_type)
-                        .addFormDataPart(" user_id", user_id)
-                        .addFormDataPart(" sendTO", sendTO)
-                        .addFormDataPart(" type", type)
-                        .addFormDataPart(" message", "Audio")
+                        .addFormDataPart(" send_by", user_id)
+                        .addFormDataPart(" receiver_ids", sendTO)
+                        .addFormDataPart(" message_type", type)
+                        .addFormDataPart(" message", message)
                         .addFormDataPart("audio_file", audioUrl.getName(), RequestBody.create(MediaType.parse("audio/*"), audioUrl))
+                        .addFormDataPart(" broadcast_no", broadcast_No)
 
                         .build();
                 break;
             case 4:
                 requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
                         .addFormDataPart(" chat_type", chat_type)
-                        .addFormDataPart(" user_id", user_id)
-                        .addFormDataPart(" sendTO", sendTO)
-                        .addFormDataPart(" type", type)
-                        .addFormDataPart(" message", "file")
+                        .addFormDataPart(" send_by", user_id)
+                        .addFormDataPart(" receiver_ids", sendTO)
+                        .addFormDataPart(" message_type", type)
+                        .addFormDataPart(" message", message)
                         .addFormDataPart("pdf_file", docfile.getName(), RequestBody.create(MediaType.parse("text/csv"), docfile))
+                        .addFormDataPart(" broadcast_no", broadcast_No)
+
                         .build();
                 break;
             default:
@@ -415,6 +505,8 @@ public class BroadcastMessageScreen extends AppCompatActivity implements View.On
         imageUtils.createImage(file, filename, path, false);
         filePath = getRealPathFromURI(uri.getPath());
         imageurl = (new File(imageUtils.getPath(uri)));
+        previewImage.setVisibility(View.VISIBLE);
+        previewImage.setImageBitmap(file);
     }
     private String getRealPathFromURI(String contentURI) {
         Uri contentUri = Uri.parse(contentURI);
@@ -425,6 +517,63 @@ public class BroadcastMessageScreen extends AppCompatActivity implements View.On
             cursor.moveToFirst();
             int index = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
             return cursor.getString(index);
+        }
+    }
+    protected void onResume(){
+        super.onResume();
+       getbroadcastNameandIds(broadcast_No);
+
+    }
+    public String getPath(Uri uri) {
+        String[] projection = {MediaStore.Video.Media.DATA};
+        Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
+        if (cursor != null) {
+            int column_index = cursor
+                    .getColumnIndexOrThrow(MediaStore.Video.Media.DATA);
+            cursor.moveToFirst();
+            return cursor.getString(column_index);
+        } else
+            return null;
+    }
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        imageUtils.onActivityResult(requestCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == REQUEST_PICK_VIDEO) {
+                Uri selectedVideo = data.getData();
+                try {
+                    String videoPathStr = getPath(selectedVideo);
+                    videofile = new File(videoPathStr);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Toast.makeText(this, "Please Select Again", Toast.LENGTH_SHORT).show();
+                }
+            } else if (requestCode == 111) {
+                Uri selectedfile = data.getData();
+                try {
+                    docfile = FileUtil.from(BroadcastMessageScreen.this, selectedfile);
+                    sendMesaage(new SessionManager(getApplication()).getUserID(),"",ids,"docfile",channelId,edit_chat_message.getText().toString(),4);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Toast.makeText(this, "Please Select Again", Toast.LENGTH_SHORT).show();
+                }
+            } else if (requestCode == 132) {
+
+                Uri selectedaudio = data.getData();
+                try {
+                    String audioPathStr = FilePath.getPath(BroadcastMessageScreen.this, selectedaudio);
+                    audioUrl = new File(audioPathStr);
+                    sendMesaage(new SessionManager(getApplication()).getUserID(),"",ids,"audio",channelId,edit_chat_message.getText().toString(),3);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Toast.makeText(this, "Please Select Again", Toast.LENGTH_SHORT).show();
+                }
+            } else if (requestCode == 123) {
+
+
+            }
         }
     }
 }

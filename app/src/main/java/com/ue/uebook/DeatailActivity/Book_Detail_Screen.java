@@ -125,6 +125,7 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
     String docbaseUrl = "http://docs.google.com/gview?embedded=true&url=";
     private   RadioGroup radioGroupPaymentMethod,radioGroupCurrency;
     private String convertPrice="0";
+    private String story_text;
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -336,9 +337,10 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
         intent.putExtra("url", url);
         startActivity(intent);
     }
-    private void gotoTextview() {
+    private void gotoTextview(String story_text) {
         Intent intent = new Intent(this, BookTextView.class);
         intent.putExtra("name",bookname);
+        intent.putExtra("story_text",story_text);
         startActivity(intent);
     }
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -385,6 +387,7 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
                         admin_commission = form.getData().getAdmin_commission();
                         bookDesc.setText(form.getData().getBook_description());
                         videourl = form.getData().getVideo_url();
+                        story_text=form.getData().getStory_text();
                         docurl = form.getData().getPdf_url();
                         audiourl = form.getData().getAudio_url();
                         bookdesc = form.getData().getBook_description();
@@ -494,7 +497,14 @@ public class Book_Detail_Screen extends BaseActivity implements View.OnClickList
                         return true;
 
                     case R.id.texttv:
-                         gotoTextview();
+                        if (story_text!=null) {
+                            gotoTextview(story_text);
+                        } else {
+
+                            //  Toast.makeText(Book_Detail_Screen.this, "No Document File", Toast.LENGTH_SHORT).show();
+                            dialog("ok", "No Text for this Book");
+                        }
+
                         return true;
                     default:
                         return false;

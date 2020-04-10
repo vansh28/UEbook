@@ -19,7 +19,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
-import android.os.ResultReceiver;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.MenuItem;
@@ -60,7 +59,6 @@ import com.ue.uebook.ChatSdk.Pojo.Chathistory;
 import com.ue.uebook.ChatSdk.Pojo.OponentData;
 import com.ue.uebook.ChatSdk.Pojo.UserData;
 import com.ue.uebook.Data.ApiRequest;
-import com.ue.uebook.DownloadService;
 import com.ue.uebook.FilePath;
 import com.ue.uebook.FileUtil;
 import com.ue.uebook.GlideUtils;
@@ -915,31 +913,6 @@ public class MessageScreen extends BaseActivity implements View.OnClickListener,
         finish();
     }
 
-    private class DownloadReceiver extends ResultReceiver {
-
-        public DownloadReceiver(Handler handler) {
-            super(handler);
-        }
-
-        @Override
-        protected void onReceiveResult(int resultCode, Bundle resultData) {
-
-            super.onReceiveResult(resultCode, resultData);
-
-            if (resultCode == DownloadService.UPDATE_PROGRESS) {
-
-                int progress = resultData.getInt("progress"); //get the progress
-
-                progressDialog.setProgress(progress);
-                progressDialog.setMessage("Images Is Downloading");
-                progressDialog.show();
-
-                if (progress == 100) {
-                    progressDialog.dismiss();
-                }
-            }
-        }
-    }
 
     private void initializePlayer(Uri uri) {
         if (uri != null) {

@@ -25,6 +25,7 @@ public class BookTextView extends AppCompatActivity implements View.OnClickListe
         Bookname = intent.getStringExtra("name");
         bookName = findViewById(R.id.bookName);
         bookTextView = findViewById(R.id.bookTextView);
+        bookTextView.setText(intent.getStringExtra("story_text"));
         bookName.setText(Bookname);
         backbtn.setOnClickListener(this);
     }

@@ -41,8 +41,6 @@
                  android:textSize="@dimen/size_18"
                  android:layout_margin="@dimen/size_10"
                  android:textColor="@color/black"
-
-                 android:text="@string/demoText"
                  android:layout_height="match_parent"/>
 
          </LinearLayout>

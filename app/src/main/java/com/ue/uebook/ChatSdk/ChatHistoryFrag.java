@@ -130,7 +130,7 @@ public class ChatHistoryFrag extends Fragment implements View.OnClickListener, C
         linearLayoutManagerPopularList.setOrientation(LinearLayoutManager.VERTICAL);
         chatList.setLayoutManager(linearLayoutManagerPopularList);
         chatList.setNestedScrollingEnabled(false);
-        getChatHistory(new SessionManager(getActivity().getApplicationContext()).getUserID());
+      getChatHistory(new SessionManager(getActivity().getApplicationContext()).getUserID());
         pullTorefreshswipe();
         return view;
     }
@@ -158,7 +158,7 @@ public class ChatHistoryFrag extends Fragment implements View.OnClickListener, C
         super.onResume();
         IntentFilter intentFilter = new IntentFilter(
                 "android.intent.action.MAIN");
-        getChatHistorys(new SessionManager(getActivity().getApplicationContext()).getUserID());
+      getChatHistorys(new SessionManager(getActivity().getApplicationContext()).getUserID());
         mReceiver = new BroadcastReceiver() {
 
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)

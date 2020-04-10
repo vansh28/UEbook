@@ -662,7 +662,7 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
                         .addFormDataPart("price", price)
                         .addFormDataPart("is_paid",ispaid)
                         .addFormDataPart("admin_commission",admin_commision)
-                        .addFormDataPart("text",book_write)
+                        .addFormDataPart("story_text",book_write)
                         .build();
                 break;
             case 2:
@@ -682,7 +682,7 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
                         .addFormDataPart("price", price)
                         .addFormDataPart("is_paid",ispaid)
                         .addFormDataPart("admin_commission",admin_commision)
-                        .addFormDataPart("text",book_write)
+                        .addFormDataPart("story_text",book_write)
 
                         .build();
                 break;
@@ -703,7 +703,7 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
                         .addFormDataPart("price", price)
                         .addFormDataPart("is_paid",ispaid)
                         .addFormDataPart("admin_commission",admin_commision)
-                        .addFormDataPart("text",book_write)
+                        .addFormDataPart("story_text",book_write)
 
                         .build();
                 break;
@@ -723,7 +723,7 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
                         .addFormDataPart("price", price)
                         .addFormDataPart("is_paid",ispaid)
                         .addFormDataPart("admin_commission",admin_commision)
-                        .addFormDataPart("text",book_write)
+                        .addFormDataPart("story_text",book_write)
 
                         .build();
                 break;
@@ -744,7 +744,7 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
                         .addFormDataPart("price", price)
                         .addFormDataPart("is_paid",ispaid)
                         .addFormDataPart("admin_commission",admin_commision)
-                        .addFormDataPart("text",book_write)
+                        .addFormDataPart("story_text",book_write)
 
                         .build();
                 break;
@@ -766,7 +766,7 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
                         .addFormDataPart("price", price)
                         .addFormDataPart("is_paid",ispaid)
                         .addFormDataPart("admin_commission",admin_commision)
-                        .addFormDataPart("text",book_write)
+                        .addFormDataPart("story_text",book_write)
 
                         .build();
                 break;
@@ -788,7 +788,7 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
                         .addFormDataPart("price", price)
                         .addFormDataPart("is_paid",ispaid)
                         .addFormDataPart("admin_commission",admin_commision)
-                        .addFormDataPart("text",book_write)
+                        .addFormDataPart("story_text",book_write)
 
                         .build();
                 break;
@@ -807,7 +807,7 @@ public class Upload_Book_Screen extends BaseActivity implements View.OnClickList
                         .addFormDataPart("price", price)
                         .addFormDataPart("is_paid",ispaid)
                         .addFormDataPart("admin_commission",admin_commision)
-                        .addFormDataPart("text",book_write)
+                        .addFormDataPart("story_text",book_write)
 
                         .build();
                 break;

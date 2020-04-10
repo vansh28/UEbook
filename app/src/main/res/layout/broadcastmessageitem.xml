@@ -13,7 +13,7 @@
         android:layout_marginTop="@dimen/size_8"
         android:layout_marginRight="@dimen/size_15"
         android:background="@drawable/senderbg"
-        android:visibility="visible">
+        android:visibility="gone">
         <hani.momanii.supernova_emoji_library.Helper.EmojiconTextView
             android:id="@+id/userMessage"
             android:layout_width="wrap_content"
@@ -26,5 +26,37 @@
             app:emojiconSize="28sp"
             android:textColor="@color/black" />
     </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/senderlayoutimage"
+        android:layout_width="@dimen/size_150"
+        android:layout_height="@dimen/size_150"
+        android:layout_gravity="end"
+        android:layout_marginLeft="@dimen/size_150"
+        android:layout_marginTop="@dimen/size_8"
+        android:layout_marginRight="@dimen/size_15"
+        android:background="@drawable/border"
+        android:baselineAligned="false"
+        android:visibility="gone">
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_centerInParent="true"
+            android:id="@+id/progressbarsender"
+            android:visibility="gone"
+            android:layout_height="wrap_content"/>
+        <ImageView
+            android:id="@+id/imageSender"
+            android:layout_width="@dimen/size_150"
+            android:layout_height="@dimen/size_150"
+            android:layout_margin="@dimen/size_5" />
+        <ImageButton
+            android:id="@+id/playbtnsender"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:alpha=".6"
+            android:src="@drawable/play"
+            android:visibility="gone" />
+    </RelativeLayout>
+
 
 </LinearLayout>

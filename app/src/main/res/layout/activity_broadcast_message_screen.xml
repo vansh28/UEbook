@@ -14,8 +14,8 @@
         android:background="@color/colorAccent"
         android:id="@+id/header"
         android:visibility="visible"
-        android:padding="@dimen/size_10"
-        android:layout_height="@dimen/size_60">
+        android:padding="@dimen/size_5"
+        android:layout_height="@dimen/size_80">
         <ImageButton
             android:id="@+id/backbtnMessage"
             android:layout_width="wrap_content"
@@ -30,7 +30,7 @@
             android:id="@+id/image_user_chat"
             android:layout_width="@dimen/size_40"
             android:layout_height="@dimen/size_40"
-            android:src="@drawable/user_default"
+            android:src="@drawable/broadcast"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/size_15"
             android:layout_toRightOf="@id/backbtnMessage"
@@ -41,10 +41,23 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/image_user_chat"
-            android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/size_20"
+            android:layout_centerVertical="true"
+            android:maxLength="20"
             android:textColor="@color/white"
-            android:textSize="@dimen/size_18"
+            android:textSize="@dimen/size_17"
+            />
+        <TextView
+            android:id="@+id/show_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_below="@+id/broadcast_name"
+            android:layout_toRightOf="@+id/image_user_chat"
+            android:layout_marginLeft="@dimen/size_10"
+            android:maxLength="30"
+            android:textColor="@color/white"
+            android:textSize="@dimen/size_14"
             />
 
 
@@ -64,7 +77,7 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:id="@+id/NestedScrollView"
-        android:layout_marginTop="@dimen/size_60"
+        android:layout_marginTop="@dimen/size_80"
         android:layout_above="@+id/layout_chat_send_container"
         android:layout_height="match_parent">
         <LinearLayout
@@ -114,6 +127,12 @@
             android:src="@drawable/ic_send"
             android:text="@string/chat_send" />
     </LinearLayout>
+    <ImageView
+        android:id="@+id/previewImage"
+        android:layout_width="@dimen/size_150"
+        android:layout_height="@dimen/size_150"
+        android:visibility="gone"
+        android:layout_above="@+id/layout_chat_send_container"/>
 
 
 </RelativeLayout>

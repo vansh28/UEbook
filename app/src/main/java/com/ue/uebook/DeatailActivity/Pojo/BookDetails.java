@@ -22,6 +22,15 @@ public class BookDetails {
     private String is_paid;
     private String price;
     private  String admin_commission;
+    private String story_text;
+
+    public String getStory_text() {
+        return story_text;
+    }
+
+    public void setStory_text(String story_text) {
+        this.story_text = story_text;
+    }
 
     public String getAdmin_commission() {
         return admin_commission;
